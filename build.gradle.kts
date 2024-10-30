@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion= "2.0.10"
+val kotlinVersion= "2.0.21"
 val prometeusVersion= "1.13.5"
-val springbootVersion= "3.3.2"
+val springbootVersion= "3.3.5"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.1.13"
 val jacksonkotlinVersion= "2.17.2"
@@ -19,15 +19,15 @@ val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.11.1"
 
 plugins {
-    val pluginSpringBootVersion = "3.3.2"
-    val pluginKotlinVersion = "2.0.20"
+    val pluginSpringBootVersion = "3.3.5"
+    val pluginKotlinVersion = "2.0.21"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.owasp.dependencycheck") version "10.0.4"
+    id("org.owasp.dependencycheck") version "11.1.0"
 }
 
 group = "no.nav.pensjon"
