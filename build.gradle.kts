@@ -22,7 +22,7 @@ import tokensupportVersion
 import tokensupporttestVersion
 
 plugins {
-    val pluginSpringBootVersion = "3.3.2"
+    val pluginSpringBootVersion = "3.3.5"
     val pluginKotlinVersion = "2.0.20"
 
     kotlin("jvm") version pluginKotlinVersion
