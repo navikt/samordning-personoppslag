@@ -1,25 +1,22 @@
-import h2DbVersion
-import hibernateCoreVersion
-import jacksonkotlinVersion
-import jakartaAnnotationApiVersion
-import jakartaInjectApiVersion
-import junitplatformVersion
-import kotlinVersion
-import logstashlogbackVersion
-import mockOAuth2ServerVersion
-import mockkVersion
-import oracle11Version
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import prometeusVersion
-import slf4jVersion
-import springbootVersion
-import springframeworkbomVersion
-import springkafkaVersion
-import springmockkVersion
-import springwebmvcpac4jVersion
-import tokensupportVersion
-import tokensupporttestVersion
+
+val kotlinVersion= "2.0.10"
+val prometeusVersion= "1.13.5"
+val springbootVersion= "3.3.2"
+val springwebmvcpac4jVersion = "8.0.0"
+val springframeworkbomVersion = "6.1.13"
+val jacksonkotlinVersion= "2.17.2"
+val slf4jVersion= "2.0.16"
+val logstashlogbackVersion="8.0"
+val tokensupportVersion = "5.0.2"
+val tokensupporttestVersion = "2.0.5"
+val mockOAuth2ServerVersion = "2.1.9"
+val jakartaAnnotationApiVersion = "3.0.0"
+val jakartaInjectApiVersion = "2.0.1"
+val mockkVersion = "1.13.12"
+val springmockkVersion = "4.0.2"
+val junitplatformVersion = "1.11.1"
 
 plugins {
     val pluginSpringBootVersion = "3.3.2"

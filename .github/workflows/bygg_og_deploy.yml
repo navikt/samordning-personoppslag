@@ -3,7 +3,7 @@ name: Bygg og deploy
 on:
   push:
     branches:
-      - main
+      - mainsexit
 
 jobs:
   build_and_tag:
@@ -81,7 +81,7 @@ jobs:
 #        uses: nais/deploy/actions/deploy@v2
 #        env:
 #          "CLUSTER": dev-fss
-#          "RESOURCE": nais/dev_q2.yaml
+#          "RESOURCE": .nais/dev_q2.yaml
 #          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
 

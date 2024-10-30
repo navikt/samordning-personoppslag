@@ -1,0 +1,66 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: samordning-personoppslag-q2
+  namespace: pensjonsamhandling
+  labels:
+    team: pensjonsamhandling
+spec:
+  azure:
+    application:
+      enabled: true
+      allowAllUsers: true
+      claims:
+        extra:
+          - "NAVident"
+          - "azp_name"
+  image: {{ image }}
+  port: 8080
+  ingresses:
+    - "https://samordning-personoppslag-q2.dev.intern.nav.no"
+  secureLogs:
+    enabled: false
+  prometheus:
+    enabled: true
+    path: actuator/prometheus
+  liveness:
+    path: actuator/health/liveness
+    initialDelay: 30
+  readiness:
+    path: actuator/health/readiness
+    initialDelay: 30
+  startup:
+    path: actuator/health/readiness
+    initialDelay: 30
+    failureThreshold: 30
+    periodSeconds: 5
+  replicas:
+    min: 2
+    max: 2
+    cpuThresholdPercentage: 80
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 200m
+      memory: 1Gi
+  vault:
+    enabled: false
+  webproxy: false
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: dev
+    - name: ENV
+      value: q2
+    - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
+      value: https://security-token-service.nais.preprod.local/.well-known/openid-configuration
+    - name: "OTEL_RESOURCE_ATTRIBUTES"
+      value: "deployment.environment.name=q2"
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+      destinations:
+        - id: grafana-lgtm
+        - id: elastic-apm
