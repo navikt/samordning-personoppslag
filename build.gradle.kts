@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val kotlinVersion= "2.0.21"
-val prometeusVersion= "1.13.5"
+val prometeusVersion= "1.13.6"
 val springbootVersion= "3.3.5"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.1.13"
@@ -46,6 +46,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springbootVersion")
     implementation("org.springframework.boot:spring-boot-actuator:$springbootVersion")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
+    implementation("org.springframework.retry:spring-retry:2.0.10")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")

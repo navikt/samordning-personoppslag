@@ -1,0 +1,226 @@
+query($ident: ID!) {
+    hentPerson(ident: $ident) {
+        adressebeskyttelse {
+            gradering
+        }
+        bostedsadresse {
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            gyldigFraOgMed
+            gyldigTilOgMed
+            metadata {
+                ...metadataDetails
+            }
+        }
+        oppholdsadresse {
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            gyldigFraOgMed
+            metadata {
+                ...metadataDetails
+            }
+        }
+        kontaktadresse {
+            coAdressenavn
+            type
+            gyldigFraOgMed
+            gyldigTilOgMed
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+            postadresseIFrittFormat {
+                ...postadresseIFrittFormat
+            }
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            utenlandskAdresseIFrittFormat {
+                ...utenlandskAdresseIFrittFormat
+            }
+        }
+        kontaktinformasjonForDoedsbo {
+            personSomKontakt {
+                ...personSomKontakt
+            }
+            advokatSomKontakt {
+                ...advokatSomKontakt
+            }
+            organisasjonSomKontakt {
+                ...organisasjonSomKontakt
+            }
+            adresse {
+                ...doedsboAdresse
+            }
+            attestutstedelsesdato
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+            skifteform
+        }
+        navn {
+            fornavn
+            mellomnavn
+            etternavn
+            forkortetNavn
+            gyldigFraOgMed
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+        }
+        statsborgerskap {
+            land
+            gyldigFraOgMed
+            gyldigTilOgMed
+            metadata {
+                ...metadataDetails
+            }
+        }
+        foedsel {
+            foedselsdato
+            foedeland
+            foedested
+            foedselsaar
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+        }
+        doedsfall {
+            doedsdato
+            metadata {
+                ...metadataDetails
+            }
+        }
+        kjoenn {
+            kjoenn
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+        }
+        forelderBarnRelasjon {
+            relatertPersonsIdent
+            relatertPersonsRolle
+            minRolleForPerson
+            metadata {
+                ...metadataDetails
+            }
+        }
+        sivilstand {
+            type
+            gyldigFraOgMed
+            relatertVedSivilstand
+            metadata {
+                ...metadataDetails
+            }
+        }
+
+    }
+}
+
+fragment metadataDetails on Metadata {
+    endringer {
+        kilde
+        registrert
+        registrertAv
+        systemkilde
+        type
+    }
+    master
+    opplysningsId
+    historisk
+}
+fragment folkeregistermetadataDetails on Folkeregistermetadata {
+    gyldighetstidspunkt
+}
+fragment vegadresseDetails on Vegadresse {
+    husbokstav
+    husnummer
+    adressenavn
+    postnummer
+    kommunenummer
+    bydelsnummer
+}
+fragment postadresseIFrittFormat on PostadresseIFrittFormat {
+    adresselinje1
+    adresselinje2
+    adresselinje3
+    postnummer
+}
+fragment utenlandskAdresseDetails on UtenlandskAdresse {
+    adressenavnNummer
+    bygningEtasjeLeilighet
+    postboksNummerNavn
+    postkode
+    bySted
+    regionDistriktOmraade
+    landkode
+}
+
+fragment utenlandskAdresseIFrittFormat on UtenlandskAdresseIFrittFormat {
+    adresselinje1
+    adresselinje2
+    adresselinje3
+    byEllerStedsnavn
+    landkode
+    postkode
+}
+
+fragment doedsboAdresse on KontaktinformasjonForDoedsboAdresse {
+    adresselinje1
+    adresselinje2
+    landkode
+    postnummer
+    poststedsnavn
+}
+
+fragment personSomKontakt on KontaktinformasjonForDoedsboPersonSomKontakt {
+    personnavn {
+        fornavn
+        mellomnavn
+        etternavn
+    }
+    identifikasjonsnummer
+}
+
+fragment advokatSomKontakt on KontaktinformasjonForDoedsboAdvokatSomKontakt {
+    personnavn {
+        fornavn
+        mellomnavn
+        etternavn
+    }
+    organisasjonsnavn
+}
+
+fragment organisasjonSomKontakt on KontaktinformasjonForDoedsboOrganisasjonSomKontakt {
+    kontaktperson  {
+        fornavn
+        mellomnavn
+        etternavn
+    }
+    organisasjonsnavn
+}
