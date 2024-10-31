@@ -59,6 +59,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     // Token support Azuread, Oidc
+    implementation("no.nav.common:token-client:2.2023.01.10_13.49-81ddc732df3a")
     implementation("no.nav.security:token-validation-spring:$tokensupportVersion")
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")

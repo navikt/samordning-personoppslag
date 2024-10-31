@@ -40,11 +40,11 @@ spec:
     cpuThresholdPercentage: 80
   resources:
     limits:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: 500m
+      memory: 1Gi
     requests:
       cpu: 200m
-      memory: 1Gi
+      memory: 500m
   vault:
     enabled: false
   webproxy: false
@@ -53,10 +53,18 @@ spec:
       value: dev
     - name: ENV
       value: q2
-    - name: SECURITY_TOKEN_SERVICE_OPENID_CONFIGURATION_URL
-      value: https://security-token-service.nais.preprod.local/.well-known/openid-configuration
     - name: "OTEL_RESOURCE_ATTRIBUTES"
       value: "deployment.environment.name=q2"
+    - name: PDL_URL
+      value: https://pdl-api.intern.dev.nav.no/graphql
+    - name: PDL_SCOPE
+      value: api://dev-fss.pdl.pdl-api/.default
+
+
+pensjon-samhandler-proxy:
+  endpoint: https://pensjon-samhandler-proxy-q2.intern.dev.nav.no/
+  scope: api://dev-fss.pensjon-q2.pensjon-samhandler-proxy-q2/.default
+
   observability:
     autoInstrumentation:
       enabled: true
