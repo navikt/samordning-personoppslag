@@ -1,9 +1,9 @@
-package no.nav.eessi.pensjon.personoppslag.pdl
+package no.nav.samordning.person.pdl
 
 import io.mockk.every
 import io.mockk.mockk
-import no.nav.eessi.pensjon.personoppslag.pdl.model.*
-import no.nav.eessi.pensjon.personoppslag.pdl.model.IdentGruppe.*
+import no.nav.samordning.person.pdl.model.*
+import no.nav.samordning.person.pdl.model.IdentGruppe.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance

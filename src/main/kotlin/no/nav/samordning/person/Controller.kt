@@ -1,9 +1,9 @@
 package no.nav.samordning.person
 
 import jakarta.validation.constraints.Digits
-import no.nav.eessi.pensjon.personoppslag.pdl.PersonService
-import no.nav.eessi.pensjon.personoppslag.pdl.model.NorskIdent
-import no.nav.eessi.pensjon.personoppslag.pdl.model.PdlPerson
+import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.model.NorskIdent
+import no.nav.samordning.person.pdl.model.PdlPerson
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader

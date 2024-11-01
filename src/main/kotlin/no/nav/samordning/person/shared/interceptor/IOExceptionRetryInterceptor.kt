@@ -1,4 +1,4 @@
-package no.nav.samordning.person.shared.retry
+package no.nav.samordning.person.shared.interceptor
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpRequest

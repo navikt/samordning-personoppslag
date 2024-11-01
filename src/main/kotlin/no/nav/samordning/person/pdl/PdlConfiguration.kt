@@ -1,9 +1,10 @@
-package no.nav.eessi.pensjon.personoppslag.pdl
+package no.nav.samordning.person.pdl
 
-import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
-import no.nav.pensjon.metrics.MetricsHelper
-import no.nav.samordning.person.shared.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
-import no.nav.samordning.person.shared.retry.IOExceptionRetryInterceptor
+import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.cache.CaffeineTokenCache
+import no.nav.samordning.metrics.MetricsHelper
+import no.nav.samordning.person.shared.interceptor.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
+import no.nav.samordning.person.shared.interceptor.IOExceptionRetryInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -19,20 +20,24 @@ import org.springframework.web.client.RestTemplate
 @Configuration
 class PdlConfiguration(@Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()) {
 
-    @Bean
-    fun azureAdMachineToMachineTokenClient(
-        azureAdMachineToMachineTokenClient: AzureAdMachineToMachineTokenClient,
-        @Value("\${PDL_SCOPE}") scope: String,
-    ): ClientHttpRequestInterceptor = AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdMachineToMachineTokenClient, scope)
 
     @Bean
-    fun pdlRestTemplate(azureAdMachineToMachineTokenClientInterceptor: ClientHttpRequestInterceptor): RestTemplate {
+    fun azureAdMachineToMachineTokenInterceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor {
+        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
+            .withCache(CaffeineTokenCache())
+                .withNaisDefaults()
+                .buildMachineToMachineTokenClient()
+      return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
+    }
+
+    @Bean
+    fun pdlRestTemplate(azureAdMachineToMachineTokenInterceptor: ClientHttpRequestInterceptor): RestTemplate {
 
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
-                azureAdMachineToMachineTokenClientInterceptor,
+                azureAdMachineToMachineTokenInterceptor,
                 PdlInterceptor())
             .build()
     }

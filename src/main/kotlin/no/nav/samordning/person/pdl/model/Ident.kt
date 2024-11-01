@@ -1,7 +1,7 @@
-package no.nav.eessi.pensjon.personoppslag.pdl.model
+package no.nav.samordning.person.pdl.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import no.nav.eessi.pensjon.shared.person.Fodselsnummer
+import no.nav.samordning.person.shared.fnr.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal data class IdenterResponse(

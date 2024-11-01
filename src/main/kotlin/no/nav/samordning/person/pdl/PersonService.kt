@@ -1,8 +1,8 @@
-package no.nav.eessi.pensjon.personoppslag.pdl
+package no.nav.samordning.person.pdl
 
-import no.nav.eessi.pensjon.personoppslag.pdl.model.*
-import no.nav.pensjon.metrics.MetricsHelper
-import no.nav.pensjon.metrics.MetricsHelper.Metric
+import no.nav.samordning.metrics.MetricsHelper
+import no.nav.samordning.metrics.MetricsHelper.Metric
+import no.nav.samordning.person.pdl.model.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

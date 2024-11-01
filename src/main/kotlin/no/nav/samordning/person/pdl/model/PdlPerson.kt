@@ -1,4 +1,4 @@
-package no.nav.eessi.pensjon.personoppslag.pdl.model
+package no.nav.samordning.person.pdl.model
 
 import org.slf4j.LoggerFactory
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package no.nav.pensjon.metrics
+package no.nav.samordning.metrics
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  * Denne er pent lånt fra:
  * https://github.com/navikt/ep-metrics
  *
- * med tilpassninger for pensjonsamhandling og sporingslogg
+ * med tilpassninger for pensjonsamhandling
  */
 @Component
 class MetricsHelper(val registry: MeterRegistry) {

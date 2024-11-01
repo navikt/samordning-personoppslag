@@ -1,7 +1,7 @@
-package no.nav.eessi.pensjon.personoppslag
+package no.nav.samordning.person.pdl.model
 
-import no.nav.eessi.pensjon.shared.person.Fodselsnummer
-import no.nav.eessi.pensjon.shared.person.FodselsnummerGenerator.generateFnrForTest
+import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import no.nav.samordning.person.shared.fnr.FodselsnummerGenerator.generateFnrForTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate

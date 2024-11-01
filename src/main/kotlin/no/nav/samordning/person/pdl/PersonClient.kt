@@ -1,16 +1,6 @@
-package no.nav.eessi.pensjon.personoppslag.pdl
+package no.nav.samordning.person.pdl
 
-import no.nav.eessi.pensjon.personoppslag.pdl.model.*
-import no.nav.eessi.pensjon.personoppslag.pdl.model.AdressebeskyttelseResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.GeografiskTilknytningResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.HentPersonResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.HentPersonnavnResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.IdenterResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.ResponseError
-import no.nav.eessi.pensjon.personoppslag.pdl.model.SokCriteria
-import no.nav.eessi.pensjon.personoppslag.pdl.model.SokPersonGraphqlRequest
-import no.nav.eessi.pensjon.personoppslag.pdl.model.SokPersonResponse
-import no.nav.eessi.pensjon.personoppslag.pdl.model.SokPersonVariables
+import no.nav.samordning.person.pdl.model.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity

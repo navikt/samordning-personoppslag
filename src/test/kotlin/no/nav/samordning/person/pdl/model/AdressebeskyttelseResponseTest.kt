@@ -1,8 +1,8 @@
-package no.nav.eessi.pensjon.personoppslag.pdl.model
+package no.nav.samordning.person.pdl.model
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.eessi.pensjon.personoppslag.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG
-import no.nav.eessi.pensjon.personoppslag.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

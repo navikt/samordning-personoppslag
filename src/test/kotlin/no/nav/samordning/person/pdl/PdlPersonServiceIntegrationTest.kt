@@ -1,10 +1,7 @@
-package no.nav.eessi.pensjon.personoppslag.pdl
+package no.nav.samordning.person.pdl
 
-import io.mockk.every
-import io.mockk.mockk
-import no.nav.eessi.pensjon.personoppslag.pdl.model.NorskIdent
+import no.nav.samordning.person.pdl.model.NorskIdent
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -12,18 +9,14 @@ import org.junit.jupiter.api.Test
 internal class PdlPersonServiceIntegrationTest {
 
     private val mockPDLConfiguration = PdlConfiguration()
-    private val mockCallBack = mockk<PdlTokenCallBack>()
+    private val mockAdClient = mockPDLConfiguration.azureAdMachineToMachineTokenInterceptor("Scope")
 
     /**
      * Paste valid token
      */
     val oauthtoken = ""
 
-    @BeforeEach
-    fun setup(){
-        every { mockCallBack.callBack() } returns PdlTokenImp( accessToken = oauthtoken)
-    }
-    private val mockClient = mockPDLConfiguration.pdlRestTemplate(mockCallBack)
+    private val mockClient = mockPDLConfiguration.pdlRestTemplate(mockAdClient)
 
     /**
      * Use local port forwarding using kubectl and nais

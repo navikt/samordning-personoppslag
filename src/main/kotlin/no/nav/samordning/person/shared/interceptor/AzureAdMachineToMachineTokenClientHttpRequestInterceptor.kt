@@ -1,4 +1,4 @@
-package no.nav.samordning.person.shared
+package no.nav.samordning.person.shared.interceptor
 
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import org.springframework.http.HttpRequest
