@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: samordning-personoppslag-q2
+  name: samordning-personoppslag-q1
   namespace: pensjonsamhandling
   labels:
     team: pensjonsamhandling
@@ -17,16 +17,16 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: sam-q2
+        - application: sam-q1
           namespace: pensjonsamhandling
           cluster: dev-fss
-        - application: sambatch-q2
+        - application: sambatch-q1
           namespace: pensjon-batch
           cluster: "dev-fss"
   image: {{ image }}
   port: 8080
   ingresses:
-    - "https://samordning-personoppslag-q2.dev.intern.nav.no"
+    - "https://samordning-personoppslag-q1.dev.intern.nav.no"
   secureLogs:
     enabled: false
   prometheus:
@@ -65,9 +65,9 @@ spec:
     - name: "OTEL_RESOURCE_ATTRIBUTES"
       value: "deployment.environment.name=q2"
     - name: PDL_URL
-      value: https://pdl-api.intern.dev.nav.no/graphql
+      value: https://pdl-api-q1.intern.dev.nav.no/graphql
     - name: PDL_SCOPE
-      value: api://dev-fss.pdl.pdl-api/.default
+      value: api://dev-fss.pdl.pdl-q1-api/.default
   observability:
     autoInstrumentation:
       enabled: true
