@@ -1,0 +1,8 @@
+PDL_URL: http://localhost/graphql
+
+no.nav.security.jwt:
+  issuer:
+    entraid:
+      discovery-url: http://localhost:${mock-oauth2-server.port}/entraid/.well-known/openid-configuration
+      accepted-audience: mockClient_Id
+

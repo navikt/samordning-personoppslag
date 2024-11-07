@@ -1,0 +1,6 @@
+no.nav.security.jwt:
+  issuer:
+    entraid:
+      discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
+      accepted-audience: ${AZURE_APP_CLIENT_ID}
+
