@@ -3,7 +3,7 @@ name: Bygg og deploy
 on:
   push:
     branches:
-      - mainsexit
+      - main
 
 jobs:
   build_and_tag:
