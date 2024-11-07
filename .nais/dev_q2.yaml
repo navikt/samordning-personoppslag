@@ -41,7 +41,7 @@ spec:
     periodSeconds: 5
   replicas:
     min: 2
-    max: 2w
+    max: 2
     cpuThresholdPercentage: 80
   resources:
     limits:
