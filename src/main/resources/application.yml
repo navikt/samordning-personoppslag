@@ -4,3 +4,16 @@ no.nav.security.jwt:
       discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
       accepted-audience: ${AZURE_APP_CLIENT_ID}
 
+management:
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info, metrics

@@ -77,7 +77,7 @@ class PersonService(
     fun <T : Ident> hentPerson(ident: T): PdlPerson? {
         return hentPersonMetric.measure {
 
-            logger.debug("Henter person: ${ident.id} fra pdl")
+            logger.debug("Henter person: ${ident.id.scrable()} fra pdl")
             val response = client.hentPerson(ident.id)
 
             if (!response.errors.isNullOrEmpty())
@@ -236,7 +236,7 @@ class PersonService(
     fun <T : Ident> hentIdenter(ident: T): List<IdentInformasjon> {
         return hentIdenterMetric.measure {
 
-            logger.debug("Henter identer: ${ident.id} fra pdl")
+            logger.debug("Henter identer: ${ident.id.scrable()} fra pdl")
             val response = client.hentIdenter(ident.id)
 
             if (!response.errors.isNullOrEmpty())
@@ -284,7 +284,7 @@ class PersonService(
      */
     fun <T : Ident> hentGeografiskTilknytning(ident: T): GeografiskTilknytning? {
         return hentGeografiskTilknytningMetric.measure {
-            logger.debug("Henter hentGeografiskTilknytning for ident: ${ident.id} fra pdl")
+            logger.debug("Henter hentGeografiskTilknytning for ident: ${ident.id.scrable()} fra pdl")
 
             val response = client.hentGeografiskTilknytning(ident.id)
 
@@ -305,6 +305,8 @@ class PersonService(
     }
 
 }
+
+fun String?.scrable() = if (this == null || this.length < 6 ) this else this.dropLast(5) + "xxxxx"
 
 class PersonoppslagException(message: String, val code: String) : RuntimeException("$code: $message") {
     @Deprecated("Bruk PersonoppslagException(message, code)")
