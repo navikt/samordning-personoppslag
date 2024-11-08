@@ -9,7 +9,7 @@ spec:
   azure:
     application:
       enabled: true
-      allowAllUsers: false
+      allowAllUsers: true
   accessPolicy:
     inbound:
       rules:
@@ -52,7 +52,7 @@ spec:
       memory: 500Mi
   vault:
     enabled: false
-  webproxy: false
+  webproxy: true
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev
