@@ -6,6 +6,7 @@ import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.pdl.model.PdlPerson
 import no.nav.samordning.person.pdl.model.SamPerson
+import no.nav.samordning.person.sam.PersonSamordning
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus
@@ -36,7 +37,7 @@ class Controller(
 
     @PostMapping("/api/samperson")
     @ProtectedWithClaims("entraid")
-    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<SamPerson?> {
+    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning?> {
 
         try {
             Fodselsnummer.fra(request.fnr)

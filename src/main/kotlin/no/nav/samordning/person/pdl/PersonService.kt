@@ -3,6 +3,7 @@ package no.nav.samordning.person.pdl
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.model.*
+import no.nav.samordning.person.sam.PersonSamordning
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -100,7 +101,7 @@ class PersonService(
      *
      * @return [PdlPerson]
      */
-    fun <T : Ident> hentSamPerson(ident: T): SamPerson? {
+    fun <T : Ident> hentSamPerson(ident: T): PersonSamordning? {
         return hentPersonMetric.measure {
 
             logger.debug("Henter SAM person: ${ident.id.scrable()} fra pdl")
@@ -110,12 +111,12 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilSamPerson(it)
+                konverterTilSamPerson(ident, it)
             }
         }
     }
 
-    internal fun konverterTilSamPerson(pdlPerson: HentPerson) : SamPerson {
+    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson) : PersonSamordning {
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -126,7 +127,7 @@ class PersonService(
         val statsborgerskap = pdlPerson.statsborgerskap
             .distinctBy { it.land }
 
-        val sivilstand = pdlPerson.sivilstand
+        val sivilstand = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk }
 
         val foedsel = pdlPerson.foedsel
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -150,7 +151,7 @@ class PersonService(
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        return SamPerson(
+        val samPerson = SamPerson(
             navn,
             kjoenn,
             foedsel,
@@ -163,6 +164,8 @@ class PersonService(
             kontaktadresse,
             kontaktinformasjonForDoedsbo,
         )
+
+        return PersonSamordning(ident.id, samPerson)
     }
 
 
