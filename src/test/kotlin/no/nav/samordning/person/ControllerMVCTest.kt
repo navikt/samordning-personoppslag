@@ -41,10 +41,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.postForObject
 import java.time.LocalDate
@@ -92,16 +93,18 @@ internal class ControllerMVCTest {
         val geografiskTilknytningResponse = GeografiskTilknytningResponse(
             data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
         )
-
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
         every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
         every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
 
-        mvc.get("/api/person") {
-                header("fnr", "1213123123")
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+
+        mvc.post("/api/person") {
                 header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
+
             .andDo { print() }
             .andExpect { status { isOk() }
 
