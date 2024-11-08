@@ -20,7 +20,7 @@ class PersonService(
     private lateinit var hentIdentMetric: Metric
     private lateinit var hentIdenterMetric: Metric
     private lateinit var hentGeografiskTilknytningMetric: Metric
-    private lateinit var hentPersonUidMetric: Metric
+    private lateinit var hentSamPerson: Metric
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
@@ -28,6 +28,7 @@ class PersonService(
         hentIdentMetric = metricsHelper.init("hentIdent")
         hentIdenterMetric = metricsHelper.init("hentIdenter")
         hentGeografiskTilknytningMetric = metricsHelper.init("hentGeografiskTilknytning")
+        hentSamPerson = metricsHelper.init("hentSamPerson")
     }
 
 //    fun <T : Ident> hentPersonUtenlandskIdent(ident: T): PersonUtenlandskIdent? {
@@ -90,6 +91,78 @@ class PersonService(
                     konverterTilPerson(it, identer, geografiskTilknytning, emptyList())
                 }
         }
+    }
+
+    /**
+     * Funksjon for å hente ut person basert på fnr.
+     *
+     * @param ident: Identen til personen man vil hente ut identer for. Bruk [NorskIdent], [AktoerId], eller [Npid]
+     *
+     * @return [PdlPerson]
+     */
+    fun <T : Ident> hentSamPerson(ident: T): SamPerson? {
+        return hentPersonMetric.measure {
+
+            logger.debug("Henter SAM person: ${ident.id.scrable()} fra pdl")
+            val response = client.hentPerson(ident.id)
+
+            if (!response.errors.isNullOrEmpty())
+                handleError(response.errors)
+
+            return@measure response.data?.hentPerson?.let {
+                konverterTilSamPerson(it)
+            }
+        }
+    }
+
+    internal fun konverterTilSamPerson(pdlPerson: HentPerson) : SamPerson {
+        val navn = pdlPerson.navn
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val graderingListe = pdlPerson.adressebeskyttelse
+            .map { it.gradering }
+            .distinct()
+
+        val statsborgerskap = pdlPerson.statsborgerskap
+            .distinctBy { it.land }
+
+        val sivilstand = pdlPerson.sivilstand
+
+        val foedsel = pdlPerson.foedsel
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
+            ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val kjoenn = pdlPerson.kjoenn
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
+            .filterNot { it.doedsdato == null }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        return SamPerson(
+            navn,
+            kjoenn,
+            foedsel,
+            graderingListe,
+            doedsfall,
+            statsborgerskap,
+            sivilstand,
+            oppholdsadresse,
+            bostedsadresse,
+            kontaktadresse,
+            kontaktinformasjonForDoedsbo,
+        )
     }
 
 

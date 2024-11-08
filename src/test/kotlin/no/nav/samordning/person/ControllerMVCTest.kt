@@ -118,6 +118,48 @@ internal class ControllerMVCTest {
     }
 
 
+    @Test
+    fun `correct call to samperson with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+        val identerResponse = IdenterResponse(data = IdenterDataResponse(
+            hentIdenter = HentIdenter(
+                identer = listOf(
+                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
+                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
+                )
+            )
+        )
+        )
+
+        val geografiskTilknytningResponse = GeografiskTilknytningResponse(
+            data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
+        )
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+//        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+//        every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+
+        mvc.post("/api/samperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.navn.fornavn") { value("Fornavn") }
+                jsonPath("$.navn.etternavn") { value("Etternavn") }
+            }
+
+
+    }
+
+
     fun issueSystembrukerToken(
         system: String = UUID.randomUUID().toString(),
         roles: List<String> = listOf(),
