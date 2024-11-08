@@ -16,9 +16,16 @@ spec:
         - application: sam-q2
           namespace: pensjonsamhandling
           cluster: dev-fss
+
         - application: sambatch-q2
           namespace: pensjon-batch
-          cluster: "dev-fss"
+          cluster: dev-fss
+
+        - application: azure-token-generator
+          namespace: aura
+          cluster: dev-gcp
+
+
   image: {{ image }}
   port: 8080
   ingresses:
