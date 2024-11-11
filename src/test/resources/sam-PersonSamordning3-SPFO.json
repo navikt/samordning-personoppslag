@@ -1,0 +1,57 @@
+{
+  "fnr": "04487615345",
+  "kortnavn": "",
+  "fornavn": "",
+  "mellomnavn": "",
+  "etternavn": "",
+  "diskresjonskode": "SPFO",
+  "sivilstand": "UGIF",
+  "dodsdato": null,
+  "utenlandsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "tilleggsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": null,
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "postAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "bostedsAdresse": {
+    "boadresse1": "Fasanveien 19",
+    "boadresse2": "",
+    "postnr": "4042",
+    "poststed": "HAFRSFJORD",
+    "aadresse": true
+  },
+  "utbetalingsAdresse": null
+}

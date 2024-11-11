@@ -1,0 +1,69 @@
+{
+  "fnr": "17438144420",
+  "kortnavn": "FØDSELSDAG NESTE",
+  "fornavn": "NESTE",
+  "mellomnavn": "",
+  "etternavn": "FØDSELSDAG",
+  "diskresjonskode": "",
+  "sivilstand": "UGIF",
+  "dodsdato": null,
+  "utenlandsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "tilleggsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": null,
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "postAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "bostedsAdresse": {
+    "boadresse1": "Mollandsveien 95",
+    "boadresse2": "",
+    "postnr": "4879",
+    "poststed": "GRIMSTAD",
+    "aadresse": true
+  },
+  "utbetalingsAdresse": {
+    "adresselinje1": "Mollandsveien 95",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "4879",
+    "poststed": "GRIMSTAD",
+    "land": "",
+    "uadresse": false,
+    "tadresse": true,
+    "postAdresse": "4879 GRIMSTAD",
+    "padresse": true,
+    "aadresse": true
+  }
+}
