@@ -1,8 +1,13 @@
 package no.nav.samordning.person
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearAllMocks
 import io.mockk.every
+import no.nav.samordning.kodeverk.KodeverkResponse
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PdlConfigurationTest
 import no.nav.samordning.person.pdl.model.Adressebeskyttelse
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
@@ -37,14 +42,20 @@ import no.nav.samordning.person.pdl.model.Vegadresse
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.postForObject
@@ -66,12 +77,73 @@ internal class ControllerMVCTest {
     @Autowired
     private lateinit var server: MockOAuth2Server
 
-    @MockkBean
+    @Autowired
+    private lateinit var kodeverkService: KodeverkService
+
+    @Autowired
+    lateinit var cacheManagerPostnr: ConcurrentMapCacheManager
+
+    @MockkBean(relaxed = true, name = "pdlRestTemplate")
     private lateinit var pdlRestTemplate: RestTemplate
+
+    @MockkBean(relaxed = true, name = "kodeverkRestTemplate")
+    private lateinit var kodeverkRestTemplate: RestTemplate
+
+    private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
+    private val kodeverkResponse: KodeverkResponse? = try {
+        val resource = javaClass.getResource("/kodeverk-postnummer.json").readText()
+        mapper.readValue<KodeverkResponse>(resource)
+    } catch (ex: Exception) {
+        ex.printStackTrace()
+        null
+    }
 
     @AfterEach
     fun takeDown() {
         clearAllMocks()
+    }
+
+
+    @Test
+    fun `correct call to kodeverk returns postnummer`() {
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+
+        for (i in 0..5) {
+            println("Start time hentPostnr...")
+
+            val start = System.nanoTime()
+
+            val sted1 = kodeverkService.hentPoststedforPostnr("0950")
+            val sted2 = kodeverkService.hentPoststedforPostnr("2056")
+
+            assertEquals("OSLO", sted1)
+            assertEquals("ALGARHEIM", sted2)
+
+            val totaltime = System.nanoTime() - start
+            println("Total time used: $totaltime in nanotime")
+
+        }
+
+    }
+
+    @Test
+    fun `correct call to kodeverk postnr return poststed`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+
+        mvc.get("/api/kodeverk/postnr/0950") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+        }
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+            jsonPath("$") { value("OSLO") }
+        }
+
+
     }
 
     @Test

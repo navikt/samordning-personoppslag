@@ -16,11 +16,16 @@ import org.springframework.web.client.RestTemplate
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class PdlConfigurationTest {
 
-    @Bean
+    @Bean("pdlRestTemplate")
     fun pdlRestTemplate(): RestTemplate = RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(PdlInterceptor())
             .build()
+
+    @Bean("kodeverkRestTemplate")
+    fun kodeverkRestTemplate(): RestTemplate = RestTemplateBuilder()
+        .errorHandler(DefaultResponseErrorHandler())
+        .build()
 
 
 }
