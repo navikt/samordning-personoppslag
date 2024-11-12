@@ -49,7 +49,7 @@ class KodeverkClient(
                 } else {
                     null
                 }
-            }.sortedBy { it.postnummer }
+            }.sortedByDescending { it.postnummer }
                 .toList()
         }
     }
@@ -67,20 +67,18 @@ class KodeverkClient(
     }
 
     private fun doKodeRequest(builder: UriComponents): KodeverkResponse {
-        try {
+        return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
             headers["Nav-Call-Id"] = UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
-            logger.debug("Header: $requestEntity")
-            val response = kodeverkRestTemplate.exchange<KodeverkResponse>(
+
+            kodeverkRestTemplate.exchange<KodeverkResponse>(
                 builder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
                 KodeverkResponse::class.java
-            )
-
-            return response.body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
+            ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
 
         } catch (ce: HttpClientErrorException) {
             logger.error(ce.message, ce)
@@ -129,20 +127,18 @@ class KodeverkClient(
     }
 
     private fun doHierarkiRequest(builder: UriComponents): String {
-        try {
+        return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
             headers["Nav-Call-Id"] = UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
-            logger.debug("Header: $requestEntity")
-            val response = kodeverkRestTemplate.exchange(
+
+            kodeverkRestTemplate.exchange(
                 builder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
                 String::class.java
-            )
-
-            return response.body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
+            ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
 
         } catch (ce: HttpClientErrorException) {
             logger.error(ce.message, ce)

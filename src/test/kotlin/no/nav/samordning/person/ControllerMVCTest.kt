@@ -43,11 +43,11 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -80,10 +80,7 @@ internal class ControllerMVCTest {
     @Autowired
     private lateinit var kodeverkService: KodeverkService
 
-    @Autowired
-    lateinit var cacheManagerPostnr: ConcurrentMapCacheManager
-
-    @MockkBean(relaxed = true, name = "pdlRestTemplate")
+     @MockkBean(relaxed = true, name = "pdlRestTemplate")
     private lateinit var pdlRestTemplate: RestTemplate
 
     @MockkBean(relaxed = true, name = "kodeverkRestTemplate")
@@ -125,6 +122,29 @@ internal class ControllerMVCTest {
 
         }
 
+        val postnr = kodeverkService.hentAllePostnr()
+        assertTrue(postnr.contains("0950"))
+
+        val postnrsted = kodeverkService.hentAllePostnrOgSted()
+        assertTrue(postnrsted.contains("0950") && postnrsted.contains("OSLO"))
+
+
+    }
+
+    @Test
+    fun `correct call to kodeverk hierarki returns landkoder`() {
+        val landkoder = javaClass.getResource("/kodeverk-landkoder.json").readText()
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+
+        assertEquals("NOR", kodeverkService.finnLandkode("NO"))
+        assertEquals("NO", kodeverkService.finnLandkode("NOR"))
+        assertEquals("SWE", kodeverkService.finnLandkode("SE"))
+        assertEquals("SE", kodeverkService.finnLandkode("SWE"))
+
+        assertEquals("NO", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "NO" })
+        assertEquals("DK", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "DK" })
+
     }
 
     @Test
@@ -145,6 +165,7 @@ internal class ControllerMVCTest {
 
 
     }
+
 
     @Test
     fun `correct call with valid fnr response return persondata`() {
