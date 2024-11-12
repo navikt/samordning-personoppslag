@@ -20,7 +20,11 @@ data class KodeverkResponse(
     val koder: List<KodeverkKode>
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 enum class KodeStatusEnum {
+    NY,
+    OPPDATERT,
+    PUBLISERT,
     SLETTET;
 }
 
