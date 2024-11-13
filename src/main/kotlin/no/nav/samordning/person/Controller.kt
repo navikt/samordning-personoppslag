@@ -1,5 +1,6 @@
 package no.nav.samordning.person
 
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -15,7 +16,10 @@ import org.springframework.web.server.ResponseStatusException
 import java.lang.IllegalStateException
 
 @RestController
-class Controller(private val personService: PersonService) {
+class Controller(
+    private val personService: PersonService,
+    private val kodeverkService: KodeverkService,
+) {
 
 
     @PostMapping("/api/person")
@@ -43,6 +47,15 @@ class Controller(private val personService: PersonService) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
         }
     }
+
+
+    @GetMapping("/api/kodeverk/postnr/{postnr}")
+    @ProtectedWithClaims("entraid")
+    fun hentPostnrSted(@PathVariable postnr: String) : String {
+        return kodeverkService.hentPoststedforPostnr(postnr)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Postnr ikke funnet")
+    }
+
 
 }
 

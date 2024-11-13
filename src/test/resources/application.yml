@@ -1,3 +1,6 @@
+NAIS_APP_NAME: this
+
+KODEVERK_URL: http://localhost/kodeverk
 PDL_URL: http://localhost/graphql
 
 no.nav.security.jwt:

@@ -2,9 +2,9 @@ package no.nav.samordning.person.pdl
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.cache.CaffeineTokenCache
+import no.nav.samordning.interceptor.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
+import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.metrics.MetricsHelper
-import no.nav.samordning.person.shared.interceptor.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
-import no.nav.samordning.person.shared.interceptor.IOExceptionRetryInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
