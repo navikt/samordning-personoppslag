@@ -1,0 +1,5557 @@
+{
+  "navn": "Landkoder",
+  "eier": "S134876",
+  "forvaltere": [],
+  "senestePubliseringstidspunkt": "2024-01-02T09:38:55.688Z",
+  "status": "STANDARD",
+  "tilgjengeligeSpraak": [
+    "nb"
+  ],
+  "koder": [
+    {
+      "id": 4096,
+      "navn": "GIN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17122,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16594,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUINEA"
+        }
+      }
+    },
+    {
+      "id": 16896,
+      "navn": "CSK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15311,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 15777,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TSJEKKOSLOVAKIA"
+        }
+      }
+    },
+    {
+      "id": 1024,
+      "navn": "NGA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6139,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6895,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NIGERIA"
+        }
+      }
+    },
+    {
+      "id": 7169,
+      "navn": "GRD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15595,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16062,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GRENADA"
+        }
+      }
+    },
+    {
+      "id": 4100,
+      "navn": "JPN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14319,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15111,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JAPAN"
+        }
+      }
+    },
+    {
+      "id": 16902,
+      "navn": "546",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16658,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 17471,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SIKKIM"
+        }
+      }
+    },
+    {
+      "id": 5645,
+      "navn": "TTO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12063,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11492,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TRINIDAD OG TOBAGO"
+        }
+      }
+    },
+    {
+      "id": 8206,
+      "navn": "CUB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16895,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17714,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CUBA"
+        }
+      }
+    },
+    {
+      "id": 14863,
+      "navn": "JOR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21617,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20615,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JORDAN"
+        }
+      }
+    },
+    {
+      "id": 12303,
+      "navn": "TUN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17357,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17001,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TUNISIA"
+        }
+      }
+    },
+    {
+      "id": 5647,
+      "navn": "LVA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13420,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13869,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LATVIA"
+        }
+      }
+    },
+    {
+      "id": 13842,
+      "navn": "VEN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15796,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16264,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "VENEZUELA"
+        }
+      }
+    },
+    {
+      "id": 4627,
+      "navn": "MUS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20258,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22560,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MAURITIUS"
+        }
+      }
+    },
+    {
+      "id": 5141,
+      "navn": "MHL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20143,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22445,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MARSHALLØYENE"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "navn": "??? ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19305,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20131,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "UOPPGITT/UKJENT"
+        }
+      }
+    },
+    {
+      "id": 18456,
+      "navn": "STP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9515,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8885,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAO TOME OG PRINCIPE"
+        }
+      }
+    },
+    {
+      "id": 14363,
+      "navn": "UGA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5813,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4982,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "UGANDA"
+        }
+      }
+    },
+    {
+      "id": 18972,
+      "navn": "KAZ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:14Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10458,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10878,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:14Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KASAKHSTAN"
+        }
+      }
+    },
+    {
+      "id": 13345,
+      "navn": "UZB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:24:04Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20607,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21737,
+          "senestePubliseringstidspunkt": "2021-03-04T15:24:04Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "USBEKISTAN"
+        }
+      }
+    },
+    {
+      "id": 9763,
+      "navn": "JEY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21322,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2011-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20318,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JERSEY"
+        }
+      }
+    },
+    {
+      "id": 13860,
+      "navn": "NZL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21184,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22320,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NEW ZEALAND"
+        }
+      }
+    },
+    {
+      "id": 36,
+      "navn": "FLK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7190,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6723,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FALKLANDSØYENE"
+        }
+      }
+    },
+    {
+      "id": 11301,
+      "navn": "MLI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8657,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 7848,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MALI"
+        }
+      }
+    },
+    {
+      "id": 10278,
+      "navn": "XXK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19976,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19305,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KOSOVO"
+        }
+      }
+    },
+    {
+      "id": 12327,
+      "navn": "GIB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4935,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5329,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GIBRALTAR"
+        }
+      }
+    },
+    {
+      "id": 8748,
+      "navn": "VGB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:46Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7044,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6398,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:46Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DE BRITISKE JOMFRUØYER"
+        }
+      }
+    },
+    {
+      "id": 45,
+      "navn": "AND",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7996,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8412,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ANDORRA"
+        }
+      }
+    },
+    {
+      "id": 20526,
+      "navn": "MEX",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19483,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18978,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MEXICO"
+        }
+      }
+    },
+    {
+      "id": 17970,
+      "navn": "LBR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 434,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 440,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LIBERIA"
+        }
+      }
+    },
+    {
+      "id": 1075,
+      "navn": "COL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10126,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10541,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "COLOMBIA"
+        }
+      }
+    },
+    {
+      "id": 2102,
+      "navn": "BTN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5203,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5599,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BHUTAN"
+        }
+      }
+    },
+    {
+      "id": 14391,
+      "navn": "CPV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18568,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17891,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KAPP VERDE"
+        }
+      }
+    },
+    {
+      "id": 7227,
+      "navn": "GTM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5350,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5747,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUATEMALA"
+        }
+      }
+    },
+    {
+      "id": 6208,
+      "navn": "TJK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:57Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16783,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17599,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:57Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TADSJIKISTAN"
+        }
+      }
+    },
+    {
+      "id": 21569,
+      "navn": "BWA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19213,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20039,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BOTSWANA"
+        }
+      }
+    },
+    {
+      "id": 6210,
+      "navn": "ISR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14268,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15060,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ISRAEL"
+        }
+      }
+    },
+    {
+      "id": 15427,
+      "navn": "BFA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19587,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19082,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BURKINA FASO"
+        }
+      }
+    },
+    {
+      "id": 10310,
+      "navn": "HRV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1298,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2013,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KROATIA"
+        }
+      }
+    },
+    {
+      "id": 10312,
+      "navn": "SGP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9963,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9161,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SINGAPORE"
+        }
+      }
+    },
+    {
+      "id": 21064,
+      "navn": "DDR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1610,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 922,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TYSKLAND (ØST)"
+        }
+      }
+    },
+    {
+      "id": 11337,
+      "navn": "CMR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18870,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19695,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KAMERUN"
+        }
+      }
+    },
+    {
+      "id": 10316,
+      "navn": "PLW",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20930,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22063,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PALAU"
+        }
+      }
+    },
+    {
+      "id": 77,
+      "navn": "LBN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10042,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9242,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LIBANON"
+        }
+      }
+    },
+    {
+      "id": 7758,
+      "navn": "VIR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:44Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9038,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9807,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:44Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DE AMERIKANSKE JOMFRUØYER"
+        }
+      }
+    },
+    {
+      "id": 14926,
+      "navn": "BHS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7907,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8322,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BAHAMAS"
+        }
+      }
+    },
+    {
+      "id": 2643,
+      "navn": "BHR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12523,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11788,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BAHRAIN"
+        }
+      }
+    },
+    {
+      "id": 14425,
+      "navn": "GRC",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16970,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16441,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "HELLAS"
+        }
+      }
+    },
+    {
+      "id": 4698,
+      "navn": "CHN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:16Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15976,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15271,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:16Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KINA"
+        }
+      }
+    },
+    {
+      "id": 8284,
+      "navn": "HTI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13916,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14707,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "HAITI"
+        }
+      }
+    },
+    {
+      "id": 1633,
+      "navn": "BRA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6043,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5214,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BRASIL"
+        }
+      }
+    },
+    {
+      "id": 7779,
+      "navn": "MRT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17674,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18164,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MAURITANIA"
+        }
+      }
+    },
+    {
+      "id": 12387,
+      "navn": "BIH",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12847,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13289,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BOSNIA-HERCEGOVINA"
+        }
+      }
+    },
+    {
+      "id": 613,
+      "navn": "KGZ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19594,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19089,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KIRGISISTAN"
+        }
+      }
+    },
+    {
+      "id": 2151,
+      "navn": "HND",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21127,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22263,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "HONDURAS"
+        }
+      }
+    },
+    {
+      "id": 103,
+      "navn": "GGY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4144,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4885,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUERNSEY"
+        }
+      }
+    },
+    {
+      "id": 5736,
+      "navn": "ALB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10143,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10558,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ALBANIA"
+        }
+      }
+    },
+    {
+      "id": 10858,
+      "navn": "HKG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21726,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20727,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "HONGKONG"
+        }
+      }
+    },
+    {
+      "id": 2670,
+      "navn": "MDV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19568,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19063,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MALDIVENE"
+        }
+      }
+    },
+    {
+      "id": 5231,
+      "navn": "KIR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9904,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9450,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KIRIBATI"
+        }
+      }
+    },
+    {
+      "id": 21104,
+      "navn": "DNK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20314,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21442,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DANMARK"
+        }
+      }
+    },
+    {
+      "id": 16497,
+      "navn": "BOL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3844,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4581,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BOLIVIA"
+        }
+      }
+    },
+    {
+      "id": 1139,
+      "navn": "SAU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12562,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11827,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAUDI-ARABIA"
+        }
+      }
+    },
+    {
+      "id": 9844,
+      "navn": "ATF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17658,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 18147,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FRANSKE SYDTERRITORIER"
+        }
+      }
+    },
+    {
+      "id": 10357,
+      "navn": "669",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4311,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 3645,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PANAMAKANALSONEN"
+        }
+      }
+    },
+    {
+      "id": 20087,
+      "navn": "LAO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14740,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14192,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LAOS"
+        }
+      }
+    },
+    {
+      "id": 5751,
+      "navn": "KEN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 193,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 194,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KENYA"
+        }
+      }
+    },
+    {
+      "id": 13946,
+      "navn": "PRI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14039,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14830,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PUERTO RICO"
+        }
+      }
+    },
+    {
+      "id": 126,
+      "navn": "LIE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19596,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19091,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LIECHTENSTEIN"
+        }
+      }
+    },
+    {
+      "id": 9856,
+      "navn": "MAR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9742,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9113,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MAROKKO"
+        }
+      }
+    },
+    {
+      "id": 7297,
+      "navn": "WAK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7123,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2001-01-01",
+        "beskrivelse": {
+          "id": 6478,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "WAKØYA"
+        }
+      }
+    },
+    {
+      "id": 9345,
+      "navn": "TLS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1501,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2002-05-20",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2218,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ØST-TIMOR"
+        }
+      }
+    },
+    {
+      "id": 134,
+      "navn": "IDN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11456,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12219,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "INDONESIA"
+        }
+      }
+    },
+    {
+      "id": 20103,
+      "navn": "SJM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19860,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19521,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SVALBARD OG JAN MAYEN"
+        }
+      }
+    },
+    {
+      "id": 7307,
+      "navn": "XXX",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17870,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18360,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "STATSLØS"
+        }
+      }
+    },
+    {
+      "id": 10381,
+      "navn": "SXM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17330,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2011-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16972,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SINT MAARTEN"
+        }
+      }
+    },
+    {
+      "id": 16014,
+      "navn": "ESH",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8231,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8648,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "VEST-SAHARA"
+        }
+      }
+    },
+    {
+      "id": 12430,
+      "navn": "FIN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5578,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5975,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FINLAND"
+        }
+      }
+    },
+    {
+      "id": 144,
+      "navn": "NPL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2927,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3305,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NEPAL"
+        }
+      }
+    },
+    {
+      "id": 3732,
+      "navn": "BVT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8759,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9527,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BOUVETØYA"
+        }
+      }
+    },
+    {
+      "id": 5269,
+      "navn": "BMU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3222,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2371,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BERMUDA"
+        }
+      }
+    },
+    {
+      "id": 5783,
+      "navn": "LTU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3691,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4427,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LITAUEN"
+        }
+      }
+    },
+    {
+      "id": 5273,
+      "navn": "HUN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2994,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3372,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "UNGARN"
+        }
+      }
+    },
+    {
+      "id": 3737,
+      "navn": "FRO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 49,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 49,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FÆRØYENE"
+        }
+      }
+    },
+    {
+      "id": 3739,
+      "navn": "MWI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15105,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14391,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MALAWI"
+        }
+      }
+    },
+    {
+      "id": 13979,
+      "navn": "DEU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11260,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10511,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TYSKLAND"
+        }
+      }
+    },
+    {
+      "id": 16029,
+      "navn": "GUY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7359,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6540,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUYANA"
+        }
+      }
+    },
+    {
+      "id": 2718,
+      "navn": "GHA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14955,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14241,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GHANA"
+        }
+      }
+    },
+    {
+      "id": 6304,
+      "navn": "SWZ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:08Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14473,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13921,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:08Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ESWATINI"
+        }
+      }
+    },
+    {
+      "id": 1696,
+      "navn": "PAK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6894,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6246,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PAKISTAN"
+        }
+      }
+    },
+    {
+      "id": 19107,
+      "navn": "ESP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7233,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6766,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SPANIA"
+        }
+      }
+    },
+    {
+      "id": 6307,
+      "navn": "WLF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:24:06Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4240,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3573,
+          "senestePubliseringstidspunkt": "2021-03-04T15:24:06Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "WALLIS OG FUTUNA"
+        }
+      }
+    },
+    {
+      "id": 12452,
+      "navn": "MNE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18167,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2006-11-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18658,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MONTENEGRO"
+        }
+      }
+    },
+    {
+      "id": 16036,
+      "navn": "ITA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17567,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16875,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ITALIA"
+        }
+      }
+    },
+    {
+      "id": 17064,
+      "navn": "ZAF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19122,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19948,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SØR-AFRIKA"
+        }
+      }
+    },
+    {
+      "id": 17582,
+      "navn": "EGY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21532,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20530,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "EGYPT"
+        }
+      }
+    },
+    {
+      "id": 14000,
+      "navn": "SWE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8630,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 7821,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SVERIGE"
+        }
+      }
+    },
+    {
+      "id": 2737,
+      "navn": "ISL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18938,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19763,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ISLAND"
+        }
+      }
+    },
+    {
+      "id": 9394,
+      "navn": "REU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12225,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11656,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "REUNION"
+        }
+      }
+    },
+    {
+      "id": 181,
+      "navn": "PSE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:52Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3371,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2521,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:52Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PALESTINA"
+        }
+      }
+    },
+    {
+      "id": 2742,
+      "navn": "TWN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21079,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22214,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TAIWAN"
+        }
+      }
+    },
+    {
+      "id": 1206,
+      "navn": "MYS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1336,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2051,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MALAYSIA"
+        }
+      }
+    },
+    {
+      "id": 15034,
+      "navn": "LSO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13192,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13640,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LESOTHO"
+        }
+      }
+    },
+    {
+      "id": 6850,
+      "navn": "YEM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20882,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22015,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JEMEN"
+        }
+      }
+    },
+    {
+      "id": 12996,
+      "navn": "TZA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9886,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9432,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TANZANIA"
+        }
+      }
+    },
+    {
+      "id": 21189,
+      "navn": "PCN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1473,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2190,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PITCAIRN"
+        }
+      }
+    },
+    {
+      "id": 13511,
+      "navn": "556",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11654,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 12418,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "YEMEN"
+        }
+      }
+    },
+    {
+      "id": 200,
+      "navn": "THA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10592,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11014,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "THAILAND"
+        }
+      }
+    },
+    {
+      "id": 16584,
+      "navn": "PYF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3783,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4519,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FRANSK POLYNESIA"
+        }
+      }
+    },
+    {
+      "id": 8905,
+      "navn": "FJI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17390,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17035,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FIJI"
+        }
+      }
+    },
+    {
+      "id": 12489,
+      "navn": "MLT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13292,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13741,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MALTA"
+        }
+      }
+    },
+    {
+      "id": 713,
+      "navn": "IND",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8194,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8611,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "INDIA"
+        }
+      }
+    },
+    {
+      "id": 715,
+      "navn": "LCA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:44Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8520,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 7710,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:44Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT LUCIA"
+        }
+      }
+    },
+    {
+      "id": 18124,
+      "navn": "BLZ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11801,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12567,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BELIZE"
+        }
+      }
+    },
+    {
+      "id": 11980,
+      "navn": "POL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5108,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5503,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "POLEN"
+        }
+      }
+    },
+    {
+      "id": 11471,
+      "navn": "ABW",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10767,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11189,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ARUBA"
+        }
+      }
+    },
+    {
+      "id": 15568,
+      "navn": "GBR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21012,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22147,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "STORBRITANNIA"
+        }
+      }
+    },
+    {
+      "id": 3281,
+      "navn": "BDI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8041,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8458,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BURUNDI"
+        }
+      }
+    },
+    {
+      "id": 3795,
+      "navn": "LKA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9453,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8822,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SRI LANKA"
+        }
+      }
+    },
+    {
+      "id": 1236,
+      "navn": "IRQ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3966,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4705,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "IRAK"
+        }
+      }
+    },
+    {
+      "id": 3796,
+      "navn": "ARG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 39,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 39,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ARGENTINA"
+        }
+      }
+    },
+    {
+      "id": 7383,
+      "navn": "FSM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:28Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1412,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2129,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:28Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MIKRONESIAFØDERASJONEN"
+        }
+      }
+    },
+    {
+      "id": 1752,
+      "navn": "CCK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:20Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10070,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9272,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:20Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KOKOSØYENE (KEELINGØYENE)"
+        }
+      }
+    },
+    {
+      "id": 9945,
+      "navn": "TKM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19527,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19022,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TURKMENISTAN"
+        }
+      }
+    },
+    {
+      "id": 15582,
+      "navn": "COM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18274,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18765,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KOMORENE"
+        }
+      }
+    },
+    {
+      "id": 1758,
+      "navn": "AIA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10640,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11062,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ANGUILLA"
+        }
+      }
+    },
+    {
+      "id": 10466,
+      "navn": "DZA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5698,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6097,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ALGERIE"
+        }
+      }
+    },
+    {
+      "id": 17122,
+      "navn": "PER",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1133,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1848,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PERU"
+        }
+      }
+    },
+    {
+      "id": 7397,
+      "navn": "ATG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16829,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17648,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ANTIGUA OG BARBUDA"
+        }
+      }
+    },
+    {
+      "id": 17127,
+      "navn": "NOR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21343,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20339,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NORGE"
+        }
+      }
+    },
+    {
+      "id": 6888,
+      "navn": "VCT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:48Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14246,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15038,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:48Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT VINCENT OG GRENADINENE"
+        }
+      }
+    },
+    {
+      "id": 16104,
+      "navn": "CAN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2510,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2886,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CANADA"
+        }
+      }
+    },
+    {
+      "id": 3821,
+      "navn": "ERI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12355,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11953,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ERITREA"
+        }
+      }
+    },
+    {
+      "id": 1263,
+      "navn": "DJI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9326,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10099,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DJIBOUTI"
+        }
+      }
+    },
+    {
+      "id": 3826,
+      "navn": "BEL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13539,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12809,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BELGIA"
+        }
+      }
+    },
+    {
+      "id": 5875,
+      "navn": "TON",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12973,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13416,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TONGA"
+        }
+      }
+    },
+    {
+      "id": 6899,
+      "navn": "ETH",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 428,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 434,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ETIOPIA"
+        }
+      }
+    },
+    {
+      "id": 7925,
+      "navn": "GRL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3439,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2590,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GRØNLAND"
+        }
+      }
+    },
+    {
+      "id": 11510,
+      "navn": "VNM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11505,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12268,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "VIETNAM"
+        }
+      }
+    },
+    {
+      "id": 12027,
+      "navn": "LBY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7339,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6520,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LIBYA"
+        }
+      }
+    },
+    {
+      "id": 8955,
+      "navn": "QAT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3721,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4457,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "QATAR"
+        }
+      }
+    },
+    {
+      "id": 21244,
+      "navn": "SGS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2089,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1580,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SØR-GEORGIA OG SØR-SANDWICHØYE"
+        }
+      }
+    },
+    {
+      "id": 3328,
+      "navn": "ANT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2518,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2894,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DE NEDERLANDSKE ANTILLENE"
+        }
+      }
+    },
+    {
+      "id": 9987,
+      "navn": "PRT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16142,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15440,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PORTUGAL"
+        }
+      }
+    },
+    {
+      "id": 4355,
+      "navn": "IOT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:02Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13396,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13845,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:02Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DET BRITISKE TERRITORIET I INDIAHAVET"
+        }
+      }
+    },
+    {
+      "id": 16645,
+      "navn": "NAM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 8786,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9554,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NAMIBIA"
+        }
+      }
+    },
+    {
+      "id": 11013,
+      "navn": "SVN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 22,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SLOVENIA"
+        }
+      }
+    },
+    {
+      "id": 3339,
+      "navn": "KWT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20855,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21987,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KUWAIT"
+        }
+      }
+    },
+    {
+      "id": 9483,
+      "navn": "TCD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16365,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17176,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TSJAD"
+        }
+      }
+    },
+    {
+      "id": 14608,
+      "navn": "PAN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7106,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6461,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PANAMA"
+        }
+      }
+    },
+    {
+      "id": 16148,
+      "navn": "SLE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10932,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11358,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SIERRA LEONE"
+        }
+      }
+    },
+    {
+      "id": 18708,
+      "navn": "CYP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4765,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3924,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KYPROS"
+        }
+      }
+    },
+    {
+      "id": 5909,
+      "navn": "DOM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:56Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7801,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8216,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:56Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DEN DOMINIKANSKE REPUBLIKK"
+        }
+      }
+    },
+    {
+      "id": 1304,
+      "navn": "AZE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:37Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16738,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17553,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:37Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ASERBAJDSJAN"
+        }
+      }
+    },
+    {
+      "id": 4380,
+      "navn": "NCL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:39Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7038,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6392,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:39Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NY-CALEDONIA"
+        }
+      }
+    },
+    {
+      "id": 21277,
+      "navn": "SOM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12390,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11988,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SOMALIA"
+        }
+      }
+    },
+    {
+      "id": 18719,
+      "navn": "KOR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 499,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 505,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SØR-KOREA"
+        }
+      }
+    },
+    {
+      "id": 10019,
+      "navn": "MYT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 246,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 249,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MAYOTTE"
+        }
+      }
+    },
+    {
+      "id": 16166,
+      "navn": "349",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10057,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 9258,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SPANSKE OMR. AFRIKA"
+        }
+      }
+    },
+    {
+      "id": 8487,
+      "navn": "EST",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4606,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4116,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ESTLAND"
+        }
+      }
+    },
+    {
+      "id": 810,
+      "navn": "BES",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:40Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1340,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2011-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2055,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:40Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BONAIRE, SINT EUSTATIUS OG SABA"
+        }
+      }
+    },
+    {
+      "id": 19755,
+      "navn": "GUM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2686,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3064,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUAM"
+        }
+      }
+    },
+    {
+      "id": 14636,
+      "navn": "NIU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20526,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21656,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NIUE"
+        }
+      }
+    },
+    {
+      "id": 19244,
+      "navn": "SLV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20495,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21625,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "EL SALVADOR"
+        }
+      }
+    },
+    {
+      "id": 7983,
+      "navn": "GMB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6510,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 7267,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GAMBIA"
+        }
+      }
+    },
+    {
+      "id": 6449,
+      "navn": "MMR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10683,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11105,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MYANMAR (BURMA)"
+        }
+      }
+    },
+    {
+      "id": 4405,
+      "navn": "MCO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18309,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18800,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MONACO"
+        }
+      }
+    },
+    {
+      "id": 18743,
+      "navn": "HMD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:11Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14422,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15215,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:11Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "HEARD- OG MCDONALD-ØYENE"
+        }
+      }
+    },
+    {
+      "id": 4408,
+      "navn": "AUS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 985,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1698,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "AUSTRALIA"
+        }
+      }
+    },
+    {
+      "id": 12602,
+      "navn": "MAF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19629,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19124,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT MARTIN"
+        }
+      }
+    },
+    {
+      "id": 10044,
+      "navn": "ECU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14997,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14283,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ECUADOR"
+        }
+      }
+    },
+    {
+      "id": 13628,
+      "navn": "SUN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3626,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 4361,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SOVJETUNIONEN"
+        }
+      }
+    },
+    {
+      "id": 11583,
+      "navn": "CHE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4761,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3920,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SVEITS"
+        }
+      }
+    },
+    {
+      "id": 9537,
+      "navn": "LUX",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20311,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21439,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "LUXEMBOURG"
+        }
+      }
+    },
+    {
+      "id": 9025,
+      "navn": "FRA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16881,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17700,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FRANKRIKE"
+        }
+      }
+    },
+    {
+      "id": 1862,
+      "navn": "GUF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6066,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5237,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FRANSK GUYANA"
+        }
+      }
+    },
+    {
+      "id": 12618,
+      "navn": "TCA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-05T08:51:22Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21151,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22287,
+          "senestePubliseringstidspunkt": "2021-03-05T08:51:22Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TURKS- OG CAICOSØYENE"
+        }
+      }
+    },
+    {
+      "id": 12106,
+      "navn": "MTQ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13014,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13458,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MARTINIQUE"
+        }
+      }
+    },
+    {
+      "id": 18762,
+      "navn": "AUT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3551,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4285,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ØSTERRIKE"
+        }
+      }
+    },
+    {
+      "id": 19280,
+      "navn": "KHM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21004,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22139,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KAMBODSJA"
+        }
+      }
+    },
+    {
+      "id": 16209,
+      "navn": "TGO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9451,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8820,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TOGO"
+        }
+      }
+    },
+    {
+      "id": 18773,
+      "navn": "IRN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18756,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18080,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "IRAN"
+        }
+      }
+    },
+    {
+      "id": 3925,
+      "navn": "BEN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6891,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6243,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BENIN"
+        }
+      }
+    },
+    {
+      "id": 17240,
+      "navn": "SYC",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17872,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18362,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SEYCHELLENE"
+        }
+      }
+    },
+    {
+      "id": 20312,
+      "navn": "TKL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9701,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9072,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TOKELAU"
+        }
+      }
+    },
+    {
+      "id": 20315,
+      "navn": "NER",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4046,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4787,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NIGER"
+        }
+      }
+    },
+    {
+      "id": 2396,
+      "navn": "PNG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5755,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6154,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PAPUA NY-GUINEA"
+        }
+      }
+    },
+    {
+      "id": 7516,
+      "navn": "BGD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4838,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3998,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BANGLADESH"
+        }
+      }
+    },
+    {
+      "id": 20829,
+      "navn": "COD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:24Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14434,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15227,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:24Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KONGO"
+        }
+      }
+    },
+    {
+      "id": 15199,
+      "navn": "ALA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6857,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6209,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ÅLAND"
+        }
+      }
+    },
+    {
+      "id": 11108,
+      "navn": "PRY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14436,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15229,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "PARAGUAY"
+        }
+      }
+    },
+    {
+      "id": 9572,
+      "navn": "GLP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4570,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4080,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUADELOUPE"
+        }
+      }
+    },
+    {
+      "id": 7524,
+      "navn": "PHL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2161,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1302,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "FILIPPINENE"
+        }
+      }
+    },
+    {
+      "id": 6502,
+      "navn": "CYM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16878,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17697,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CAYMANØYENE"
+        }
+      }
+    },
+    {
+      "id": 2919,
+      "navn": "CZE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:59Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11924,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12691,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:59Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TSJEKKIA"
+        }
+      }
+    },
+    {
+      "id": 14184,
+      "navn": "UMI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:24:03Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7249,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6782,
+          "senestePubliseringstidspunkt": "2021-03-04T15:24:03Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "USAS YTRE SMÅØYER"
+        }
+      }
+    },
+    {
+      "id": 18282,
+      "navn": "AFG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16992,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16463,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "AFGHANISTAN"
+        }
+      }
+    },
+    {
+      "id": 7018,
+      "navn": "CUW",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7015,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2011-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6369,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CURACAO"
+        }
+      }
+    },
+    {
+      "id": 10091,
+      "navn": "SLB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2759,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3137,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SALOMONØYENE"
+        }
+      }
+    },
+    {
+      "id": 13676,
+      "navn": "SCG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 649,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2003-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 656,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SERBIA OG MONTENEGRO"
+        }
+      }
+    },
+    {
+      "id": 20847,
+      "navn": "MNG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21393,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20389,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MONGOLIA"
+        }
+      }
+    },
+    {
+      "id": 19315,
+      "navn": "RUS",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15420,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15886,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "RUSSLAND"
+        }
+      }
+    },
+    {
+      "id": 4468,
+      "navn": "SSD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19602,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2011-12-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19097,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SØR-SUDAN"
+        }
+      }
+    },
+    {
+      "id": 10101,
+      "navn": "SVK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19603,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 19098,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SLOVAKIA"
+        }
+      }
+    },
+    {
+      "id": 17781,
+      "navn": "PRK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1335,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2050,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NORD-KOREA"
+        }
+      }
+    },
+    {
+      "id": 19831,
+      "navn": "BRB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5589,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5986,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BARBADOS"
+        }
+      }
+    },
+    {
+      "id": 6520,
+      "navn": "COK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20665,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21795,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "COOKØYENE"
+        }
+      }
+    },
+    {
+      "id": 19321,
+      "navn": "IRL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13803,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14593,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "IRLAND"
+        }
+      }
+    },
+    {
+      "id": 14714,
+      "navn": "KNA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:41Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11459,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12222,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:41Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT KITTS OG NEVIS"
+        }
+      }
+    },
+    {
+      "id": 7038,
+      "navn": "MSR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:33Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15647,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16114,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:33Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MONTSERRAT"
+        }
+      }
+    },
+    {
+      "id": 7551,
+      "navn": "RWA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2815,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3193,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "RWANDA"
+        }
+      }
+    },
+    {
+      "id": 10626,
+      "navn": "GEO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14548,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13999,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GEORGIA"
+        }
+      }
+    },
+    {
+      "id": 17285,
+      "navn": "WSM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 19438,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20264,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAMOA"
+        }
+      }
+    },
+    {
+      "id": 3468,
+      "navn": "ROU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18231,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18722,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ROMANIA"
+        }
+      }
+    },
+    {
+      "id": 397,
+      "navn": "OMN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15087,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 14373,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "OMAN"
+        }
+      }
+    },
+    {
+      "id": 5006,
+      "navn": "URY",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10365,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10784,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "URUGUAY"
+        }
+      }
+    },
+    {
+      "id": 7057,
+      "navn": "BRN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9610,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8980,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BRUNEI"
+        }
+      }
+    },
+    {
+      "id": 10642,
+      "navn": "SUR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13583,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12853,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SURINAM"
+        }
+      }
+    },
+    {
+      "id": 34195,
+      "navn": "XUK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-09-21T17:12:55Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 35037,
+        "senestePubliseringstidspunkt": "2021-09-21T17:12:55Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2021-09-03",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 35442,
+          "senestePubliseringstidspunkt": "2021-09-21T17:12:55Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "uoppgitt/ukjent"
+        }
+      }
+    },
+    {
+      "id": 16794,
+      "navn": "NIC",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15376,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15842,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NICARAGUA"
+        }
+      }
+    },
+    {
+      "id": 8091,
+      "navn": "BLR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2024-01-02T09:38:55.688Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10272,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 10689,
+          "senestePubliseringstidspunkt": "2024-01-02T09:38:55.688Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BELARUS",
+          "tekst": ""
+        }
+      }
+    },
+    {
+      "id": 4511,
+      "navn": "VUT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 14267,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15059,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "VANUATU"
+        }
+      }
+    },
+    {
+      "id": 1440,
+      "navn": "SRB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21871,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2006-11-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20876,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SERBIA"
+        }
+      }
+    },
+    {
+      "id": 15266,
+      "navn": "CHL",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3538,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4272,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CHILE"
+        }
+      }
+    },
+    {
+      "id": 2469,
+      "navn": "NRU",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 22040,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21049,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NAURU"
+        }
+      }
+    },
+    {
+      "id": 14757,
+      "navn": "AGO",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13364,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13813,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ANGOLA"
+        }
+      }
+    },
+    {
+      "id": 17832,
+      "navn": "JAM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20513,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21643,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JAMAICA"
+        }
+      }
+    },
+    {
+      "id": 6056,
+      "navn": "SMR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4789,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3948,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAN MARINO"
+        }
+      }
+    },
+    {
+      "id": 14761,
+      "navn": "TUR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3622,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4357,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TYRKIA"
+        }
+      }
+    },
+    {
+      "id": 16812,
+      "navn": "MNP",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17089,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16560,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NORD-MARIANENE"
+        }
+      }
+    },
+    {
+      "id": 6060,
+      "navn": "MAC",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16676,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17490,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MACAO"
+        }
+      }
+    },
+    {
+      "id": 13740,
+      "navn": "DMA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9613,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 8983,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DOMINICA"
+        }
+      }
+    },
+    {
+      "id": 9646,
+      "navn": "GNB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16093,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15391,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUINEA-BISSAU"
+        }
+      }
+    },
+    {
+      "id": 6063,
+      "navn": "SDN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21606,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 20604,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SUDAN"
+        }
+      }
+    },
+    {
+      "id": 943,
+      "navn": "CXR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3494,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2646,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "CHRISTMASØYA"
+        }
+      }
+    },
+    {
+      "id": 5044,
+      "navn": "MDG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16512,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 17324,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MADAGASKAR"
+        }
+      }
+    },
+    {
+      "id": 25014,
+      "navn": "9999",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2020-01-16T23:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 25846,
+        "senestePubliseringstidspunkt": "2020-01-16T23:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "2020-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 26161,
+          "senestePubliseringstidspunkt": "2020-01-16T23:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "Uoppgitt"
+        }
+      }
+    },
+    {
+      "id": 19382,
+      "navn": "BGR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 2030,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1521,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "BULGARIA"
+        }
+      }
+    },
+    {
+      "id": 7608,
+      "navn": "ASM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 22253,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 21265,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "AM. SAMOA"
+        }
+      }
+    },
+    {
+      "id": 9656,
+      "navn": "TUV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10925,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11351,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TUVALU"
+        }
+      }
+    },
+    {
+      "id": 3519,
+      "navn": "SYR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13593,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12863,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SYRIA"
+        }
+      }
+    },
+    {
+      "id": 17861,
+      "navn": "NFK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4388,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 3722,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NORFOLKØYA"
+        }
+      }
+    },
+    {
+      "id": 10696,
+      "navn": "SEN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 11854,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 12621,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SENEGAL"
+        }
+      }
+    },
+    {
+      "id": 20426,
+      "navn": "MOZ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1769,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1081,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MOSAMBIK"
+        }
+      }
+    },
+    {
+      "id": 10191,
+      "navn": "CAF",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:59Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 55,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 55,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:59Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DEN SENTRALAFRIKANSKE REPUBLIKK"
+        }
+      }
+    },
+    {
+      "id": 8663,
+      "navn": "MKD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:35Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3950,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4688,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:35Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NORD-MAKEDONIA"
+        }
+      }
+    },
+    {
+      "id": 4567,
+      "navn": "YUG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 1922,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1944-01-01",
+        "gyldigTil": "2003-11-30",
+        "beskrivelse": {
+          "id": 1237,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "JUGOSLAVIA"
+        }
+      }
+    },
+    {
+      "id": 17369,
+      "navn": "SHN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:55Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 10855,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 11280,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:55Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SANKT HELENA, ASCENSION OG TRISTAN DA CUNHA"
+        }
+      }
+    },
+    {
+      "id": 4571,
+      "navn": "GAB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 4110,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 4851,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GABON"
+        }
+      }
+    },
+    {
+      "id": 989,
+      "navn": "ARM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 13138,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13586,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ARMENIA"
+        }
+      }
+    },
+    {
+      "id": 7646,
+      "navn": "SPM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:50Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 12795,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 13237,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:50Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT-PIERRE OG MIQUELON"
+        }
+      }
+    },
+    {
+      "id": 11744,
+      "navn": "COG",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:22Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 21245,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22381,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:22Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "KONGO-BRAZZAVILLE"
+        }
+      }
+    },
+    {
+      "id": 2532,
+      "navn": "ZWE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5685,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6084,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ZIMBABWE"
+        }
+      }
+    },
+    {
+      "id": 15845,
+      "navn": "MDA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15471,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 15937,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "MOLDOVA"
+        }
+      }
+    },
+    {
+      "id": 5608,
+      "navn": "USA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5212,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5608,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "USA"
+        }
+      }
+    },
+    {
+      "id": 1002,
+      "navn": "ARE",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:22:48Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 16953,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16424,
+          "senestePubliseringstidspunkt": "2021-03-04T15:22:48Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "DE FORENTE ARABISKE EMIRATER"
+        }
+      }
+    },
+    {
+      "id": 20458,
+      "navn": "CIV",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2021-03-04T15:23:05Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 3392,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 2542,
+          "senestePubliseringstidspunkt": "2021-03-04T15:23:05Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ELFENBENSKYSTEN"
+        }
+      }
+    },
+    {
+      "id": 18922,
+      "navn": "UKR",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 134,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 134,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "UKRAINA"
+        }
+      }
+    },
+    {
+      "id": 7149,
+      "navn": "IMN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6506,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 7263,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ISLE OF MAN"
+        }
+      }
+    },
+    {
+      "id": 12781,
+      "navn": "NLD",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 915,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 1627,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NEDERLAND"
+        }
+      }
+    },
+    {
+      "id": 20463,
+      "navn": "CRI",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 18362,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18854,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "COSTA RICA"
+        }
+      }
+    },
+    {
+      "id": 16884,
+      "navn": "BLM",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 20950,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 22084,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "SAINT BARTHELEMY"
+        }
+      }
+    },
+    {
+      "id": 20473,
+      "navn": "GNQ",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5493,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5890,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "EKVATORIAL-GUINEA"
+        }
+      }
+    },
+    {
+      "id": 11771,
+      "navn": "ZMB",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6952,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6306,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ZAMBIA"
+        }
+      }
+    },
+    {
+      "id": 511,
+      "navn": "VAT",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17859,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 18349,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "VATIKANSTATEN"
+        }
+      }
+    }
+  ]
+}

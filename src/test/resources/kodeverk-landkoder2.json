@@ -1,0 +1,2749 @@
+{
+  "harEndringer": false,
+  "hierarkinoder": {
+    "nivaa": 1,
+    "undernodeKodeverk": "LandkoderISO2",
+    "id": 0,
+    "undernoder": [
+      {
+        "kode": "AD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1098,
+        "undernoder": [
+          {
+            "kode": "AND"
+          }
+        ]
+      },
+      {
+        "kode": "AE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 989,
+        "undernoder": [
+          {
+            "kode": "ARE"
+          }
+        ]
+      },
+      {
+        "kode": "AF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1177,
+        "undernoder": [
+          {
+            "kode": "AFG"
+          }
+        ]
+      },
+      {
+        "kode": "AG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 861,
+        "undernoder": [
+          {
+            "kode": "ATG"
+          }
+        ]
+      },
+      {
+        "kode": "AI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1258,
+        "undernoder": [
+          {
+            "kode": "AIA"
+          }
+        ]
+      },
+      {
+        "kode": "AL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 992,
+        "undernoder": [
+          {
+            "kode": "ALB"
+          }
+        ]
+      },
+      {
+        "kode": "AM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 847,
+        "undernoder": [
+          {
+            "kode": "ARM"
+          }
+        ]
+      },
+      {
+        "kode": "AO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 868,
+        "undernoder": [
+          {
+            "kode": "AGO"
+          }
+        ]
+      },
+      {
+        "kode": "AR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1211,
+        "undernoder": [
+          {
+            "kode": "ARG"
+          }
+        ]
+      },
+      {
+        "kode": "AS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 812,
+        "undernoder": [
+          {
+            "kode": "ASM"
+          }
+        ]
+      },
+      {
+        "kode": "AT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 910,
+        "undernoder": [
+          {
+            "kode": "AUT"
+          }
+        ]
+      },
+      {
+        "kode": "AU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 969,
+        "undernoder": [
+          {
+            "kode": "AUS"
+          }
+        ]
+      },
+      {
+        "kode": "AW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 957,
+        "undernoder": [
+          {
+            "kode": "ABW"
+          }
+        ]
+      },
+      {
+        "kode": "AX",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1232,
+        "undernoder": [
+          {
+            "kode": "ALA"
+          }
+        ]
+      },
+      {
+        "kode": "AZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1202,
+        "undernoder": [
+          {
+            "kode": "AZE"
+          }
+        ]
+      },
+      {
+        "kode": "BA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 895,
+        "undernoder": [
+          {
+            "kode": "BIH"
+          }
+        ]
+      },
+      {
+        "kode": "BB",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 867,
+        "undernoder": [
+          {
+            "kode": "BRB"
+          }
+        ]
+      },
+      {
+        "kode": "BD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1215,
+        "undernoder": [
+          {
+            "kode": "BGD"
+          }
+        ]
+      },
+      {
+        "kode": "BE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 844,
+        "undernoder": [
+          {
+            "kode": "BEL"
+          }
+        ]
+      },
+      {
+        "kode": "BF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1102,
+        "undernoder": [
+          {
+            "kode": "BFA"
+          }
+        ]
+      },
+      {
+        "kode": "BG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1016,
+        "undernoder": [
+          {
+            "kode": "BGR"
+          }
+        ]
+      },
+      {
+        "kode": "BH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1123,
+        "undernoder": [
+          {
+            "kode": "BHR"
+          }
+        ]
+      },
+      {
+        "kode": "BI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 946,
+        "undernoder": [
+          {
+            "kode": "BDI"
+          }
+        ]
+      },
+      {
+        "kode": "BJ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 915,
+        "undernoder": [
+          {
+            "kode": "BEN"
+          }
+        ]
+      },
+      {
+        "kode": "BL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1013,
+        "undernoder": [
+          {
+            "kode": "BLM"
+          }
+        ]
+      },
+      {
+        "kode": "BM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 907,
+        "undernoder": [
+          {
+            "kode": "BMU"
+          }
+        ]
+      },
+      {
+        "kode": "BN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 997,
+        "undernoder": [
+          {
+            "kode": "BRN"
+          }
+        ]
+      },
+      {
+        "kode": "BO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1192,
+        "undernoder": [
+          {
+            "kode": "BOL"
+          }
+        ]
+      },
+      {
+        "kode": "BQ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1181,
+        "undernoder": [
+          {
+            "kode": "BES"
+          }
+        ]
+      },
+      {
+        "kode": "BR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 825,
+        "undernoder": [
+          {
+            "kode": "BRA"
+          }
+        ]
+      },
+      {
+        "kode": "BS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 936,
+        "undernoder": [
+          {
+            "kode": "BHS"
+          }
+        ]
+      },
+      {
+        "kode": "BT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1243,
+        "undernoder": [
+          {
+            "kode": "BTN"
+          }
+        ]
+      },
+      {
+        "kode": "BV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1082,
+        "undernoder": [
+          {
+            "kode": "BVT"
+          }
+        ]
+      },
+      {
+        "kode": "BW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 786,
+        "undernoder": [
+          {
+            "kode": "BWA"
+          }
+        ]
+      },
+      {
+        "kode": "BY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 826,
+        "undernoder": [
+          {
+            "kode": "BLR"
+          }
+        ]
+      },
+      {
+        "kode": "BZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 782,
+        "undernoder": [
+          {
+            "kode": "BLZ"
+          }
+        ]
+      },
+      {
+        "kode": "CA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1174,
+        "undernoder": [
+          {
+            "kode": "CAN"
+          }
+        ]
+      },
+      {
+        "kode": "CC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 880,
+        "undernoder": [
+          {
+            "kode": "CCK"
+          }
+        ]
+      },
+      {
+        "kode": "CD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 934,
+        "undernoder": [
+          {
+            "kode": "COD"
+          }
+        ]
+      },
+      {
+        "kode": "CF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 970,
+        "undernoder": [
+          {
+            "kode": "CAF"
+          }
+        ]
+      },
+      {
+        "kode": "CG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1119,
+        "undernoder": [
+          {
+            "kode": "COG"
+          }
+        ]
+      },
+      {
+        "kode": "CH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1204,
+        "undernoder": [
+          {
+            "kode": "CHE"
+          }
+        ]
+      },
+      {
+        "kode": "CI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1156,
+        "undernoder": [
+          {
+            "kode": "CIV"
+          }
+        ]
+      },
+      {
+        "kode": "CK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 920,
+        "undernoder": [
+          {
+            "kode": "COK"
+          }
+        ]
+      },
+      {
+        "kode": "CL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 869,
+        "undernoder": [
+          {
+            "kode": "CHL"
+          }
+        ]
+      },
+      {
+        "kode": "CM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 917,
+        "undernoder": [
+          {
+            "kode": "CMR"
+          }
+        ]
+      },
+      {
+        "kode": "CN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 986,
+        "undernoder": [
+          {
+            "kode": "CHN"
+          }
+        ]
+      },
+      {
+        "kode": "CO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 874,
+        "undernoder": [
+          {
+            "kode": "COL"
+          }
+        ]
+      },
+      {
+        "kode": "CR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1240,
+        "undernoder": [
+          {
+            "kode": "CRI"
+          }
+        ]
+      },
+      {
+        "kode": "CS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1104,
+        "undernoder": [
+          {
+            "kode": "SCG"
+          }
+        ]
+      },
+      {
+        "kode": "CU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1052,
+        "undernoder": [
+          {
+            "kode": "CUB"
+          }
+        ]
+      },
+      {
+        "kode": "CV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 976,
+        "undernoder": [
+          {
+            "kode": "CPV"
+          }
+        ]
+      },
+      {
+        "kode": "CW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 872,
+        "undernoder": [
+          {
+            "kode": "CUW"
+          }
+        ]
+      },
+      {
+        "kode": "CX",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1231,
+        "undernoder": [
+          {
+            "kode": "CXR"
+          }
+        ]
+      },
+      {
+        "kode": "CY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1228,
+        "undernoder": [
+          {
+            "kode": "CYP"
+          }
+        ]
+      },
+      {
+        "kode": "CZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1206,
+        "undernoder": [
+          {
+            "kode": "CZE"
+          }
+        ]
+      },
+      {
+        "kode": "DE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1173,
+        "undernoder": [
+          {
+            "kode": "DEU"
+          }
+        ]
+      },
+      {
+        "kode": "DJ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 800,
+        "undernoder": [
+          {
+            "kode": "DJI"
+          }
+        ]
+      },
+      {
+        "kode": "DK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 820,
+        "undernoder": [
+          {
+            "kode": "DNK"
+          }
+        ]
+      },
+      {
+        "kode": "DM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1046,
+        "undernoder": [
+          {
+            "kode": "DMA"
+          }
+        ]
+      },
+      {
+        "kode": "DO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 939,
+        "undernoder": [
+          {
+            "kode": "DOM"
+          }
+        ]
+      },
+      {
+        "kode": "DZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 985,
+        "undernoder": [
+          {
+            "kode": "DZA"
+          }
+        ]
+      },
+      {
+        "kode": "EC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1159,
+        "undernoder": [
+          {
+            "kode": "ECU"
+          }
+        ]
+      },
+      {
+        "kode": "EE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1092,
+        "undernoder": [
+          {
+            "kode": "EST"
+          }
+        ]
+      },
+      {
+        "kode": "EG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1145,
+        "undernoder": [
+          {
+            "kode": "EGY"
+          }
+        ]
+      },
+      {
+        "kode": "EH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 791,
+        "undernoder": [
+          {
+            "kode": "ESH"
+          }
+        ]
+      },
+      {
+        "kode": "ER",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1224,
+        "undernoder": [
+          {
+            "kode": "ERI"
+          }
+        ]
+      },
+      {
+        "kode": "ES",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 878,
+        "undernoder": [
+          {
+            "kode": "ESP"
+          }
+        ]
+      },
+      {
+        "kode": "ET",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1220,
+        "undernoder": [
+          {
+            "kode": "ETH"
+          }
+        ]
+      },
+      {
+        "kode": "FI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1005,
+        "undernoder": [
+          {
+            "kode": "FIN"
+          }
+        ]
+      },
+      {
+        "kode": "FJ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 987,
+        "undernoder": [
+          {
+            "kode": "FJI"
+          }
+        ]
+      },
+      {
+        "kode": "FK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1199,
+        "undernoder": [
+          {
+            "kode": "FLK"
+          }
+        ]
+      },
+      {
+        "kode": "FM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 886,
+        "undernoder": [
+          {
+            "kode": "FSM"
+          }
+        ]
+      },
+      {
+        "kode": "FO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 810,
+        "undernoder": [
+          {
+            "kode": "FRO"
+          }
+        ]
+      },
+      {
+        "kode": "FR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 891,
+        "undernoder": [
+          {
+            "kode": "FRA"
+          }
+        ]
+      },
+      {
+        "kode": "GA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 835,
+        "undernoder": [
+          {
+            "kode": "GAB"
+          }
+        ]
+      },
+      {
+        "kode": "GB",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 845,
+        "undernoder": [
+          {
+            "kode": "GBR"
+          }
+        ]
+      },
+      {
+        "kode": "GD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1035,
+        "undernoder": [
+          {
+            "kode": "GRD"
+          }
+        ]
+      },
+      {
+        "kode": "GE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1134,
+        "undernoder": [
+          {
+            "kode": "GEO"
+          }
+        ]
+      },
+      {
+        "kode": "GF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1233,
+        "undernoder": [
+          {
+            "kode": "GUF"
+          }
+        ]
+      },
+      {
+        "kode": "GG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1101,
+        "undernoder": [
+          {
+            "kode": "GGY"
+          }
+        ]
+      },
+      {
+        "kode": "GH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 984,
+        "undernoder": [
+          {
+            "kode": "GHA"
+          }
+        ]
+      },
+      {
+        "kode": "GI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 971,
+        "undernoder": [
+          {
+            "kode": "GIB"
+          }
+        ]
+      },
+      {
+        "kode": "GL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 943,
+        "undernoder": [
+          {
+            "kode": "GRL"
+          }
+        ]
+      },
+      {
+        "kode": "GM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 789,
+        "undernoder": [
+          {
+            "kode": "GMB"
+          }
+        ]
+      },
+      {
+        "kode": "GN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1029,
+        "undernoder": [
+          {
+            "kode": "GIN"
+          }
+        ]
+      },
+      {
+        "kode": "GP",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1088,
+        "undernoder": [
+          {
+            "kode": "GLP"
+          }
+        ]
+      },
+      {
+        "kode": "GQ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1022,
+        "undernoder": [
+          {
+            "kode": "GNQ"
+          }
+        ]
+      },
+      {
+        "kode": "GR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 942,
+        "undernoder": [
+          {
+            "kode": "GRC"
+          }
+        ]
+      },
+      {
+        "kode": "GS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1004,
+        "undernoder": [
+          {
+            "kode": "SGS"
+          }
+        ]
+      },
+      {
+        "kode": "GT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1068,
+        "undernoder": [
+          {
+            "kode": "GTM"
+          }
+        ]
+      },
+      {
+        "kode": "GU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1217,
+        "undernoder": [
+          {
+            "kode": "GUM"
+          }
+        ]
+      },
+      {
+        "kode": "GW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1239,
+        "undernoder": [
+          {
+            "kode": "GNB"
+          }
+        ]
+      },
+      {
+        "kode": "GY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1050,
+        "undernoder": [
+          {
+            "kode": "GUY"
+          }
+        ]
+      },
+      {
+        "kode": "HK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 902,
+        "undernoder": [
+          {
+            "kode": "HKG"
+          }
+        ]
+      },
+      {
+        "kode": "HM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1260,
+        "undernoder": [
+          {
+            "kode": "HMD"
+          }
+        ]
+      },
+      {
+        "kode": "HN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1000,
+        "undernoder": [
+          {
+            "kode": "HND"
+          }
+        ]
+      },
+      {
+        "kode": "HR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1060,
+        "undernoder": [
+          {
+            "kode": "HRV"
+          }
+        ]
+      },
+      {
+        "kode": "HT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1273,
+        "undernoder": [
+          {
+            "kode": "HTI"
+          }
+        ]
+      },
+      {
+        "kode": "HU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 919,
+        "undernoder": [
+          {
+            "kode": "HUN"
+          }
+        ]
+      },
+      {
+        "kode": "ID",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1128,
+        "undernoder": [
+          {
+            "kode": "IDN"
+          }
+        ]
+      },
+      {
+        "kode": "IE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1190,
+        "undernoder": [
+          {
+            "kode": "IRL"
+          }
+        ]
+      },
+      {
+        "kode": "IL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1144,
+        "undernoder": [
+          {
+            "kode": "ISR"
+          }
+        ]
+      },
+      {
+        "kode": "IM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 893,
+        "undernoder": [
+          {
+            "kode": "IMN"
+          }
+        ]
+      },
+      {
+        "kode": "IN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 944,
+        "undernoder": [
+          {
+            "kode": "IND"
+          }
+        ]
+      },
+      {
+        "kode": "IO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 808,
+        "undernoder": [
+          {
+            "kode": "IOT"
+          }
+        ]
+      },
+      {
+        "kode": "IQ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 849,
+        "undernoder": [
+          {
+            "kode": "IRQ"
+          }
+        ]
+      },
+      {
+        "kode": "IR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1021,
+        "undernoder": [
+          {
+            "kode": "IRN"
+          }
+        ]
+      },
+      {
+        "kode": "IS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1053,
+        "undernoder": [
+          {
+            "kode": "ISL"
+          }
+        ]
+      },
+      {
+        "kode": "IT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1070,
+        "undernoder": [
+          {
+            "kode": "ITA"
+          }
+        ]
+      },
+      {
+        "kode": "JE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 809,
+        "undernoder": [
+          {
+            "kode": "JEY"
+          }
+        ]
+      },
+      {
+        "kode": "JM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1125,
+        "undernoder": [
+          {
+            "kode": "JAM"
+          }
+        ]
+      },
+      {
+        "kode": "JO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1040,
+        "undernoder": [
+          {
+            "kode": "JOR"
+          }
+        ]
+      },
+      {
+        "kode": "JP",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 794,
+        "undernoder": [
+          {
+            "kode": "JPN"
+          }
+        ]
+      },
+      {
+        "kode": "KE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 834,
+        "undernoder": [
+          {
+            "kode": "KEN"
+          }
+        ]
+      },
+      {
+        "kode": "KG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1083,
+        "undernoder": [
+          {
+            "kode": "KGZ"
+          }
+        ]
+      },
+      {
+        "kode": "KH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 797,
+        "undernoder": [
+          {
+            "kode": "KHM"
+          }
+        ]
+      },
+      {
+        "kode": "KI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 995,
+        "undernoder": [
+          {
+            "kode": "KIR"
+          }
+        ]
+      },
+      {
+        "kode": "KM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1051,
+        "undernoder": [
+          {
+            "kode": "COM"
+          }
+        ]
+      },
+      {
+        "kode": "KN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1185,
+        "undernoder": [
+          {
+            "kode": "KNA"
+          }
+        ]
+      },
+      {
+        "kode": "KP",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1121,
+        "undernoder": [
+          {
+            "kode": "PRK"
+          }
+        ]
+      },
+      {
+        "kode": "KR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 909,
+        "undernoder": [
+          {
+            "kode": "KOR"
+          }
+        ]
+      },
+      {
+        "kode": "KW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1184,
+        "undernoder": [
+          {
+            "kode": "KWT"
+          }
+        ]
+      },
+      {
+        "kode": "KY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 881,
+        "undernoder": [
+          {
+            "kode": "CYM"
+          }
+        ]
+      },
+      {
+        "kode": "KZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1188,
+        "undernoder": [
+          {
+            "kode": "KAZ"
+          }
+        ]
+      },
+      {
+        "kode": "LA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 822,
+        "undernoder": [
+          {
+            "kode": "LAO"
+          }
+        ]
+      },
+      {
+        "kode": "LB",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 928,
+        "undernoder": [
+          {
+            "kode": "LBN"
+          }
+        ]
+      },
+      {
+        "kode": "LC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1135,
+        "undernoder": [
+          {
+            "kode": "LCA"
+          }
+        ]
+      },
+      {
+        "kode": "LI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1169,
+        "undernoder": [
+          {
+            "kode": "LIE"
+          }
+        ]
+      },
+      {
+        "kode": "LK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1237,
+        "undernoder": [
+          {
+            "kode": "LKA"
+          }
+        ]
+      },
+      {
+        "kode": "LR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1081,
+        "undernoder": [
+          {
+            "kode": "LBR"
+          }
+        ]
+      },
+      {
+        "kode": "LS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 783,
+        "undernoder": [
+          {
+            "kode": "LSO"
+          }
+        ]
+      },
+      {
+        "kode": "LT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1214,
+        "undernoder": [
+          {
+            "kode": "LTU"
+          }
+        ]
+      },
+      {
+        "kode": "LU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 840,
+        "undernoder": [
+          {
+            "kode": "LUX"
+          }
+        ]
+      },
+      {
+        "kode": "LV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 833,
+        "undernoder": [
+          {
+            "kode": "LVA"
+          }
+        ]
+      },
+      {
+        "kode": "LY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1080,
+        "undernoder": [
+          {
+            "kode": "LBY"
+          }
+        ]
+      },
+      {
+        "kode": "MA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1249,
+        "undernoder": [
+          {
+            "kode": "MAR"
+          }
+        ]
+      },
+      {
+        "kode": "MC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 981,
+        "undernoder": [
+          {
+            "kode": "MCO"
+          }
+        ]
+      },
+      {
+        "kode": "MD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 860,
+        "undernoder": [
+          {
+            "kode": "MDA"
+          }
+        ]
+      },
+      {
+        "kode": "ME",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 930,
+        "undernoder": [
+          {
+            "kode": "MNE"
+          }
+        ]
+      },
+      {
+        "kode": "MF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 883,
+        "undernoder": [
+          {
+            "kode": "MAF"
+          }
+        ]
+      },
+      {
+        "kode": "MG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 952,
+        "undernoder": [
+          {
+            "kode": "MDG"
+          }
+        ]
+      },
+      {
+        "kode": "MH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1033,
+        "undernoder": [
+          {
+            "kode": "MHL"
+          }
+        ]
+      },
+      {
+        "kode": "MK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 805,
+        "undernoder": [
+          {
+            "kode": "MKD"
+          }
+        ]
+      },
+      {
+        "kode": "ML",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1235,
+        "undernoder": [
+          {
+            "kode": "MLI"
+          }
+        ]
+      },
+      {
+        "kode": "MM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1009,
+        "undernoder": [
+          {
+            "kode": "MMR"
+          }
+        ]
+      },
+      {
+        "kode": "MN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 964,
+        "undernoder": [
+          {
+            "kode": "MNG"
+          }
+        ]
+      },
+      {
+        "kode": "MO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1146,
+        "undernoder": [
+          {
+            "kode": "MAC"
+          }
+        ]
+      },
+      {
+        "kode": "MP",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1023,
+        "undernoder": [
+          {
+            "kode": "MNP"
+          }
+        ]
+      },
+      {
+        "kode": "MQ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1198,
+        "undernoder": [
+          {
+            "kode": "MTQ"
+          }
+        ]
+      },
+      {
+        "kode": "MR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1166,
+        "undernoder": [
+          {
+            "kode": "MRT"
+          }
+        ]
+      },
+      {
+        "kode": "MS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1049,
+        "undernoder": [
+          {
+            "kode": "MSR"
+          }
+        ]
+      },
+      {
+        "kode": "MT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1133,
+        "undernoder": [
+          {
+            "kode": "MLT"
+          }
+        ]
+      },
+      {
+        "kode": "MU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1066,
+        "undernoder": [
+          {
+            "kode": "MUS"
+          }
+        ]
+      },
+      {
+        "kode": "MV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 896,
+        "undernoder": [
+          {
+            "kode": "MDV"
+          }
+        ]
+      },
+      {
+        "kode": "MW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1259,
+        "undernoder": [
+          {
+            "kode": "MWI"
+          }
+        ]
+      },
+      {
+        "kode": "MX",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1100,
+        "undernoder": [
+          {
+            "kode": "MEX"
+          }
+        ]
+      },
+      {
+        "kode": "MY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1140,
+        "undernoder": [
+          {
+            "kode": "MYS"
+          }
+        ]
+      },
+      {
+        "kode": "MZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 918,
+        "undernoder": [
+          {
+            "kode": "MOZ"
+          }
+        ]
+      },
+      {
+        "kode": "NA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 856,
+        "undernoder": [
+          {
+            "kode": "NAM"
+          }
+        ]
+      },
+      {
+        "kode": "NC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 837,
+        "undernoder": [
+          {
+            "kode": "NCL"
+          }
+        ]
+      },
+      {
+        "kode": "NE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 799,
+        "undernoder": [
+          {
+            "kode": "NER"
+          }
+        ]
+      },
+      {
+        "kode": "NF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1084,
+        "undernoder": [
+          {
+            "kode": "NFK"
+          }
+        ]
+      },
+      {
+        "kode": "NG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1087,
+        "undernoder": [
+          {
+            "kode": "NGA"
+          }
+        ]
+      },
+      {
+        "kode": "NI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 901,
+        "undernoder": [
+          {
+            "kode": "NIC"
+          }
+        ]
+      },
+      {
+        "kode": "NL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 912,
+        "undernoder": [
+          {
+            "kode": "NLD"
+          }
+        ]
+      },
+      {
+        "kode": "NO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1178,
+        "undernoder": [
+          {
+            "kode": "NOR"
+          }
+        ]
+      },
+      {
+        "kode": "NP",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 956,
+        "undernoder": [
+          {
+            "kode": "NPL"
+          }
+        ]
+      },
+      {
+        "kode": "NR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 927,
+        "undernoder": [
+          {
+            "kode": "NRU"
+          }
+        ]
+      },
+      {
+        "kode": "NU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 851,
+        "undernoder": [
+          {
+            "kode": "NIU"
+          }
+        ]
+      },
+      {
+        "kode": "NZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1114,
+        "undernoder": [
+          {
+            "kode": "NZL"
+          }
+        ]
+      },
+      {
+        "kode": "OM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1095,
+        "undernoder": [
+          {
+            "kode": "OMN"
+          }
+        ]
+      },
+      {
+        "kode": "PA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1165,
+        "undernoder": [
+          {
+            "kode": "PAN"
+          }
+        ]
+      },
+      {
+        "kode": "PE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 852,
+        "undernoder": [
+          {
+            "kode": "PER"
+          }
+        ]
+      },
+      {
+        "kode": "PF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 818,
+        "undernoder": [
+          {
+            "kode": "PYF"
+          }
+        ]
+      },
+      {
+        "kode": "PG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 961,
+        "undernoder": [
+          {
+            "kode": "PNG"
+          }
+        ]
+      },
+      {
+        "kode": "PH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1103,
+        "undernoder": [
+          {
+            "kode": "PHL"
+          }
+        ]
+      },
+      {
+        "kode": "PK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 828,
+        "undernoder": [
+          {
+            "kode": "PAK"
+          }
+        ]
+      },
+      {
+        "kode": "PL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1176,
+        "undernoder": [
+          {
+            "kode": "POL"
+          }
+        ]
+      },
+      {
+        "kode": "PM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1265,
+        "undernoder": [
+          {
+            "kode": "SPM"
+          }
+        ]
+      },
+      {
+        "kode": "PN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 870,
+        "undernoder": [
+          {
+            "kode": "PCN"
+          }
+        ]
+      },
+      {
+        "kode": "PR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 925,
+        "undernoder": [
+          {
+            "kode": "PRI"
+          }
+        ]
+      },
+      {
+        "kode": "PS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 932,
+        "undernoder": [
+          {
+            "kode": "PSE"
+          }
+        ]
+      },
+      {
+        "kode": "PT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 811,
+        "undernoder": [
+          {
+            "kode": "PRT"
+          }
+        ]
+      },
+      {
+        "kode": "PW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 813,
+        "undernoder": [
+          {
+            "kode": "PLW"
+          }
+        ]
+      },
+      {
+        "kode": "PY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 923,
+        "undernoder": [
+          {
+            "kode": "PRY"
+          }
+        ]
+      },
+      {
+        "kode": "QA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1274,
+        "undernoder": [
+          {
+            "kode": "QAT"
+          }
+        ]
+      },
+      {
+        "kode": "RE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 863,
+        "undernoder": [
+          {
+            "kode": "REU"
+          }
+        ]
+      },
+      {
+        "kode": "RO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1143,
+        "undernoder": [
+          {
+            "kode": "ROU"
+          }
+        ]
+      },
+      {
+        "kode": "RS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1011,
+        "undernoder": [
+          {
+            "kode": "SRB"
+          }
+        ]
+      },
+      {
+        "kode": "RU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 933,
+        "undernoder": [
+          {
+            "kode": "RUS"
+          }
+        ]
+      },
+      {
+        "kode": "RW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 839,
+        "undernoder": [
+          {
+            "kode": "RWA"
+          }
+        ]
+      },
+      {
+        "kode": "SA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1236,
+        "undernoder": [
+          {
+            "kode": "SAU"
+          }
+        ]
+      },
+      {
+        "kode": "SB",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1160,
+        "undernoder": [
+          {
+            "kode": "SLB"
+          }
+        ]
+      },
+      {
+        "kode": "SC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 948,
+        "undernoder": [
+          {
+            "kode": "SYC"
+          }
+        ]
+      },
+      {
+        "kode": "SD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 911,
+        "undernoder": [
+          {
+            "kode": "SDN"
+          }
+        ]
+      },
+      {
+        "kode": "SE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 855,
+        "undernoder": [
+          {
+            "kode": "SWE"
+          }
+        ]
+      },
+      {
+        "kode": "SG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1056,
+        "undernoder": [
+          {
+            "kode": "SGP"
+          }
+        ]
+      },
+      {
+        "kode": "SH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1200,
+        "undernoder": [
+          {
+            "kode": "SHN"
+          }
+        ]
+      },
+      {
+        "kode": "SI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 950,
+        "undernoder": [
+          {
+            "kode": "SVN"
+          }
+        ]
+      },
+      {
+        "kode": "SJ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1148,
+        "undernoder": [
+          {
+            "kode": "SJM"
+          }
+        ]
+      },
+      {
+        "kode": "SK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 913,
+        "undernoder": [
+          {
+            "kode": "SVK"
+          }
+        ]
+      },
+      {
+        "kode": "SL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 887,
+        "undernoder": [
+          {
+            "kode": "SLE"
+          }
+        ]
+      },
+      {
+        "kode": "SM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 905,
+        "undernoder": [
+          {
+            "kode": "SMR"
+          }
+        ]
+      },
+      {
+        "kode": "SN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1126,
+        "undernoder": [
+          {
+            "kode": "SEN"
+          }
+        ]
+      },
+      {
+        "kode": "SO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1127,
+        "undernoder": [
+          {
+            "kode": "SOM"
+          }
+        ]
+      },
+      {
+        "kode": "SR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1077,
+        "undernoder": [
+          {
+            "kode": "SUR"
+          }
+        ]
+      },
+      {
+        "kode": "SS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1247,
+        "undernoder": [
+          {
+            "kode": "SSD"
+          }
+        ]
+      },
+      {
+        "kode": "ST",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1213,
+        "undernoder": [
+          {
+            "kode": "STP"
+          }
+        ]
+      },
+      {
+        "kode": "SV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 843,
+        "undernoder": [
+          {
+            "kode": "SLV"
+          }
+        ]
+      },
+      {
+        "kode": "SX",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1064,
+        "undernoder": [
+          {
+            "kode": "SXM"
+          }
+        ]
+      },
+      {
+        "kode": "SY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 898,
+        "undernoder": [
+          {
+            "kode": "SYR"
+          }
+        ]
+      },
+      {
+        "kode": "SZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1113,
+        "undernoder": [
+          {
+            "kode": "SWZ"
+          }
+        ]
+      },
+      {
+        "kode": "TC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1175,
+        "undernoder": [
+          {
+            "kode": "TCA"
+          }
+        ]
+      },
+      {
+        "kode": "TD",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1107,
+        "undernoder": [
+          {
+            "kode": "TCD"
+          }
+        ]
+      },
+      {
+        "kode": "TG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 842,
+        "undernoder": [
+          {
+            "kode": "TGO"
+          }
+        ]
+      },
+      {
+        "kode": "TH",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 931,
+        "undernoder": [
+          {
+            "kode": "THA"
+          }
+        ]
+      },
+      {
+        "kode": "TJ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 892,
+        "undernoder": [
+          {
+            "kode": "TJK"
+          }
+        ]
+      },
+      {
+        "kode": "TK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1006,
+        "undernoder": [
+          {
+            "kode": "TKL"
+          }
+        ]
+      },
+      {
+        "kode": "TL",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1194,
+        "undernoder": [
+          {
+            "kode": "TLS"
+          }
+        ]
+      },
+      {
+        "kode": "TM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1003,
+        "undernoder": [
+          {
+            "kode": "TKM"
+          }
+        ]
+      },
+      {
+        "kode": "TN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1096,
+        "undernoder": [
+          {
+            "kode": "TUN"
+          }
+        ]
+      },
+      {
+        "kode": "TO",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1034,
+        "undernoder": [
+          {
+            "kode": "TON"
+          }
+        ]
+      },
+      {
+        "kode": "TR",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 967,
+        "undernoder": [
+          {
+            "kode": "TUR"
+          }
+        ]
+      },
+      {
+        "kode": "TT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 966,
+        "undernoder": [
+          {
+            "kode": "TTO"
+          }
+        ]
+      },
+      {
+        "kode": "TV",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1212,
+        "undernoder": [
+          {
+            "kode": "TUV"
+          }
+        ]
+      },
+      {
+        "kode": "TW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1043,
+        "undernoder": [
+          {
+            "kode": "TWN"
+          }
+        ]
+      },
+      {
+        "kode": "TZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 994,
+        "undernoder": [
+          {
+            "kode": "TZA"
+          }
+        ]
+      },
+      {
+        "kode": "UA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 817,
+        "undernoder": [
+          {
+            "kode": "UKR"
+          }
+        ]
+      },
+      {
+        "kode": "UG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 838,
+        "undernoder": [
+          {
+            "kode": "UGA"
+          }
+        ]
+      },
+      {
+        "kode": "UM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1201,
+        "undernoder": [
+          {
+            "kode": "UMI"
+          }
+        ]
+      },
+      {
+        "kode": "US",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1261,
+        "undernoder": [
+          {
+            "kode": "USA"
+          }
+        ]
+      },
+      {
+        "kode": "UY",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1161,
+        "undernoder": [
+          {
+            "kode": "URY"
+          }
+        ]
+      },
+      {
+        "kode": "UZ",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1167,
+        "undernoder": [
+          {
+            "kode": "UZB"
+          }
+        ]
+      },
+      {
+        "kode": "VA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 973,
+        "undernoder": [
+          {
+            "kode": "VAT"
+          }
+        ]
+      },
+      {
+        "kode": "VC",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1282,
+        "undernoder": [
+          {
+            "kode": "VCT"
+          }
+        ]
+      },
+      {
+        "kode": "VE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 897,
+        "undernoder": [
+          {
+            "kode": "VEN"
+          }
+        ]
+      },
+      {
+        "kode": "VG",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 924,
+        "undernoder": [
+          {
+            "kode": "VGB"
+          }
+        ]
+      },
+      {
+        "kode": "VI",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1045,
+        "undernoder": [
+          {
+            "kode": "VIR"
+          }
+        ]
+      },
+      {
+        "kode": "VN",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1203,
+        "undernoder": [
+          {
+            "kode": "VNM"
+          }
+        ]
+      },
+      {
+        "kode": "VU",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1225,
+        "undernoder": [
+          {
+            "kode": "VUT"
+          }
+        ]
+      },
+      {
+        "kode": "WF",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1142,
+        "undernoder": [
+          {
+            "kode": "WLF"
+          }
+        ]
+      },
+      {
+        "kode": "WS",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 780,
+        "undernoder": [
+          {
+            "kode": "WSM"
+          }
+        ]
+      },
+      {
+        "kode": "XK",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1037,
+        "undernoder": [
+          {
+            "kode": "XXK"
+          }
+        ]
+      },
+      {
+        "kode": "YE",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 848,
+        "undernoder": [
+          {
+            "kode": "YEM"
+          }
+        ]
+      },
+      {
+        "kode": "YT",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 965,
+        "undernoder": [
+          {
+            "kode": "MYT"
+          }
+        ]
+      },
+      {
+        "kode": "ZA",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1230,
+        "undernoder": [
+          {
+            "kode": "ZAF"
+          }
+        ]
+      },
+      {
+        "kode": "ZM",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 903,
+        "undernoder": [
+          {
+            "kode": "ZMB"
+          }
+        ]
+      },
+      {
+        "kode": "ZW",
+        "nivaa": 2,
+        "undernodeKodeverk": "Landkoder",
+        "id": 1280,
+        "undernoder": [
+          {
+            "kode": "ZWE"
+          }
+        ]
+      }
+    ]
+  }
+}
