@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate
 @TestConfiguration
 @Primary
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class PdlConfigurationTest {
+class RestTemplateConfigTest {
 
     @Bean("pdlRestTemplate")
     fun pdlRestTemplate(): RestTemplate = RestTemplateBuilder()

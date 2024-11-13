@@ -8,7 +8,7 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.KodeverkService
-import no.nav.samordning.person.pdl.PdlConfigurationTest
+import no.nav.samordning.person.pdl.RestTemplateConfigTest
 import no.nav.samordning.person.pdl.model.Adressebeskyttelse
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.Bostedsadresse
@@ -52,7 +52,6 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -64,11 +63,10 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 
-@SpringBootTest(classes = [PdlConfigurationTest::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = [RestTemplateConfigTest::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@DirtiesContext
 internal class ControllerMVCTest {
 
     @Autowired
@@ -88,7 +86,7 @@ internal class ControllerMVCTest {
 
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
     private val kodeverkResponse: KodeverkResponse? = try {
-        val resource = javaClass.getResource("/kodeverk-postnummer.json").readText()
+        val resource = javaClass.getResource("/kodeverk-postnummer.json")?.readText() ?: throw Exception("ikke funnet")
         mapper.readValue<KodeverkResponse>(resource)
     } catch (ex: Exception) {
         ex.printStackTrace()
@@ -106,9 +104,9 @@ internal class ControllerMVCTest {
 
         every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
 
-        for (i in 0..5) {
-            println("Start time hentPostnr...")
+        (0..5).forEach {
 
+            println("Start time hentPostnr...")
             val start = System.nanoTime()
 
             val sted1 = kodeverkService.hentPoststedforPostnr("0950")
@@ -118,8 +116,7 @@ internal class ControllerMVCTest {
             assertEquals("ALGARHEIM", sted2)
 
             val totaltime = System.nanoTime() - start
-            println("Total time used: $totaltime in nanotime")
-
+            println("Total time used: $totaltime (in nanotime)")
         }
 
         val postnr = kodeverkService.hentAllePostnr()
@@ -133,7 +130,7 @@ internal class ControllerMVCTest {
 
     @Test
     fun `correct call to kodeverk hierarki returns landkoder`() {
-        val landkoder = javaClass.getResource("/kodeverk-landkoder.json").readText()
+        val landkoder = javaClass.getResource("/kodeverk-landkoder.json")?.readText() ?: throw Exception("ikke funnet")
 
         every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
 
@@ -293,7 +290,7 @@ internal class ControllerMVCTest {
         kontaktinformasjonForDoedsbo = emptyList()
     )
 
-    private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): no.nav.samordning.person.pdl.model.Metadata {
+    private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(
             listOf(
                 Endring(
