@@ -24,8 +24,9 @@ class KodeverkClient(
     private val kodeverkRestTemplate: RestTemplate,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
 ) {
-    private lateinit var kodeverkLandMetrics: MetricsHelper.Metric
+    private lateinit var kodeverkLandKoderMetrics: MetricsHelper.Metric
     private lateinit var kodeverkPostMetrics: MetricsHelper.Metric
+    private lateinit var kodeverkLandMetrics: MetricsHelper.Metric
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -33,29 +34,47 @@ class KodeverkClient(
     @PostConstruct
     fun initMetrics() {
         kodeverkPostMetrics = metricsHelper.init("KodeverkHentPostnr")
-        kodeverkLandMetrics = metricsHelper.init("KodeverkHentLandKode")
+        kodeverkLandKoderMetrics = metricsHelper.init("KodeverkHentLandKode")
+        kodeverkLandMetrics = metricsHelper.init("KodeverkHentLand")
     }
 
 
-    @Cacheable(cacheNames = [KODEVERK_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    @Cacheable(cacheNames = [KODEVERK_POSTNR_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentPostnr(): List<Postnummer> {
         return kodeverkPostMetrics.measure {
             val tempKoder = hentKodeverk("Postnummer").koder
             logger.debug("hentet alle postnr size: ${tempKoder.size}")
             tempKoder.mapNotNull { kodeverk ->
                 if (kodeverk.status !=  KodeStatusEnum.SLETTET) {
-                    val term = kodeverk.betydning.beskrivelse.term
-                    Postnummer(kodeverk.navn, term)
+                    val sted = kodeverk.betydning.beskrivelse.term
+                    Postnummer(kodeverk.navn, sted)
                 } else {
                     null
                 }
-            }.sortedByDescending { it.postnummer }
-                .toList()
+            }.sortedBy { (sorting, _) -> sorting }.toList().also {
+                logger.info("Har importert postnummer og sted")
+            }
+        }
+    }
+
+    @Cacheable(cacheNames = [KODEVERK_LAND_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    fun hentLand(): List<Land> {
+        return kodeverkLandMetrics.measure {
+            val tmpLand = hentKodeverk("Landkoder").koder
+            tmpLand.mapNotNull { kodeverk ->
+                if (kodeverk.status != KodeStatusEnum.SLETTET) {
+                    val land = kodeverk.betydning.beskrivelse.term
+                    Land(kodeverk.navn, land)
+                } else {
+                    null
+                }
+            }.sortedByDescending { it.landkode3 }.also {
+                logger.info("Har importert land")
+            }
         }
     }
 
     private fun hentKodeverk(kodeverk: String): KodeverkResponse  {
-        // /web/api/kodeverk/{kodeverk}
         val path = "/web/api/kodeverk/{kodeverk}"
 
         val uriParams = mapOf("kodeverk" to kodeverk)
@@ -93,22 +112,27 @@ class KodeverkClient(
     }
 
 
-    @Cacheable(cacheNames = [KODEVERK_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentLandKoder(): List<Landkode> {
-        return kodeverkLandMetrics.measure {
+        return kodeverkLandKoderMetrics.measure {
 
+            val land = hentLand()
             val tmpLandkoder = hentHierarki("LandkoderSammensattISO2")
 
             val rootNode = jacksonObjectMapper().readTree(tmpLandkoder)
-            val noder = rootNode.at("/noder").toList()
+            val hierarkinoder = rootNode.at("/hierarkinoder")
+            val noder = hierarkinoder.at("/undernoder").toList()
             noder.map { node ->
+                val land3 = node.at("/undernoder").findPath("kode").textValue()
                 Landkode(
                     node.at("/kode").textValue(),
-                    node.at("/undernoder").findPath("kode").textValue()
+                    land3,
+                    land.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
                 )
-            }.sortedBy { (sorting, _) -> sorting }.toList().also {
-                logger.info("Har importert landkoder")
+            }.sortedBy { (sorting, _, _) -> sorting }.toList().also {
+                logger.info("Har importert landkoder med land")
             }
+
         }
     }
 
@@ -133,7 +157,7 @@ class KodeverkClient(
             headers["Nav-Call-Id"] = UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
-            kodeverkRestTemplate.exchange(
+            kodeverkRestTemplate.exchange<String>(
                 builder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
@@ -151,5 +175,7 @@ class KodeverkClient(
             throw KodeverkException(ex.message!!)
         }
     }
+
+
 
 }

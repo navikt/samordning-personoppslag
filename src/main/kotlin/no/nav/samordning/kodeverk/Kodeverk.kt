@@ -6,7 +6,13 @@ import org.springframework.web.server.ResponseStatusException
 
 data class Landkode(
     val landkode2: String, // SE
-    val landkode3: String // SWE
+    val landkode3: String, // SWE
+    val land: String // SVERIGE
+)
+
+data class Land(
+    val landkode3: String, //SWE
+    val land: String //SVERIGE
 )
 
 data class Postnummer(
@@ -27,6 +33,7 @@ enum class KodeStatusEnum {
     SLETTET;
 }
 
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class KodeverkKode(
     val navn: String,
@@ -44,7 +51,6 @@ data class KodeverkBeskrivelse(
     val tekst: String?,
     val term: String
 )
-
 
 class KodeverkException(message: String) : ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
 class LandkodeException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)

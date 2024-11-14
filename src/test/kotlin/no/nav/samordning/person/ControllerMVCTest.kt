@@ -130,18 +130,32 @@ internal class ControllerMVCTest {
 
     @Test
     fun `correct call to kodeverk hierarki returns landkoder`() {
-        val landkoder = javaClass.getResource("/kodeverk-landkoder.json")?.readText() ?: throw Exception("ikke funnet")
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
 
         every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
 
-        assertEquals("NOR", kodeverkService.finnLandkode("NO"))
-        assertEquals("NO", kodeverkService.finnLandkode("NOR"))
-        assertEquals("SWE", kodeverkService.finnLandkode("SE"))
-        assertEquals("SE", kodeverkService.finnLandkode("SWE"))
+
+        assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NO").toString())
+        assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NOR").toString())
+
+        assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SE").toString())
+        assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SWE").toString())
+
 
         assertEquals("NO", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "NO" })
         assertEquals("DK", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "DK" })
 
+
+        assertEquals("NORGE", kodeverkService.finnLand("NOR"))
+        assertEquals("SVERIGE", kodeverkService.finnLand("SWE"))
     }
 
     @Test
@@ -156,10 +170,8 @@ internal class ControllerMVCTest {
         }
             .andDo { print() }
             .andExpect { status { isOk() }
-
             jsonPath("$") { value("OSLO") }
         }
-
 
     }
 
