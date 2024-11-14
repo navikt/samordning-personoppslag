@@ -3,6 +3,7 @@
  */
 package no.nav.samordning.person.sam
 
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.*
 import no.nav.samordning.person.pdl.model.KontaktadresseType
 import no.nav.samordning.person.pdl.model.SamPerson
@@ -22,7 +23,7 @@ data class PersonSamordning(
     private var postAdresse: AdresseSamordning? = null,
     private var bostedsAdresse: BostedsAdresseSamordning? = null
 ) {
-    constructor(fnr: String, samPerson: SamPerson) : this(
+    constructor(fnr: String, samPerson: SamPerson, kodeverkService: KodeverkService) : this(
         fnr = fnr,
         kortnavn = samPerson.navn?.forkortetNavn,
         fornavn = samPerson.navn?.fornavn,
@@ -55,7 +56,7 @@ data class PersonSamordning(
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
-                    poststed = kommunenummer,
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                     land = "NOR"
                 )
             } else it.utenlandskAdresse?.run {
@@ -70,11 +71,29 @@ data class PersonSamordning(
             }
         },
         bostedsAdresse = samPerson.bostedsadresse?.vegadresse?.run {
+            val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
             BostedsAdresseSamordning(
                 boadresse1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                 postnr = postnummer,
-                poststed = kommunenummer
+                poststed = poststed,
+                postAdresse = "$postnummer $poststed",
             )
+        },
+        utbetalingsAdresse = samPerson.bostedsadresse?.let {
+            it.vegadresse?.run {
+                val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
+                AdresseSamordning(
+                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                    postnr = postnummer,
+                    poststed = poststed,
+                )
+            } ?: it.utenlandskAdresseIFrittFormat?.run {
+                AdresseSamordning(
+                    adresselinje1 = adressenavnNummer,
+                    adresselinje2 = "$postkode $bySted",
+                    land = kodeverkService.finnLandkode(landkode)?.
+                )
+            }
         }
     )
 

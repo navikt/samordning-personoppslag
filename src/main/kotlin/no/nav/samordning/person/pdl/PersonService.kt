@@ -1,5 +1,6 @@
 package no.nav.samordning.person.pdl
 
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.model.*
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 @Service
 class PersonService(
     private val client: PersonClient,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
+    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
+    private val kodeverkService: KodeverkService
 ) {
 
     private val logger = LoggerFactory.getLogger(PersonService::class.java)
@@ -165,7 +167,7 @@ class PersonService(
             kontaktinformasjonForDoedsbo,
         )
 
-        return PersonSamordning(ident.id, samPerson)
+        return PersonSamordning(ident.id, samPerson, kodeverkService)
     }
 
 
