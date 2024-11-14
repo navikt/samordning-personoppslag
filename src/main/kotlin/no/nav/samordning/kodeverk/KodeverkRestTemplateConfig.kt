@@ -22,7 +22,16 @@ class KodeverkRestTemplateConfig {
     lateinit var kodeverkUrl: String
 
     @Bean
-    fun kodeverkRestTemplate(azureAdMachineToMachineTokenInterceptor: ClientHttpRequestInterceptor): RestTemplate =
+    fun azureM2MTokenInterceptor(@Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor {
+        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
+            .withCache(CaffeineTokenCache())
+            .withNaisDefaults()
+            .buildMachineToMachineTokenClient()
+        return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
+    }
+
+    @Bean
+    fun kodeverkRestTemplate(azureM2MTokenInterceptor: ClientHttpRequestInterceptor): RestTemplate =
         RestTemplateBuilder()
             .rootUri(kodeverkUrl)
             .errorHandler(DefaultResponseErrorHandler())
@@ -31,14 +40,5 @@ class KodeverkRestTemplateConfig {
                 //azureAdMachineToMachineTokenInterceptor
             )
             .build()
-
-    @Bean
-    fun azureAdMachineToMachineTokenInterceptor(@Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor {
-        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
-            .withCache(CaffeineTokenCache())
-            .withNaisDefaults()
-            .buildMachineToMachineTokenClient()
-        return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
-    }
 
 }
