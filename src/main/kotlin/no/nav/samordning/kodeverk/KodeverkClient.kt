@@ -39,7 +39,7 @@ class KodeverkClient(
     }
 
 
-    @Cacheable(cacheNames = [KODEVERK_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    @Cacheable(cacheNames = [KODEVERK_POSTNR_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentPostnr(): List<Postnummer> {
         return kodeverkPostMetrics.measure {
             val tempKoder = hentKodeverk("Postnummer").koder
@@ -57,7 +57,7 @@ class KodeverkClient(
         }
     }
 
-    @Cacheable(cacheNames = [KODEVERK_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    @Cacheable(cacheNames = [KODEVERK_LAND_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentLand(): List<Land> {
         return kodeverkLandMetrics.measure {
             val tmpLand = hentKodeverk("Landkoder").koder
@@ -112,7 +112,7 @@ class KodeverkClient(
     }
 
 
-    @Cacheable(cacheNames = [KODEVERK_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentLandKoder(): List<Landkode> {
         return kodeverkLandKoderMetrics.measure {
 

@@ -170,10 +170,8 @@ internal class ControllerMVCTest {
         }
             .andDo { print() }
             .andExpect { status { isOk() }
-
             jsonPath("$") { value("OSLO") }
         }
-
 
     }
 
