@@ -17,8 +17,10 @@ data class PersonSamordning(
     val utenlandsAdresse: AdresseSamordning? = null,
     val tilleggsAdresse: AdresseSamordning? = null,
     val postAdresse: AdresseSamordning? = null,
-    val bostedsAdresse: BostedsAdresseSamordning? = null
- ) {
+    val bostedsAdresse: BostedsAdresseSamordning? = null,
+    val utbetalingsAdresse: AdresseSamordning? = null
+) {
+
     companion object {
         const val DISKRESJONSKODE_6_SPSF = "SPSF"
         const val DISKRESJONSKODE_7_SPFO = "SPFO";

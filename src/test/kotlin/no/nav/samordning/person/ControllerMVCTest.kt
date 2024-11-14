@@ -11,14 +11,12 @@ import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.RestTemplateConfigTest
 import no.nav.samordning.person.pdl.model.Adressebeskyttelse
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.FORTROLIG
 import no.nav.samordning.person.pdl.model.Bostedsadresse
-import no.nav.samordning.person.pdl.model.Doedsfall
 import no.nav.samordning.person.pdl.model.Endring
 import no.nav.samordning.person.pdl.model.Endringstype
-import no.nav.samordning.person.pdl.model.Familierelasjonsrolle
 import no.nav.samordning.person.pdl.model.Foedsel
 import no.nav.samordning.person.pdl.model.Folkeregistermetadata
-import no.nav.samordning.person.pdl.model.ForelderBarnRelasjon
 import no.nav.samordning.person.pdl.model.GeografiskTilknytning
 import no.nav.samordning.person.pdl.model.GeografiskTilknytningResponse
 import no.nav.samordning.person.pdl.model.GeografiskTilknytningResponseData
@@ -38,6 +36,7 @@ import no.nav.samordning.person.pdl.model.Navn
 import no.nav.samordning.person.pdl.model.Sivilstand
 import no.nav.samordning.person.pdl.model.Sivilstandstype
 import no.nav.samordning.person.pdl.model.Statsborgerskap
+import no.nav.samordning.person.pdl.model.UtenlandskAdresse
 import no.nav.samordning.person.pdl.model.Vegadresse
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
@@ -219,24 +218,26 @@ internal class ControllerMVCTest {
 
     }
 
-
     @Test
-    fun `correct call to samperson with valid fnr response return samPersondata`() {
+    fun `correct call to samperson ugradert boested utland with valid fnr response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-        val identerResponse = IdenterResponse(data = IdenterDataResponse(
-            hentIdenter = HentIdenter(
-                identer = listOf(
-                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
-                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
-                )
-            )
-        )
-        )
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
 
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
@@ -250,10 +251,109 @@ internal class ControllerMVCTest {
             .andExpect { status { isOk() }
 
                 jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
+                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
+                jsonPath("$.utbetalingsAdresse.adresselinje3") { value(null) }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("1021 PLK UK") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("LONDON") }
+                jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.diskresjonskode") { value(null) }
+
             }
 
+    }
+
+
+    @Test
+    fun `correct call to samperson ugradert boested norge with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/samperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.kortnavn") { value("FME") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.diskresjonskode") { value(null) }
+
+            }
+
+    }
+
+    @Test
+    fun `correct call to samperson gradert boested norge with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/samperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.kortnavn") { value("") }
+                jsonPath("$.etternavn") { value("") }
+                jsonPath("$.utbetalingsAdresse") { value(null) }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.diskresjonskode") { value("SPFO") }
+            }
 
     }
 
@@ -275,25 +375,25 @@ internal class ControllerMVCTest {
             ).serialize()
 
 
-    private fun mockHentAltPerson() = HentPerson(
-        adressebeskyttelse = listOf(Adressebeskyttelse(AdressebeskyttelseGradering.UGRADERT)),
+    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utland: Boolean = false) = HentPerson(
+        adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
         bostedsadresse = listOf(
             Bostedsadresse(
                 LocalDateTime.of(2020, 10, 5, 10,5,2),
                 LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                Vegadresse("TESTVEIEN","1020","A","0234", "231", null),
-                null,
+                if (utland == false ) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
+                if (utland) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
                 mockMeta()
             )
         ),
         oppholdsadresse = emptyList(),
-        navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
+        navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", "FME", null, null, mockMeta())),
         statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
         foedsel = listOf(Foedsel(LocalDate.of(2000,10,3), "NOR", "OSLO", 2020, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
         kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-        doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-        forelderBarnRelasjon = listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
+        doedsfall = emptyList(), // listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
+        forelderBarnRelasjon = emptyList(), //listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.SKILT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
         kontaktadresse = emptyList(),
         kontaktinformasjonForDoedsbo = emptyList()
     )

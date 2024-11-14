@@ -92,6 +92,7 @@ class KodeverkClient(
             headers["Nav-Call-Id"] = UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
+            logger.debug("URIstring: ${builder.toUriString()}")
             kodeverkRestTemplate.exchange<KodeverkResponse>(
                 builder.toUriString(),
                 HttpMethod.GET,

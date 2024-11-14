@@ -31,11 +31,6 @@ class PersonSamordningService(
 
     internal fun konvertertilPersonSamordning(fnr: String, pdlSamPerson: PdlSamPerson) : PersonSamordning {
 
-        val kortnavn = pdlSamPerson.navn?.forkortetNavn
-        val fornavn = pdlSamPerson.navn?.fornavn
-        val mellomnavn = pdlSamPerson.navn?.mellomnavn
-        val etternavn = pdlSamPerson.navn?.etternavn
-
         val diskresjonskode = pdlSamPerson.adressebeskyttelse.let {
             when {
                 STRENGT_FORTROLIG in it || STRENGT_FORTROLIG_UTLAND in it -> DISKRESJONSKODE_6_SPSF
@@ -43,6 +38,12 @@ class PersonSamordningService(
                 else -> null
             }
         }
+
+        val kortnavn = if (diskresjonskode == null)  pdlSamPerson.navn?.forkortetNavn else ""
+        val fornavn = if (diskresjonskode == null)  pdlSamPerson.navn?.fornavn  else ""
+        val mellomnavn = if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
+        val etternavn = if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
+
         val sivilstand = pdlSamPerson.sivilstand?.type?.name
 
         val dodsdato = pdlSamPerson.doedsfall?.doedsdato?.let { java.sql.Date.valueOf(it) as Date }
@@ -54,33 +55,10 @@ class PersonSamordningService(
                 adresselinje3 = postboksNummerNavn,
                 postnr = postkode,
                 poststed = bySted,
-                land = landkode
+                land = kodeverkService.finnLandkode(landkode)?.land
             )
         }
 
-        val tilleggsAdresse = pdlSamPerson.oppholdsadresse?.let {
-            AdresseSamordning()
-        }
-
-        val postAdresse = pdlSamPerson.kontaktadresse?.let {
-            if(it.type == KontaktadresseType.Innland) it.vegadresse?.run {
-                AdresseSamordning(
-                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
-                    postnr = postnummer,
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
-                    land = "NOR"
-                )
-            } else it.utenlandskAdresse?.run {
-                AdresseSamordning(
-                    adresselinje1 = adressenavnNummer,
-                    adresselinje2 = bygningEtasjeLeilighet,
-                    adresselinje3 = postboksNummerNavn,
-                    postnr = postkode,
-                    poststed = bySted,
-                    land = landkode
-                )
-            }
-        }
         val bostedsAdresse = pdlSamPerson.bostedsadresse?.vegadresse?.run {
             val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
             BostedsAdresseSamordning(
@@ -89,24 +67,43 @@ class PersonSamordningService(
                 poststed = poststed
             )
         }
+        val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.let {
+            if (it.vegadresse != null) it.vegadresse.run {
+                AdresseSamordning(
+                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                    postnr = postnummer,
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                )
+            } else it.utenlandskAdresse?.run {
+                AdresseSamordning(
+                    adresselinje1 = adressenavnNummer,
+                    adresselinje2 = bygningEtasjeLeilighet,
+                    adresselinje3 = postboksNummerNavn,
+                    postnr = postkode,
+                    poststed = bySted,
+                    land = it.utenlandskAdresse.landkode.let(kodeverkService::finnLandkode)?.land
+                )
+            }
+        }
 
-
-//            it.vegadresse?.run {
-//                val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
-//                AdresseSamordning(
-//                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
-//                    postnr = postnummer,
-//                    poststed = poststed,
-//                )
-//            } ?: it.utenlandskAdresseIFrittFormat?.run {
-//                AdresseSamordning(
-//                    adresselinje1 = adressenavnNummer,
-//                    adresselinje2 = "$postkode $bySted",
-//                    land = kodeverkService.finnLandkode(landkode)?.
-//                )
-//            }
-//        }
-
+        val postAdresse = pdlSamPerson.kontaktadresse?.let {
+            if(it.type == KontaktadresseType.Innland) it.vegadresse?.run {
+                AdresseSamordning(
+                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                    postnr = postnummer,
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                )
+            } else it.utenlandskAdresse?.run {
+                AdresseSamordning(
+                    adresselinje1 = adressenavnNummer,
+                    adresselinje2 = bygningEtasjeLeilighet,
+                    adresselinje3 = postboksNummerNavn,
+                    postnr = postkode,
+                    poststed = bySted,
+                    land = it.utenlandskAdresse.landkode.let(kodeverkService::finnLandkode)?.land
+                )
+            }
+        }
 
         val personSamordning = PersonSamordning(
             fnr = fnr,
@@ -117,27 +114,26 @@ class PersonSamordningService(
             diskresjonskode = diskresjonskode,
             sivilstand = sivilstand,
             dodsdato = dodsdato,
-            utenlandsAdresse = utenlandsAdresse,
-            tilleggsAdresse = tilleggsAdresse,
-            postAdresse = postAdresse,
-            bostedsAdresse = bostedsAdresse
-        ).apply {
-            prioriterAdresse(this)
-        }
+            utenlandsAdresse = if (diskresjonskode == null) utenlandsAdresse else null,
+            tilleggsAdresse = if (diskresjonskode == null) tilleggsAdresse else null,
+            postAdresse = if (diskresjonskode == null) postAdresse else null,
+            bostedsAdresse = if (diskresjonskode == null) bostedsAdresse else null,
+            utbetalingsAdresse = if (diskresjonskode == null) prioriterAdresse(utenlandsAdresse, tilleggsAdresse, postAdresse, bostedsAdresse) else null
+        )
 
         return personSamordning
 
     }
 
-    internal fun prioriterAdresse(person: PersonSamordning): AdresseSamordning {
-        return if (person.utenlandsAdresse != null && person.utenlandsAdresse.isUAdresse()) {
-            populateUtbetalingsAdresse(person.utenlandsAdresse, null)
-        } else if (person.tilleggsAdresse != null && person.tilleggsAdresse.isTAdresse()) {
-            populateUtbetalingsAdresse(person.tilleggsAdresse, null)
-        } else if (person.postAdresse != null && person.postAdresse.isPAdresse()) {
-            populateUtbetalingsAdresse(person.postAdresse, null)
-        } else if (person.bostedsAdresse != null && person.bostedsAdresse.isAAdresse()) {
-            populateUtbetalingsAdresse(null, person.bostedsAdresse)
+    internal fun prioriterAdresse(utenlandsAdresse: AdresseSamordning?, tilleggsAdresse: AdresseSamordning?, postAdresse: AdresseSamordning?, bostedsAdresse: BostedsAdresseSamordning?): AdresseSamordning {
+        return if (utenlandsAdresse != null && utenlandsAdresse.isUAdresse()) {
+            populateUtbetalingsAdresse(utenlandsAdresse, null)
+        } else if (tilleggsAdresse != null && tilleggsAdresse.isTAdresse()) {
+            populateUtbetalingsAdresse(tilleggsAdresse, null)
+        } else if (postAdresse != null && postAdresse.isPAdresse()) {
+            populateUtbetalingsAdresse(postAdresse, null)
+        } else if (bostedsAdresse != null && bostedsAdresse.isAAdresse()) {
+            populateUtbetalingsAdresse(null, bostedsAdresse)
         } else {
             AdresseSamordning()
         }
