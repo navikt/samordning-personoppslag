@@ -49,6 +49,10 @@ dependencies {
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
     implementation("org.springframework.retry:spring-retry:2.0.10")
 
+    //caffeine cache manager
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
+
+
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("jakarta.inject:jakarta.inject-api:$jakartaInjectApiVersion")
