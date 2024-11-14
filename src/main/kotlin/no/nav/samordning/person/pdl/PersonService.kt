@@ -1,10 +1,8 @@
 package no.nav.samordning.person.pdl
 
-import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.model.*
-import no.nav.samordning.person.sam.PersonSamordning
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,12 +11,12 @@ import org.springframework.stereotype.Service
 class PersonService(
     private val client: PersonClient,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
-    private val kodeverkService: KodeverkService
 ) {
 
     private val logger = LoggerFactory.getLogger(PersonService::class.java)
 
     private lateinit var hentPersonMetric: Metric
+    private lateinit var hentSamPersonMetric: Metric
     private lateinit var harAdressebeskyttelseMetric: Metric
     private lateinit var hentIdentMetric: Metric
     private lateinit var hentIdenterMetric: Metric
@@ -27,6 +25,7 @@ class PersonService(
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
+        hentSamPersonMetric = metricsHelper.init("hentSamPerson")
         harAdressebeskyttelseMetric = metricsHelper.init("harAdressebeskyttelse")
         hentIdentMetric = metricsHelper.init("hentIdent")
         hentIdenterMetric = metricsHelper.init("hentIdenter")
@@ -103,8 +102,8 @@ class PersonService(
      *
      * @return [PdlPerson]
      */
-    fun <T : Ident> hentSamPerson(ident: T): PersonSamordning? {
-        return hentPersonMetric.measure {
+    fun <T : Ident> hentSamPerson(ident: T): PdlSamPerson? {
+        return hentSamPersonMetric.measure {
 
             logger.debug("Henter SAM person: ${ident.id.scrable()} fra pdl")
             val response = client.hentPerson(ident.id)
@@ -118,7 +117,7 @@ class PersonService(
         }
     }
 
-    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson) : PersonSamordning {
+    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson) : PdlSamPerson {
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -153,7 +152,7 @@ class PersonService(
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val samPerson = SamPerson(
+        return PdlSamPerson(
             navn,
             kjoenn,
             foedsel,
@@ -167,7 +166,7 @@ class PersonService(
             kontaktinformasjonForDoedsbo,
         )
 
-        return PersonSamordning(ident.id, samPerson, kodeverkService)
+        //return PersonSamordning(ident.id, pdlSamPerson, kodeverkService)
     }
 
 

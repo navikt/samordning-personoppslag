@@ -1,10 +1,26 @@
 package no.nav.samordning.person.sam
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 data class AdresseSamordning(
-    private var adresselinje1: String? = null,
-    private var adresselinje2: String? = null,
-    private var adresselinje3: String? = null,
-    private var postnr: String? = null,
-    private var poststed: String? = null,
-    private var land: String? = null
-)
+    val adresselinje1: String? = null,
+    val adresselinje2: String? = null,
+    val adresselinje3: String? = null,
+    val postnr: String? = null,
+    val poststed: String? = null,
+    val land: String? = null
+) {
+
+    @JsonIgnore
+    fun isTAdresse() = isSet(postnr)
+
+    @JsonIgnore
+    fun isUAdresse() =  isSet(adresselinje1) && isSet(land)
+
+    @JsonIgnore
+    fun isPAdresse() = ((isSet(postnr)) || (isSet(adresselinje1) && isSet(land)))
+
+    @JsonIgnore
+    fun isSet(field: String?) = field != null && field.isNotEmpty()
+
+}

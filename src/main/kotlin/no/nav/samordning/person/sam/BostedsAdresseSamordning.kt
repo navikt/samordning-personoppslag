@@ -1,8 +1,19 @@
 package no.nav.samordning.person.sam
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 class BostedsAdresseSamordning(
-    private val boadresse1: String? = null,
-    private val boadresse2: String? = null,
-    private val postnr: String? = null,
-    private val poststed: String? = null
-)
+    val boadresse1: String? = null,
+    val boadresse2: String? = null,
+    val postnr: String? = null,
+    val poststed: String? = null
+) {
+
+    @JsonIgnore
+    fun isAAdresse() = isPostnr()
+
+    @JsonIgnore
+    fun isPostnr() = postnr != null && postnr.isNotEmpty()
+
+
+}

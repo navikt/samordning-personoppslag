@@ -225,7 +225,6 @@ internal class ControllerMVCTest {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-
         val identerResponse = IdenterResponse(data = IdenterDataResponse(
             hentIdenter = HentIdenter(
                 identer = listOf(
@@ -236,15 +235,11 @@ internal class ControllerMVCTest {
         )
         )
 
-        val geografiskTilknytningResponse = GeografiskTilknytningResponse(
-            data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
-        )
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-//        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
-//        every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-
         mvc.post("/api/samperson") {
             header("Authorization", "Bearer $token")
             contentType = MediaType.APPLICATION_JSON
@@ -254,8 +249,9 @@ internal class ControllerMVCTest {
             .andDo { print() }
             .andExpect { status { isOk() }
 
-                jsonPath("$.navn.fornavn") { value("Fornavn") }
-                jsonPath("$.navn.etternavn") { value("Etternavn") }
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.etternavn") { value("Etternavn") }
             }
 
 

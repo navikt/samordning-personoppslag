@@ -43,7 +43,7 @@ data class UtenlandskIdentifikasjonsnummer(
         val metadata: Metadata
 )
 
-data class SamPerson(
+data class PdlSamPerson(
         val navn: Navn? = null,
         val kjoenn: Kjoenn? = null,
         val foedsel: Foedsel? = null,
