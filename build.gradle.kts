@@ -50,7 +50,7 @@ dependencies {
     implementation("org.springframework.retry:spring-retry:2.0.10")
 
     //caffeine cache manager
-    implementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
 
 
     //spring boot 3.0 jakaera-api
