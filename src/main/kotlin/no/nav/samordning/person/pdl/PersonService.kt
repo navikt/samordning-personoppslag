@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service
 @Service
 class PersonService(
     private val client: PersonClient,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
+    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
 ) {
 
     private val logger = LoggerFactory.getLogger(PersonService::class.java)
 
     private lateinit var hentPersonMetric: Metric
+    private lateinit var hentSamPersonMetric: Metric
     private lateinit var harAdressebeskyttelseMetric: Metric
     private lateinit var hentIdentMetric: Metric
     private lateinit var hentIdenterMetric: Metric
@@ -24,6 +25,7 @@ class PersonService(
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
+        hentSamPersonMetric = metricsHelper.init("hentSamPerson")
         harAdressebeskyttelseMetric = metricsHelper.init("harAdressebeskyttelse")
         hentIdentMetric = metricsHelper.init("hentIdent")
         hentIdenterMetric = metricsHelper.init("hentIdenter")
@@ -100,8 +102,8 @@ class PersonService(
      *
      * @return [PdlPerson]
      */
-    fun <T : Ident> hentSamPerson(ident: T): SamPerson? {
-        return hentPersonMetric.measure {
+    fun <T : Ident> hentSamPerson(ident: T): PdlSamPerson? {
+        return hentSamPersonMetric.measure {
 
             logger.debug("Henter SAM person: ${ident.id.scrable()} fra pdl")
             val response = client.hentPerson(ident.id)
@@ -110,12 +112,12 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilSamPerson(it)
+                konverterTilSamPerson(ident, it)
             }
         }
     }
 
-    internal fun konverterTilSamPerson(pdlPerson: HentPerson) : SamPerson {
+    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson) : PdlSamPerson {
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -126,7 +128,7 @@ class PersonService(
         val statsborgerskap = pdlPerson.statsborgerskap
             .distinctBy { it.land }
 
-        val sivilstand = pdlPerson.sivilstand
+        val sivilstand = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk }
 
         val foedsel = pdlPerson.foedsel
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -150,7 +152,7 @@ class PersonService(
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        return SamPerson(
+        return PdlSamPerson(
             navn,
             kjoenn,
             foedsel,
@@ -163,6 +165,8 @@ class PersonService(
             kontaktadresse,
             kontaktinformasjonForDoedsbo,
         )
+
+        //return PersonSamordning(ident.id, pdlSamPerson, kodeverkService)
     }
 
 

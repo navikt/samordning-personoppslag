@@ -5,7 +5,8 @@ import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.pdl.model.PdlPerson
-import no.nav.samordning.person.pdl.model.SamPerson
+import no.nav.samordning.person.sam.PersonSamordning
+import no.nav.samordning.person.sam.PersonSamordningService
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus
@@ -19,6 +20,7 @@ import java.lang.IllegalStateException
 class Controller(
     private val personService: PersonService,
     private val kodeverkService: KodeverkService,
+    private val personSamordningService: PersonSamordningService
 ) {
 
 
@@ -36,11 +38,11 @@ class Controller(
 
     @PostMapping("/api/samperson")
     @ProtectedWithClaims("entraid")
-    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<SamPerson?> {
+    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning?> {
 
         try {
             Fodselsnummer.fra(request.fnr)
-            return ResponseEntity.ok().body(personService.hentSamPerson(NorskIdent(request.fnr)))
+            return ResponseEntity.ok().body(personSamordningService.hentPersonSamordning(request.fnr))
         } catch (ise: IllegalStateException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
         } catch (pe: PersonoppslagException) {

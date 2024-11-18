@@ -43,14 +43,14 @@ data class UtenlandskIdentifikasjonsnummer(
         val metadata: Metadata
 )
 
-data class SamPerson(
+data class PdlSamPerson(
         val navn: Navn? = null,
         val kjoenn: Kjoenn? = null,
         val foedsel: Foedsel? = null,
         val adressebeskyttelse: List<AdressebeskyttelseGradering>,
         val doedsfall: Doedsfall? = null,
         val statsborgerskap: List<Statsborgerskap>,
-        val sivilstand: List<Sivilstand>,
+        val sivilstand: Sivilstand?,
         val oppholdsadresse: Oppholdsadresse? = null,
         val bostedsadresse: Bostedsadresse? = null,
         val kontaktadresse: Kontaktadresse? = null,

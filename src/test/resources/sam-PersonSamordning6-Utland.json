@@ -1,0 +1,69 @@
+{
+  "fnr": "13507317515",
+  "kortnavn": "SARKOFAG INTUITIV",
+  "fornavn": "INTUITIV",
+  "mellomnavn": "",
+  "etternavn": "SARKOFAG",
+  "diskresjonskode": "",
+  "sivilstand": "UGIF",
+  "dodsdato": null,
+  "utenlandsAdresse": {
+    "adresselinje1": "Rue 2",
+    "adresselinje2": "0003 Paris",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "FRANKRIKE",
+    "uadresse": true,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": true,
+    "aadresse": false
+  },
+  "tilleggsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": null,
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "postAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "bostedsAdresse": {
+    "boadresse1": "",
+    "boadresse2": "",
+    "postnr": "",
+    "poststed": "",
+    "aadresse": false
+  },
+  "utbetalingsAdresse": {
+    "adresselinje1": "Rue 2",
+    "adresselinje2": "0003 Paris",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "FRANKRIKE",
+    "uadresse": true,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": true,
+    "aadresse": false
+  }
+}

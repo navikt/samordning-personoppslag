@@ -1,0 +1,69 @@
+{
+  "fnr": "28517846750",
+  "kortnavn": "AKKORD HUSLØS",
+  "fornavn": "HUSLØS",
+  "mellomnavn": "",
+  "etternavn": "AKKORD",
+  "diskresjonskode": "",
+  "sivilstand": "UGIF",
+  "dodsdato": null,
+  "utenlandsAdresse": {
+    "adresselinje1": "1KOLEJOWA 6/5",
+    "adresselinje2": "3000 CAPITAL WEST 18-500 KOLNO",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "CHILE",
+    "uadresse": true,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": true,
+    "aadresse": false
+  },
+  "tilleggsAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": null,
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "postAdresse": {
+    "adresselinje1": "",
+    "adresselinje2": "",
+    "adresselinje3": "",
+    "postnr": "",
+    "poststed": "",
+    "land": "",
+    "uadresse": false,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": false,
+    "aadresse": false
+  },
+  "bostedsAdresse": {
+    "boadresse1": "",
+    "boadresse2": "",
+    "postnr": "",
+    "poststed": "",
+    "aadresse": false
+  },
+  "utbetalingsAdresse": {
+    "adresselinje1": "1KOLEJOWA 6/5",
+    "adresselinje2": "3000 CAPITAL WEST 18-500 KOLNO",
+    "adresselinje3": "",
+    "postnr": null,
+    "poststed": null,
+    "land": "CHILE",
+    "uadresse": true,
+    "tadresse": false,
+    "postAdresse": "",
+    "padresse": true,
+    "aadresse": false
+  }
+}
