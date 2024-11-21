@@ -63,21 +63,21 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
 
-#  deployToQ1:
-#    needs: build_and_tag
-#    permissions:
-#      contents: "read"
-#      id-token: "write"
-#    name: 'Deploy NAIS Q1'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Deploy to Q1
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          "CLUSTER": dev-fss
-#          "RESOURCE": .nais/dev_q1.yaml
-#          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
+  deployToQ1:
+    needs: build_and_tag
+    permissions:
+      contents: "read"
+      id-token: "write"
+    name: 'Deploy NAIS Q1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Q1
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          "CLUSTER": dev-fss
+          "RESOURCE": .nais/dev_q1.yaml
+          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
 
   deployToQ2:
