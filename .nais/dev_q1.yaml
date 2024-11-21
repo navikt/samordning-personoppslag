@@ -28,7 +28,7 @@ spec:
   image: {{ image }}
   port: 8080
   ingresses:
-    - "https://samordning-personoppslag-q1.dev.intern.nav.no"
+    - https://samordning-personoppslag-q1.dev.intern.nav.no
   secureLogs:
     enabled: false
   prometheus:
@@ -70,6 +70,10 @@ spec:
       value: https://pdl-api-q1.intern.dev.nav.no/graphql
     - name: PDL_SCOPE
       value: api://dev-fss.pdl.pdl-q1-api/.default
+    - name: KODEVERK_URL
+      value: https://kodeverk-api.intern.nav.no
+    - name: KODEVERK_SCOPE
+      value: api//dev-gcp.felleskodeverk-api/.default
   observability:
     autoInstrumentation:
       enabled: true

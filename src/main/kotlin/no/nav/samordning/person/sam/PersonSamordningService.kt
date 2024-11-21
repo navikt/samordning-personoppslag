@@ -2,16 +2,19 @@ package no.nav.samordning.person.sam
 
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PersonService
-import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.FORTROLIG
-import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG
-import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND
+import no.nav.samordning.person.pdl.PersonoppslagException
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.*
 import no.nav.samordning.person.pdl.model.KontaktadresseType
 import no.nav.samordning.person.pdl.model.NorskIdent
+import no.nav.samordning.person.pdl.model.PdlPerson
 import no.nav.samordning.person.pdl.model.PdlSamPerson
 import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_6_SPSF
 import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_7_SPFO
+import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.Date
+import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 @Service
 class PersonSamordningService(
@@ -20,13 +23,55 @@ class PersonSamordningService(
 
 ) {
 
-   fun hentPersonSamordning(fnr: String) : PersonSamordning? {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
-        val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
-
-        return pdlSamPerson?.let { pdlsam ->
-            konvertertilPersonSamordning(fnr, pdlsam)
+    fun hentPdlPerson(fnr: String): PdlPerson? {
+        try {
+            return personService.hentPerson(NorskIdent(fnr))
+        } catch (pe: PersonoppslagException) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message).also {
+                logger.warn("Feil ved henting av person fra PDL", pe)
+            }
         }
+    }
+
+
+    fun hentPersonSamordning(fnr: String) : PersonSamordning? {
+
+        try {
+            val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
+            return pdlSamPerson?.let { pdlsam ->
+                konvertertilPersonSamordning(fnr, pdlsam)
+            }
+        }  catch (pe: PersonoppslagException) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message).also {
+                logger.warn("Feil ved henting av person fra PDL", pe)
+            }
+        }
+
+    }
+
+    fun hentPerson(fnr: String): Person = konverterTilPerson(fnr, hentPersonSamordning(fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet"))
+
+    internal fun konverterTilPerson(fnr: String, personSamordning: PersonSamordning): Person {
+        return if (personSamordning.diskresjonskode != null) {
+                populatePersonWithDiskresjonskode(fnr, personSamordning)
+            } else {
+                val utbetaling = prioriterAdresse(
+                    personSamordning.utenlandsAdresse,
+                    personSamordning.tilleggsAdresse,
+                    personSamordning.postAdresse,
+                    personSamordning.bostedsAdresse)
+               Person(
+                   fnr,
+                   fornavn = personSamordning.fornavn,
+                   mellomnavn = personSamordning.mellomnavn,
+                   etternavn = personSamordning.etternavn,
+                   sivilstand = personSamordning.sivilstand,
+                   dodsdato = personSamordning.dodsdato,
+                   utbetalingsAdresse = utbetaling
+               )
+            }
     }
 
     internal fun konvertertilPersonSamordning(fnr: String, pdlSamPerson: PdlSamPerson) : PersonSamordning {
@@ -39,10 +84,10 @@ class PersonSamordningService(
             }
         }
 
-        val kortnavn = if (diskresjonskode == null)  pdlSamPerson.navn?.forkortetNavn else ""
-        val fornavn = if (diskresjonskode == null)  pdlSamPerson.navn?.fornavn  else ""
-        val mellomnavn = if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
-        val etternavn = if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
+        val kortnavn = pdlSamPerson.navn?.forkortetNavn //  if (diskresjonskode == null)  pdlSamPerson.navn?.forkortetNavn else ""
+        val fornavn = pdlSamPerson.navn?.fornavn        // if (diskresjonskode == null)  pdlSamPerson.navn?.fornavn  else ""
+        val mellomnavn = pdlSamPerson.navn?.mellomnavn  // if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
+        val etternavn = pdlSamPerson.navn?.etternavn    // if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
 
         val sivilstand = pdlSamPerson.sivilstand?.type?.name
 
@@ -81,13 +126,13 @@ class PersonSamordningService(
                     adresselinje3 = postboksNummerNavn,
                     postnr = postkode,
                     poststed = bySted,
-                    land = it.utenlandskAdresse.landkode.let(kodeverkService::finnLandkode)?.land
+                    land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
                 )
             }
         }
 
         val postAdresse = pdlSamPerson.kontaktadresse?.let {
-            if(it.type == KontaktadresseType.Innland) it.vegadresse?.run {
+            if (it.type == KontaktadresseType.Innland) it.vegadresse?.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
@@ -100,7 +145,7 @@ class PersonSamordningService(
                     adresselinje3 = postboksNummerNavn,
                     postnr = postkode,
                     poststed = bySted,
-                    land = it.utenlandskAdresse.landkode.let(kodeverkService::finnLandkode)?.land
+                    land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
                 )
             }
         }
@@ -114,11 +159,11 @@ class PersonSamordningService(
             diskresjonskode = diskresjonskode,
             sivilstand = sivilstand,
             dodsdato = dodsdato,
-            utenlandsAdresse = if (diskresjonskode == null) utenlandsAdresse else null,
-            tilleggsAdresse = if (diskresjonskode == null) tilleggsAdresse else null,
-            postAdresse = if (diskresjonskode == null) postAdresse else null,
-            bostedsAdresse = if (diskresjonskode == null) bostedsAdresse else null,
-            utbetalingsAdresse = if (diskresjonskode == null) prioriterAdresse(utenlandsAdresse, tilleggsAdresse, postAdresse, bostedsAdresse) else null
+            utenlandsAdresse = utenlandsAdresse,    // if (diskresjonskode == null) utenlandsAdresse else null,
+            tilleggsAdresse = tilleggsAdresse,      // if (diskresjonskode == null) tilleggsAdresse else null,
+            postAdresse = postAdresse,              // if (diskresjonskode == null) postAdresse else null,
+            bostedsAdresse = bostedsAdresse,        // if (diskresjonskode == null) bostedsAdresse else null,
+            //utbetalingsAdresse = if (diskresjonskode == null) prioriterAdresse(utenlandsAdresse, tilleggsAdresse, postAdresse, bostedsAdresse) else null
         )
 
         return personSamordning
@@ -138,7 +183,6 @@ class PersonSamordningService(
             AdresseSamordning()
         }
     }
-
 
     internal fun populateUtbetalingsAdresse(adresse: AdresseSamordning?, bostedAdresse: BostedsAdresseSamordning?): AdresseSamordning {
         return if (adresse != null) {
@@ -161,5 +205,18 @@ class PersonSamordningService(
             )
         }
     }
+
+    internal fun populatePersonWithDiskresjonskode(fnr: String, personSamordning: PersonSamordning): Person {
+        return Person(
+            fnr,
+            "",
+            "",
+            "",
+            personSamordning.sivilstand,
+            personSamordning.dodsdato,
+            null
+        )
+    }
+
 
 }

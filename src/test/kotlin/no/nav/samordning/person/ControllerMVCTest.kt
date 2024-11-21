@@ -6,38 +6,12 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearAllMocks
 import io.mockk.every
+import io.mockk.verify
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.RestTemplateConfigTest
-import no.nav.samordning.person.pdl.model.Adressebeskyttelse
-import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.FORTROLIG
-import no.nav.samordning.person.pdl.model.Bostedsadresse
-import no.nav.samordning.person.pdl.model.Endring
-import no.nav.samordning.person.pdl.model.Endringstype
-import no.nav.samordning.person.pdl.model.Foedsel
-import no.nav.samordning.person.pdl.model.Folkeregistermetadata
-import no.nav.samordning.person.pdl.model.GeografiskTilknytning
-import no.nav.samordning.person.pdl.model.GeografiskTilknytningResponse
-import no.nav.samordning.person.pdl.model.GeografiskTilknytningResponseData
-import no.nav.samordning.person.pdl.model.GtType
-import no.nav.samordning.person.pdl.model.HentIdenter
-import no.nav.samordning.person.pdl.model.HentPerson
-import no.nav.samordning.person.pdl.model.HentPersonResponse
-import no.nav.samordning.person.pdl.model.HentPersonResponseData
-import no.nav.samordning.person.pdl.model.IdentGruppe
-import no.nav.samordning.person.pdl.model.IdentInformasjon
-import no.nav.samordning.person.pdl.model.IdenterDataResponse
-import no.nav.samordning.person.pdl.model.IdenterResponse
-import no.nav.samordning.person.pdl.model.Kjoenn
-import no.nav.samordning.person.pdl.model.KjoennType
-import no.nav.samordning.person.pdl.model.Metadata
-import no.nav.samordning.person.pdl.model.Navn
-import no.nav.samordning.person.pdl.model.Sivilstand
-import no.nav.samordning.person.pdl.model.Sivilstandstype
-import no.nav.samordning.person.pdl.model.Statsborgerskap
-import no.nav.samordning.person.pdl.model.UtenlandskAdresse
-import no.nav.samordning.person.pdl.model.Vegadresse
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterEach
@@ -59,7 +33,7 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.postForObject
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 
 @SpringBootTest(classes = [RestTemplateConfigTest::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -174,7 +148,6 @@ internal class ControllerMVCTest {
 
     }
 
-
     @Test
     fun `correct call with valid fnr response return persondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
@@ -200,7 +173,7 @@ internal class ControllerMVCTest {
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
 
-        mvc.post("/api/person") {
+        mvc.post("/api/pdlperson") {
                 header("Authorization", "Bearer $token")
                 contentType = MediaType.APPLICATION_JSON
                 content = requestBody
@@ -253,12 +226,12 @@ internal class ControllerMVCTest {
                 jsonPath("$.fnr") { value("1213123123")}
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
-                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
-                jsonPath("$.utbetalingsAdresse.adresselinje3") { value(null) }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("1021 PLK UK") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("LONDON") }
-                jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
+                jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
+                jsonPath("$.utenlandsAdresse.adresselinje2") { value("GREATEREAST") }
+                jsonPath("$.utenlandsAdresse.adresselinje3") { value(null) }
+                jsonPath("$.utenlandsAdresse.postnr") { value("1021 PLK UK") }
+                jsonPath("$.utenlandsAdresse.poststed") { value("LONDON") }
+                jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                 jsonPath("$.dodsdato") { value(null) }
                 jsonPath("$.sivilstand") { value("SKILT") }
                 jsonPath("$.diskresjonskode") { value(null) }
@@ -303,9 +276,9 @@ internal class ControllerMVCTest {
                 jsonPath("$.fnr") { value("1213123123")}
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020A") }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
                 jsonPath("$.sivilstand") { value("SKILT") }
                 jsonPath("$.diskresjonskode") { value(null) }
@@ -347,14 +320,105 @@ internal class ControllerMVCTest {
             .andExpect { status { isOk() }
 
                 jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.kortnavn") { value("") }
-                jsonPath("$.etternavn") { value("") }
-                jsonPath("$.utbetalingsAdresse") { value(null) }
+                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.kortnavn") { value("FME") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
                 jsonPath("$.sivilstand") { value("SKILT") }
                 jsonPath("$.diskresjonskode") { value("SPFO") }
             }
 
+    }
+
+    @Test
+    fun `correct call to person gradert boested norge with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/person") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.fornavn") { value("") }
+                jsonPath("$.etternavn") { value("") }
+                jsonPath("$.utbetalingsAdresse") { value(null) }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+            }
+
+        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+    }
+
+    @Test
+    fun `correct call to person ugradert boested norge with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/person") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+            }
+
+        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
     }
 
 
