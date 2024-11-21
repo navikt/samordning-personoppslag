@@ -36,6 +36,7 @@ class PersonSamordningService(
     }
 
 
+    //for SAM
     fun hentPersonSamordning(fnr: String) : PersonSamordning? {
 
         try {
@@ -51,6 +52,7 @@ class PersonSamordningService(
 
     }
 
+    //for eksterne-samhandlere
     fun hentPerson(fnr: String): Person = konverterTilPerson(fnr, hentPersonSamordning(fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet"))
 
     internal fun konverterTilPerson(fnr: String, personSamordning: PersonSamordning): Person {
@@ -100,7 +102,7 @@ class PersonSamordningService(
                 adresselinje3 = postboksNummerNavn,
                 postnr = postkode,
                 poststed = bySted,
-                land = kodeverkService.finnLandkode(landkode)?.land
+                land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
             )
         }
 

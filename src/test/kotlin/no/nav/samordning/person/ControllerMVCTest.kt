@@ -421,6 +421,56 @@ internal class ControllerMVCTest {
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
     }
 
+    @Test
+    fun `correct call to person ugradert boested utland with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
+
+        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
+        val kodeverkLandResponse: KodeverkResponse? = try {
+            val resource = javaClass.getResource("/kodeverk-land.json").readText()
+            mapper.readValue<KodeverkResponse>(resource)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            null
+        }
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/person") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
+                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
+                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("1021 PLK UK") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("LONDON") }
+                jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
+
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+            }
+
+        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+    }
+
+
 
     fun issueSystembrukerToken(
         system: String = UUID.randomUUID().toString(),
