@@ -1,13 +1,10 @@
 package no.nav.samordning.person.pdl
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
-import no.nav.common.token_client.cache.CaffeineTokenCache
 import no.nav.samordning.interceptor.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
-import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.Behandlingsnummer.*
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -23,15 +20,14 @@ import org.springframework.web.client.RestTemplate
 
 @Configuration
 @Profile("!test")
-class PdlConfiguration(@Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()) {
-
+class PdlConfiguration {
 
     @Bean
     fun azureAdMachineToMachineTokenInterceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor {
         val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
-            .withCache(CaffeineTokenCache())
-                .withNaisDefaults()
-                .buildMachineToMachineTokenClient()
+            //.withCache(CaffeineTokenCache())
+            .withNaisDefaults()
+            .buildMachineToMachineTokenClient()
       return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
     }
 
