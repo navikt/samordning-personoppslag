@@ -51,11 +51,8 @@ class PersonSamordningService(
             val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
             logger.debug("Ferdig hentet pdlSamPerson -> konverter til PersonSamordning")
             return personSamordningMetric.measure {
-                pdlSamPerson?.let { pdlsam ->
-                    konvertertilPersonSamordning(fnr, pdlsam)
-                }.also{
-                    logger.debug("ferdig kovertert til PersonSamordning")
-                }
+                pdlSamPerson?.let { pdlsam -> konvertertilPersonSamordning(fnr, pdlsam) }.also{
+                    logger.debug("ferdig kovertert til PersonSamordning") }
             }
         }  catch (pe: PersonoppslagException) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message).also {

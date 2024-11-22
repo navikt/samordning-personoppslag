@@ -62,7 +62,7 @@ spec:
   webproxy: true
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: dev
+      value: dev, q2
     - name: ENV
       value: q2
     - name: "OTEL_RESOURCE_ATTRIBUTES"

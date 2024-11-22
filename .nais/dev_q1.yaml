@@ -61,9 +61,9 @@ spec:
   webproxy: true
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: dev
+      value: dev, q1
     - name: ENV
-      value: q2
+      value: q1
     - name: "OTEL_RESOURCE_ATTRIBUTES"
       value: "deployment.environment.name=q2"
     - name: PDL_URL
