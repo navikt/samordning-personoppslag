@@ -1,7 +1,8 @@
 package no.nav.samordning.person.pdl
 
 import no.nav.samordning.person.pdl.model.NorskIdent
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -9,14 +10,14 @@ import org.junit.jupiter.api.Test
 internal class PdlPersonServiceIntegrationTest {
 
     private val mockPDLConfiguration = PdlConfiguration()
-    private val mockAdClient = mockPDLConfiguration.azureAdMachineToMachineTokenInterceptor("Scope")
+    //private val mockAdClient = mockPDLConfiguration.pdlRestTemplate("Scope")
 
     /**
      * Paste valid token
      */
     val oauthtoken = ""
 
-    private val mockClient = mockPDLConfiguration.pdlRestTemplate(mockAdClient)
+    private val mockClient = mockPDLConfiguration.pdlRestTemplate("Scope")
 
     /**
      * Use local port forwarding using kubectl and nais

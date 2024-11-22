@@ -65,11 +65,11 @@ spec:
     - name: ENV
       value: q1
     - name: "OTEL_RESOURCE_ATTRIBUTES"
-      value: "deployment.environment.name=q2"
+      value: "deployment.environment.name=q1"
     - name: PDL_URL
       value: https://pdl-api-q1.intern.dev.nav.no/graphql
     - name: PDL_SCOPE
-      value: api://dev-fss.pdl.pdl-q1-api/.default
+      value: api://dev-fss.pdl.pdl-api-q1/.default
     - name: KODEVERK_URL
       value: https://kodeverk-api.intern.nav.no
     - name: KODEVERK_SCOPE

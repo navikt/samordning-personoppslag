@@ -22,23 +22,25 @@ import org.springframework.web.client.RestTemplate
 @Profile("!test")
 class PdlConfiguration {
 
-    @Bean
-    fun azureAdMachineToMachineTokenInterceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor {
-        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
-            //.withCache(CaffeineTokenCache())
-            .withNaisDefaults()
-            .buildMachineToMachineTokenClient()
-      return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
-    }
+//    @Bean
+//    fun azureAdMachineToMachineTokenInterceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor {
+//        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
+//            .withNaisDefaults()
+//            .buildMachineToMachineTokenClient()
+//      return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
+//    }
+
+    fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
+        .withNaisDefaults()
+        .buildMachineToMachineTokenClient()
 
     @Bean
-    fun pdlRestTemplate(azureAdMachineToMachineTokenInterceptor: ClientHttpRequestInterceptor): RestTemplate {
-
+    fun pdlRestTemplate(@Value("\${PDL_SCOPE}") scope: String): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
-                azureAdMachineToMachineTokenInterceptor,
+                AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdTokenClient(), scope),
                 PdlInterceptor())
             .build()
     }
