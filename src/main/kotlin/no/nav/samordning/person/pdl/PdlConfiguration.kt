@@ -1,7 +1,6 @@
 package no.nav.samordning.person.pdl
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
-import no.nav.samordning.interceptor.AzureAdMachineToMachineTokenClientHttpRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.person.pdl.Behandlingsnummer.*
 import org.slf4j.LoggerFactory
@@ -22,34 +21,23 @@ import org.springframework.web.client.RestTemplate
 @Profile("!test")
 class PdlConfiguration {
 
-//    @Bean
-//    fun azureAdMachineToMachineTokenInterceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor {
-//        val azureAdM2MClient = AzureAdTokenClientBuilder.builder()
-//            .withNaisDefaults()
-//            .buildMachineToMachineTokenClient()
-//      return AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdM2MClient, scope)
-//    }
-
-    fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
-        .withNaisDefaults()
-        .buildMachineToMachineTokenClient()
-
     @Bean
     fun pdlRestTemplate(@Value("\${PDL_SCOPE}") scope: String): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
-                AzureAdMachineToMachineTokenClientHttpRequestInterceptor(azureAdTokenClient(), scope),
-                PdlInterceptor())
+                PdlInterceptor(scope))
             .build()
     }
 
-    internal class PdlInterceptor() : ClientHttpRequestInterceptor {
+    internal class PdlInterceptor(private val scope: String) : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
+
+            request.headers.setBearerAuth(azureAdTokenClient().createMachineToMachineToken(scope)  )
 
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"
             request.headers["Tema"] = "PEN"
@@ -64,5 +52,9 @@ class PdlConfiguration {
             logger.debug("PdlInterceptor httpRequest headers: ${request.headers}")
             return execution.execute(request, body)
         }
+
+        fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
+            .withNaisDefaults()
+            .buildMachineToMachineTokenClient()
     }
 }

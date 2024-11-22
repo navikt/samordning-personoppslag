@@ -66,14 +66,15 @@ class PersonService(
     fun <T : Ident> hentSamPerson(ident: T): PdlSamPerson? {
         return hentSamPersonMetric.measure {
 
-            logger.debug("Henter SAM person: ${ident.id.scrable()} fra pdl")
+            logger.debug("hentSamPerson: ${ident.id.scrable()} fra pdl")
             val response = client.hentPerson(ident.id)
+            logger.debug("hentSamPerson ferdig")
 
             if (!response.errors.isNullOrEmpty())
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilSamPerson(ident, it)
+                konverterTilSamPerson(ident, it).also { logger.debug("ferdig med koverting til PdlSamPerson") }
             }
         }
     }

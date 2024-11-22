@@ -71,7 +71,9 @@ class PersonSamordningService(
 
     internal fun konverterTilPerson(fnr: String, personSamordning: PersonSamordning): Person {
         return if (personSamordning.diskresjonskode != null) {
-                populatePersonWithDiskresjonskode(fnr, personSamordning)
+                populatePersonWithDiskresjonskode(fnr, personSamordning).also {
+                    logger.debug("person med diskresjonkode ferdig")
+                }
             } else {
                 val utbetaling = prioriterAdresse(
                     personSamordning.utenlandsAdresse,
@@ -86,8 +88,9 @@ class PersonSamordningService(
                 sivilstand = personSamordning.sivilstand,
                 dodsdato = personSamordning.dodsdato,
                 utbetalingsAdresse = utbetaling
-            )
-            }
+            ).also { logger.debug("person ferdig") }
+
+        }
     }
 
     internal fun konvertertilPersonSamordning(fnr: String, pdlSamPerson: PdlSamPerson) : PersonSamordning {
