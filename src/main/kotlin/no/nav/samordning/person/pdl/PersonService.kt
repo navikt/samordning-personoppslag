@@ -33,43 +33,6 @@ class PersonService(
         hentSamPerson = metricsHelper.init("hentSamPerson")
     }
 
-//    fun <T : Ident> hentPersonUtenlandskIdent(ident: T): PersonUtenlandskIdent? {
-//        return hentPersonMetric.measure {
-//
-//            logger.debug("Henter hentPersonUtenlandskIdent for ident: ${ident.id} fra pdl")
-//            val response = client.hentPersonUtenlandsIdent(ident.id)
-//
-//            if (!response.errors.isNullOrEmpty())
-//                handleError(response.errors)
-//
-//            return@measure response.data?.hentPerson
-//                ?.let {
-//                    val identer = hentIdenter(ident)
-//                    konverterTilPersonMedUid(it, identer)
-//                }
-//        }
-//    }
-
-//    internal fun konverterTilPersonMedUid(
-//        pdlPerson: HentPersonUtenlandskIdent,
-//        identer: List<IdentInformasjon>,
-//        ): PersonUtenlandskIdent {
-//
-//        val navn = pdlPerson.navn
-//            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-//
-//        val kjoenn = pdlPerson.kjoenn
-//            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-//
-//        return PersonUtenlandskIdent(
-//            identer,
-//            navn,
-//            kjoenn,
-//            pdlPerson.utenlandskIdentifikasjonsnummer
-//        )
-//    }
-
-
     /**
      * Funksjon for å hente ut person basert på fnr.
      *
@@ -323,35 +286,6 @@ class PersonService(
         }
     }
 
-//    fun sokPerson(sokKriterier: SokKriterier): Set<IdentInformasjon> {
-//        return sokPersonMetric.measure {
-//            val response = client.sokPerson(makeListCriteriaFromSok(sokKriterier))
-//
-//            if (!response.errors.isNullOrEmpty())
-//                handleError(response.errors)
-//
-//            val hits = response.data?.sokPerson?.hits
-//
-//            return@measure if (hits?.size == 1) {
-//                hits.first().identer.toSet()
-//            } else {
-//                emptySet()
-//            }
-//        }
-//    }
-
-//    private fun makeListCriteriaFromSok(sokKriterier: SokKriterier): List<SokCriteria> {
-//        val INNEHOLDER = "contains"
-//        val ER_LIK = "equals"
-//
-//        return listOf(
-//            SokCriteria("person.navn.fornavn",mapOf(INNEHOLDER to sokKriterier.fornavn)),
-//            SokCriteria("person.navn.etternavn", mapOf(INNEHOLDER to sokKriterier.etternavn)),
-//            SokCriteria("person.foedsel.foedselsdato", mapOf(ER_LIK to "${sokKriterier.foedselsdato}"))
-//        )
-//
-//    }
-
     /**
      * Funksjon for å hente ut en person sin geografiske tilknytning.
      *
@@ -378,7 +312,10 @@ class PersonService(
         val code = error.extensions?.code ?: "unknown_error"
         val message = error.message ?: "Error message from PDL is missing"
 
-        throw PersonoppslagException(message, code)
+        throw PersonoppslagException(message, code).also {
+            logger.error("Feil med kall til PDL", it)
+        }
+
     }
 
 }
