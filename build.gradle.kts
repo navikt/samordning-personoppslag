@@ -19,7 +19,7 @@ val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.11.3"
 
 plugins {
-    val pluginSpringBootVersion = "3.3.5"
+    val pluginSpringBootVersion = "3.4.0"
     val pluginKotlinVersion = "2.0.21"
 
     kotlin("jvm") version pluginKotlinVersion
