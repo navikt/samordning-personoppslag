@@ -1,6 +1,5 @@
 package no.nav.samordning.person.pdl
 
-import no.nav.samordning.person.pdl.PdlConfiguration.PdlInterceptor
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -18,9 +17,8 @@ class RestTemplateConfigTest {
 
     @Bean("pdlRestTemplate")
     fun pdlRestTemplate(): RestTemplate = RestTemplateBuilder()
-            .errorHandler(DefaultResponseErrorHandler())
-            .additionalInterceptors(PdlInterceptor())
-            .build()
+        .errorHandler(DefaultResponseErrorHandler())
+        .build()
 
     @Bean("kodeverkRestTemplate")
     fun kodeverkRestTemplate(): RestTemplate = RestTemplateBuilder()
