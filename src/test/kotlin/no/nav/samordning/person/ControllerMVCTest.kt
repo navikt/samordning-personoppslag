@@ -228,7 +228,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.etternavn") { value("Etternavn") }
                 jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
                 jsonPath("$.utenlandsAdresse.adresselinje2") { value("GREATEREAST") }
-                jsonPath("$.utenlandsAdresse.adresselinje3") { value(null) }
+                jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
                 jsonPath("$.utenlandsAdresse.postnr") { value("1021 PLK UK") }
                 jsonPath("$.utenlandsAdresse.poststed") { value("LONDON") }
                 jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }

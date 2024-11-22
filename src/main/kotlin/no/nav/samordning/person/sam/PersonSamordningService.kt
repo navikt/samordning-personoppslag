@@ -99,11 +99,13 @@ class PersonSamordningService(
             AdresseSamordning(
                 adresselinje1 = adressenavnNummer,
                 adresselinje2 = bygningEtasjeLeilighet,
-                adresselinje3 = postboksNummerNavn,
+                adresselinje3 = postboksNummerNavn ?: "",
                 postnr = postkode,
                 poststed = bySted,
                 land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
-            )
+            ).also{
+                logger.debug("Bygget ferdig utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+            }
         }
 
         val bostedsAdresse = pdlSamPerson.bostedsadresse?.vegadresse?.run {
@@ -112,7 +114,9 @@ class PersonSamordningService(
                 boadresse1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                 postnr = postnummer,
                 poststed = poststed
-            )
+            ).also{
+                logger.debug("Bygget ferdig bostedsAdresse result: $it")
+            }
         }
         val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.let {
             if (it.vegadresse != null) it.vegadresse.run {
@@ -120,16 +124,20 @@ class PersonSamordningService(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
-                )
+                ).also{
+                    logger.debug("Bygget ferdig tilleggsAdresse result: $it")
+                }
             } else it.utenlandskAdresse?.run {
                 AdresseSamordning(
                     adresselinje1 = adressenavnNummer,
                     adresselinje2 = bygningEtasjeLeilighet,
-                    adresselinje3 = postboksNummerNavn,
+                    adresselinje3 = postboksNummerNavn ?: "",
                     postnr = postkode,
                     poststed = bySted,
                     land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
-                )
+                ).also{
+                    logger.debug("Bygget ferdig (tilleggsAdresse) utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+                }
             }
         }
 
@@ -139,7 +147,9 @@ class PersonSamordningService(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
-                )
+                ).also{
+                    logger.debug("Bygget ferdig postAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+                }
             } else it.utenlandskAdresse?.run {
                 AdresseSamordning(
                     adresselinje1 = adressenavnNummer,
@@ -148,7 +158,9 @@ class PersonSamordningService(
                     postnr = postkode,
                     poststed = bySted,
                     land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
-                )
+                ).also{
+                    logger.debug("Bygget ferdig (postAdresse) utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+                }
             }
         }
 
