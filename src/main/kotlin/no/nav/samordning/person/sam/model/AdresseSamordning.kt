@@ -1,4 +1,4 @@
-package no.nav.samordning.person.sam
+package no.nav.samordning.person.sam.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 

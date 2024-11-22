@@ -1,9 +1,6 @@
-/**
- *
- */
-package no.nav.samordning.person.sam
+package no.nav.samordning.person.sam.model
 
-import java.util.Date
+import java.util.*
 
 data class PersonSamordning(
     val fnr: String? = null,

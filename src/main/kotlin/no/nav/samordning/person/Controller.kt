@@ -4,9 +4,9 @@ import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.kodeverk.Landkode
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.PdlPerson
-import no.nav.samordning.person.sam.Person
-import no.nav.samordning.person.sam.PersonSamordning
 import no.nav.samordning.person.sam.PersonSamordningService
+import no.nav.samordning.person.sam.model.Person
+import no.nav.samordning.person.sam.model.PersonSamordning
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus

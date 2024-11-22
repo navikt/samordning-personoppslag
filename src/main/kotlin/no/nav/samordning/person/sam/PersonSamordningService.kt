@@ -10,8 +10,12 @@ import no.nav.samordning.person.pdl.model.KontaktadresseType
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.pdl.model.PdlPerson
 import no.nav.samordning.person.pdl.model.PdlSamPerson
-import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_6_SPSF
-import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_7_SPFO
+import no.nav.samordning.person.sam.model.AdresseSamordning
+import no.nav.samordning.person.sam.model.BostedsAdresseSamordning
+import no.nav.samordning.person.sam.model.Person
+import no.nav.samordning.person.sam.model.PersonSamordning
+import no.nav.samordning.person.sam.model.PersonSamordning.Companion.DISKRESJONSKODE_6_SPSF
+import no.nav.samordning.person.sam.model.PersonSamordning.Companion.DISKRESJONSKODE_7_SPFO
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -51,7 +55,7 @@ class PersonSamordningService(
             val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
             logger.debug("Ferdig hentet pdlSamPerson -> konverter til PersonSamordning")
             return personSamordningMetric.measure {
-                pdlSamPerson?.let { pdlsam -> konvertertilPersonSamordning(fnr, pdlsam) }.also{
+                return@measure pdlSamPerson?.let { pdlsam -> konvertertilPersonSamordning(fnr, pdlsam) }.also{
                     logger.debug("ferdig kovertert til PersonSamordning") }
             }
         }  catch (pe: PersonoppslagException) {
@@ -74,15 +78,15 @@ class PersonSamordningService(
                     personSamordning.tilleggsAdresse,
                     personSamordning.postAdresse,
                     personSamordning.bostedsAdresse)
-               Person(
-                   fnr,
-                   fornavn = personSamordning.fornavn,
-                   mellomnavn = personSamordning.mellomnavn,
-                   etternavn = personSamordning.etternavn,
-                   sivilstand = personSamordning.sivilstand,
-                   dodsdato = personSamordning.dodsdato,
-                   utbetalingsAdresse = utbetaling
-               )
+            Person(
+                fnr,
+                fornavn = personSamordning.fornavn,
+                mellomnavn = personSamordning.mellomnavn,
+                etternavn = personSamordning.etternavn,
+                sivilstand = personSamordning.sivilstand,
+                dodsdato = personSamordning.dodsdato,
+                utbetalingsAdresse = utbetaling
+            )
             }
     }
 
