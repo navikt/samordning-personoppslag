@@ -21,7 +21,6 @@ class PersonService(
     private lateinit var hentIdentMetric: Metric
     private lateinit var hentIdenterMetric: Metric
     private lateinit var hentGeografiskTilknytningMetric: Metric
-    private lateinit var hentSamPerson: Metric
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
@@ -30,7 +29,6 @@ class PersonService(
         hentIdentMetric = metricsHelper.init("hentIdent")
         hentIdenterMetric = metricsHelper.init("hentIdenter")
         hentGeografiskTilknytningMetric = metricsHelper.init("hentGeografiskTilknytning")
-        hentSamPerson = metricsHelper.init("hentSamPerson")
     }
 
     /**

@@ -1,6 +1,8 @@
 package no.nav.samordning.person.sam
 
 import no.nav.samordning.kodeverk.KodeverkService
+import no.nav.samordning.metrics.MetricsHelper
+import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.*
@@ -11,6 +13,7 @@ import no.nav.samordning.person.pdl.model.PdlSamPerson
 import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_6_SPSF
 import no.nav.samordning.person.sam.PersonSamordning.Companion.DISKRESJONSKODE_7_SPFO
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -19,12 +22,18 @@ import java.util.*
 @Service
 class PersonSamordningService(
     private val kodeverkService: KodeverkService,
-    private val personService: PersonService
-
+    private val personService: PersonService,
+    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
 ) {
 
+    private lateinit var personSamordningMetric: Metric
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    init {
+        personSamordningMetric = metricsHelper.init("personSamordning")
+    }
+
+    //Temp alt fra PDL
     fun hentPdlPerson(fnr: String): PdlPerson? {
         try {
             return personService.hentPerson(NorskIdent(fnr))
@@ -35,14 +44,18 @@ class PersonSamordningService(
         }
     }
 
-
     //for SAM
     fun hentPersonSamordning(fnr: String) : PersonSamordning? {
 
         try {
             val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
-            return pdlSamPerson?.let { pdlsam ->
-                konvertertilPersonSamordning(fnr, pdlsam)
+            logger.debug("Ferdig hentet pdlSamPerson -> konverter til PersonSamordning")
+            return personSamordningMetric.measure {
+                pdlSamPerson?.let { pdlsam ->
+                    konvertertilPersonSamordning(fnr, pdlsam)
+                }.also{
+                    logger.debug("ferdig kovertert til PersonSamordning")
+                }
             }
         }  catch (pe: PersonoppslagException) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message).also {
