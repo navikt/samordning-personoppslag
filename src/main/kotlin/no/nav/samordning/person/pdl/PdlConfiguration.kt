@@ -1,6 +1,7 @@
 package no.nav.samordning.person.pdl
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.person.pdl.Behandlingsnummer.*
 import org.slf4j.LoggerFactory
@@ -22,22 +23,33 @@ import org.springframework.web.client.RestTemplate
 class PdlConfiguration {
 
     @Bean
-    fun pdlRestTemplate(@Value("\${PDL_SCOPE}") scope: String): RestTemplate {
+    fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
+        .withNaisDefaults()
+        .buildMachineToMachineTokenClient()!!
+
+    @Bean
+    fun pdlRestTemplate(@Value("\${PDL_SCOPE}") scope: String, azureAdTokenClient: AzureAdMachineToMachineTokenClient?): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
-            .additionalInterceptors(
+            .interceptors(
                 IOExceptionRetryInterceptor(),
-                PdlInterceptor(scope))
+                PdlInterceptor(scope, azureAdTokenClient)
+               )
             .build()
     }
 
-    internal class PdlInterceptor(private val scope: String) : ClientHttpRequestInterceptor {
+    internal class PdlInterceptor(private val scope: String, private val azureAdTokenClient: AzureAdMachineToMachineTokenClient?) : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
-            request.headers.setBearerAuth(azureAdTokenClient().createMachineToMachineToken(scope)  )
+            if (azureAdTokenClient != null) {
+                logger.debug("AzureTokenClient is not null")
+                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
+            } else {
+                logger.debug("AzureTokenClient is null")
+            }
 
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"
             request.headers["Tema"] = "PEN"
@@ -49,12 +61,12 @@ class PdlConfiguration {
                 AFP_PRIVAT_SEKTOR.nummer + "," +
                 BARNEPENSJON.nummer
             // [Borger, Saksbehandler eller System]
+
             logger.debug("PdlInterceptor httpRequest headers: ${request.headers}")
+
             return execution.execute(request, body)
         }
 
-        fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
-            .withNaisDefaults()
-            .buildMachineToMachineTokenClient()
+
     }
 }

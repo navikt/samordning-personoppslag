@@ -17,7 +17,7 @@ internal class PdlPersonServiceIntegrationTest {
      */
     val oauthtoken = ""
 
-    private val mockClient = mockPDLConfiguration.pdlRestTemplate("Scope")
+    private val mockClient = mockPDLConfiguration.pdlRestTemplate("Scope", null)
 
     /**
      * Use local port forwarding using kubectl and nais
