@@ -5,19 +5,22 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpRequest
+import org.springframework.http.client.ClientHttpRequestExecution
+import org.springframework.http.client.ClientHttpRequestInterceptor
+import org.springframework.http.client.ClientHttpResponse
 
 @Disabled
 internal class PdlPersonServiceIntegrationTest {
 
     private val mockPDLConfiguration = PdlConfiguration()
-    //private val mockAdClient = mockPDLConfiguration.pdlRestTemplate("Scope")
 
     /**
      * Paste valid token
      */
     val oauthtoken = ""
 
-    private val mockClient = mockPDLConfiguration.pdlRestTemplate("Scope", null)
+    private val mockClient = mockPDLConfiguration.pdlRestTemplate(mockPdlinterceptor(oauthtoken))
 
     /**
      * Use local port forwarding using kubectl and nais
@@ -85,5 +88,16 @@ internal class PdlPersonServiceIntegrationTest {
 //        assertEquals("64045349924", result.firstOrNull { it.gruppe == IdentGruppe.FOLKEREGISTERIDENT }?.ident)
 //
 //    }
+
+    class mockPdlinterceptor(private val oauthtoken: String) : ClientHttpRequestInterceptor {
+        override fun intercept(
+            request: HttpRequest,
+            body: ByteArray,
+            execution: ClientHttpRequestExecution
+        ): ClientHttpResponse {
+            request.headers.setBearerAuth(oauthtoken)
+            return execution.execute(request, body)
+        }
+    }
 
 }

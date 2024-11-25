@@ -28,27 +28,31 @@ class PdlConfiguration {
         .buildMachineToMachineTokenClient()!!
 
     @Bean
-    fun pdlRestTemplate(@Value("\${PDL_SCOPE}") scope: String, azureAdTokenClient: AzureAdMachineToMachineTokenClient?): RestTemplate {
+    fun pdlRestTemplate(pdlInterceptor: ClientHttpRequestInterceptor): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
             .interceptors(
                 IOExceptionRetryInterceptor(),
-                PdlInterceptor(scope, azureAdTokenClient)
+                pdlInterceptor,
                )
             .build()
     }
 
-    internal class PdlInterceptor(private val scope: String, private val azureAdTokenClient: AzureAdMachineToMachineTokenClient?) : ClientHttpRequestInterceptor {
+    @Bean
+    fun pdlInterceptor(@Value("\${PDL_SCOPE}") scope: String, azureAdTokenClient: AzureAdMachineToMachineTokenClient): ClientHttpRequestInterceptor = PdlInterceptor(scope, azureAdTokenClient)
+
+
+    class PdlInterceptor(private val scope: String, private val azureAdTokenClient: AzureAdMachineToMachineTokenClient) : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
-            if (azureAdTokenClient != null) {
-                logger.debug("AzureTokenClient is not null")
-                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
+            if (request.headers[HttpHeaders.AUTHORIZATION] != null) {
+                logger.debug("Authorization header already set")
             } else {
-                logger.debug("AzureTokenClient is null")
+                logger.debug("Authorization header not set")
+                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
             }
 
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"

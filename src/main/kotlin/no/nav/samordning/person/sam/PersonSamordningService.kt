@@ -169,7 +169,7 @@ class PersonSamordningService(
     }
 
     fun mapUtenlandskAdresse(utlandskAdresse: UtenlandskAdresse, pdlSamPerson: PdlSamPerson): AdresseSamordning {
-        logger.debug("landkode: ${pdlSamPerson.landkode()}")
+        logger.debug("landkode: ${pdlSamPerson.landkode()} -> land: ${kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land}")
         return AdresseSamordning(
             adresselinje1 = utlandskAdresse.adressenavnNummer,
             adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted}",
@@ -178,7 +178,7 @@ class PersonSamordningService(
             poststed = "", //bySted,
             land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
         ).also{
-            logger.debug("Bygget ferdig utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+            logger.debug("Bygget ferdig utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: ${it.land}")
         }
     }
 

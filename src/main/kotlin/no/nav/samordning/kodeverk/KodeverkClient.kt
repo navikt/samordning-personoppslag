@@ -16,7 +16,7 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponents
 import org.springframework.web.util.UriComponentsBuilder
-import java.util.UUID
+import java.util.*
 
 @Component
 class KodeverkClient(
@@ -117,7 +117,7 @@ class KodeverkClient(
     fun hentLandKoder(): List<Landkode> {
         return kodeverkLandKoderMetrics.measure {
 
-            val land = hentLand()
+            val listLand = hentLand()
             val tmpLandkoder = hentHierarki("LandkoderSammensattISO2")
 
             val rootNode = jacksonObjectMapper().readTree(tmpLandkoder)
@@ -126,9 +126,9 @@ class KodeverkClient(
             noder.map { node ->
                 val land3 = node.at("/undernoder").findPath("kode").textValue()
                 Landkode(
-                    node.at("/kode").textValue(),
-                    land3,
-                    land.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
+                    landkode2 = node.at("/kode").textValue(),
+                    landkode3 = land3,
+                    land = listLand.firstOrNull { it.landkode3 == land3  }?.land ?: "UKJENT"
                 )
             }.sortedBy { (sorting, _, _) -> sorting }.toList().also {
                 logger.info("Har importert landkoder med land")
