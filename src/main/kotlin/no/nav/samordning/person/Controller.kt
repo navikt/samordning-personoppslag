@@ -1,6 +1,5 @@
 package no.nav.samordning.person
 
-import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.kodeverk.Landkode
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.PdlPerson
@@ -17,9 +16,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api")
 class Controller(
-    private val kodeverkService: KodeverkService,
     private val personSamordningService: PersonSamordningService) {
-
 
 
     @PostMapping("/person")
@@ -47,16 +44,25 @@ class Controller(
     }
 
 
+    //TODO TEMP
     @GetMapping("/kodeverk/postnr/{postnr}")
     @ProtectedWithClaims("entraid")
     fun hentPostnrSted(@PathVariable postnr: String) : String {
-        return kodeverkService.hentPoststedforPostnr(postnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Postnr ikke funnet")
+        return personSamordningService.kodeverkService().hentPoststedforPostnr(postnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Postnr ikke funnet")
     }
 
+    //TODO TEMP
     @GetMapping("/kodeverk/land/{landkode}")
     @ProtectedWithClaims("entraid")
     fun hentLand(@PathVariable landkode: String) : ResponseEntity<Landkode> {
-        return ResponseEntity<Landkode>.ok().body(kodeverkService.finnLandkode(landkode))
+        return ResponseEntity<Landkode>.ok().body(personSamordningService.kodeverkService().finnLandkode(landkode))
+    }
+
+    //TODO TEMP
+    @GetMapping("/kodeverk/land/alle")
+    @ProtectedWithClaims("entraid")
+    fun hentAlleLandkoderMedLand(): ResponseEntity<List<Landkode>> {
+        return ResponseEntity<List<Landkode>>.ok().body(personSamordningService.kodeverkService().hentAlleLandkoderMedLand())
     }
 
     //TODO: utgåår når alt funker vi går mot prod

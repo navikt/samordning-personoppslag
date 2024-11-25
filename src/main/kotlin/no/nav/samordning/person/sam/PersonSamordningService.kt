@@ -34,6 +34,8 @@ class PersonSamordningService(
         personSamordningMetric = metricsHelper.init("personSamordning")
     }
 
+    fun kodeverkService(): KodeverkService = kodeverkService
+
     //Temp alt fra PDL
     fun hentPdlPerson(fnr: String): PdlPerson? {
         try {
@@ -52,7 +54,7 @@ class PersonSamordningService(
             val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
             logger.debug("Ferdig hentet pdlSamPerson -> konverter til PersonSamordning")
             return personSamordningMetric.measure {
-                return@measure pdlSamPerson?.let { pdlsam -> konvertertilPersonSamordning(fnr, pdlsam) }.also{
+                return@measure pdlSamPerson?.let { pdlsamperson -> konvertertilPersonSamordning(fnr, pdlsamperson) }.also{
                     logger.debug("ferdig kovertert til PersonSamordning") }
             }
         }  catch (pe: PersonoppslagException) {

@@ -25,6 +25,7 @@ class KodeverkService(private val kodeverkClient: KodeverkClient) {
         }
 
     }
+    fun hentAlleLandkoderMedLand() = kodeverkClient.hentLandKoder()
     fun finnLand(landkode3: String) = kodeverkClient.hentLand().firstOrNull { it.landkode3 == landkode3 }?.land
     fun land() = kodeverkClient.hentLand().toJson()
 
