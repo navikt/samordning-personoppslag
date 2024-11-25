@@ -39,7 +39,7 @@
         <logger name="no.nav.security" level="ERROR"/>
         <logger name="no.nav.samordning" level="DEBUG"/>
 
-        <root level="info">
+        <root level="DEBUG">
             <appender-ref ref="stdout_json"/>
         </root>
 

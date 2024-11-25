@@ -16,16 +16,17 @@ class KodeverkService(private val kodeverkClient: KodeverkClient) {
 
     fun finnLandkode(landkode: String): Landkode? {
         if (landkode.isNullOrEmpty() || landkode.length !in 2..3) {
-            throw LandkodeException("Ugyldig landkode: $landkode")
+            throw LandkodeException("Ugyldig landkode: $landkode").also{ logger.warn("Ugyldig landkode: $landkode") }
         }
         return when (landkode.length) {
             2 -> kodeverkClient.hentLandKoder().firstOrNull { it.landkode2 == landkode }.also { logger.debug("2landkode -> $landkode")  }
             3 -> kodeverkClient.hentLandKoder().firstOrNull { it.landkode3 == landkode }.also { logger.debug("3landkode -> $landkode")  }
-            else -> throw LandkodeException("Ugyldig landkode: $landkode").also{ logger.warn("landkode feiler") }
+            else -> throw LandkodeException("Ugyldig landkode: $landkode").also{ logger.warn("Ugyldig landkode: $landkode") }
         }
 
     }
     fun finnLand(landkode3: String) = kodeverkClient.hentLand().firstOrNull { it.landkode3 == landkode3 }?.land
+    fun land() = kodeverkClient.hentLand().toJson()
 
     fun hentPoststedforPostnr(postnr: String) = kodeverkClient.hentPostnr().firstOrNull { it.postnummer == postnr }?.sted
     fun hentAllePostnr() = kodeverkClient.hentPostnr().map { it.postnummer }.toJson()

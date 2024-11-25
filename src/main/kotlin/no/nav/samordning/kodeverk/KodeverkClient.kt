@@ -52,7 +52,7 @@ class KodeverkClient(
                     null
                 }
             }.sortedBy { (sorting, _) -> sorting }.toList().also {
-                logger.info("Har importert postnummer og sted")
+                logger.info("Har importert postnummer og sted. size: ${it.size}")
             }
         }
     }
@@ -62,14 +62,10 @@ class KodeverkClient(
         return kodeverkLandMetrics.measure {
             val tmpLand = hentKodeverk("Landkoder").koder
             tmpLand.mapNotNull { kodeverk ->
-                if (kodeverk.status != KodeStatusEnum.SLETTET) {
-                    val land = kodeverk.betydning.beskrivelse.term
-                    Land(kodeverk.navn, land)
-                } else {
-                    null
-                }
-            }.sortedByDescending { it.landkode3 }.also {
-                logger.info("Har importert land")
+                val land = kodeverk.betydning.beskrivelse.term
+                Land(kodeverk.navn, land)
+            }.sortedBy { (sorting, _) -> sorting }.toList().also {
+                logger.info("Har importert land. size: ${it.size}")
             }
         }
     }
