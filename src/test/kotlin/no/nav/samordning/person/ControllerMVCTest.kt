@@ -227,10 +227,10 @@ internal class ControllerMVCTest {
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
                 jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
-                jsonPath("$.utenlandsAdresse.adresselinje2") { value("GREATEREAST") }
+                jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
                 jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
-                jsonPath("$.utenlandsAdresse.postnr") { value("1021 PLK UK") }
-                jsonPath("$.utenlandsAdresse.poststed") { value("LONDON") }
+                jsonPath("$.utenlandsAdresse.postnr") { value("") }
+                jsonPath("$.utenlandsAdresse.poststed") { value("") }
                 jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                 jsonPath("$.dodsdato") { value(null) }
                 jsonPath("$.sivilstand") { value("SKILT") }
@@ -457,10 +457,9 @@ internal class ControllerMVCTest {
                 jsonPath("$.fornavn") { value("Fornavn") }
                 jsonPath("$.etternavn") { value("Etternavn") }
                 jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
-                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
-                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("GREATEREAST") }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("1021 PLK UK") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("LONDON") }
+                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("") }
                 jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
 
                 jsonPath("$.dodsdato") { value(null) }

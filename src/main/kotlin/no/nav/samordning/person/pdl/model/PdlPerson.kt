@@ -80,27 +80,27 @@ data class PdlSamPerson(
 
                 return when {
                         landkodeOppholdKontakt != null -> {
-                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresseIFrittFormat ")
+                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresseIFrittFormat: $landkodeOppholdKontakt")
                                 landkodeOppholdKontakt
                         }
                         landkodeUtlandsAdresse != null -> {
-                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresse")
+                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresse: $landkodeUtlandsAdresse")
                                 landkodeUtlandsAdresse
                         }
                         landkodeOppholdsadresse != null -> {
-                                logger.info("Velger landkode fra oppholdsadresse.utenlandskAdresse")
+                                logger.info("Velger landkode fra oppholdsadresse.utenlandskAdresse: $landkodeOppholdsadresse")
                                 landkodeOppholdsadresse
                         }
                         landkodeBostedsadresse != null -> {
-                                logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse")
+                                logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse: $landkodeBostedsadresse")
                                 landkodeBostedsadresse
                         }
                         landkodeBostedNorge != null -> {
-                                logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom")
+                                logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom: NOR")
                                 "NOR"
                         }
                         landkodeKontaktNorge != null -> {
-                                logger.info("Velger landkode NOR fordi  kontaktadresse.postadresseIFrittFormat ikke er tom")
+                                logger.info("Velger landkode NOR fordi  kontaktadresse.postadresseIFrittFormat ikke er tom: NOR")
                                 "NOR"
                         }
                         else -> {

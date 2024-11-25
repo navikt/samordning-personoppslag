@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 
 data class BostedsAdresseSamordning(
-    val boadresse1: String? = null,
-    val boadresse2: String? = null,
-    val postnr: String? = null,
-    val poststed: String? = null
+    val boadresse1: String? = "",
+    val boadresse2: String? = "",
+    val postnr: String? = "",
+    val poststed: String? = ""
 ) {
 
     @JsonIgnore
