@@ -21,6 +21,14 @@ spec:
           namespace: pensjon-batch
           cluster: dev-fss
 
+        - application: sam-q5
+          namespace: pensjonsamhandling
+          cluster: dev-fss
+
+        - application: sambatch-q5
+          namespace: pensjon-batch
+          cluster: dev-fss
+
         - application: azure-token-generator
           namespace: aura
           cluster: dev-gcp

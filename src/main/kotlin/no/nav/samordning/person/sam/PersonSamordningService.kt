@@ -218,9 +218,9 @@ class PersonSamordningService(
     internal fun populateUtbetalingsAdresse(adresse: AdresseSamordning?, bostedAdresse: BostedsAdresseSamordning?): AdresseSamordning {
         return if (adresse != null) {
             AdresseSamordning(
-                adresselinje1 = adresse.adresselinje1,
-                adresselinje2 = adresse.adresselinje2,
-                adresselinje3 = adresse.adresselinje3,
+                adresselinje1 = adresse.adresselinje1 ?: "",
+                adresselinje2 = adresse.adresselinje2 ?: "",
+                adresselinje3 = adresse.adresselinje3 ?: "",
                 postnr = adresse.postnr,
                 poststed = adresse.poststed,
                 land = adresse.land
