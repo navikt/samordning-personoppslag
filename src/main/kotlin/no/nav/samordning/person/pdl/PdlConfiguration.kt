@@ -28,6 +28,11 @@ class PdlConfiguration {
         .buildMachineToMachineTokenClient()!!
 
     @Bean
+    fun pdlInterceptor(
+        @Value("\${PDL_SCOPE}") scope: String,
+        azureAdTokenClient: AzureAdMachineToMachineTokenClient): ClientHttpRequestInterceptor = PdlInterceptor(scope, azureAdTokenClient)
+
+    @Bean
     fun pdlRestTemplate(pdlInterceptor: ClientHttpRequestInterceptor): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
@@ -38,21 +43,18 @@ class PdlConfiguration {
             .build()
     }
 
-    @Bean
-    fun pdlInterceptor(@Value("\${PDL_SCOPE}") scope: String, azureAdTokenClient: AzureAdMachineToMachineTokenClient): ClientHttpRequestInterceptor = PdlInterceptor(scope, azureAdTokenClient)
-
-
     class PdlInterceptor(private val scope: String, private val azureAdTokenClient: AzureAdMachineToMachineTokenClient) : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
-            if (request.headers[HttpHeaders.AUTHORIZATION] != null) {
-                logger.debug("Authorization header already set")
-            } else {
-                logger.debug("Authorization header not set")
+            if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
                 request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
+                logger.debug("Authorization header not set, set with scope: $scope")
+                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
+            } else {
+                logger.debug("Authorization header already set")
             }
 
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"

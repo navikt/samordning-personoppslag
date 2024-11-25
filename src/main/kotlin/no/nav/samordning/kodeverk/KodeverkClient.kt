@@ -127,7 +127,7 @@ class KodeverkClient(
                     land = listLand.firstOrNull { it.landkode3 == land3  }?.land ?: "UKJENT"
                 )
             }.sortedBy { (sorting, _, _) -> sorting }.toList().also {
-                logger.info("Har importert landkoder med land")
+                logger.info("Har importert landkoder med land: ${it.size}")
             }
 
         }
