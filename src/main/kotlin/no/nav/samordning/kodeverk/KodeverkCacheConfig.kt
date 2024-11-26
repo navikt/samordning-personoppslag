@@ -17,13 +17,10 @@ internal const val KODEVERK_POSTNR_CACHE = "kodeverk_postnr"
 @EnableCaching
 class KodeverkCacheConfig {
 
-
     fun caffeineBuilder(): Caffeine<Any, Any> {
         return Caffeine.newBuilder()
-            .expireAfterWrite(5, TimeUnit.DAYS)
-            .weakKeys()
             .recordStats()
-
+            .expireAfterWrite(5, TimeUnit.DAYS)
     }
 
     @Bean("kodeverkCacheManager")
