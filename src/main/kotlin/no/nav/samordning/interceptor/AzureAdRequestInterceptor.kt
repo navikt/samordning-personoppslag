@@ -26,7 +26,11 @@ class AzureAdRequestInterceptor(private val scope: String): ClientHttpRequestInt
             request.headers.setBearerAuth(client().createMachineToMachineToken(scope))
             if (request.headers[HttpHeaders.AUTHORIZATION] != null) {
                 logger.debug("Authorization header is set")
-            } else logger.warn("Authorization header is missing")
+            } else {
+                logger.warn("Authorization header is missing")
+                request.headers.setBearerAuth(client().createMachineToMachineToken(scope))
+                logger.debug("Authorization header is set 2")
+            }
         } else {
             logger.debug("Authorization header exists")
         }

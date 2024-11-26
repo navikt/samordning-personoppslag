@@ -18,7 +18,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.web.client.DefaultResponseErrorHandler
 import org.springframework.web.client.RestTemplate
-import java.io.IOException
 
 @Configuration
 @Profile("!test")
@@ -77,13 +76,6 @@ class RestTemplateConfig {
             // [Borger, Saksbehandler eller System]
 
             logger.debug("PdlInterceptor httpRequest headers: ${request.headers}")
-
-
-            //bug med token for pdl. .extra check?
-            if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
-                logger.warn("Authorization header is null, throw IOExecption to renew Authorization header")
-                throw IOException("Authorization header is null")
-            }
 
             return execution.execute(request, body)
         }
