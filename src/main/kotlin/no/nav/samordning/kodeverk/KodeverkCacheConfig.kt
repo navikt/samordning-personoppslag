@@ -20,15 +20,15 @@ class KodeverkCacheConfig {
     fun caffeineBuilder(): Caffeine<Any, Any> {
         return Caffeine.newBuilder()
             .recordStats()
-            .expireAfterWrite(5, TimeUnit.DAYS)
+            .expireAfterWrite(120, TimeUnit.HOURS)
     }
 
     @Bean("kodeverkCacheManager")
     fun cacheManager(): CacheManager {
-        val caffeineCacheManager = CaffeineCacheManager()
-        caffeineCacheManager.setCaffeine(caffeineBuilder())
-        caffeineCacheManager.setCacheNames(listOf(KODEVERK_LANDKODER_CACHE, KODEVERK_LAND_CACHE, KODEVERK_POSTNR_CACHE))
-        return caffeineCacheManager
+        return CaffeineCacheManager().apply{
+            setCaffeine(caffeineBuilder())
+            setCacheNames(listOf(KODEVERK_LANDKODER_CACHE, KODEVERK_LAND_CACHE, KODEVERK_POSTNR_CACHE))
+        }
     }
 
 }

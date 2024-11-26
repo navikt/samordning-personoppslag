@@ -17,6 +17,7 @@ import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -68,22 +69,33 @@ internal class ControllerMVCTest {
         clearAllMocks()
     }
 
+    @BeforeEach
+    fun setup() {
+
+        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+    }
+
 
     @Test
     fun `correct call to kodeverk returns postnummer`() {
 
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-
         (0..5).forEach {
 
-            println("Start time hentPostnr...")
+            println("Start time hentPostnr,land...")
             val start = System.nanoTime()
 
             val sted1 = kodeverkService.hentPoststedforPostnr("0950")
             val sted2 = kodeverkService.hentPoststedforPostnr("2056")
+            val land = kodeverkService.finnLandkode("FRA")?.land
+            val land2 = kodeverkService.finnLandkode("SWE")
 
             assertEquals("OSLO", sted1)
             assertEquals("ALGARHEIM", sted2)
+            assertEquals("FRANKRIKE", land)
+            assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", land2.toString())
 
             val totaltime = System.nanoTime() - start
             println("Total time used: $totaltime (in nanotime)")
@@ -95,16 +107,10 @@ internal class ControllerMVCTest {
         val postnrsted = kodeverkService.hentAllePostnrOgSted()
         assertTrue(postnrsted.contains("0950") && postnrsted.contains("OSLO"))
 
-
     }
 
     @Test
     fun `correct call to kodeverk hierarki returns landkoder`() {
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
-
         assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NO").toString())
         assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NOR").toString())
 
@@ -128,8 +134,6 @@ internal class ControllerMVCTest {
     @Test
     fun `correct call to kodeverk postnr return poststed`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
 
         mvc.get("/api/kodeverk/postnr/0950") {
             header("Authorization", "Bearer $token")
@@ -191,21 +195,7 @@ internal class ControllerMVCTest {
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
 
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/samperson") {
@@ -241,21 +231,7 @@ internal class ControllerMVCTest {
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
 
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/samperson") {
@@ -287,21 +263,7 @@ internal class ControllerMVCTest {
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
 
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/samperson") {
@@ -332,22 +294,7 @@ internal class ControllerMVCTest {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
-
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/person") {
@@ -375,22 +322,7 @@ internal class ControllerMVCTest {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
-
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
 
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/person") {
@@ -422,11 +354,6 @@ internal class ControllerMVCTest {
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
-        every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
-
-
         val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
         mvc.post("/api/person") {
             header("Authorization", "Bearer $token")
@@ -455,7 +382,7 @@ internal class ControllerMVCTest {
 
 
 
-    fun issueSystembrukerToken(
+    private fun issueSystembrukerToken(
         system: String = UUID.randomUUID().toString(),
         roles: List<String> = listOf(),
     ): String =

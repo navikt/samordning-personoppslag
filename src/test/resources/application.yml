@@ -1,5 +1,5 @@
-NAIS_APP_NAME: this
 
+NAIS_APP_NAME: personoppslag
 KODEVERK_URL: http://localhost/kodeverk
 PDL_URL: http://localhost/graphql
 
