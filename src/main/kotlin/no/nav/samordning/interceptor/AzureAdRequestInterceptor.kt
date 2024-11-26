@@ -1,6 +1,7 @@
 package no.nav.samordning.interceptor
 
-import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.cache.CaffeineTokenCache
 import no.nav.samordning.config.RestTemplateConfig.PdlInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -8,27 +9,26 @@ import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
-import java.io.IOException
 
-class AzureAdRequestInterceptor(
-    private val azureAdMachineToMachineTokenClient: AzureAdMachineToMachineTokenClient,
-    private val scope: String
-): ClientHttpRequestInterceptor {
+class AzureAdRequestInterceptor(private val scope: String): ClientHttpRequestInterceptor {
 
     private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
+
+    private fun client() = AzureAdTokenClientBuilder.builder()
+        .withCache(CaffeineTokenCache())
+        .withNaisDefaults()
+        .buildMachineToMachineTokenClient()!!
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
         if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
             logger.debug("Authorization header is null")
-            request.headers.setBearerAuth(azureAdMachineToMachineTokenClient.createMachineToMachineToken(scope))
+            request.headers.setBearerAuth(client().createMachineToMachineToken(scope))
+            if (request.headers[HttpHeaders.AUTHORIZATION] != null) {
+                logger.debug("Authorization header is set")
+            } else logger.warn("Authorization header is missing")
         } else {
             logger.debug("Authorization header exists")
-        }
-
-        if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
-            logger.warn("Authorization header is null, throw IOExecption to renew Authorization header")
-            throw IOException("Authorization header is null")
         }
 
         return execution.execute(request, body)
