@@ -1,7 +1,9 @@
-package no.nav.samordning.person.pdl
+package no.nav.samordning.config
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.cache.CaffeineTokenCache
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.samordning.interceptor.AzureAdRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.person.pdl.Behandlingsnummer.*
 import org.slf4j.LoggerFactory
@@ -20,52 +22,65 @@ import org.springframework.web.client.RestTemplate
 
 @Configuration
 @Profile("!test")
-class PdlConfiguration {
+class RestTemplateConfig {
 
     @Bean
     fun azureAdTokenClient() = AzureAdTokenClientBuilder.builder()
+        .withCache(CaffeineTokenCache())
         .withNaisDefaults()
         .buildMachineToMachineTokenClient()!!
 
     @Bean
-    fun pdlInterceptor(
-        @Value("\${PDL_SCOPE}") scope: String,
-        azureAdTokenClient: AzureAdMachineToMachineTokenClient): ClientHttpRequestInterceptor = PdlInterceptor(scope, azureAdTokenClient)
+    fun kodeverkTokenInteceptor(
+        @Value("\${KODEVERK_SCOPE}") scope: String,
+        azureAdTokenClient: AzureAdMachineToMachineTokenClient
+    ): ClientHttpRequestInterceptor = AzureAdRequestInterceptor(azureAdTokenClient, scope)
 
     @Bean
-    fun pdlRestTemplate(pdlInterceptor: ClientHttpRequestInterceptor): RestTemplate {
+    fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String, kodeverkTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate =
+        RestTemplateBuilder()
+            .rootUri(kodeverkUrl)
+            .errorHandler(DefaultResponseErrorHandler())
+            .additionalInterceptors(
+                IOExceptionRetryInterceptor(),
+                //kodeverkTokenInteceptor
+            )
+            .build()
+
+    @Bean
+    fun pdlTokenInteceptor(
+        @Value("\${PDL_SCOPE}") scope: String,
+        azureAdTokenClient: AzureAdMachineToMachineTokenClient
+    ): ClientHttpRequestInterceptor = AzureAdRequestInterceptor(azureAdTokenClient, scope)
+
+
+    @Bean
+    fun pdlRestTemplate(pdlTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
         return RestTemplateBuilder()
             .errorHandler(DefaultResponseErrorHandler())
-            .interceptors(
+            .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
-                pdlInterceptor,
-               )
+                pdlTokenInteceptor,
+                PdlInterceptor(),
+            )
             .build()
     }
 
-    class PdlInterceptor(private val scope: String, private val azureAdTokenClient: AzureAdMachineToMachineTokenClient) : ClientHttpRequestInterceptor {
+    class PdlInterceptor : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
-            if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
-                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
-                logger.debug("Authorization header not set, set with scope: $scope")
-                request.headers.setBearerAuth(azureAdTokenClient.createMachineToMachineToken(scope))
-            } else {
-                logger.debug("Authorization header already set")
-            }
-
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"
             request.headers["Tema"] = "PEN"
             request.headers["Behandlingsnummer"] =
                 UFORETRYGD.nummer + "," +
-                ALDERPENSJON.nummer + "," +
-                GJENLEV_OG_OVERGANG.nummer + "," +
-                AFP_STATLIG_KOMMUNAL.nummer + "," +
-                AFP_PRIVAT_SEKTOR.nummer + "," +
-                BARNEPENSJON.nummer
+                        ALDERPENSJON.nummer + "," +
+                        GJENLEV_OG_OVERGANG.nummer + "," +
+                        AFP_STATLIG_KOMMUNAL.nummer + "," +
+                        AFP_PRIVAT_SEKTOR.nummer + "," +
+                        BARNEPENSJON.nummer
             // [Borger, Saksbehandler eller System]
 
             logger.debug("PdlInterceptor httpRequest headers: ${request.headers}")
@@ -75,4 +90,5 @@ class PdlConfiguration {
 
 
     }
+
 }

@@ -121,6 +121,7 @@ internal class ControllerMVCTest {
 
         assertEquals("Landkode(landkode2=FR, landkode3=FRA, land=FRANKRIKE)", kodeverkService.finnLandkode("FRA").toString())
         assertEquals("Landkode(landkode2=DE, landkode3=DEU, land=TYSKLAND)", kodeverkService.finnLandkode("DEU").toString())
+        assertEquals("FRANKRIKE", kodeverkService.finnLandkode("FRA")?.land)
 
     }
 
@@ -417,17 +418,7 @@ internal class ControllerMVCTest {
     @Test
     fun `correct call to person ugradert boested utland with valid fnr response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
-
-        val landkoder = javaClass.getResource("/kodeverk-landkoder2.json").readText()
-        val kodeverkLandResponse: KodeverkResponse? = try {
-            val resource = javaClass.getResource("/kodeverk-land.json").readText()
-            mapper.readValue<KodeverkResponse>(resource)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            null
-        }
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 

@@ -1,5 +1,6 @@
 package no.nav.samordning.person.pdl
 
+import no.nav.samordning.config.RestTemplateConfig
 import no.nav.samordning.person.pdl.model.NorskIdent
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -13,7 +14,7 @@ import org.springframework.http.client.ClientHttpResponse
 @Disabled
 internal class PdlPersonServiceIntegrationTest {
 
-    private val mockPDLConfiguration = PdlConfiguration()
+    private val mockPDLConfiguration = RestTemplateConfig()
 
     /**
      * Paste valid token

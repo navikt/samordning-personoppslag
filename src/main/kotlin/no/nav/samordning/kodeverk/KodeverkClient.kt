@@ -42,30 +42,44 @@ class KodeverkClient(
     @Cacheable(cacheNames = [KODEVERK_POSTNR_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentPostnr(): List<Postnummer> {
         return kodeverkPostMetrics.measure {
-            val tempKoder = hentKodeverk("Postnummer").koder
-            logger.debug("hentet alle postnr size: ${tempKoder.size}")
-            tempKoder.mapNotNull { kodeverk ->
-                if (kodeverk.status !=  KodeStatusEnum.SLETTET) {
-                    val sted = kodeverk.betydning.beskrivelse.term
-                    Postnummer(kodeverk.navn, sted)
-                } else {
-                    null
-                }
-            }.sortedBy { (sorting, _) -> sorting }.toList().also {
-                logger.info("Har importert postnummer og sted. size: ${it.size}")
-            }
+            hentKodeverk("Postnummer").koder.map{ kodeverk ->
+                Postnummer(kodeverk.navn, kodeverk.betydning.beskrivelse.term)
+                }.sortedBy { (sorting, _) -> sorting }
+                .toList()
+                .also { logger.info("Har importert postnummer og sted. size: ${it.size}") }
         }
     }
 
     @Cacheable(cacheNames = [KODEVERK_LAND_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
     fun hentLand(): List<Land> {
         return kodeverkLandMetrics.measure {
-            val tmpLand = hentKodeverk("Landkoder").koder
-            tmpLand.mapNotNull { kodeverk ->
-                val land = kodeverk.betydning.beskrivelse.term
-                Land(kodeverk.navn, land)
-            }.sortedBy { (sorting, _) -> sorting }.toList().also {
-                logger.info("Har importert land. size: ${it.size}")
+            hentKodeverk("Landkoder").koder.map{ kodeverk ->
+                logger.debug("land: ${kodeverk.navn}, land: ${kodeverk.betydning.beskrivelse.term}")
+                Land(kodeverk.navn, kodeverk.betydning.beskrivelse.term)
+            }.sortedBy { (sorting, _) -> sorting }
+            .toList()
+            .also { logger.info("Har importert land. size: ${it.size}") }
+        }
+    }
+
+    @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
+    fun hentLandKoder(): List<Landkode> {
+        return kodeverkLandKoderMetrics.measure {
+            val listLand = hentLand()//need this fist
+            val hierarkinoder = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2")).at("/hierarkinoder")
+            val noder = hierarkinoder.at("/undernoder").toList()
+
+            return@measure noder.map { node ->
+                val land3 = node.at("/undernoder").findPath("kode").textValue()
+                Landkode(
+                    landkode2 = node.at("/kode").textValue(),
+                    landkode3 = land3,
+                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
+                ).also {
+                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
+                }
+            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
+                logger.info("Har importert landkoder med land: ${it.size}")
             }
         }
     }
@@ -107,33 +121,6 @@ class KodeverkClient(
             throw KodeverkException(ex.message!!)
         }
     }
-
-
-    @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName", cacheManager = "kodeverkCacheManager")
-    fun hentLandKoder(): List<Landkode> {
-        return kodeverkLandKoderMetrics.measure {
-
-            val listLand = hentLand()
-            val tmpLandkoder = hentHierarki("LandkoderSammensattISO2")
-
-            val rootNode = jacksonObjectMapper().readTree(tmpLandkoder)
-            val hierarkinoder = rootNode.at("/hierarkinoder")
-            val noder = hierarkinoder.at("/undernoder").toList()
-            noder.map { node ->
-                val land3 = node.at("/undernoder").findPath("kode").textValue()
-                Landkode(
-                    landkode2 = node.at("/kode").textValue(),
-                    landkode3 = land3,
-                    land = listLand.firstOrNull { it.landkode3 == land3  }?.land ?: "UKJENT"
-                )
-            }.sortedBy { (sorting, _, _) -> sorting }.toList().also {
-                logger.info("Har importert landkoder med land: ${it.size}")
-            }
-
-        }
-    }
-
-
 
     /**
      *  https://kodeverk.nais.adeo.no/api/v1/hierarki/LandkoderSammensattISO2/noder
