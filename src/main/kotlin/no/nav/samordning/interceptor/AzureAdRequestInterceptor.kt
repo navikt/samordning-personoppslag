@@ -2,6 +2,7 @@ package no.nav.samordning.interceptor
 
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.cache.CaffeineTokenCache
+import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.samordning.config.RestTemplateConfig.PdlInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -14,23 +15,30 @@ class AzureAdRequestInterceptor(private val scope: String): ClientHttpRequestInt
 
     private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
 
-    private fun client() = AzureAdTokenClientBuilder.builder()
+    private val client : AzureAdMachineToMachineTokenClient
+        get() = AzureAdTokenClientBuilder.builder()
         .withCache(CaffeineTokenCache())
         .withNaisDefaults()
         .buildMachineToMachineTokenClient()!!
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
+        logger.debug("Fetching machine 2 machine token using scope: $scope")
+        val token = client.createMachineToMachineToken(scope) ?: client.createMachineToMachineToken(scope)
+        logger.debug("Token is set ($token != null)")
+
         if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
             logger.debug("Authorization header is null")
-            request.headers.setBearerAuth(client().createMachineToMachineToken(scope))
+            request.headers.setBearerAuth(token)
+
             if (request.headers[HttpHeaders.AUTHORIZATION] != null) {
-                logger.debug("Authorization header is set")
+                logger.debug("Authorization header is set using token")
             } else {
-                logger.warn("Authorization header is missing")
-                request.headers.setBearerAuth(client().createMachineToMachineToken(scope))
-                logger.debug("Authorization header is set 2")
+                logger.warn("Authorization header is still missing")
+                request.headers.setBearerAuth(token)
+                logger.debug("Authorization header is set again using token")
             }
+
         } else {
             logger.debug("Authorization header exists")
         }
