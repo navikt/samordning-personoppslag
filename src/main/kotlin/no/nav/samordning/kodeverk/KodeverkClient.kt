@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.annotation.PostConstruct
 import no.nav.samordning.metrics.MetricsHelper
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
@@ -64,40 +65,52 @@ class KodeverkClient(
     fun hentLandKoder(): List<Landkode> {
         return kodeverkLandKoderMetrics.measure {
             val listLand = hentLand()//need this fist
-            val hierarkinoder = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2")).at("/hierarkinoder")
-            val noder = hierarkinoder.at("/undernoder").toList()
+            //val hierarkinoder = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2")).at("/hierarkinoder")
+            //val noder = hierarkinoder.at("/undernoder").toList()
 
+            val rootNode = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2"))
+            val noder = rootNode.at("/noder").toList()
             return@measure noder.map { node ->
-                val land3 = node.at("/undernoder").findPath("kode").textValue()
+                val landkode3 = node.at("/undernoder").findPath("kode").textValue()
                 Landkode(
                     landkode2 = node.at("/kode").textValue(),
-                    landkode3 = land3,
-                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
-                ).also {
-                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
-                }
-            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
+                    landkode3 = landkode3,
+                    land = listLand.firstOrNull { it.landkode3 == landkode3 }?.land ?: "UKJENT"
+                )
+            }.sortedBy { (_, sorting, _) -> sorting }
+                .toList()
+                .also {
                 logger.info("Har importert landkoder med land: ${it.size}")
             }
+
+//
+//            return@measure noder.map { node ->
+//                val land3 = node.at("/undernoder").findPath("kode").textValue()
+//                Landkode(
+//                    landkode2 = node.at("/kode").textValue(),
+//                    landkode3 = land3,
+//                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
+//                ).also {
+//                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
+//                }
+//            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
+//                logger.info("Har importert landkoder med land: ${it.size}")
+//            }
         }
     }
 
     private fun hentKodeverk(kodeverk: String): KodeverkResponse  {
         val path = "/web/api/kodeverk/{kodeverk}"
-
         val uriParams = mapOf("kodeverk" to kodeverk)
-        val builder = UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams)
-        logger.debug("Bygger opp request og uri for $kodeverk")
 
-        return doKodeRequest(builder)
-
+        return doKodeRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
     }
 
     private fun doKodeRequest(builder: UriComponents): KodeverkResponse {
         return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
-            headers["Nav-Call-Id"] = UUID.randomUUID().toString()
+            headers["Nav-Call-Id"] = MDC.get("x-request-id") ?: UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
             logger.debug("URIstring: ${builder.toUriString()}")
@@ -125,20 +138,19 @@ class KodeverkClient(
      */
     private fun hentHierarki(hierarki: String): String {
         val path = "/api/v1/hierarki/{hierarki}/noder"
-
         val uriParams = mapOf("hierarki" to hierarki)
-        val builder = UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams)
 
-        return doHierarkiRequest(builder)
+        return doHierarkiRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
     }
 
     private fun doHierarkiRequest(builder: UriComponents): String {
         return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
-            headers["Nav-Call-Id"] = UUID.randomUUID().toString()
+            headers["Nav-Call-Id"] = MDC.get("x-request-id") ?: UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
+            logger.debug("URIstring: ${builder.toUriString()}")
             kodeverkRestTemplate.exchange<String>(
                 builder.toUriString(),
                 HttpMethod.GET,

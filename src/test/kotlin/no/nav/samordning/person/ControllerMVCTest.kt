@@ -67,9 +67,8 @@ internal class ControllerMVCTest {
 
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
     private val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
-    private val landkoder = javaClass.getResource("/kodeverk-landkoder2.json")?.readText() ?: throw Exception("ikke funnet")
+    private val landkoder = javaClass.getResource("/kodeverk-landkoder.json")?.readText() ?: throw Exception("ikke funnet")
     private val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-land.json")?.readText() ?: throw Exception("ikke funnet"))
-
 
     @AfterEach
     fun takeDown() {
