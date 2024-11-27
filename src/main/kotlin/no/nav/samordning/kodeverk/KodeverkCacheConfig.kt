@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration
 import java.util.concurrent.TimeUnit
 
 internal const val KODEVERK_LANDKODER_CACHE = "kodeverk_landkoder"
-internal const val KODEVERK_LAND_CACHE = "kodeverk_land"
 internal const val KODEVERK_POSTNR_CACHE = "kodeverk_postnr"
 
 
@@ -19,16 +18,17 @@ class KodeverkCacheConfig {
 
     fun caffeineBuilder(): Caffeine<Any, Any> {
         return Caffeine.newBuilder()
-            .recordStats()
             .expireAfterWrite(120, TimeUnit.HOURS)
+            .initialCapacity(500)
+            .recordStats()
     }
 
-    @Bean("kodeverkCacheManager")
+    @Bean
     fun cacheManager(): CacheManager {
-        return CaffeineCacheManager().apply{
+        return CaffeineCacheManager(KODEVERK_LANDKODER_CACHE, KODEVERK_POSTNR_CACHE).apply{
             setCaffeine(caffeineBuilder())
-            setCacheNames(listOf(KODEVERK_LANDKODER_CACHE, KODEVERK_LAND_CACHE, KODEVERK_POSTNR_CACHE))
         }
     }
+
 
 }

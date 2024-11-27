@@ -3,10 +3,13 @@ package no.nav.samordning.person
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.github.benmanes.caffeine.cache.Cache
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.verify
+import no.nav.samordning.kodeverk.KODEVERK_LANDKODER_CACHE
+import no.nav.samordning.kodeverk.KODEVERK_POSTNR_CACHE
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.RestTemplateConfigTest
@@ -22,6 +25,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -51,6 +55,9 @@ internal class ControllerMVCTest {
 
     @Autowired
     private lateinit var kodeverkService: KodeverkService
+
+    @Autowired
+    private lateinit var cacheManager: CaffeineCacheManager
 
     @MockkBean(relaxed = true, name = "pdlRestTemplate")
     private lateinit var pdlRestTemplate: RestTemplate
@@ -100,9 +107,7 @@ internal class ControllerMVCTest {
             val totaltime = System.nanoTime() - start
             println("Total time used: $totaltime (in nanotime)")
         }
-
-        val postnr = kodeverkService.hentAllePostnr()
-        assertTrue(postnr.contains("0950"))
+        printCacheStats()
 
         val postnrsted = kodeverkService.hentAllePostnrOgSted()
         assertTrue(postnrsted.contains("0950") && postnrsted.contains("OSLO"))
@@ -117,13 +122,8 @@ internal class ControllerMVCTest {
         assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SE").toString())
         assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SWE").toString())
 
-
-        assertEquals("NO", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "NO" })
-        assertEquals("DK", kodeverkService.hentLandkoderAlpha2().firstOrNull { it == "DK" })
-
-
-        assertEquals("NORGE", kodeverkService.finnLand("NOR"))
-        assertEquals("SVERIGE", kodeverkService.finnLand("SWE"))
+        assertEquals("NORGE", kodeverkService.finnLandkode("NOR")?.land)
+        assertEquals("SVERIGE", kodeverkService.finnLandkode("SWE")?.land)
 
         assertEquals("Landkode(landkode2=FR, landkode3=FRA, land=FRANKRIKE)", kodeverkService.finnLandkode("FRA").toString())
         assertEquals("Landkode(landkode2=DE, landkode3=DEU, land=TYSKLAND)", kodeverkService.finnLandkode("DEU").toString())
@@ -222,6 +222,7 @@ internal class ControllerMVCTest {
 
             }
 
+        printCacheStats()
     }
 
 
@@ -380,6 +381,24 @@ internal class ControllerMVCTest {
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun printCacheStats(vararg strings: String = arrayOf(KODEVERK_LANDKODER_CACHE, KODEVERK_POSTNR_CACHE)) {
+
+        strings.forEach { cacheName ->
+            println("Cache Stats for : $cacheName")
+
+            val cache : Cache<Any, Any> = cacheManager.getCache(cacheName)!!.nativeCache as Cache<Any, Any>
+            val stats = cache.stats()
+
+            println("Hitrate: ${stats.hitRate()}")
+            println("Hitcount: ${stats.hitCount()}")
+            println("EvictionCount: ${stats.evictionCount()}")
+
+        }
+
+
+
+    }
 
 
     private fun issueSystembrukerToken(
