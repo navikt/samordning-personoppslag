@@ -24,8 +24,8 @@ class AzureAdRequestInterceptor(private val scope: String): ClientHttpRequestInt
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
         logger.debug("Fetching machine 2 machine token using scope: $scope")
-        val token = client.createMachineToMachineToken(scope) ?: client.createMachineToMachineToken(scope)
-        logger.debug("Token is set ($token != null)")
+        val token = client.createMachineToMachineToken(scope)
+        logger.debug("Token is set ${token != null}")
 
         if (request.headers[HttpHeaders.AUTHORIZATION] == null) {
             logger.debug("Authorization header is null")

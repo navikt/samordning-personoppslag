@@ -15,6 +15,7 @@
         <logger name="org" level="ERROR"/>
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="INFO"/>
+        <logger name="no.nav.common.token_client" level="ERROR" />
         <logger name="no.nav.security" level="ERROR"/>
         <logger name="no.nav.samordning" level="INFO"/>
         <root level="info">
@@ -36,6 +37,7 @@
         <logger name="org" level="ERROR"/>
         <logger name="com" level="ERROR"/>
         <logger name="no.nav" level="DEBUG"/>
+        <logger name="no.nav.common.token_client" level="DEBUG" />
         <logger name="no.nav.security" level="ERROR"/>
         <logger name="no.nav.samordning" level="DEBUG"/>
 
