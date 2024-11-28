@@ -62,7 +62,7 @@ class RestTemplateConfig {
 
     internal class PdlInterceptor : ClientHttpRequestInterceptor {
 
-        private val logger = LoggerFactory.getLogger(PdlInterceptor::class.java)
+        private val logger = LoggerFactory.getLogger(javaClass)
 
         override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
