@@ -7,9 +7,7 @@ import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
-import java.util.UUID
-import kotlin.collections.firstOrNull
-import kotlin.let
+import java.util.*
 
 @Component
 class MdcRequestFilter : Filter {
@@ -35,8 +33,9 @@ class MdcRequestFilter : Filter {
 
         const val REQUEST_ID_MDC_KEY = "x_request_id"
         const val REQUEST_ID_HEADER = "X-Request-Id"
+        const val REQUEST_NAV_CALL = "Nav-Call-Id"
 
-        private val REQUEST_ID_HEADER_CANDIDATES = listOf(REQUEST_ID_HEADER)
+        private val REQUEST_ID_HEADER_CANDIDATES = listOf(REQUEST_ID_HEADER, REQUEST_NAV_CALL)
 
     }
 }

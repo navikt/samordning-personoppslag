@@ -4,8 +4,11 @@ import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.samordning.interceptor.AzureAdTokenRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
+import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
+import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_NAV_CALL
 import no.nav.samordning.person.pdl.Behandlingsnummer.*
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
@@ -18,6 +21,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.web.client.DefaultResponseErrorHandler
 import org.springframework.web.client.RestTemplate
+import java.util.*
 
 @Configuration
 @Profile("!test")
@@ -68,6 +72,7 @@ class RestTemplateConfig {
 
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"
             request.headers["Tema"] = "PEN"
+            request.headers[REQUEST_NAV_CALL] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             request.headers["Behandlingsnummer"] =
                 UFORETRYGD.nummer + "," +
                         ALDERPENSJON.nummer + "," +

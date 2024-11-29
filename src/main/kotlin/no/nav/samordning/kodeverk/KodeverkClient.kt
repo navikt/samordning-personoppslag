@@ -2,6 +2,7 @@ package no.nav.samordning.kodeverk
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.annotation.PostConstruct
+import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
 import no.nav.samordning.metrics.MetricsHelper
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -83,19 +84,18 @@ class KodeverkClient(
                 logger.info("Har importert landkoder med land: ${it.size}")
             }
 
-//
-//            return@measure noder.map { node ->
-//                val land3 = node.at("/undernoder").findPath("kode").textValue()
-//                Landkode(
-//                    landkode2 = node.at("/kode").textValue(),
-//                    landkode3 = land3,
-//                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
-//                ).also {
-//                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
-//                }
-//            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
-//                logger.info("Har importert landkoder med land: ${it.size}")
-//            }
+            //            return@measure noder.map { node ->
+            //                val land3 = node.at("/undernoder").findPath("kode").textValue()
+            //                Landkode(
+            //                    landkode2 = node.at("/kode").textValue(),
+            //                    landkode3 = land3,
+            //                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
+            //                ).also {
+            //                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
+            //                }
+            //            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
+            //                logger.info("Har importert landkoder med land: ${it.size}")
+            //            }'
         }
     }
 
@@ -110,7 +110,7 @@ class KodeverkClient(
         return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
-            headers["Nav-Call-Id"] = MDC.get("x-request-id") ?: UUID.randomUUID().toString()
+            headers["Nav-Call-Id"] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
             logger.debug("URIstring: ${builder.toUriString()}")
@@ -147,7 +147,7 @@ class KodeverkClient(
         return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
-            headers["Nav-Call-Id"] = MDC.get("x-request-id") ?: UUID.randomUUID().toString()
+            headers["Nav-Call-Id"] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             val requestEntity = HttpEntity<String>(headers)
 
             logger.debug("URIstring: ${builder.toUriString()}")

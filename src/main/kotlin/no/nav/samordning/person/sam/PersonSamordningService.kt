@@ -176,8 +176,8 @@ class PersonSamordningService(
             adresselinje1 = utlandskAdresse.adressenavnNummer,
             adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted}",
             adresselinje3 = utlandskAdresse.postboksNummerNavn ?: "",
-            postnr = "", //postkode,
-            poststed = "", //bySted,
+            postnr = null, //postkode,
+            poststed = null, //bySted,
             land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
         ).also{
             logger.debug("Bygget ferdig utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: ${it.land}")
