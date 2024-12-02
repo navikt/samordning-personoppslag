@@ -9,7 +9,7 @@ spec:
   azure:
     application:
       enabled: true
-      allowAllUsers: true
+#      allowAllUsers: true
   accessPolicy:
     inbound:
       rules:

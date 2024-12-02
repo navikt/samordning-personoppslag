@@ -8,11 +8,11 @@ management:
   endpoint:
     health:
       show-details: always
-      enabled: true
+      access: read_only
     metrics:
-      enabled: true
+      access: read_only
     prometheus:
-      enabled: true
+      access: read_only
   endpoints:
     web:
       exposure:

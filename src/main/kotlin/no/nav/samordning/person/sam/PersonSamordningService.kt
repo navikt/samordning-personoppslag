@@ -119,7 +119,7 @@ class PersonSamordningService(
                 postnr = postnummer,
                 poststed = poststed
             ).also{
-                logger.debug("Bygget ferdig bostedsAdresse result: $it")
+                logger.debug("Bygget ferdig bostedsAdresse")
             }
         }
         val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.let {
@@ -129,7 +129,7 @@ class PersonSamordningService(
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                 ).also{
-                    logger.debug("Bygget ferdig tilleggsAdresse result: $it")
+                    logger.debug("Bygget ferdig tilleggsAdresse result")
                 }
              } else it.utenlandskAdresse?.run {
                      mapUtenlandskAdresse( it.utenlandskAdresse, pdlSamPerson)
@@ -143,7 +143,7 @@ class PersonSamordningService(
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                 ).also{
-                    logger.debug("Bygget ferdig postAdresse (landkode: ${pdlSamPerson.landkode()}  result: $it")
+                    logger.debug("Bygget ferdig postAdresse")
                 }
             } else it.utenlandskAdresse?.run {
                 mapUtenlandskAdresse( it.utenlandskAdresse, pdlSamPerson)
@@ -180,7 +180,7 @@ class PersonSamordningService(
             poststed = null, //bySted,
             land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
         ).also{
-            logger.debug("Bygget ferdig utenlandsAdresse (landkode: ${pdlSamPerson.landkode()}  result: ${it.land}")
+            logger.debug("Bygget ferdig utenlandsAdresse")
         }
     }
 
@@ -198,7 +198,7 @@ class PersonSamordningService(
             logger.debug("populateUtbetalingsAdresse fra bostedsAdresse")
             populateUtbetalingsAdresse(null, bostedsAdresse)
         } else {
-            logger.debug("populateUtbetalingsAdresse ingenting")
+            logger.warn("feil! populateUtbetalingsAdresse fra n/a")
             AdresseSamordning()
         }
     }
