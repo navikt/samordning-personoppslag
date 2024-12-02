@@ -14,11 +14,17 @@ class AzureAdTokenRequestInterceptor(private val client : AzureAdMachineToMachin
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
         logger.debug("Fetching MachineToMachine token using scope: $scope")
-        val token: String = client.createMachineToMachineToken(scope)
+        try {
+            val token: String = client.createMachineToMachineToken(scope)
 
-        request.headers.setBearerAuth(token)
+            request.headers.setBearerAuth(token)
 
-        logger.debug("Authorization Token is set on headers")
+            logger.debug("Authorization Token is set on headers: $token")
+
+        } catch (ex: Exception) {
+            logger.error(ex.message, ex)
+            throw ex
+        }
 
         return execution.execute(request, body)
     }
