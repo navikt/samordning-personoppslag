@@ -6,6 +6,7 @@ import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
+import java.io.IOException
 
 class AzureAdTokenRequestInterceptor(private val client : AzureAdMachineToMachineTokenClient, private val scope: String): ClientHttpRequestInterceptor {
 
@@ -13,17 +14,16 @@ class AzureAdTokenRequestInterceptor(private val client : AzureAdMachineToMachin
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 
-        logger.debug("Fetching MachineToMachine token using scope: $scope")
         try {
-            val token: String = client.createMachineToMachineToken(scope)
+            logger.debug("Fetching MachineToMachine token using scope: $scope")
 
-            request.headers.setBearerAuth(token)
+            client.createMachineToMachineToken(scope).let { token -> request.headers.setBearerAuth(token)  }
 
-            logger.debug("Authorization Token is set on headers: $token")
-
+            logger.debug("Authorization Token is set on headers: ${request.headers["Authorization"]}")
         } catch (ex: Exception) {
+
             logger.error(ex.message, ex)
-            throw ex
+            throw IOException(ex.message, ex)
         }
 
         return execution.execute(request, body)
