@@ -5,7 +5,9 @@ import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpRequest
+import org.springframework.http.MediaType
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
@@ -49,7 +51,9 @@ class AzureAdTokenRequestInterceptor(private val scope: String): ClientHttpReque
                     "target": "$scope"
                 }
             """.trimIndent()
-        val req = HttpEntity<String>(body)
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        val req = HttpEntity<String>(body, headers)
         return restClient.postForObject<TokenResponse>(tokenurl, req, TokenResponse::class.java) ?: throw Exception("Feil ved henting av token")
     }
 
