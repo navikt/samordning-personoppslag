@@ -5,6 +5,8 @@ metadata:
   namespace: pensjonsamhandling
   labels:
     team: pensjonsamhandling
+  annotations:
+    texas.nais.io/enabled: "true"
 spec:
   azure:
     application:
