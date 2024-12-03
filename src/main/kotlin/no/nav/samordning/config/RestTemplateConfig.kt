@@ -25,12 +25,6 @@ import java.util.*
 @Profile("!test")
 class RestTemplateConfig {
 
-//    @Bean
-//    fun azureAdTokenClient(): AzureAdMachineToMachineTokenClient =
-//        AzureAdTokenClientBuilder.builder()
-//            .withNaisDefaults()
-//            .buildMachineToMachineTokenClient()
-
     @Bean
     fun kodeverkTokenInteceptor(@Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor =
         AzureAdTokenRequestInterceptor(scope)
