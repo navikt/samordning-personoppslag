@@ -1,5 +1,6 @@
 package no.nav.samordning.interceptor
 
+import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpRequest
@@ -8,9 +9,14 @@ import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import java.io.IOException
 
-class AzureAdTokenRequestInterceptor(private val client : AzureAdMachineToMachineTokenClient, private val scope: String): ClientHttpRequestInterceptor {
+class AzureAdTokenRequestInterceptor(private val scope: String): ClientHttpRequestInterceptor {
 
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private val client: AzureAdMachineToMachineTokenClient
+        get() = AzureAdTokenClientBuilder.builder()
+                .withNaisDefaults()
+                .buildMachineToMachineTokenClient()
 
     override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 

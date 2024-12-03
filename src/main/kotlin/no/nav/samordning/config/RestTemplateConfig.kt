@@ -1,7 +1,5 @@
 package no.nav.samordning.config
 
-import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
-import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.samordning.interceptor.AzureAdTokenRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
@@ -27,15 +25,15 @@ import java.util.*
 @Profile("!test")
 class RestTemplateConfig {
 
-    @Bean
-    fun azureAdTokenClient(): AzureAdMachineToMachineTokenClient =
-        AzureAdTokenClientBuilder.builder()
-            .withNaisDefaults()
-            .buildMachineToMachineTokenClient()
+//    @Bean
+//    fun azureAdTokenClient(): AzureAdMachineToMachineTokenClient =
+//        AzureAdTokenClientBuilder.builder()
+//            .withNaisDefaults()
+//            .buildMachineToMachineTokenClient()
 
     @Bean
-    fun kodeverkTokenInteceptor(azureAdTokenClient: AzureAdMachineToMachineTokenClient, @Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor =
-        AzureAdTokenRequestInterceptor(azureAdTokenClient, scope)
+    fun kodeverkTokenInteceptor(@Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+        AzureAdTokenRequestInterceptor(scope)
 
     @Bean
     fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String): RestTemplate =
@@ -49,8 +47,8 @@ class RestTemplateConfig {
             .build()
 
     @Bean
-    fun pdlTokenInteceptor(azureAdTokenClient: AzureAdMachineToMachineTokenClient, @Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor =
-        AzureAdTokenRequestInterceptor(azureAdTokenClient, scope)
+    fun pdlTokenInteceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+        AzureAdTokenRequestInterceptor(scope)
 
     @Bean
     fun pdlRestTemplate(pdlTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
@@ -86,7 +84,6 @@ class RestTemplateConfig {
 
             return execution.execute(request, body)
         }
-
 
     }
 
