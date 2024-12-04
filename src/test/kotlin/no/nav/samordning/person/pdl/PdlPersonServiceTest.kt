@@ -4,7 +4,8 @@ import io.mockk.every
 import io.mockk.mockk
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.IdentGruppe.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle
@@ -146,7 +147,6 @@ internal class PdlPersonServiceTest {
         assertEquals(1, resultat.adressebeskyttelse.size)
         assertEquals(2, resultat.identer.size)
 
-        assertEquals(0, resultat.utenlandskIdentifikasjonsnummer.size)
     }
 
     @Test

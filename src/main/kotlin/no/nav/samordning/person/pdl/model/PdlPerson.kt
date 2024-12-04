@@ -28,13 +28,6 @@ internal data class HentPersonUtenlandskIdent(
         val utenlandskIdentifikasjonsnummer: List<UtenlandskIdentifikasjonsnummer>
 )
 
-data class PersonUtenlandskIdent(
-        val identer: List<IdentInformasjon>,
-        val navn: Navn? = null,
-        val kjoenn: Kjoenn? = null,
-        val utenlandskIdentifikasjonsnummer: List<UtenlandskIdentifikasjonsnummer>
-)
-
 data class UtenlandskIdentifikasjonsnummer(
         val identifikasjonsnummer: String,
         val utstederland: String,
@@ -126,8 +119,7 @@ data class PdlPerson(
         val forelderBarnRelasjon: List<ForelderBarnRelasjon>,  //Opplysningen Familierelasjon har byttet navn til ForelderBarnRelasjon
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: Kontaktadresse? = null,
-        val kontaktinformasjonForDoedsbo: KontaktinformasjonForDoedsbo? = null,
-        val utenlandskIdentifikasjonsnummer: List<UtenlandskIdentifikasjonsnummer>
+        val kontaktinformasjonForDoedsbo: KontaktinformasjonForDoedsbo? = null
 ) {
         private val logger = LoggerFactory.getLogger(PdlPerson::class.java)
 

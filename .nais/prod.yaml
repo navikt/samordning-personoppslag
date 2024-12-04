@@ -1,0 +1,81 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: samordning-personoppslag
+  namespace: pensjonsamhandling
+  labels:
+    team: pensjonsamhandling
+  annotations:
+    texas.nais.io/enabled: "true"
+spec:
+  azure:
+    application:
+      enabled: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sam
+          namespace: pensjonsamhandling
+          cluster: prod-fss
+
+        - application: sambatch
+          namespace: pensjon-batch
+          cluster: prod-fss
+
+
+  image: {{ image }}
+  port: 8080
+  ingresses:
+    - https://samordning-personoppslag.intern.nav.no
+  secureLogs:
+    enabled: false
+  prometheus:
+    enabled: true
+    path: actuator/prometheus
+  liveness:
+    path: actuator/health/liveness
+    initialDelay: 30
+  readiness:
+    path: actuator/health/readiness
+    initialDelay: 30
+  startup:
+    path: actuator/health/readiness
+    initialDelay: 30
+    failureThreshold: 30
+    periodSeconds: 5
+  replicas:
+    min: 2
+    max: 3
+    cpuThresholdPercentage: 80
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 650Mi
+  vault:
+    enabled: false
+  webproxy: true
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: prod
+    - name: ENV
+      value: prod
+    - name: "OTEL_RESOURCE_ATTRIBUTES"
+      value: "deployment.environment.name=prod"
+    - name: PDL_URL
+      value: https://pdl-api.intern.nav.no/graphql
+    - name: PDL_SCOPE
+      value: api://prod-fss.pdl.pdl-api/.default
+    - name: KODEVERK_URL
+      value: https://kodeverk-api.intern.nav.no
+    - name: KODEVERK_SCOPE
+      value: api//prod-gcp.felleskodeverk-api/.default
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+      destinations:
+        - id: grafana-lgtm
+        - id: elastic-apm

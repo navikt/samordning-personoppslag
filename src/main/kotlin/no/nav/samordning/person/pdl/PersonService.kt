@@ -48,11 +48,8 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                    val identer = hentIdenter(ident)
-                    val geografiskTilknytning = hentGeografiskTilknytning(ident)
-                    //val utenlandskIdentifikasjonsnummer = hentPersonUtenlandskIdent(ident)?.utenlandskIdentifikasjonsnummer ?: emptyList()
-                    konverterTilPerson(it, identer, geografiskTilknytning, emptyList())
-                }
+                konverterTilPerson(it, hentIdenter(ident), hentGeografiskTilknytning(ident))
+            }
         }
     }
 
@@ -127,16 +124,13 @@ class PersonService(
             kontaktadresse,
             kontaktinformasjonForDoedsbo,
         )
-
-        //return PersonSamordning(ident.id, pdlSamPerson, kodeverkService)
     }
 
 
     internal fun konverterTilPerson(
             pdlPerson: HentPerson,
             identer: List<IdentInformasjon>,
-            geografiskTilknytning: GeografiskTilknytning?,
-            utenlandskIdentifikasjonsnummer: List<UtenlandskIdentifikasjonsnummer>
+            geografiskTilknytning: GeografiskTilknytning?
         ): PdlPerson {
 
             val navn = pdlPerson.navn
@@ -188,8 +182,7 @@ class PersonService(
                 forelderBarnRelasjon,
                 sivilstand,
                 kontaktadresse,
-                kontaktinformasjonForDoedsbo,
-                utenlandskIdentifikasjonsnummer
+                kontaktinformasjonForDoedsbo
             )
         }
 
