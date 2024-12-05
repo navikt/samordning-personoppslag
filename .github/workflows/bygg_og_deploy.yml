@@ -113,6 +113,6 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           "CLUSTER": prod-fss
-          "RESOURCE": nais/prod.yaml
+          "RESOURCE": .nais/prod.yaml
           "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
