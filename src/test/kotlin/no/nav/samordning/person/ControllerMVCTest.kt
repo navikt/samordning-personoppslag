@@ -246,7 +246,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.fnr") { value("1213123123")}
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
                 jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                 jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
@@ -279,7 +279,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.fornavn") { value("Fornavn") }
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
                 jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                 jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
@@ -337,7 +337,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.fnr") { value("1213123123")}
                 jsonPath("$.fornavn") { value("Fornavn") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020A") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020 A") }
                 jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
                 jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }

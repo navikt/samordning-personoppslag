@@ -115,7 +115,7 @@ class PersonSamordningService(
         val bostedsAdresse = pdlSamPerson.bostedsadresse?.vegadresse?.run {
             val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
             BostedsAdresseSamordning(
-                boadresse1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                boadresse1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                 postnr = postnummer,
                 poststed = poststed
             ).also{
@@ -125,7 +125,7 @@ class PersonSamordningService(
         val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.let {
             if (it.vegadresse != null) it.vegadresse.run {
                 AdresseSamordning(
-                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                    adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                 ).also{
@@ -139,7 +139,7 @@ class PersonSamordningService(
         val postAdresse = pdlSamPerson.kontaktadresse?.let {
             if (it.type == KontaktadresseType.Innland) it.vegadresse?.run {
                 AdresseSamordning(
-                    adresselinje1 = "$adressenavn ${husnummer ?: ""}${husbokstav ?: ""}".trim(),
+                    adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                 ).also{
