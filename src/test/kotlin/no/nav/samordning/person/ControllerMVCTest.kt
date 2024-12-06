@@ -224,6 +224,41 @@ internal class ControllerMVCTest {
         printCacheStats()
     }
 
+    @Test
+    fun `correct call to samperson ugradert boestedutland and kontakt i fritt format with valid fnr response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true,  utlandIFrittFormat = true)))
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/samperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.kortnavn") { value("FME") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utenlandsAdresse.adresselinje1") { value("adresselinje1") }
+                jsonPath("$.utenlandsAdresse.adresselinje2") { value("adresselinje2") }
+                jsonPath("$.utenlandsAdresse.adresselinje3") { value("adresselinje3") }
+                jsonPath("$.utenlandsAdresse.postnr") { value(471000) }
+                jsonPath("$.utenlandsAdresse.poststed") { value("London") }
+                jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.diskresjonskode") { value(null) }
+
+            }
+
+        printCacheStats()
+    }
 
     @Test
     fun `correct call to samperson ugradert boested norge with valid fnr response return samPersondata`() {
@@ -380,6 +415,7 @@ internal class ControllerMVCTest {
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
     }
 
+
     @Suppress("UNCHECKED_CAST")
     private fun printCacheStats(vararg strings: String = arrayOf(KODEVERK_LANDKODER_CACHE, KODEVERK_POSTNR_CACHE)) {
 
@@ -417,7 +453,7 @@ internal class ControllerMVCTest {
             ).serialize()
 
 
-    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utland: Boolean = false) = HentPerson(
+    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utland: Boolean = false, utlandIFrittFormat: Boolean = false) = HentPerson(
         adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
         bostedsadresse = listOf(
             Bostedsadresse(
@@ -436,7 +472,11 @@ internal class ControllerMVCTest {
         doedsfall = emptyList(), // listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
         forelderBarnRelasjon = emptyList(), //listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.SKILT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
-        kontaktadresse = emptyList(),
+        kontaktadresse = if (utlandIFrittFormat) listOf(Kontaktadresse(
+            utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat("adresselinje1", "adresselinje2", "adresselinje3", "London", "GB", "471000"),
+            metadata = mockMeta(),
+            type = KontaktadresseType.Utland)) else
+                emptyList(),
         kontaktinformasjonForDoedsbo = emptyList()
     )
 

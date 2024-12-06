@@ -111,7 +111,15 @@ class PersonSamordningService(
 
         val dodsdato = pdlSamPerson.doedsfall?.doedsdato?.let { java.sql.Date.valueOf(it) as Date }
 
-        val utenlandsAdresse = pdlSamPerson.bostedsadresse?.utenlandskAdresse?.let { mapUtenlandskAdresse(it, pdlSamPerson)  }
+        val utenlandsAdresse = when (pdlSamPerson.landkodeMedAdressevalg().second)
+        {
+            Adressevalg.KONTAKTADRESSE_UTLANDFRITT -> pdlSamPerson.kontaktadresse?.utenlandskAdresseIFrittFormat?.let { mapUtenlandskAdresseIFrittFormat(it, pdlSamPerson) }
+            Adressevalg.KONTAKTADRESSE_UTLAND -> pdlSamPerson.kontaktadresse?.utenlandskAdresse?.let { mapUtenlandskAdresse(it, pdlSamPerson)  }
+            Adressevalg.OPPHOLDSADRESSE_UTLAND -> pdlSamPerson.oppholdsadresse?.utenlandskAdresse?.let { mapUtenlandskAdresse(it, pdlSamPerson)  }
+            Adressevalg.BOSTEDSADRESSE_UTLAND -> pdlSamPerson.bostedsadresse?.utenlandskAdresse?.let { mapUtenlandskAdresse(it, pdlSamPerson)  }
+            else -> null
+        }
+
         val bostedsAdresse = pdlSamPerson.bostedsadresse?.vegadresse?.run {
             val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
             BostedsAdresseSamordning(
@@ -122,8 +130,9 @@ class PersonSamordningService(
                 logger.debug("Bygget ferdig bostedsAdresse")
             }
         }
-        val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.let {
-            if (it.vegadresse != null) it.vegadresse.run {
+
+        val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.vegadresse?.let {
+            it.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
@@ -131,13 +140,11 @@ class PersonSamordningService(
                 ).also{
                     logger.debug("Bygget ferdig tilleggsAdresse result")
                 }
-             } else it.utenlandskAdresse?.run {
-                     mapUtenlandskAdresse( it.utenlandskAdresse, pdlSamPerson)
-            }
+             }
         }
 
-        val postAdresse = pdlSamPerson.kontaktadresse?.let {
-            if (it.type == KontaktadresseType.Innland) it.vegadresse?.run {
+        val postAdresse = pdlSamPerson.kontaktadresse?.vegadresse?.let {
+            it.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                     postnr = postnummer,
@@ -145,8 +152,6 @@ class PersonSamordningService(
                 ).also{
                     logger.debug("Bygget ferdig postAdresse")
                 }
-            } else it.utenlandskAdresse?.run {
-                mapUtenlandskAdresse( it.utenlandskAdresse, pdlSamPerson)
             }
         }
 
@@ -171,7 +176,7 @@ class PersonSamordningService(
     }
 
     fun mapUtenlandskAdresse(utlandskAdresse: UtenlandskAdresse, pdlSamPerson: PdlSamPerson): AdresseSamordning {
-        logger.debug("landkode: ${pdlSamPerson.landkode()} -> land: ${kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land}")
+        logger.info("landkode: {} -> land: {}", pdlSamPerson.landkodeMedAdressevalg(), kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land)
         return AdresseSamordning(
             adresselinje1 = utlandskAdresse.adressenavnNummer,
             adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted}",
@@ -181,6 +186,20 @@ class PersonSamordningService(
             land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
         ).also{
             logger.debug("Bygget ferdig utenlandsAdresse")
+        }
+    }
+
+    fun mapUtenlandskAdresseIFrittFormat(utlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat, pdlSamPerson: PdlSamPerson): AdresseSamordning {
+        logger.info("landkode: {} -> land: {}", pdlSamPerson.landkodeMedAdressevalg(), kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land)
+        return AdresseSamordning(
+            adresselinje1 = utlandskAdresseIFrittFormat.adresselinje1,
+            adresselinje2 = utlandskAdresseIFrittFormat.adresselinje2,
+            adresselinje3 = utlandskAdresseIFrittFormat.adresselinje3,
+            postnr = utlandskAdresseIFrittFormat.postkode,
+            poststed = utlandskAdresseIFrittFormat.byEllerStedsnavn,
+            land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
+        ).also{
+            logger.debug("Bygget ferdig utenlandsAdresse i fritt format")
         }
     }
 
