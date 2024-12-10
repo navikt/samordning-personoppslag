@@ -146,22 +146,20 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `call to hentident for sjekk fnr`() {
+    fun `call to hentident for sjekk fnr er ok`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        val identerResponse = IdenterResponse(data = IdenterDataResponse(
-            hentIdenter = HentIdenter(
-                identer = listOf(
-                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
-                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
+        val identerResponse = IdenterResponse(
+            data = IdenterDataResponse(
+                hentIdenter = HentIdenter(
+                identer = listOf(IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT))
                 )
             )
-        )
         )
 
         every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
 
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
 
         mvc.post("/api/hentIdent") {
             header("Authorization", "Bearer $token")
@@ -172,13 +170,40 @@ internal class ControllerMVCTest {
             .andDo { print() }
             .andExpect { status { isOk() }
 
-                jsonPath("$.navn.fornavn") { value("Fornavn") }
-                jsonPath("$.navn.etternavn") { value("Etternavn") }
-                jsonPath("$.identer.size()") { value(2) }
-                jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
+                jsonPath("$") { value("25078521492") }
             }
+    }
 
+    @Test
+    fun `call to hentident for sjekk fnr ikke funnet`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
+        val identerResponse = IdenterResponse(
+            data = null,
+            errors = listOf(
+                ResponseError(
+                    message = "Fant ikke person",
+                    locations = null,
+                    path = listOf("hentIdenter"),
+                    extensions = ErrorExtension(code = "not_found",  null, null)
+                    )
+            )
+        )
+
+        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+
+        val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
+
+        mvc.post("/api/hentIdent") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isNotFound() }
+
+            }
     }
 
     @Test
