@@ -43,6 +43,20 @@ class Controller(
         }
     }
 
+    @PostMapping("/hentIdent")
+    @ProtectedWithClaims("entraid")
+    fun hentIdent(@RequestBody request: PersonRequest) : ResponseEntity<String> {
+        try {
+            Fodselsnummer.fra(request.fnr)
+            personSamordningService.hentIdent(request.fnr)?.let{ return ResponseEntity.ok().body(it)}
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke ident")
+        } catch (ise: IllegalStateException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
+        } catch (pe: PersonoppslagException) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
+        }
+    }
+
 
     //TODO TEMP
     @GetMapping("/kodeverk/postnr/{postnr}")

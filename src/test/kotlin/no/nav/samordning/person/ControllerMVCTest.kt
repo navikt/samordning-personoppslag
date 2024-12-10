@@ -146,6 +146,42 @@ internal class ControllerMVCTest {
     }
 
     @Test
+    fun `call to hentident for sjekk fnr`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val identerResponse = IdenterResponse(data = IdenterDataResponse(
+            hentIdenter = HentIdenter(
+                identer = listOf(
+                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
+                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
+                )
+            )
+        )
+        )
+
+        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+
+        mvc.post("/api/hentIdent") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.navn.fornavn") { value("Fornavn") }
+                jsonPath("$.navn.etternavn") { value("Etternavn") }
+                jsonPath("$.identer.size()") { value(2) }
+                jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
+            }
+
+
+    }
+
+    @Test
     fun `correct call with valid fnr response return persondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 

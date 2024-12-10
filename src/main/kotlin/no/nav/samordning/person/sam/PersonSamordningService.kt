@@ -65,6 +65,8 @@ class PersonSamordningService(
 
     }
 
+    fun hentIdent(fnr: String): String? = personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(fnr))?.id
+
     //for eksterne-samhandlere
     fun hentPerson(fnr: String): Person = konverterTilPerson(fnr, hentPersonSamordning(fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet"))
 
