@@ -76,7 +76,7 @@ spec:
     - name: KODEVERK_URL
       value: https://kodeverk-api.intern.nav.no
     - name: KODEVERK_SCOPE
-      value: api//dev-gcp.felleskodeverk-api/.default
+      value: api://dev-gcp.team-rocket.kodeverk-api/.default
   observability:
     autoInstrumentation:
       enabled: true

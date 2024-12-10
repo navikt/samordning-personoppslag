@@ -30,13 +30,13 @@ class RestTemplateConfig {
         AzureAdTokenRequestInterceptor(scope)
 
     @Bean
-    fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String): RestTemplate =
+    fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String, kodeverkTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate =
         RestTemplateBuilder()
             .rootUri(kodeverkUrl)
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
-                //kodeverkTokenInteceptor
+                kodeverkTokenInteceptor
             )
             .build()
 
