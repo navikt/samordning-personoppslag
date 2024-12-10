@@ -39,6 +39,21 @@ class Controller(
         } catch (ise: IllegalStateException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
         } catch (pe: PersonoppslagException) {
+            if (pe.code == "not_found") throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
+        }
+    }
+
+    @PostMapping("/hentIdent")
+    @ProtectedWithClaims("entraid")
+    fun hentIdent(@RequestBody request: PersonRequest) : ResponseEntity<String> {
+        try {
+            Fodselsnummer.fra(request.fnr)
+            personSamordningService.hentIdent(request.fnr)?.let{ return ResponseEntity.ok().body(it)} ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
+        } catch (ise: IllegalStateException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
+        } catch (pe: PersonoppslagException) {
+            if (pe.code == "not_found") throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
         }
     }
