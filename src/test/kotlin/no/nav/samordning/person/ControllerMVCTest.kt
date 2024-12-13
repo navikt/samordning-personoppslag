@@ -17,11 +17,9 @@ import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.FORTROLIG
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -45,6 +43,7 @@ import java.util.*
 @EnableMockOAuth2Server
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.MethodName::class)
 internal class ControllerMVCTest {
 
     @Autowired
@@ -84,9 +83,52 @@ internal class ControllerMVCTest {
 
     }
 
+    @Test
+    fun `PDLPerson correct call with valid fnr response return persondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+        val identerResponse = IdenterResponse(data = IdenterDataResponse(
+            hentIdenter = HentIdenter(
+                identer = listOf(
+                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
+                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
+                )
+            )
+        )
+        )
+
+        val geografiskTilknytningResponse = GeografiskTilknytningResponse(
+            data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
+        )
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+        every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+
+        mvc.post("/api/pdlperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.navn.fornavn") { value("Fornavn") }
+                jsonPath("$.navn.etternavn") { value("Etternavn") }
+                jsonPath("$.identer.size()") { value(2) }
+                jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
+            }
+
+
+    }
+
 
     @Test
-    fun `correct call to kodeverk returns postnummer`() {
+    fun `kodeverk call returns postnummer`() {
 
         (0..5).forEach {
 
@@ -114,7 +156,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to kodeverk hierarki returns landkoder`() {
+    fun `kodeverk call to hierarki returns land and landkoder`() {
         assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NO").toString())
         assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NOR").toString())
 
@@ -131,7 +173,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to kodeverk postnr return poststed`() {
+    fun `kodeverk call postnr return poststed`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         mvc.get("/api/kodeverk/postnr/0950") {
@@ -146,7 +188,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `call to hentident for sjekk fnr er ok`() {
+    fun `hentIdent call for sjekk fnr er ok`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val identerResponse = IdenterResponse(
@@ -175,7 +217,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `call to hentident for sjekk fnr ikke funnet`() {
+    fun `hentIdent call for sjekk fnr ikke funnet`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val identerResponse = IdenterResponse(
@@ -207,53 +249,10 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call with valid fnr response return persondata`() {
+    fun `samPerson correct call ugradert boested utland with valid fnr response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-
-        val identerResponse = IdenterResponse(data = IdenterDataResponse(
-                hentIdenter = HentIdenter(
-                    identer = listOf(
-                        IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
-                        IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
-                    )
-                )
-            )
-        )
-
-        val geografiskTilknytningResponse = GeografiskTilknytningResponse(
-            data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
-        )
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
-        every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-
-        mvc.post("/api/pdlperson") {
-                header("Authorization", "Bearer $token")
-                contentType = MediaType.APPLICATION_JSON
-                content = requestBody
-            }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.navn.fornavn") { value("Fornavn") }
-                jsonPath("$.navn.etternavn") { value("Etternavn") }
-                jsonPath("$.identer.size()") { value(2) }
-                jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
-            }
-
-
-    }
-
-    @Test
-    fun `correct call to samperson ugradert boested utland with valid fnr response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -286,10 +285,10 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to samperson ugradert boestedutland and kontakt i fritt format with valid fnr response return samPersondata`() {
+    fun `samPerson call with utenlandskAdresse and utenlandskAdresseIFrittFormat then response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true,  utlandIFrittFormat = true)))
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true,  utlandIFrittFormat = true)))
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -306,9 +305,9 @@ internal class ControllerMVCTest {
                 jsonPath("$.fnr") { value("1213123123")}
                 jsonPath("$.kortnavn") { value("FME") }
                 jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utenlandsAdresse.adresselinje1") { value("adresselinje1") }
-                jsonPath("$.utenlandsAdresse.adresselinje2") { value("adresselinje2") }
-                jsonPath("$.utenlandsAdresse.adresselinje3") { value("adresselinje3") }
+                jsonPath("$.utenlandsAdresse.adresselinje1") { value("adresselinje1 fritt") }
+                jsonPath("$.utenlandsAdresse.adresselinje2") { value("adresselinje2 fritt") }
+                jsonPath("$.utenlandsAdresse.adresselinje3") { value("adresselinje3 fritt") }
                 jsonPath("$.utenlandsAdresse.postnr") { value(471000) }
                 jsonPath("$.utenlandsAdresse.poststed") { value("London") }
                 jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
@@ -322,7 +321,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to samperson ugradert boested norge with valid fnr response return samPersondata`() {
+    fun `samPerson call with vegadresse norge then response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
@@ -354,7 +353,40 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to samperson gradert boested norge with valid fnr response return samPersondata`() {
+    fun `samPerson call with vegadresse and postboks then response return samPersondata`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/samperson") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.kortnavn") { value("FME") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.diskresjonskode") { value(null) }
+
+            }
+
+    }
+
+
+    @Test
+    fun `samperson call gradert vegadresse norge then response return samPersondata`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
@@ -386,7 +418,41 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to person gradert boested norge with valid fnr response return samPersondata`() {
+    fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+
+        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+        mvc.post("/api/person") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }
+
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+                jsonPath("$.fnr") { value("1213123123")}
+                jsonPath("$.fornavn") { value("Fornavn") }
+                jsonPath("$.etternavn") { value("Etternavn") }
+                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
+                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO")}
+                jsonPath("$.dodsdato") { value(null) }
+                jsonPath("$.sivilstand") { value("SKILT") }
+
+            }
+
+    }
+
+
+    @Test
+    fun `person call gradert vegadresse norge then response return persondata med utbetaling`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
@@ -414,7 +480,7 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to person ugradert boested norge with valid fnr response return samPersondata`() {
+    fun `person call vegadresse norge then response return persondata med utbetaling`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
         val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
@@ -444,9 +510,9 @@ internal class ControllerMVCTest {
     }
 
     @Test
-    fun `correct call to person ugradert boested utland with valid fnr response return samPersondata`() {
+    fun `person call utenlandskAdresse then response return persondata med utbetaling`() {
         val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utland = true)))
+        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
 
         every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -491,11 +557,7 @@ internal class ControllerMVCTest {
             println("EvictionCount: ${stats.evictionCount()}")
 
         }
-
-
-
     }
-
 
     private fun issueSystembrukerToken(
         system: String = UUID.randomUUID().toString(),
@@ -514,14 +576,14 @@ internal class ControllerMVCTest {
             ).serialize()
 
 
-    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utland: Boolean = false, utlandIFrittFormat: Boolean = false) = HentPerson(
+    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utlandsAdresse: Boolean = false, utlandIFrittFormat: Boolean = false, postboks: Boolean = false) = HentPerson(
         adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
         bostedsadresse = listOf(
             Bostedsadresse(
                 LocalDateTime.of(2020, 10, 5, 10,5,2),
                 LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                if (utland == false ) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
-                if (utland) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
+                if (utlandsAdresse == false) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
+                if (utlandsAdresse) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
                 mockMeta()
             )
         ),
@@ -533,11 +595,16 @@ internal class ControllerMVCTest {
         doedsfall = emptyList(), // listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
         forelderBarnRelasjon = emptyList(), //listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.SKILT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
-        kontaktadresse = if (utlandIFrittFormat) listOf(Kontaktadresse(
-            utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat("adresselinje1", "adresselinje2", "adresselinje3", "London", "GB", "471000"),
-            metadata = mockMeta(),
-            type = KontaktadresseType.Utland)) else
-                emptyList(),
+        kontaktadresse =
+            if (utlandIFrittFormat) {
+                listOf(Kontaktadresse(
+                utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat("adresselinje1 fritt", "adresselinje2 fritt", "adresselinje3 fritt", "London", "GB", "471000"),
+                metadata = mockMeta(),
+                type = KontaktadresseType.Utland))
+            } else if (postboks) {
+                listOf(Kontaktadresse(type = KontaktadresseType.Innland, postboksadresse = Postboksadresse(null, "1231", "1109"), metadata = mockMeta()))
+            } else {
+                emptyList() },
         kontaktinformasjonForDoedsbo = emptyList()
     )
 

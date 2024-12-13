@@ -148,13 +148,11 @@ class PersonSamordningService(
         val postAdresse = pdlSamPerson.kontaktadresse?.let {
             if (it.postboksadresse != null) it.postboksadresse.run {
                 AdresseSamordning(
-                    adresselinje1 = postboks,
+                    adresselinje1 = if (postboks.contains("postboks", true)) postboks else "Postboks $postboks",
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                     land = "NORGE"
                 )
-
-
             } else it.vegadresse?.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
