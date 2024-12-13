@@ -65,7 +65,7 @@ data class PdlSamPerson(
          */
         fun landkode() = landkodeMedAdressevalg().first
 
-        fun landkodeMedAdressevalg(): Pair<String, Adressevalg> {
+        fun landkodeMedAdressevalg(): Pair<String, AdressevalgUtland> {
                 val landkodeKontaktadresseUtlandFritt = kontaktadresse?.utenlandskAdresseIFrittFormat?.landkode
                 val landkodeKontaktadresseUtland = kontaktadresse?.utenlandskAdresse?.landkode
                 val landkodeOppholdsadresseUtland = oppholdsadresse?.utenlandskAdresse?.landkode
@@ -76,38 +76,38 @@ data class PdlSamPerson(
                 return when {
                         landkodeKontaktadresseUtlandFritt != null -> {
                                 logger.info("Velger landkode fra kontaktadresse.utenlandskAdresseIFrittFormat: $landkodeKontaktadresseUtlandFritt")
-                                Pair(landkodeKontaktadresseUtlandFritt, Adressevalg.KONTAKTADRESSE_UTLANDFRITT)
+                                Pair(landkodeKontaktadresseUtlandFritt, AdressevalgUtland.KONTAKTADRESSE_UTLANDFRITT)
                         }
                         landkodeKontaktadresseUtland != null -> {
                                 logger.info("Velger landkode fra kontaktadresse.utenlandskAdresse: $landkodeKontaktadresseUtland")
-                                Pair(landkodeKontaktadresseUtland, Adressevalg.KONTAKTADRESSE_UTLAND)
+                                Pair(landkodeKontaktadresseUtland, AdressevalgUtland.KONTAKTADRESSE_UTLAND)
                         }
                         landkodeOppholdsadresseUtland != null -> {
                                 logger.info("Velger landkode fra oppholdsadresse.utenlandskAdresse: $landkodeOppholdsadresseUtland")
-                                Pair(landkodeOppholdsadresseUtland, Adressevalg.OPPHOLDSADRESSE_UTLAND)
+                                Pair(landkodeOppholdsadresseUtland, AdressevalgUtland.OPPHOLDSADRESSE_UTLAND)
                         }
                         landkodeBostedsadresseUtland != null -> {
                                 logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse: $landkodeBostedsadresseUtland")
-                                Pair(landkodeBostedsadresseUtland, Adressevalg.BOSTEDSADRESSE_UTLAND)
+                                Pair(landkodeBostedsadresseUtland, AdressevalgUtland.BOSTEDSADRESSE_UTLAND)
                         }
                         landkodeBostedNorge != null -> {
                                 logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom: NOR")
-                                Pair("NOR", Adressevalg.BOSTEDNORGE)
+                                Pair("NOR", AdressevalgUtland.BOSTEDNORGE)
                         }
                         landkodeKontaktNorge != null -> {
                                 logger.info("Velger landkode NOR fordi  kontaktadresse.postadresseIFrittFormat ikke er tom: NOR")
-                                Pair("NOR", Adressevalg.KONTAKTNORGE)
+                                Pair("NOR", AdressevalgUtland.KONTAKTNORGE)
                         }
                         else -> {
                                 logger.info("Velger tom landkode siden ingen særregler for adresseutvelger inntraff")
-                                Pair("", Adressevalg.NOT_APPLICABLE)
+                                Pair("", AdressevalgUtland.NOT_APPLICABLE)
                         }
                 }
         }
 
 }
 
-enum class Adressevalg {
+enum class AdressevalgUtland {
         KONTAKTADRESSE_UTLANDFRITT,
         KONTAKTADRESSE_UTLAND,
         OPPHOLDSADRESSE_UTLAND,

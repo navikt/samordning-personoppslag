@@ -42,7 +42,14 @@ data class Kontaktadresse(
         val utenlandskAdresse: UtenlandskAdresse? = null,
         val utenlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat? = null,
         val vegadresse: Vegadresse? = null,
+        val postboksadresse: Postboksadresse? = null,
         val postadresseIFrittFormat: PostadresseIFrittFormat? = null
+)
+
+data class Postboksadresse(
+        val  postbokseier: String? = null ,
+        val postboks: String,
+        val postnummer: String? = null
 )
 
 /** 

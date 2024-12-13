@@ -39,6 +39,9 @@ query($ident: ID!) {
             metadata {
                 ...metadataDetails
             }
+            postboksadresse {
+                ...postboksadresse
+            }
             postadresseIFrittFormat {
                 ...postadresseIFrittFormat
             }
@@ -164,6 +167,11 @@ fragment vegadresseDetails on Vegadresse {
     postnummer
     kommunenummer
     bydelsnummer
+}
+fragment postboksadresse on Postboksadresse {
+    postbokseier
+    postboks
+    postnummer
 }
 fragment postadresseIFrittFormat on PostadresseIFrittFormat {
     adresselinje1
