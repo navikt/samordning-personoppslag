@@ -1,6 +1,5 @@
 package no.nav.samordning.person
 
-import no.nav.samordning.kodeverk.KodeverkAPIResponse
 import no.nav.samordning.kodeverk.Landkode
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.PdlPerson
@@ -84,8 +83,8 @@ class Controller(
     //TODO TEMP
     @GetMapping("/kodeverkapi/{koder}")
     @ProtectedWithClaims("entraid")
-    fun hentKodeverkApi(@PathVariable koder: String = "Landkoder") : ResponseEntity<KodeverkAPIResponse> {
-        return ResponseEntity<KodeverkAPIResponse>.ok().body(personSamordningService.kodeverkService().hentKodeverkApi(koder))
+    fun hentKodeverkApi(@PathVariable koder: String = "Landkoder") : String {
+        return personSamordningService.kodeverkService().hentKodeverkApi(koder)
     }
 
     //TODO: utgåår når alt funker vi går mot prod

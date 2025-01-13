@@ -62,7 +62,7 @@ class KodeverkClient(
         }
     }
 
-    fun hentKodeverkApi(koder: String): KodeverkAPIResponse = henteKodeverkApi(koder)
+    fun hentKodeverkApi(koder: String): String = henteKodeverkApi(koder)
 
     @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName")
     fun hentLandKoder(): List<Landkode> {
@@ -101,7 +101,7 @@ class KodeverkClient(
         }
     }
 
-    private fun henteKodeverkApi(kodeverk: String): KodeverkAPIResponse {
+    private fun henteKodeverkApi(kodeverk: String): String {
         val path = "/api/v1/kodeverk/{kodeverk}/koder?inkluderUtkast=false"
         val uriParams = mapOf("kodeverk" to kodeverk)
 
@@ -142,7 +142,7 @@ class KodeverkClient(
         }
     }
 
-    private fun doKodeApiRequest(builder: UriComponents): KodeverkAPIResponse {
+    private fun doKodeApiRequest(builder: UriComponents): String {
         return try {
             val headers = HttpHeaders()
             headers["Nav-Consumer-Id"] = appName
@@ -151,11 +151,11 @@ class KodeverkClient(
 
             logger.debug("URIstring: ${builder.toUriString()}")
 
-            kodeverkRestTemplate.exchange<KodeverkAPIResponse>(
+            kodeverkRestTemplate.exchange<String>(
                 builder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
-                KodeverkAPIResponse::class.java
+                String::class.java
             ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
 
         } catch (ce: HttpClientErrorException) {
