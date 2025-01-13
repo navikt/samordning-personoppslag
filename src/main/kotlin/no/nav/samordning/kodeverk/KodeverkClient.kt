@@ -102,7 +102,7 @@ class KodeverkClient(
     }
 
     private fun henteKodeverkApi(kodeverk: String): KodeverkAPIResponse {
-        val path = "/web/api/kodeverk/{kodeverk}?inkluderUtkast=false"
+        val path = "/api/v1/kodeverk/{kodeverk}/koder?inkluderUtkast=false"
         val uriParams = mapOf("kodeverk" to kodeverk)
 
         return doKodeApiRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
