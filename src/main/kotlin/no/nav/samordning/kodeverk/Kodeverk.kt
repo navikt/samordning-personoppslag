@@ -52,5 +52,27 @@ data class KodeverkBeskrivelse(
     val term: String
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class KodeverkAPIResponse(
+    val navn: String,
+    val koder: List<KodeverkAPIKode>
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class KodeverkAPIKode(
+    val navn: String,
+    val betydning: KodeverkAPIbetydning
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class KodeverkAPIbetydning(
+    val beskrivelse: KodeverkAPIBeskrivelse
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class KodeverkAPIBeskrivelse(
+    val term: String
+)
+
 class KodeverkException(message: String) : ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
 class LandkodeException(message: String) : ResponseStatusException(HttpStatus.BAD_REQUEST, message)

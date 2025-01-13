@@ -1,0 +1,75 @@
+{
+  "navn": "Landkoder",
+  "eier": "S134876",
+  "forvaltere": [],
+  "senestePubliseringstidspunkt": "2024-01-02T09:38:55.688Z",
+  "status": "STANDARD",
+  "tilgjengeligeSpraak": [
+    "nb"
+  ],
+  "koder": [
+    {
+      "id": 4096,
+      "navn": "GIN",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 17122,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 16594,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "GUINEA"
+        }
+      }
+    },
+    {
+      "id": 16896,
+      "navn": "CSK",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 15311,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "2000-01-01",
+        "beskrivelse": {
+          "id": 15777,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "TSJEKKOSLOVAKIA"
+        }
+      }
+    },
+    {
+      "id": 1024,
+      "navn": "NGA",
+      "kodeverk": "Landkoder",
+      "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 6139,
+        "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6895,
+          "senestePubliseringstidspunkt": "2013-10-14T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "NIGERIA"
+        }
+      }
+    }
+  ]
+}

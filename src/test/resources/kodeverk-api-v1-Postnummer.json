@@ -1,0 +1,81 @@
+{
+  "navn": "Postnummer",
+  "eier": "S134876",
+  "forvaltere": [
+    "B100775",
+    "C124869",
+    "D117092",
+    "E130804",
+    "G163155"
+  ],
+  "senestePubliseringstidspunkt": "2024-12-13T08:04:11.398Z",
+  "status": "STANDARD",
+  "tilgjengeligeSpraak": [
+    "nb"
+  ],
+  "koder": [
+    {
+      "id": 8192,
+      "navn": "1109",
+      "kodeverk": "Postnummer",
+      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 5402,
+        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 5799,
+          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "OSLO"
+        }
+      }
+    },
+    {
+      "id": 8194,
+      "navn": "2056",
+      "kodeverk": "Postnummer",
+      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 9716,
+        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 9087,
+          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "ALGARHEIM"
+        }
+      }
+    },
+    {
+      "id": 16387,
+      "navn": "0950",
+      "kodeverk": "Postnummer",
+      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+      "status": "PUBLISERT",
+      "betydning": {
+        "id": 7017,
+        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+        "status": "PUBLISERT",
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelse": {
+          "id": 6371,
+          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
+          "status": "PUBLISERT",
+          "spraak": "nb",
+          "term": "OSLO"
+        }
+      }
+    }
+  ]
+}
