@@ -62,6 +62,10 @@ class KodeverkClient(
         }
     }
 
+    fun hentKodeverkApi(koder: String): String {
+        return henteKodeverkApi(koder)
+    }
+
     @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName")
     fun hentLandKoder(): List<Landkode> {
         return kodeverkLandKoderMetrics.measure {
@@ -99,6 +103,13 @@ class KodeverkClient(
         }
     }
 
+    private fun henteKodeverkApi(kodeverk: String): String {
+        val path = "/web/api/kodeverk/{kodeverk}?inkluderUtkast=false"
+        val uriParams = mapOf("kodeverk" to kodeverk)
+
+        return doKodeApiRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
+    }
+
     private fun hentKodeverk(kodeverk: String): KodeverkResponse  {
         val path = "/web/api/kodeverk/{kodeverk}"
         val uriParams = mapOf("kodeverk" to kodeverk)
@@ -119,6 +130,34 @@ class KodeverkClient(
                 HttpMethod.GET,
                 requestEntity,
                 KodeverkResponse::class.java
+            ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
+
+        } catch (ce: HttpClientErrorException) {
+            logger.error(ce.message, ce)
+            throw KodeverkException(ce.message!!)
+        } catch (se: HttpServerErrorException) {
+            logger.error(se.message, se)
+            throw KodeverkException(se.message!!)
+        } catch (ex: Exception) {
+            logger.error(ex.message, ex)
+            throw KodeverkException(ex.message!!)
+        }
+    }
+
+    private fun doKodeApiRequest(builder: UriComponents): String {
+        return try {
+            val headers = HttpHeaders()
+            headers["Nav-Consumer-Id"] = appName
+            headers["Nav-Call-Id"] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
+            val requestEntity = HttpEntity<String>(headers)
+
+            logger.debug("URIstring: ${builder.toUriString()}")
+
+            kodeverkRestTemplate.exchange<String>(
+                builder.toUriString(),
+                HttpMethod.GET,
+                requestEntity,
+                String::class.java
             ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
 
         } catch (ce: HttpClientErrorException) {

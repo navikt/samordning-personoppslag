@@ -27,6 +27,7 @@ class KodeverkService(private val kodeverkClient: KodeverkClient) {
     fun hentPoststedforPostnr(postnr: String) = kodeverkClient.hentPostnr().firstOrNull { it.postnummer == postnr }?.sted
     fun hentAllePostnrOgSted() = kodeverkClient.hentPostnr().toJson()
 
+    fun hentLandkoderApi(koder: String) = kodeverkClient.hentKodeverkApi(koder)
 
     companion object{
         fun mapAnyToJson(data: Any): String {

@@ -80,12 +80,20 @@ class Controller(
         return ResponseEntity<List<Landkode>>.ok().body(personSamordningService.kodeverkService().hentAlleLandkoderMedLand())
     }
 
+    //TODO TEMP
+    @GetMapping("/kodeverkapi/{koder}")
+    @ProtectedWithClaims("entraid")
+    fun hentKodeverkApiLand(@PathVariable koder: String = "Landkoder") : String {
+        return personSamordningService.kodeverkService().hentLandkoderApi(koder)
+    }
+
     //TODO: utgåår når alt funker vi går mot prod
     @PostMapping("/pdlperson")
     @ProtectedWithClaims("entraid")
     fun henPdlPerson(@RequestBody request: PersonRequest) : ResponseEntity<PdlPerson> {
         return ResponseEntity.ok().body(personSamordningService.hentPdlPerson(request.fnr))
     }
+
 
 }
 
