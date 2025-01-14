@@ -1,81 +1,244 @@
 {
-  "navn": "Postnummer",
-  "eier": "S134876",
-  "forvaltere": [
-    "B100775",
-    "C124869",
-    "D117092",
-    "E130804",
-    "G163155"
-  ],
-  "senestePubliseringstidspunkt": "2024-12-13T08:04:11.398Z",
-  "status": "STANDARD",
-  "tilgjengeligeSpraak": [
-    "nb"
-  ],
-  "koder": [
-    {
-      "id": 8192,
-      "navn": "1109",
-      "kodeverk": "Postnummer",
-      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-      "status": "PUBLISERT",
-      "betydning": {
-        "id": 5402,
-        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-        "status": "PUBLISERT",
-        "gyldigFra": "1900-01-01",
+  "betydninger": {
+    "4971": [
+      {
+        "gyldigFra": "1999-03-01",
         "gyldigTil": "9999-12-31",
-        "beskrivelse": {
-          "id": 5799,
-          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-          "status": "PUBLISERT",
-          "spraak": "nb",
-          "term": "OSLO"
+        "beskrivelser": {
+          "nb": {
+            "term": "SUNDEBRU",
+            "tekst": "SUNDEBRU"
+          }
         }
       }
-    },
-    {
-      "id": 8194,
-      "navn": "2056",
-      "kodeverk": "Postnummer",
-      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-      "status": "PUBLISERT",
-      "betydning": {
-        "id": 9716,
-        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-        "status": "PUBLISERT",
-        "gyldigFra": "1900-01-01",
+    ],
+    "2306": [
+      {
+        "gyldigFra": "1999-03-01",
         "gyldigTil": "9999-12-31",
-        "beskrivelse": {
-          "id": 9087,
-          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-          "status": "PUBLISERT",
-          "spraak": "nb",
-          "term": "ALGARHEIM"
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
         }
       }
-    },
-    {
-      "id": 16387,
-      "navn": "0950",
-      "kodeverk": "Postnummer",
-      "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-      "status": "PUBLISERT",
-      "betydning": {
-        "id": 7017,
-        "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-        "status": "PUBLISERT",
-        "gyldigFra": "1900-01-01",
+    ],
+    "2305": [
+      {
+        "gyldigFra": "1999-03-01",
         "gyldigTil": "9999-12-31",
-        "beskrivelse": {
-          "id": 6371,
-          "senestePubliseringstidspunkt": "2013-10-15T22:00:00Z",
-          "status": "PUBLISERT",
-          "spraak": "nb",
-          "term": "OSLO"
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
         }
       }
-    }
-  ]
+    ],
+    "2304": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "2303": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "2302": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "2301": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "3630": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "RØDBERG",
+            "tekst": "RØDBERG"
+          }
+        }
+      }
+    ],
+    "3631": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "RØDBERG",
+            "tekst": "RØDBERG"
+          }
+        }
+      }
+    ],
+    "3632": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "UVDAL",
+            "tekst": "UVDAL"
+          }
+        }
+      }
+    ],
+    "3634": [
+      {
+        "gyldigFra": "2018-10-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "NORE",
+            "tekst": "NORE"
+          }
+        }
+      }
+    ],
+    "2309": [
+      {
+        "gyldigFra": "2001-07-12",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "2308": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "2307": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "4980": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "GJERSTAD",
+            "tekst": "GJERSTAD"
+          }
+        }
+      }
+    ],
+    "3650": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "TINN AUSTBYGD",
+            "tekst": "TINN AUSTBYGD"
+          }
+        }
+      }
+    ],
+    "2320": [
+      {
+        "gyldigFra": "1900-01-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "FURNES",
+            "tekst": "FURNES"
+          }
+        }
+      }
+    ],
+    "2317": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "HAMAR",
+            "tekst": "HAMAR"
+          }
+        }
+      }
+    ],
+    "1109": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "OSLO",
+            "tekst": "OSLO"
+          }
+        }
+      }
+    ],
+    "0950": [
+      {
+        "gyldigFra": "1999-03-01",
+        "gyldigTil": "9999-12-31",
+        "beskrivelser": {
+          "nb": {
+            "term": "OSLO",
+            "tekst": "OSLO"
+          }
+        }
+      }
+    ]
+  }
 }

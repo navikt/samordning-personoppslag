@@ -65,9 +65,9 @@ internal class ControllerMVCTest {
     private lateinit var kodeverkRestTemplate: RestTemplate
 
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-    private val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
+    private val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
+    private val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
     private val landkoder = javaClass.getResource("/kodeverk-landkoder.json")?.readText() ?: throw Exception("ikke funnet")
-    private val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-land.json")?.readText() ?: throw Exception("ikke funnet"))
 
     @AfterEach
     fun takeDown() {
@@ -78,8 +78,45 @@ internal class ControllerMVCTest {
     fun setup() {
 
         every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Postnummer"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-        every { kodeverkRestTemplate.exchange(eq("/web/api/kodeverk/Landkoder"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
+        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+    }
+
+    @Test
+    fun `Test Kodeverk Landkoder med korrekt apiurl bruk av KodeverkAPIRespone`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
+        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+
+        mvc.get("/api/kodeverkapi/Landkoder") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+        }
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+            }
+
+    }
+
+    @Test
+    fun `Test Kodeverk Postnummer med korrekt apiurl bruk av KodeverkAPIRespone`() {
+        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+        val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
+
+        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
+
+        mvc.get("/api/kodeverkapi/Postnummer") {
+            header("Authorization", "Bearer $token")
+            contentType = MediaType.APPLICATION_JSON
+        }
+            .andDo { print() }
+            .andExpect { status { isOk() }
+
+            }
 
     }
 
@@ -136,12 +173,12 @@ internal class ControllerMVCTest {
             val start = System.nanoTime()
 
             val sted1 = kodeverkService.hentPoststedforPostnr("0950")
-            val sted2 = kodeverkService.hentPoststedforPostnr("2056")
+            val sted2 = kodeverkService.hentPoststedforPostnr("4980")
             val land = kodeverkService.finnLandkode("FRA")?.land
             val land2 = kodeverkService.finnLandkode("SWE")
 
             assertEquals("OSLO", sted1)
-            assertEquals("ALGARHEIM", sted2)
+            assertEquals("GJERSTAD", sted2)
             assertEquals("FRANKRIKE", land)
             assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", land2.toString())
 

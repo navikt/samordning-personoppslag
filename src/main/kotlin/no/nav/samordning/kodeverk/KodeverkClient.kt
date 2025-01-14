@@ -44,8 +44,8 @@ class KodeverkClient(
     @Cacheable(cacheNames = [KODEVERK_POSTNR_CACHE], key = "#root.methodName")
     fun hentPostnr(): List<Postnummer> {
         return kodeverkPostMetrics.measure {
-            hentKodeverk("Postnummer").koder.map{ kodeverk ->
-                Postnummer(kodeverk.navn, kodeverk.betydning.beskrivelse.term)
+            hentKodeverk("Postnummer").betydninger.map{ kodeverk ->
+                Postnummer(kodeverk.key, kodeverk.value.firstOrNull()?.beskrivelser?.nb?.term ?: "UKJENT")
                 }.sortedBy { (sorting, _) -> sorting }
                 .toList()
                 .also { logger.info("Har importert postnummer og sted. size: ${it.size}") }
@@ -54,23 +54,20 @@ class KodeverkClient(
 
     fun hentLand(): List<Land> {
         return kodeverkLandMetrics.measure {
-            hentKodeverk("Landkoder").koder.map{ kodeverk ->
-                Land(kodeverk.navn, kodeverk.betydning.beskrivelse.term)
+            hentKodeverk("Landkoder").betydninger.map{ kodeverk ->
+                Land(kodeverk.key, kodeverk.value.firstOrNull()?.beskrivelser?.nb?.term ?: "UKJENT")
             }.sortedBy { (sorting, _) -> sorting }
             .toList()
             .also { logger.info("Har importert land. size: ${it.size}") }
         }
     }
 
-    fun hentKodeverkApi(koder: String): String = henteKodeverkApi(koder)
+    fun hentKodeverkApi(koder: String): KodeverkResponse = hentKodeverk(koder)
 
     @Cacheable(cacheNames = [KODEVERK_LANDKODER_CACHE], key = "#root.methodName")
     fun hentLandKoder(): List<Landkode> {
         return kodeverkLandKoderMetrics.measure {
             val listLand = hentLand()//need this fist
-            //val hierarkinoder = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2")).at("/hierarkinoder")
-            //val noder = hierarkinoder.at("/undernoder").toList()
-
             val rootNode = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2"))
             val noder = rootNode.at("/noder").toList()
             return@measure noder.map { node ->
@@ -85,31 +82,11 @@ class KodeverkClient(
                 .also {
                 logger.info("Har importert landkoder med land: ${it.size}")
             }
-
-            //            return@measure noder.map { node ->
-            //                val land3 = node.at("/undernoder").findPath("kode").textValue()
-            //                Landkode(
-            //                    landkode2 = node.at("/kode").textValue(),
-            //                    landkode3 = land3,
-            //                    land = listLand.firstOrNull { it.landkode3 == land3 }?.land ?: "UKJENT"
-            //                ).also {
-            //                    logger.debug("kodeverk: ${it.landkode2}, ${it.landkode3}, ${it.land}")
-            //                }
-            //            }.sortedBy { (_, sorting, _) -> sorting }.toList().also {
-            //                logger.info("Har importert landkoder med land: ${it.size}")
-            //            }'
         }
     }
 
-    private fun henteKodeverkApi(kodeverk: String): String {
-        val path = "/api/v1/kodeverk/{kodeverk}/koder?inkluderUtkast=false"
-        val uriParams = mapOf("kodeverk" to kodeverk)
-
-        return doKodeApiRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
-    }
-
-    private fun hentKodeverk(kodeverk: String): KodeverkResponse  {
-        val path = "/web/api/kodeverk/{kodeverk}"
+    private fun hentKodeverk(kodeverk: String): KodeverkResponse {
+        val path = "/api/v1/kodeverk/{kodeverk}/koder/betydninger?spraak=nb"
         val uriParams = mapOf("kodeverk" to kodeverk)
 
         return doKodeRequest(UriComponentsBuilder.fromUriString(path).buildAndExpand(uriParams))
@@ -128,34 +105,6 @@ class KodeverkClient(
                 HttpMethod.GET,
                 requestEntity,
                 KodeverkResponse::class.java
-            ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
-
-        } catch (ce: HttpClientErrorException) {
-            logger.error(ce.message, ce)
-            throw KodeverkException(ce.message!!)
-        } catch (se: HttpServerErrorException) {
-            logger.error(se.message, se)
-            throw KodeverkException(se.message!!)
-        } catch (ex: Exception) {
-            logger.error(ex.message, ex)
-            throw KodeverkException(ex.message!!)
-        }
-    }
-
-    private fun doKodeApiRequest(builder: UriComponents): String {
-        return try {
-            val headers = HttpHeaders()
-            headers["Nav-Consumer-Id"] = appName
-            headers["Nav-Call-Id"] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
-            val requestEntity = HttpEntity<String>(headers)
-
-            logger.debug("URIstring: ${builder.toUriString()}")
-
-            kodeverkRestTemplate.exchange<String>(
-                builder.toUriString(),
-                HttpMethod.GET,
-                requestEntity,
-                String::class.java
             ).body ?: throw KodeverkException("Feil ved konvetering av jsondata fra kodeverk")
 
         } catch (ce: HttpClientErrorException) {

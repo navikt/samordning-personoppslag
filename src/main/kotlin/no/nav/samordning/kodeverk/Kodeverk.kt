@@ -22,55 +22,21 @@ data class Postnummer(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class KodeverkResponse(
-    val navn: String,
-    val koder: List<KodeverkKode>
-)
-
-enum class KodeStatusEnum {
-    NY,
-    OPPDATERT,
-    PUBLISERT,
-    SLETTET;
-}
-
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkKode(
-    val navn: String,
-    val status: KodeStatusEnum,
-    val betydning: KodeverkBetydning
+    val betydninger: Map<String, List<KodeverkBetydning>>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class KodeverkBetydning(
-    val beskrivelse: KodeverkBeskrivelse
+    val beskrivelser: KodeverkBeskrivelser
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkBeskrivelse(
-    val tekst: String?,
-    val term: String
+data class KodeverkBeskrivelser (
+    val nb: KodeverkTerm
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkAPIResponse(
-    val navn: String,
-    val koder: List<KodeverkAPIKode>
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkAPIKode(
-    val navn: String,
-    val betydning: KodeverkAPIbetydning
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkAPIbetydning(
-    val beskrivelse: KodeverkAPIBeskrivelse
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class KodeverkAPIBeskrivelse(
+data class KodeverkTerm (
     val term: String
 )
 
