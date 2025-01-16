@@ -12,6 +12,7 @@ import no.nav.samordning.kodeverk.KODEVERK_LANDKODER_CACHE
 import no.nav.samordning.kodeverk.KODEVERK_POSTNR_CACHE
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.KodeverkService
+import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_NAV_CALL
 import no.nav.samordning.person.pdl.RestTemplateConfigTest
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.FORTROLIG
@@ -92,6 +93,8 @@ internal class ControllerMVCTest {
 
         mvc.get("/api/kodeverkapi/Landkoder") {
             header("Authorization", "Bearer $token")
+            header(REQUEST_NAV_CALL, "NAV-CALL-ID-${UUID.randomUUID()}")
+
             contentType = MediaType.APPLICATION_JSON
         }
             .andDo { print() }
