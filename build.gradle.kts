@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.1.0"
+val kotlinVersion = "2.1.10"
 val prometeusVersion = "1.14.4"
-val springbootVersion = "3.4.1"
+val springbootVersion = "3.4.3"
 val springwebmvcpac4jVersion = "8.0.0"
-val springframeworkbomVersion = "6.2.1"
+val springframeworkbomVersion = "6.2.3"
 val jacksonkotlinVersion = "2.18.2"
 val slf4jVersion = "2.0.17"
 val logstashlogbackVersion = "8.0"
@@ -19,8 +19,8 @@ val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.12.0"
 
 plugins {
-    val pluginSpringBootVersion = "3.4.1"
-    val pluginKotlinVersion = "2.1.0"
+    val pluginSpringBootVersion = "3.4.3"
+    val pluginKotlinVersion = "2.1.10"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -112,7 +112,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.9"
+        gradleVersion = "8.13"
     }
 
 }
