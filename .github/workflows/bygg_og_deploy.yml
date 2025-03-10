@@ -66,10 +66,10 @@ jobs:
   deployToQ1:
     needs: build_and_tag
     permissions:
-      contents: "read"
-      id-token: "write"
-    name: 'Deploy NAIS Q1'
-    runs-on: ubuntu-latest
+      contents: read
+      id-token: write
+    name: Deploy NAIS Q1
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Deploy to Q1
@@ -83,9 +83,9 @@ jobs:
   deployToQ2:
     needs: build_and_tag
     permissions:
-      contents: "read"
-      id-token: "write"
-    name: 'Deploy NAIS Q2'
+      contents: read
+      id-token: write
+    name: Deploy NAIS Q2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -103,9 +103,9 @@ jobs:
      - deployToQ1
      - deployToQ2
     permissions:
-      contents: "read"
-      id-token: "write"
-    name: 'Deploy NAIS PROD'
+      contents: read
+      id-token: write
+    name: Deploy NAIS PROD
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
