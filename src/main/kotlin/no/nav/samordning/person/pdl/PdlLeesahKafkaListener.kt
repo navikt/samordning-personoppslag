@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PdlLeesahKafkaListener {
+
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @KafkaListener(
@@ -29,17 +30,28 @@ class PdlLeesahKafkaListener {
         ack: Acknowledgment,
     ) {
         try {
-            consumerRecords.forEach {
-                val type = it.value().opplysningstype // TODO: Dette komplilerer ikke
-                when (type) {
+            logger.info("Behandler ${consumerRecords.size} meldinger, firstOffset=${consumerRecords.first().offset()}, lastOffset=${consumerRecords.last().offset()}")
+            consumerRecords.forEach { consumerRecord ->
+                val personhendelse = consumerRecord.value()
+
+                logger.debug("Kafka personhendelse: $personhendelse")
+
+                val opplysningstype = personhendelse.opplysningstype
+
+                when (opplysningstype) {
                     "SIVILSTAND_V1" -> logger.info("SIVILSTAND_V1")
+                    "FOLKEREGISTERIDENTIFIKATOR_V1" -> logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
+                    "DOEDSFALL_V1" -> logger.info("DOEDSFALL_V1")
+                    "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
+                    "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
+
+                    //TODO ikke i bruk?!
                     "FORELDERBARNRELASJON_V1" -> logger.info("FORELDERBARNRELASJON_V1")
                     "UTFLYTTING_FRA_NORGE" -> logger.info("UTFLYTTING_FRA_NORGE")
                     "INNFLYTTING_TIL_NORGE" -> logger.info("INNFLYTTING_TIL_NORGE")
                     "ADRESSEBESKYTTELSE_V1" -> logger.info("ADRESSEBESKYTTELSE_V1")
-                    "FOLKEREGISTERIDENTIFIKATOR_V1" -> logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
-                    "DOEDSFALL_V1" -> logger.info("DOEDSFALL_V1")
-                    else -> logger.info("Fant ikke type: $type")
+
+                    else -> logger.info("Fant ikke type: $opplysningstype")
                 }
                 throw RuntimeException("Kaster exception for å rulle tilbake inntil meldingene håndteres")
             }

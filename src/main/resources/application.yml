@@ -30,6 +30,10 @@ spring:
     listener:
       ack-mode: manual
 
+pdl:
+  kafka:
+    autoStartup: true
+
 management:
   endpoint:
     health:
