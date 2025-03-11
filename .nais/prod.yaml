@@ -54,6 +54,8 @@ spec:
     requests:
       cpu: 500m
       memory: 650Mi
+  kafka:
+    pool: nav-prod
   vault:
     enabled: false
   webproxy: true
