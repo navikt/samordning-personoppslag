@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 val kotlinVersion = "2.1.10"
 val prometeusVersion = "1.14.5"
 val springbootVersion = "3.4.3"
+val springkafkaVersion="3.3.3"
 val springwebmvcpac4jVersion = "8.0.0"
 val springframeworkbomVersion = "6.2.4"
 val jacksonkotlinVersion = "2.18.3"
@@ -35,6 +36,17 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
+
+    maven {
+        url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
+        metadataSources {
+            artifact() //Look directly for artifact
+        }
+    }
+    maven {
+        url = uri("https://packages.confluent.io/maven")
+    }
+
 }
 
 dependencies {
@@ -52,6 +64,12 @@ dependencies {
     //caffeine cache manager
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
 
+    implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
+    testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
+    implementation("io.confluent:kafka-avro-serializer:7.9.0") {
+        exclude(group = "org.apache.avro", module = "avro")
+    }
+    implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2023.12.14-13.21-9d7ae4bfc982")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
