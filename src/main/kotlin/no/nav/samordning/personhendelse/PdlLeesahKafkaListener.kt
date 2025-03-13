@@ -1,4 +1,4 @@
-package no.nav.samordning.person.pdl
+package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Personhendelse
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -8,9 +8,8 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
 
-
 @Service
-class PdlLeesahKafkaListener {
+class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -34,12 +33,18 @@ class PdlLeesahKafkaListener {
             consumerRecords.forEach { consumerRecord ->
                 val personhendelse = consumerRecord.value()
 
-                logger.debug("Kafka personhendelse: $personhendelse")
+                logger.debug("Kafka personhendelse: {}", personhendelse)
 
                 val opplysningstype = personhendelse.opplysningstype
 
                 when (opplysningstype) {
-                    "SIVILSTAND_V1" -> logger.info("SIVILSTAND_V1")
+                    "SIVILSTAND_V1" -> {
+
+                        logger.info("SIVILSTAND_V1")
+                        hendelseService.opprettSivilstandsMelding(personhendelse)
+
+                    }
+
                     "FOLKEREGISTERIDENTIFIKATOR_V1" -> logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
                     "DOEDSFALL_V1" -> logger.info("DOEDSFALL_V1")
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")

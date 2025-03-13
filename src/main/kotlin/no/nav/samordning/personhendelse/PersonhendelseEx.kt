@@ -1,4 +1,4 @@
-package no.nav.samordning.person.pdl
+package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 
