@@ -56,6 +56,19 @@ class RestTemplateConfig {
             .build()
     }
 
+    @Bean
+    fun samTokenInteceptor(@Value("\${SAM_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+        AzureAdTokenRequestInterceptor(scope)
+
+    @Bean
+    fun samRestTemplate(@Value("\${SAM_URL}") samUrl: String, samTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
+        return RestTemplateBuilder()
+            .rootUri(samUrl)
+            .errorHandler(DefaultResponseErrorHandler())
+            .additionalInterceptors(samTokenInteceptor)
+            .build()
+    }
+
     internal class PdlInterceptor : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -74,7 +87,7 @@ class RestTemplateConfig {
                         BARNEPENSJON.nummer
             // [Borger, Saksbehandler eller System]
 
-            logger.debug("PdlInterceptor httpRequest headers: ${request.headers}")
+            logger.debug("PdlInterceptor httpRequest headers: {}", request.headers)
 
             return execution.execute(request, body)
         }

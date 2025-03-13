@@ -86,6 +86,10 @@ spec:
       value: https://kodeverk-api.intern.nav.no
     - name: KODEVERK_SCOPE
       value: api://dev-gcp.team-rocket.kodeverk-api/.default
+    - name: SAM_SCOPE
+      value: api://dev-fss.pensjonsamhandling.sam-q1/.default
+    - name: SAM_URL
+      value: https://sam-q1.intern.dev.nav.no
   observability:
     autoInstrumentation:
       enabled: true
