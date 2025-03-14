@@ -39,7 +39,7 @@ class SamHendelseService(private val samClient: SamClient) {
                                   tidligereHendelseId: String?) {
 
         when (endringstype) {
-            Endringstype.OPPRETTET,  -> {
+            Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
                 //TODO kan dette gjøres enklere? evt fjenre nullable høyere opp?
                 if (sivilstandsType != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId")
