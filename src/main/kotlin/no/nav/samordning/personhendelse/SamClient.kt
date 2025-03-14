@@ -16,7 +16,7 @@ class SamClient(private val samRestTemplate: RestTemplate) {
                 Unit::class.java
             )
         } catch (re: RestClientException) {
-            throw Exception("Kall mot samordning feilet", re)
+            throw Exception("Kall mot SAM oppdaterpersonalia $path feilet", re)
         }
 
     }
