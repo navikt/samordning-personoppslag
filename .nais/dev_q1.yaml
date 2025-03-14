@@ -90,6 +90,8 @@ spec:
       value: api://dev-fss.pensjonsamhandling.sam-q1/.default
     - name: SAM_URL
       value: https://sam-q1.intern.dev.nav.no
+    - name: KAFKA_GROUP_ID
+      value: samordning-personoppslag-q1
   observability:
     autoInstrumentation:
       enabled: true
