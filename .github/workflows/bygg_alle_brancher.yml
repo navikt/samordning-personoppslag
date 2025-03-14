@@ -7,7 +7,7 @@ on:
       - '*/**'
       - '!release/*'
       - '!main'
-
+      - '!sandbox'
 jobs:
   bygg:
     name: 'Bygg alle brancher'
