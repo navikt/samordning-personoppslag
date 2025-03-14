@@ -9,6 +9,9 @@ spring:
     bootstrap-servers: ${KAFKA_BROKERS}
     security.protocol: SSL
 
+    consumer:
+      group-id: ${KAFKA_GROUP_ID}
+
     ssl:
       key-store-type: PKCS12
       key-store-location: file:${KAFKA_KEYSTORE_PATH}
