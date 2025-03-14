@@ -50,15 +50,8 @@ class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
                     "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
 
-                    //TODO ikke i bruk?!
-                    "FORELDERBARNRELASJON_V1" -> logger.info("FORELDERBARNRELASJON_V1")
-                    "UTFLYTTING_FRA_NORGE" -> logger.info("UTFLYTTING_FRA_NORGE")
-                    "INNFLYTTING_TIL_NORGE" -> logger.info("INNFLYTTING_TIL_NORGE")
-                    "ADRESSEBESKYTTELSE_V1" -> logger.info("ADRESSEBESKYTTELSE_V1")
-
                     else -> logger.info("Fant ikke type: $opplysningstype")
                 }
-                throw RuntimeException("Kaster exception for å rulle tilbake inntil meldingene håndteres")
             }
         } catch (e: Exception) {
             logger.error("Behandling av hendelse feilet", e)
