@@ -15,7 +15,7 @@ spring:
     ssl:
       key-store-type: PKCS12
       key-store-location: file:${KAFKA_KEYSTORE_PATH}
-      key-password: ${KAFKA_CREDSTORE_PASSWORD}
+      key-store-password: ${KAFKA_CREDSTORE_PASSWORD}
       trust-store-type: JKS
       trust-store-location: file:${KAFKA_TRUSTSTORE_PATH}
       trust-store-password: ${KAFKA_CREDSTORE_PASSWORD}
