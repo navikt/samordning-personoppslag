@@ -2,6 +2,7 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
+import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -15,7 +16,7 @@ class SamHendelseService(private val samClient: SamClient) {
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
 
         opprettSivilstandsMelding(
-            fnr = personhendelse.personidenter.first(),
+            fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype.asEndringstype(),
             masterKilde = personhendelse.master,
             hendelseId = personhendelse.hendelseId,
