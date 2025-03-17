@@ -1,5 +1,6 @@
 package no.nav.samordning.personhendelse
 
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import java.time.LocalDate
 
 data class OppdaterPersonaliaRequest(
@@ -20,5 +21,5 @@ data class PersonData(
     val sivilstand: String,
     val sivilstandDato: LocalDate,
     val dodsdato: LocalDate? = null,
-    val diskresjonskode: String? = null
+    val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList()
 )

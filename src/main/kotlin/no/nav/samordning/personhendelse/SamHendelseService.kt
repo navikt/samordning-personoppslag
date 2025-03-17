@@ -2,6 +2,8 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
+import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -9,7 +11,10 @@ import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class SamHendelseService(private val samClient: SamClient) {
+class SamHendelseService(
+    private val personService: PersonService,
+    private val samClient: SamClient,
+) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -18,47 +23,39 @@ class SamHendelseService(private val samClient: SamClient) {
         opprettSivilstandsMelding(
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype.asEndringstype(),
-            masterKilde = personhendelse.master,
-            hendelseId = personhendelse.hendelseId,
-            tidligereHendelseId = personhendelse.tidligereHendelseId,
-            sivilstandsType = personhendelse.sivilstand?.type?.let(SivilstandsType::valueOf),
-            relatertVedSivilstand = personhendelse.sivilstand?.relatertVedSivilstand,
             fomDato = personhendelse.sivilstand?.gyldigFraOgMed,
-            bekreftelsesDato = personhendelse.sivilstand?.bekreftelsesdato,
+            hendelseId = personhendelse.hendelseId,
+            sivilstandsType = personhendelse.sivilstand?.type?.let(SivilstandsType::valueOf),
         )
 
     }
 
-    private fun opprettSivilstandsMelding(fnr: String,
-                                  endringstype: Endringstype?,
-                                  sivilstandsType: SivilstandsType?,
-                                  relatertVedSivilstand: String?,
-                                  fomDato: LocalDate?,
-                                  bekreftelsesDato: LocalDate?,
-                                  masterKilde: String?,
-                                  hendelseId: String,
-                                  tidligereHendelseId: String?) {
+    private fun opprettSivilstandsMelding(
+        fnr: String,
+        endringstype: Endringstype?,
+        fomDato: LocalDate?,
+        hendelseId: String,
+        sivilstandsType: SivilstandsType?
+    ) {
 
         when (endringstype) {
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
-                //TODO kan dette gjøres enklere? evt fjenre nullable høyere opp?
+                //TODO kan dette gjøres enklere? evt fjerne nullable høyere opp?
                 if (sivilstandsType != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId")
 
-                    //evt. kall til pdl for f.eks Adressebeskyttelse o.l
+                    //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
+                    val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-                    samClient.oppdaterSamPersonalia(OPPDATERSIVILSTAND, createSivilstandRequest(fnr, fomDato, sivilstandsType))
+
+                    samClient.oppdaterSamPersonalia(OPPDATERSIVILSTAND, createSivilstandRequest(fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 
-//            Endringstype.ANNULLERT, Endringstype.KORRIGERT -> {
-//
-//            }
-//
-//            Endringstype.OPPHOERT ->  {
-//                logger.info("Ignorer da endringstype OPPHOERT ikke støttes for sivilstand, hendelseId=${hendelseId}")
-//                return
-//            }
+            Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
+                logger.info("Ignorer da endringstype OPPHOERT og ANNULLERT ikke støttes for sivilstand, hendelseId=${hendelseId}")
+                return
+            }
 
             else -> {
                 throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${hendelseId}")
@@ -69,13 +66,14 @@ class SamHendelseService(private val samClient: SamClient) {
 
     }
 
-    private fun createSivilstandRequest(fnr: String, fomDato: LocalDate, sivilstandsType: SivilstandsType) : OppdaterPersonaliaRequest {
+    private fun createSivilstandRequest(fnr: String, fomDato: LocalDate, sivilstandsType: SivilstandsType, adressebeskyttelse: List<AdressebeskyttelseGradering>) : OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
             meldingsKode = Meldingskode.SIVILSTAND,
             newPerson = PersonData(
                 fnr = fnr,
                 sivilstand = sivilstandsType.text,
                 sivilstandDato = fomDato,
+                adressebeskyttelse = adressebeskyttelse,
             ),
         )
     }
