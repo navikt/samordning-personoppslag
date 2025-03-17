@@ -15,7 +15,7 @@ jobs:
       id-token: write
       checks: write
     outputs:
-      image: ${{ steps.setimage.outputs.IMAGE }}
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
       # PULL REPO
       - name: Pull repo
