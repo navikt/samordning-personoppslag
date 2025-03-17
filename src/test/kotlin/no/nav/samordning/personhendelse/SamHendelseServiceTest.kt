@@ -10,6 +10,7 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
 
 
@@ -35,21 +36,22 @@ class SamHendelseServiceTest {
 
     }
 
-
-
     @Test
     fun processHendelseMedAdressebeskyttelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
         justRun { samClient.oppdaterSamPersonalia(any(), any()) }
 
+        val mockHendelse = mockPersonhendelse()
         samHendelseService.opprettSivilstandsMelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any(), any()) }
+        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any(), match {  it.newPerson.fnr == mockHendelse.personidenter.first { Fodselsnummer.validFnr(it) }  } ) }
 
-    }
+}
+
+    //verify(exactly = 1) { hendelseProducer.publiserHendelse(match { !it.tpArt.isSamordningspliktig }) }
 
 
     private fun mockPersonhendelse(fnr: String = "24828296260", endringsType: Endringstype = Endringstype.OPPRETTET ): Personhendelse {
@@ -77,12 +79,6 @@ class SamHendelseServiceTest {
         """.trimIndent()
         return jacksonObjectMapper().registerModule(JavaTimeModule()).readValue(json, Personhendelse::class.java)
     }
-
-    /*
-
-    Kafka personhendelse: {"hendelseId": "c53fded7-6b4e-434b-b5d8-e14769efa835", "personidenter": ["2309615048568", "24828296260"], "master": "FREG", "opprettet": "2025-02-11T13:25:24.600Z", "opplysningstype": "SIVILSTAND_V1", "endringstype": "OPPRETTET", "tidligereHendelseId": null, "adressebeskyttelse": null, "doedfoedtBarn": null, "doedsfall": null, "foedsel": null, "forelderBarnRelasjon": null, "familierelasjon": null, "sivilstand": {"type": "GIFT", "gyldigFraOgMed": "2018-11-27", "relatertVedSivilstand": "02859797027", "bekreftelsesdato": null}, "vergemaalEllerFremtidsfullmakt": null, "utflyttingFraNorge": null, "InnflyttingTilNorge": null, "Folkeregisteridentifikator": null, "navn": null, "sikkerhetstiltak": null, "statsborgerskap": null, "telefonnummer": null, "kontaktadresse": null, "bostedsadresse": null}
-
-     */
 
 
 }
