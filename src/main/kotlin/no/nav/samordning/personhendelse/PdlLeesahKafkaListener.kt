@@ -33,7 +33,7 @@ class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
             consumerRecords.forEach { consumerRecord ->
                 val personhendelse = consumerRecord.value()
 
-                logger.debug("Kafka personhendelse: {}", personhendelse)
+                //logger.debug("Kafka personhendelse: {}", personhendelse)
 
                 val opplysningstype = personhendelse.opplysningstype
 
@@ -50,7 +50,7 @@ class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
                     "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
 
-                    else -> logger.info("Fant ikke type: $opplysningstype")
+                    else -> logger.info("Fant ikke type: $opplysningstype, Det er helt OK!")
                 }
             }
         } catch (e: Exception) {
