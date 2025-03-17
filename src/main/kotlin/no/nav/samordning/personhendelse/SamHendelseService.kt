@@ -47,7 +47,6 @@ class SamHendelseService(
                     //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-
                     samClient.oppdaterSamPersonalia(OPPDATERSIVILSTAND, createSivilstandRequest(fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
@@ -75,7 +74,7 @@ class SamHendelseService(
                 sivilstandDato = fomDato,
                 adressebeskyttelse = adressebeskyttelse,
             ),
-        )
+        ).apply { logger.debug("SivilstandRequest, meldingkode: {}, newPerson: {} ", meldingsKode, newPerson) }
     }
 
 

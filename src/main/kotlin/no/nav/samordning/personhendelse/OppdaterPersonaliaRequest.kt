@@ -22,4 +22,14 @@ data class PersonData(
     val sivilstandDato: LocalDate,
     val dodsdato: LocalDate? = null,
     val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList()
-)
+) {
+    override fun toString(): String {
+        return """
+            fnr: ${fnr.slice(0 until 6)}*****,
+            sivilstand: $sivilstand,
+            sivilstandDato: $sivilstandDato,
+            dodsdato: $dodsdato,
+            adressebeskyttelse: $adressebeskyttelse
+        """.trimIndent()
+    }
+}

@@ -187,12 +187,12 @@ class PersonService(
         }
 
     /**
-     * Funksjon for å sjekke om en liste med personer (fnr.) har en bestemt grad av adressebeskyttelse.
+     * Funksjon for å hente adressebeskyttelse om person (fnr.)
      *
      * @param fnr: Fødselsnummerene til personene man vil sjekke.
      * @param gradering: Graderingen man vil sjekke om personene har.
      *
-     * @return [Boolean] "true" dersom en av personene har valgt gradering.
+     * @return List gradering.
      */
     fun hentAdressebeskyttelse(fnr: String): List<AdressebeskyttelseGradering> {
         return harAdressebeskyttelseMetric.measure {

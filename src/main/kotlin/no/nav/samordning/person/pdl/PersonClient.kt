@@ -82,25 +82,25 @@ class PersonClient(
         return pdlRestTemplate.postForObject(url, HttpEntity(request), AdressebeskyttelseResponse::class)
     }
 
-    /**
-     * Oppretter GraphQL Query for uthentig av en person sin AktørID.
-     *
-     * @param ident: Personen sin ident (fnr). Legges til som variabel på spørringen.
-     *
-     * @return GraphQL-objekt [IdenterResponse] som inneholder data eller error.
-     */
-    @Retryable(
-        exclude = [HttpClientErrorException.NotFound::class],
-        backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
-    )
-    internal fun hentAktorId(ident: String): IdenterResponse {
-        val query = getGraphqlResource("/graphql/hentAktorId.graphql")
-        val request = GraphqlRequest(query, Variables(ident))
-
-        return pdlRestTemplate.postForObject<IdenterResponse>(url, HttpEntity(request), IdenterResponse::class).also {
-            loggPdlFeil(it.errors)
-        }
-    }
+//    /**
+//     * Oppretter GraphQL Query for uthentig av en person sin AktørID.
+//     *
+//     * @param ident: Personen sin ident (fnr). Legges til som variabel på spørringen.
+//     *
+//     * @return GraphQL-objekt [IdenterResponse] som inneholder data eller error.
+//     */
+//    @Retryable(
+//        exclude = [HttpClientErrorException.NotFound::class],
+//        backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
+//    )
+//    internal fun hentAktorId(ident: String): IdenterResponse {
+//        val query = getGraphqlResource("/graphql/hentAktorId.graphql")
+//        val request = GraphqlRequest(query, Variables(ident))
+//
+//        return pdlRestTemplate.postForObject<IdenterResponse>(url, HttpEntity(request), IdenterResponse::class).also {
+//            loggPdlFeil(it.errors)
+//        }
+//    }
 
     /**
      * Oppretter GraphQL Query for uthentig av en person sine identer.
