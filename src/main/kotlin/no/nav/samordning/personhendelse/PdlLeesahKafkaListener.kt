@@ -9,7 +9,10 @@ import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
 
 @Service
-class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
+class PdlLeesahKafkaListener(
+    private val sivilstandService: SivilstandService,
+    private val folkeregisterService: FolkeregisterService,
+) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -39,13 +42,13 @@ class PdlLeesahKafkaListener(private val hendelseService: SamHendelseService) {
 
                 when (opplysningstype) {
                     "SIVILSTAND_V1" -> {
-
                         logger.info("SIVILSTAND_V1")
-                        hendelseService.opprettSivilstandsMelding(personhendelse)
-
+                        sivilstandService.opprettSivilstandsMelding(personhendelse)
                     }
-
-                    "FOLKEREGISTERIDENTIFIKATOR_V1" -> logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
+                    "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
+                        logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
+                        folkeregisterService.opprettFolkeregistermelding(personhendelse)
+                    }
                     "DOEDSFALL_V1" -> logger.info("DOEDSFALL_V1")
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
                     "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")

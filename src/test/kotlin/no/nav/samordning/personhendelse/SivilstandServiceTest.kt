@@ -14,12 +14,12 @@ import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
 
 
-class SamHendelseServiceTest {
+class SivilstandServiceTest {
 
     private val personService = mockk<PersonService>()
     private val samClient = mockk<SamClient>()
 
-    private val samHendelseService = SamHendelseService(personService, samClient)
+    private val sivilstandService = SivilstandService(personService, samClient)
 
 
     @Test
@@ -28,7 +28,7 @@ class SamHendelseServiceTest {
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samClient.oppdaterSamPersonalia(any(), any()) }
 
-        samHendelseService.opprettSivilstandsMelding(mockPersonhendelse())
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -43,12 +43,19 @@ class SamHendelseServiceTest {
         justRun { samClient.oppdaterSamPersonalia(any(), any()) }
 
         val mockHendelse = mockPersonhendelse()
-        samHendelseService.opprettSivilstandsMelding(mockPersonhendelse())
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any(), match {  it.newPerson.fnr == mockHendelse.personidenter.first { Fodselsnummer.validFnr(it) }  } ) }
-
+        verify(exactly = 1) {
+            samClient.oppdaterSamPersonalia(
+                any(),
+                match {
+                    it.newPerson.fnr == mockHendelse.personidenter.first { Fodselsnummer.validFnr(it) } &&
+                    it.newPerson.adressebeskyttelse == listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+                }
+            )
+        }
 }
 
     //verify(exactly = 1) { hendelseProducer.publiserHendelse(match { !it.tpArt.isSamordningspliktig }) }

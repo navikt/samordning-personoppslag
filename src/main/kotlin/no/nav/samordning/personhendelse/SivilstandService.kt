@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
-class SamHendelseService(
+class SivilstandService(
     private val personService: PersonService,
     private val samClient: SamClient,
 ) {
@@ -47,7 +47,7 @@ class SamHendelseService(
                     //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-                    samClient.oppdaterSamPersonalia(OPPDATERSIVILSTAND, createSivilstandRequest(fnr, fomDato, sivilstandsType, adressebeskyttelse))
+                    samClient.oppdaterSamPersonalia("oppdaterSivilstand", createSivilstandRequest(fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 
@@ -75,14 +75,6 @@ class SamHendelseService(
                 adressebeskyttelse = adressebeskyttelse,
             ),
         ).apply { logger.debug("SivilstandRequest, meldingkode: {}, newPerson: {} ", meldingsKode, newPerson) }
-    }
-
-
-    companion object {
-        const val OPPDATERSIVILSTAND = "oppdaterSivilstand"
-        const val OPPDATERDOEDSDATO = "oppdaterDodsdato"
-        const val OPPDATERADRESSE = "oppdaterAdresse"
-        const val OPPDATERFNR = "oppdaterFodselsnummer"
     }
 }
 

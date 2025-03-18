@@ -18,8 +18,8 @@ enum class Meldingskode {
 
 data class PersonData(
     val fnr: String,
-    val sivilstand: String,
-    val sivilstandDato: LocalDate,
+    val sivilstand: String? = null,
+    val sivilstandDato: LocalDate? = null,
     val dodsdato: LocalDate? = null,
     val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList()
 ) {
