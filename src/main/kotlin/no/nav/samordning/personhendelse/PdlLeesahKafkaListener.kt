@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 class PdlLeesahKafkaListener(
     private val sivilstandService: SivilstandService,
     private val folkeregisterService: FolkeregisterService,
+    private val doedsfallService: DoedsfallService,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -49,7 +50,10 @@ class PdlLeesahKafkaListener(
                         logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
                         folkeregisterService.opprettFolkeregistermelding(personhendelse)
                     }
-                    "DOEDSFALL_V1" -> logger.info("DOEDSFALL_V1")
+                    "DOEDSFALL_V1" -> {
+                        logger.info("DOEDSFALL_V1")
+                        doedsfallService.opprettDoedsfallmelding(personhendelse)
+                    }
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
                     "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
 
