@@ -37,21 +37,22 @@ class PdlLeesahKafkaListener(
             consumerRecords.forEach { consumerRecord ->
                 val personhendelse = consumerRecord.value()
 
-                //logger.debug("Kafka personhendelse: {}", personhendelse)
-
                 val opplysningstype = personhendelse.opplysningstype
 
                 when (opplysningstype) {
                     "SIVILSTAND_V1" -> {
                         logger.info("SIVILSTAND_V1")
+                        logHendelse(personhendelse)
                         sivilstandService.opprettSivilstandsMelding(personhendelse)
                     }
                     "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                         logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
+                        logHendelse(personhendelse)
                         folkeregisterService.opprettFolkeregistermelding(personhendelse)
                     }
                     "DOEDSFALL_V1" -> {
                         logger.info("DOEDSFALL_V1")
+                        logHendelse(personhendelse)
                         doedsfallService.opprettDoedsfallmelding(personhendelse)
                     }
                     "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
@@ -66,5 +67,10 @@ class PdlLeesahKafkaListener(
         }
 
         ack.acknowledge()
+        logger.debug("Acket personhendelse")
+    }
+
+    private fun logHendelse(personhendelse: Personhendelse) {
+        logger.debug("Personhendelse: {}", personhendelse)
     }
 }

@@ -19,7 +19,6 @@ class SivilstandService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
-        logger.debug("Personhendelse: {}", personhendelse)
         opprettSivilstandsMelding(
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype.asEndringstype(),

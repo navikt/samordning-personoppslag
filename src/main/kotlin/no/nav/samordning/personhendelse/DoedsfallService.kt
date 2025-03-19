@@ -4,6 +4,7 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -24,9 +25,9 @@ class DoedsfallService(
         val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
         samClient.oppdaterSamPersonalia(
-            "oppdaterFodselsnummer",
+            "oppdaterDodsdato",
             createDoedsfallRequest(
-                fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer,
+                fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
                 adressebeskyttelse = adressebeskyttelse
             )
         )
