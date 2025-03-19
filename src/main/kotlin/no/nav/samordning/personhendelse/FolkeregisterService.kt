@@ -23,9 +23,9 @@ class FolkeregisterService(
         }
 
         val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
-        val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.first{ Fodselsnummer.validFnr(it) }
+        val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull{ Fodselsnummer.validFnr(it) }
 
-        if (nyttFnr == gammeltFnr) {
+        if (gammeltFnr == null || gammeltFnr == nyttFnr) {
             return
         }
 
