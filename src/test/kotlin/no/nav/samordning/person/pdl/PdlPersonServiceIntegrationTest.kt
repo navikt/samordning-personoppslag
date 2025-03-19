@@ -41,12 +41,11 @@ internal class PdlPersonServiceIntegrationTest {
 
     @Test
     fun harAdressebeskyttelse_virkerSomForventet() {
-        val fnr = listOf("11067122781", "09035225916", "22117320034")
 //        val gradering = listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG, AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND)
 
-        val harAdressebeskyttelse = service.harAdressebeskyttelse(fnr)
+        val adressebeskyttelse = service.hentAdressebeskyttelse("11067122781")
 
-        assertFalse(harAdressebeskyttelse)
+        assertFalse(adressebeskyttelse.isEmpty())
     }
 
 //    @Test

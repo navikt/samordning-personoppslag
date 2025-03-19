@@ -5,7 +5,6 @@ import io.mockk.mockk
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.IdentGruppe.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle
@@ -193,21 +192,23 @@ internal class PdlPersonServiceTest {
 
     @Test
     fun harAdressebeskyttelse_harGradering() {
-        val personer = listOf(
-                mockGradertPerson(AdressebeskyttelseGradering.UGRADERT),
-                mockGradertPerson(AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND),
-                mockGradertPerson(AdressebeskyttelseGradering.STRENGT_FORTROLIG),
-                mockGradertPerson(AdressebeskyttelseGradering.FORTROLIG),
-                mockGradertPerson(AdressebeskyttelseGradering.UGRADERT)
+        val adressebeskyttelseGraderinger = listOf(
+            AdressebeskyttelseGradering.UGRADERT,
+            AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND,
+            AdressebeskyttelseGradering.STRENGT_FORTROLIG,
+            AdressebeskyttelseGradering.FORTROLIG,
+            AdressebeskyttelseGradering.UGRADERT,
         )
+
+        val personer = adressebeskyttelseGraderinger.map { mockGradertPerson(it) }
 
         every { client.hentAdressebeskyttelse(any()) } returns AdressebeskyttelseResponse(HentAdressebeskyttelse(personer))
 
-        val resultat = service.harAdressebeskyttelse(
-            listOf("12345", "5555", "8585")
+        val resultat = service.hentAdressebeskyttelse(
+            "12345"
         )
 
-        assertTrue(resultat)
+        assertEquals(adressebeskyttelseGraderinger.distinct(), resultat)
     }
 
     @Test
@@ -379,7 +380,7 @@ internal class PdlPersonServiceTest {
         every { client.hentAdressebeskyttelse(any()) } returns AdressebeskyttelseResponse(null, errors)
 
         val exception = assertThrows<PersonoppslagException> {
-            service.harAdressebeskyttelse(listOf("1234"))
+            service.hentAdressebeskyttelse("1234")
         }
 
         assertEquals("$code: $msg", exception.message)

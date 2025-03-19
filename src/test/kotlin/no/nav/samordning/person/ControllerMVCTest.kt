@@ -65,6 +65,9 @@ internal class ControllerMVCTest {
     @MockkBean(relaxed = true, name = "kodeverkRestTemplate")
     private lateinit var kodeverkRestTemplate: RestTemplate
 
+    @MockkBean(relaxed = true, name = "samRestTemplate")
+    private lateinit var samRestTemplate: RestTemplate
+
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
     private val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
     private val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))

@@ -54,6 +54,8 @@ spec:
     requests:
       cpu: 500m
       memory: 650Mi
+  kafka:
+    pool: nav-prod
   vault:
     enabled: false
   webproxy: true
@@ -72,6 +74,12 @@ spec:
       value: https://kodeverk-api.intern.nav.no
     - name: KODEVERK_SCOPE
       value: api://prod-gcp.team-rocket.kodeverk-api/.default
+    - name: SAM_SCOPE
+      value: api://prod-fss.pensjonsamhandling.sam/.default
+    - name: SAM_URL
+      value: https://sam.intern.nav.no
+    - name: KAFKA_GROUP_ID
+      value: samordning-personoppslag
   observability:
     autoInstrumentation:
       enabled: true

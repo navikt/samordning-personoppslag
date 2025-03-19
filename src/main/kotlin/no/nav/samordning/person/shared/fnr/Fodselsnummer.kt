@@ -135,6 +135,17 @@ class Fodselsnummer private constructor(@JsonValue val value: String) {
             }
         }
 
+        @JvmStatic
+        @JsonCreator
+        fun validFnr(fnr: String) : Boolean {
+            return try {
+                Fodselsnummer(fnr.replace(Regex("[^0-9]"), ""))
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
+
         fun vaskFnr(nummer: String?): String? {
             return if(nummer.isNullOrBlank()) null
             else nummer.replace(Regex("""\b\d{11}\b"""), "***")

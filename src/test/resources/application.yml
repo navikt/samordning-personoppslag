@@ -2,6 +2,11 @@
 NAIS_APP_NAME: personoppslag
 KODEVERK_URL: http://localhost/kodeverk
 PDL_URL: http://localhost/graphql
+SAM_URL: http//localhost/api/oppdaterpersonalia
+
+pdl:
+  kafka:
+    autoStartup: false
 
 no.nav.security.jwt:
   issuer:
