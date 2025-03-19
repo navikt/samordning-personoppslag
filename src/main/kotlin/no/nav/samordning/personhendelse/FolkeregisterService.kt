@@ -22,13 +22,20 @@ class FolkeregisterService(
             return
         }
 
+        val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
+        val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.first{ Fodselsnummer.validFnr(it) }
+
+        if (nyttFnr == gammeltFnr) {
+            return
+        }
+
         val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
         samClient.oppdaterSamPersonalia(
             "oppdaterFodselsnummer",
             createFolkeregisterRequest(
-                nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer,
-                gammeltFnr = personhendelse.personidenter.filterNot { it == personhendelse.folkeregisteridentifikator.identifikasjonsnummer }.first{ Fodselsnummer.validFnr(it) },
+                nyttFnr = nyttFnr,
+                gammeltFnr = gammeltFnr,
                 adressebeskyttelse = adressebeskyttelse
             )
         )
