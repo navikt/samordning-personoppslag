@@ -41,6 +41,7 @@ class PdlLeesahKafkaListener(
 
                 when (opplysningstype) {
                     "SIVILSTAND_V1" -> {
+//                   TODO: Filtrer bort tidligere meldinger: if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2023, 12, 4, 12, 50, 36))) {
                         logger.info("SIVILSTAND_V1")
                         logHendelse(personhendelse)
                         sivilstandService.opprettSivilstandsMelding(personhendelse)
