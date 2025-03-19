@@ -8,6 +8,7 @@ import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class DoedsfallService(
@@ -22,25 +23,28 @@ class DoedsfallService(
             return
         }
 
-        val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
-
-        samClient.oppdaterSamPersonalia(
-            "oppdaterDodsdato",
-            createDoedsfallRequest(
-                fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
-                adressebeskyttelse = adressebeskyttelse
+        personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.forEach { ident ->
+            samClient.oppdaterSamPersonalia(
+                "oppdaterDodsdato",
+                createDoedsfallRequest(
+                    fnr = ident,
+                    dodsdato = personhendelse.doedsfall?.doedsdato,
+                    adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident)
+                )
             )
-        )
+        }
     }
 
     private fun createDoedsfallRequest(
         fnr: String,
+        dodsdato: LocalDate?,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
             meldingsKode = Meldingskode.DODSDATO,
             newPerson = PersonData(
                 fnr = fnr,
+                dodsdato = dodsdato,
                 adressebeskyttelse = adressebeskyttelse,
             )
         ).apply {
