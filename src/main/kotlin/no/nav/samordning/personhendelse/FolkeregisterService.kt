@@ -47,7 +47,7 @@ class FolkeregisterService(
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
-            meldingsKode = Meldingskode.FODSELSDATO,
+            meldingsKode = Meldingskode.FODSELSNUMMER,
             newPerson = PersonData(
                 fnr = nyttFnr,
                 adressebeskyttelse = adressebeskyttelse,
