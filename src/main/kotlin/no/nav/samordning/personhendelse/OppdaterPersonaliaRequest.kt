@@ -11,7 +11,7 @@ data class OppdaterPersonaliaRequest(
 
 enum class Meldingskode {
     SIVILSTAND,
-    FODSELSDATO,
+    FODSELSNUMMER,
     ADRESSE,
     DODSDATO
 }
