@@ -35,9 +35,11 @@ class PdlLeesahKafkaListener(
         try {
             logger.info("Behandler ${consumerRecords.size} meldinger, firstOffset=${consumerRecords.first().offset()}, lastOffset=${consumerRecords.last().offset()}")
             consumerRecords.forEach { consumerRecord ->
+                val personhendelseKey = consumerRecord.key()
                 val personhendelse = consumerRecord.value()
 
                 val opplysningstype = personhendelse.opplysningstype
+                logger.debug("personhendelseKey: $personhendelseKey")
 
                 when (opplysningstype) {
                     "SIVILSTAND_V1" -> {
