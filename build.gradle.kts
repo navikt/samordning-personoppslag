@@ -20,7 +20,7 @@ val junitplatformVersion = "1.12.0"
 
 plugins {
     val pluginSpringBootVersion = "3.4.3"
-    val pluginKotlinVersion = "2.1.10"
+    val pluginKotlinVersion = "2.1.20"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
