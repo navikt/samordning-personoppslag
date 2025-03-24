@@ -4,6 +4,7 @@ import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import java.time.LocalDate
 
 data class OppdaterPersonaliaRequest(
+    val hendelseId: String,
     val meldingsKode: Meldingskode,
     val newPerson: PersonData,
     val oldPerson: PersonData? = null

@@ -20,20 +20,20 @@ class SivilstandService(
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
         opprettSivilstandsMelding(
+            hendelseId = personhendelse.hendelseId,
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype.asEndringstype(),
             fomDato = personhendelse.sivilstand?.gyldigFraOgMed,
-            hendelseId = personhendelse.hendelseId,
             sivilstandsType = personhendelse.sivilstand?.type?.let(SivilstandsType::valueOf),
         )
 
     }
 
     private fun opprettSivilstandsMelding(
+        hendelseId: String,
         fnr: String,
         endringstype: Endringstype?,
         fomDato: LocalDate?,
-        hendelseId: String,
         sivilstandsType: SivilstandsType?
     ) {
 
@@ -46,7 +46,7 @@ class SivilstandService(
                     //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-                    samClient.oppdaterSamPersonalia("oppdaterSivilstand", createSivilstandRequest(fnr, fomDato, sivilstandsType, adressebeskyttelse))
+                    samClient.oppdaterSamPersonalia("oppdaterSivilstand", createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 
@@ -64,8 +64,15 @@ class SivilstandService(
 
     }
 
-    private fun createSivilstandRequest(fnr: String, fomDato: LocalDate, sivilstandsType: SivilstandsType, adressebeskyttelse: List<AdressebeskyttelseGradering>) : OppdaterPersonaliaRequest {
+    private fun createSivilstandRequest(
+        hendelseId: String,
+        fnr: String,
+        fomDato: LocalDate,
+        sivilstandsType: SivilstandsType,
+        adressebeskyttelse: List<AdressebeskyttelseGradering>
+    ) : OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
+            hendelseId = hendelseId,
             meldingsKode = Meldingskode.SIVILSTAND,
             newPerson = PersonData(
                 fnr = fnr,
