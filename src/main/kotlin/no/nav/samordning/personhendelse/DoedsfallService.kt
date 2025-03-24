@@ -27,6 +27,7 @@ class DoedsfallService(
             samClient.oppdaterSamPersonalia(
                 "oppdaterDodsdato",
                 createDoedsfallRequest(
+                    hendelseId = personhendelse.hendelseId,
                     fnr = ident,
                     dodsdato = personhendelse.doedsfall?.doedsdato,
                     adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident)
@@ -36,11 +37,13 @@ class DoedsfallService(
     }
 
     private fun createDoedsfallRequest(
+        hendelseId: String,
         fnr: String,
         dodsdato: LocalDate?,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
+            hendelseId = hendelseId,
             meldingsKode = Meldingskode.DODSDATO,
             newPerson = PersonData(
                 fnr = fnr,

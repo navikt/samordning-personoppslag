@@ -34,6 +34,7 @@ class FolkeregisterService(
         samClient.oppdaterSamPersonalia(
             "oppdaterFodselsnummer",
             createFolkeregisterRequest(
+                hendelseId = personhendelse.hendelseId,
                 nyttFnr = nyttFnr,
                 gammeltFnr = gammeltFnr,
                 adressebeskyttelse = adressebeskyttelse
@@ -42,11 +43,13 @@ class FolkeregisterService(
     }
 
     private fun createFolkeregisterRequest(
+        hendelseId: String,
         nyttFnr: String,
         gammeltFnr: String,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
+            hendelseId = hendelseId,
             meldingsKode = Meldingskode.FODSELSNUMMER,
             newPerson = PersonData(
                 fnr = nyttFnr,
