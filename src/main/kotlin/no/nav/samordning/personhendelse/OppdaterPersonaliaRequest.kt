@@ -14,7 +14,7 @@ enum class Meldingskode {
     SIVILSTAND,
     FODSELSNUMMER,
     ADRESSE,
-    DODSDATO
+    DOEDSFALL
 }
 
 data class PersonData(

@@ -43,7 +43,7 @@ class DoedsfallService(
     ): OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
             hendelseId = hendelseId,
-            meldingsKode = Meldingskode.DODSDATO,
+            meldingsKode = Meldingskode.DOEDSFALL,
             newPerson = PersonData(
                 fnr = fnr,
                 dodsdato = dodsdato,
