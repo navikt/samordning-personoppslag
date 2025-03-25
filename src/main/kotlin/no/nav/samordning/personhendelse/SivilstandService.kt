@@ -38,30 +38,26 @@ class SivilstandService(
     ) {
 
         when (endringstype) {
+            Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
+                logger.info("Ignorer da endringstype OPPHOERT og ANNULLERT ikke støttes for sivilstand, hendelseId=${hendelseId}")
+                return
+            }
+
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
                 //TODO kan dette gjøres enklere? evt fjerne nullable høyere opp?
                 if (sivilstandsType != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId")
 
-                    //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
                     samClient.oppdaterSamPersonalia(createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 
-            Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
-                logger.info("Ignorer da endringstype OPPHOERT og ANNULLERT ikke støttes for sivilstand, hendelseId=${hendelseId}")
-                return
-            }
-
             else -> {
                 throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${hendelseId}")
             }
-
         }
-
-
     }
 
     private fun createSivilstandRequest(

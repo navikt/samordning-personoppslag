@@ -19,13 +19,15 @@ class FolkeregisterService(
 
     fun opprettFolkeregistermelding(personhendelse: Personhendelse) {
         if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
+            logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
 
         val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
         val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull{ Fodselsnummer.validFnr(it) }
 
-        if (gammeltFnr == null || gammeltFnr == nyttFnr) {
+        if (gammeltFnr == null) {
+            logger.info("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
             return
         }
 

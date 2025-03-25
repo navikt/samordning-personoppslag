@@ -20,6 +20,7 @@ class DoedsfallService(
 
     fun opprettDoedsfallmelding(personhendelse: Personhendelse) {
         if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
+            logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
 
