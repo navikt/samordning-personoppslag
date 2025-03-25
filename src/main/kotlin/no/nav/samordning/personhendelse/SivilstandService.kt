@@ -22,7 +22,7 @@ class SivilstandService(
         opprettSivilstandsMelding(
             hendelseId = personhendelse.hendelseId,
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
-            endringstype = personhendelse.endringstype.asEndringstype(),
+            endringstype = personhendelse.endringstype,
             fomDato = personhendelse.sivilstand?.gyldigFraOgMed,
             sivilstandsType = personhendelse.sivilstand?.type?.let(SivilstandsType::valueOf),
         )
