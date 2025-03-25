@@ -13,9 +13,10 @@ import java.time.ZoneId
 
 @Service
 class PdlLeesahKafkaListener(
-    private val sivilstandService: SivilstandService,
-    private val folkeregisterService: FolkeregisterService,
+    private val adresseService: AdresseService,
     private val doedsfallService: DoedsfallService,
+    private val folkeregisterService: FolkeregisterService,
+    private val sivilstandService: SivilstandService,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -65,8 +66,11 @@ class PdlLeesahKafkaListener(
                             doedsfallService.opprettDoedsfallmelding(personhendelse)
                         }
 
-                        "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
-                        "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
+                        "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
+                            logger.info(personhendelse.opplysningstype)
+                            logHendelse(personhendelse)
+                            adresseService.opprettAdressemelding(personhendelse)
+                        }
 
                         else -> logger.info("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
                     }
