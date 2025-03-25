@@ -32,7 +32,6 @@ class FolkeregisterService(
         val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
         samClient.oppdaterSamPersonalia(
-            "oppdaterFodselsnummer",
             createFolkeregisterRequest(
                 hendelseId = personhendelse.hendelseId,
                 nyttFnr = nyttFnr,

@@ -26,13 +26,13 @@ class DoedsfallServiceTest {
     fun processHendelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samClient.oppdaterSamPersonalia(any(), any()) }
+        justRun { samClient.oppdaterSamPersonalia(any()) }
 
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
 
 
         verify(exactly = 2) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 2) { samClient.oppdaterSamPersonalia(any(), any()) }
+        verify(exactly = 2) { samClient.oppdaterSamPersonalia(any()) }
 
     }
 
@@ -40,7 +40,7 @@ class DoedsfallServiceTest {
     fun processHendelseMedAdressebeskyttelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
-        justRun { samClient.oppdaterSamPersonalia(any(), any()) }
+        justRun { samClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
@@ -49,7 +49,6 @@ class DoedsfallServiceTest {
         verify(exactly = 2) { personService.hentAdressebeskyttelse(any()) }
         verify(exactly = 2) {
             samClient.oppdaterSamPersonalia(
-                any(),
                 match {
                     mockHendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.contains(it.newPerson.fnr) &&
                             it.newPerson.adressebeskyttelse == listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)

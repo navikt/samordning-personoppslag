@@ -25,7 +25,6 @@ class DoedsfallService(
 
         personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.forEach { ident ->
             samClient.oppdaterSamPersonalia(
-                "oppdaterDodsdato",
                 createDoedsfallRequest(
                     hendelseId = personhendelse.hendelseId,
                     fnr = ident,

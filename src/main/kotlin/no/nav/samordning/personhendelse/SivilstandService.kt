@@ -46,7 +46,7 @@ class SivilstandService(
                     //TODO: kall til pdl for f.eks Adressebeskyttelse o.l
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-                    samClient.oppdaterSamPersonalia("oppdaterSivilstand", createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
+                    samClient.oppdaterSamPersonalia(createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 
