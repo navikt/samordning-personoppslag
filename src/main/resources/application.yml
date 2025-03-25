@@ -35,7 +35,7 @@ spring:
 
 pdl:
   kafka:
-    autoStartup: true
+    autoStartup: false
 
 management:
   endpoint:
