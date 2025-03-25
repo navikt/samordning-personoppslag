@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.time.Month
+import java.time.ZoneId
 
 @Service
 class PdlLeesahKafkaListener(
@@ -38,30 +41,34 @@ class PdlLeesahKafkaListener(
                 val personhendelseKey = consumerRecord.key()
                 val personhendelse = consumerRecord.value()
 
-                val opplysningstype = personhendelse.opplysningstype
-                logger.debug("personhendelseKey: $personhendelseKey")
+                // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
+                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 1, 12, 0, 0))) {
+                    logger.debug("personhendelseKey: $personhendelseKey")
 
-                when (opplysningstype) {
-                    "SIVILSTAND_V1" -> {
-//                   TODO: Filtrer bort tidligere meldinger: if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2023, 12, 4, 12, 50, 36))) {
-                        logger.info("SIVILSTAND_V1")
-                        logHendelse(personhendelse)
-                        sivilstandService.opprettSivilstandsMelding(personhendelse)
-                    }
-                    "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
-                        logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
-                        logHendelse(personhendelse)
-                        folkeregisterService.opprettFolkeregistermelding(personhendelse)
-                    }
-                    "DOEDSFALL_V1" -> {
-                        logger.info("DOEDSFALL_V1")
-                        logHendelse(personhendelse)
-                        doedsfallService.opprettDoedsfallmelding(personhendelse)
-                    }
-                    "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
-                    "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
+                    when (personhendelse.opplysningstype) {
+                        "SIVILSTAND_V1" -> {
+                            logger.info("SIVILSTAND_V1")
+                            logHendelse(personhendelse)
+                            sivilstandService.opprettSivilstandsMelding(personhendelse)
+                        }
 
-                    else -> logger.info("Fant ikke type: $opplysningstype, Det er helt OK!")
+                        "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
+                            logger.info("FOLKEREGISTERIDENTIFIKATOR_V1")
+                            logHendelse(personhendelse)
+                            folkeregisterService.opprettFolkeregistermelding(personhendelse)
+                        }
+
+                        "DOEDSFALL_V1" -> {
+                            logger.info("DOEDSFALL_V1")
+                            logHendelse(personhendelse)
+                            doedsfallService.opprettDoedsfallmelding(personhendelse)
+                        }
+
+                        "BOSTEDSADRESSE_V1" -> logger.info("BOSTEDSADRESSE_V1")
+                        "KONTAKTADRESSE_V1" -> logger.info("KONTAKTADRESSE_V1")
+
+                        else -> logger.info("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
+                    }
                 }
             }
         } catch (e: Exception) {
