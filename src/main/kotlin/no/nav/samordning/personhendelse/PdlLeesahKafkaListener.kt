@@ -25,6 +25,7 @@ class PdlLeesahKafkaListener(
         batch = "true",
         topics = ["pdl.leesah-v1"],
         properties = [
+            "auth.exception.retry.interval: 30s",
             "auto.offset.reset:earliest",
             "value.deserializer:io.confluent.kafka.serializers.KafkaAvroDeserializer",
             "key.deserializer:io.confluent.kafka.serializers.KafkaAvroDeserializer",
