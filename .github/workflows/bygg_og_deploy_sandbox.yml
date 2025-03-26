@@ -34,35 +34,6 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew build --stacktrace
 
-#      # SETTER DATO OG COMMIT VARIABEL
-#      - name: Set date & hash
-#        run: |
-#          export TZ=CET
-#          echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
-#          echo "COMMIT_HASH=$(git rev-parse HEAD)-sandbox" >> $GITHUB_ENV
-#      # SETTER IMAGE VARIABEL
-#      - name: Set Image
-#        id: setimage
-#        run: |
-#          echo "IMAGE=ghcr.io/${{ github.repository }}/samordning-personoppslag:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
-#          echo "IMAGE=ghcr.io/${{ github.repository }}/samordning-personoppslag:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_OUTPUT
-#
-#      # LOGGIN TO GHCR
-#      - name: Login GHCR
-#        uses: docker/login-action@v3.3.0
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.repository_owner }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#
-#      # PUBLISH DOCKER IMAGE
-#      - name: Build and push docker image
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{ env.IMAGE }}
-
       - name: Nais docker-build
         uses: nais/docker-build-push@v0
         id: docker-push
@@ -89,5 +60,21 @@ jobs:
         env:
           "CLUSTER": dev-fss
           "RESOURCE": .nais/dev_q2.yaml
+          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
+
+  deployToQ1:
+    needs: build_and_tag
+    permissions:
+      contents: read
+      id-token: write
+    name: Deploy NAIS Q1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Q1
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          "CLUSTER": dev-fss
+          "RESOURCE": .nais/dev_q1.yaml
           "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
