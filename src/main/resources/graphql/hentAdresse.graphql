@@ -1,0 +1,125 @@
+query($ident: ID!) {
+    hentPerson(ident: $ident) {
+        adressebeskyttelse {
+            gradering
+        }
+        bostedsadresse {
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            coAdressenavn
+            gyldigFraOgMed
+            gyldigTilOgMed
+            metadata {
+                ...metadataDetails
+            }
+        }
+        oppholdsadresse {
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            gyldigFraOgMed
+            metadata {
+                ...metadataDetails
+            }
+        }
+        kontaktadresse {
+            coAdressenavn
+            type
+            gyldigFraOgMed
+            gyldigTilOgMed
+            folkeregistermetadata {
+                ...folkeregistermetadataDetails
+            }
+            metadata {
+                ...metadataDetails
+            }
+            postboksadresse {
+                ...postboksadresse
+            }
+            postadresseIFrittFormat {
+                ...postadresseIFrittFormat
+            }
+            vegadresse {
+                ...vegadresseDetails
+            }
+            utenlandskAdresse {
+                ...utenlandskAdresseDetails
+            }
+            utenlandskAdresseIFrittFormat {
+                ...utenlandskAdresseIFrittFormat
+            }
+        }
+        doedsfall {
+            doedsdato
+            metadata {
+                ...metadataDetails
+            }
+        }
+        sivilstand {
+            type
+            gyldigFraOgMed
+            relatertVedSivilstand
+            metadata {
+                ...metadataDetails
+            }
+        }
+
+    }
+}
+
+fragment metadataDetails on Metadata {
+    endringer {
+        kilde
+        registrert
+        registrertAv
+        systemkilde
+        type
+    }
+    master
+    opplysningsId
+    historisk
+}
+fragment vegadresseDetails on Vegadresse {
+    husbokstav
+    husnummer
+    adressenavn
+    postnummer
+    kommunenummer
+    bydelsnummer
+}
+fragment postboksadresse on Postboksadresse {
+    postbokseier
+    postboks
+    postnummer
+}
+fragment postadresseIFrittFormat on PostadresseIFrittFormat {
+    adresselinje1
+    adresselinje2
+    adresselinje3
+    postnummer
+}
+fragment utenlandskAdresseDetails on UtenlandskAdresse {
+    adressenavnNummer
+    bygningEtasjeLeilighet
+    postboksNummerNavn
+    postkode
+    bySted
+    regionDistriktOmraade
+    landkode
+}
+
+fragment utenlandskAdresseIFrittFormat on UtenlandskAdresseIFrittFormat {
+    adresselinje1
+    adresselinje2
+    adresselinje3
+    byEllerStedsnavn
+    landkode
+    postkode
+}

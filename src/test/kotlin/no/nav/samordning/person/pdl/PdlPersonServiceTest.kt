@@ -72,6 +72,7 @@ internal class PdlPersonServiceTest {
             adressebeskyttelse = listOf(Adressebeskyttelse(AdressebeskyttelseGradering.UGRADERT)),
             bostedsadresse = listOf(
                 Bostedsadresse(
+                    null,
                     LocalDateTime.of(2020, 10, 5, 10,5,2),
                     LocalDateTime.of(2030, 10, 5, 10, 5, 2),
                     Vegadresse("TESTVEIEN","1020","A","0234", "231", null),
