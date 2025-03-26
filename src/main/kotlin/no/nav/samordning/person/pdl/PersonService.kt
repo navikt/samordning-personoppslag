@@ -16,6 +16,7 @@ class PersonService(
     private val logger = LoggerFactory.getLogger(PersonService::class.java)
 
     private lateinit var hentPersonMetric: Metric
+    private lateinit var hentAdresseMetric: Metric
     private lateinit var hentSamPersonMetric: Metric
     private lateinit var harAdressebeskyttelseMetric: Metric
     private lateinit var hentIdentMetric: Metric
@@ -24,6 +25,7 @@ class PersonService(
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
+        hentAdresseMetric = metricsHelper.init("hentAdresse")
         hentSamPersonMetric = metricsHelper.init("hentSamPerson")
         harAdressebeskyttelseMetric = metricsHelper.init("harAdressebeskyttelse")
         hentIdentMetric = metricsHelper.init("hentIdent")
@@ -49,6 +51,21 @@ class PersonService(
 
             return@measure response.data?.hentPerson?.let {
                 konverterTilPerson(it, hentIdenter(ident), hentGeografiskTilknytning(ident))
+            }
+        }
+    }
+
+    fun <T : Ident> hentPdlAdresse(ident: T): PdlAdresse? {
+        return hentAdresseMetric.measure {
+
+            logger.debug("Henter adresse: ${ident.id.scrable()} fra pdl")
+            val response = client.hentAdresse(ident.id)
+
+            if (!response.errors.isNullOrEmpty())
+                handleError(response.errors)
+
+            return@measure response.data?.hentAdresse?.let {
+                konverterTilAdresse(it, hentGeografiskTilknytning(ident))
             }
         }
     }
@@ -183,6 +200,42 @@ class PersonService(
                 sivilstand,
                 kontaktadresse,
                 kontaktinformasjonForDoedsbo
+            )
+        }
+
+
+    internal fun konverterTilAdresse(
+            pdlPerson: HentAdresse,
+            geografiskTilknytning: GeografiskTilknytning?
+        ): PdlAdresse {
+
+            val graderingListe = pdlPerson.adressebeskyttelse
+                .map { it.gradering }
+                .distinct()
+
+            val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
+                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+            val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
+                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+            val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
+                ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+            val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
+                .filterNot { it.doedsdato == null }
+                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+            val sivilstand = pdlPerson.sivilstand
+
+            return PdlAdresse(
+                graderingListe,
+                bostedsadresse,
+                oppholdsadresse,
+                geografiskTilknytning,
+                doedsfall,
+                sivilstand,
+                kontaktadresse,
             )
         }
 
