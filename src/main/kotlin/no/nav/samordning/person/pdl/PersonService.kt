@@ -187,29 +187,26 @@ class PersonService(
         }
 
     /**
-     * Funksjon for å sjekke om en liste med personer (fnr.) har en bestemt grad av adressebeskyttelse.
+     * Funksjon for å hente adressebeskyttelse om person (fnr.)
      *
      * @param fnr: Fødselsnummerene til personene man vil sjekke.
      * @param gradering: Graderingen man vil sjekke om personene har.
      *
-     * @return [Boolean] "true" dersom en av personene har valgt gradering.
+     * @return List gradering.
      */
-    fun harAdressebeskyttelse(fnr: List<String>): Boolean {
-        val gradering = listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND, AdressebeskyttelseGradering.STRENGT_FORTROLIG)
-
-        if (fnr.isEmpty()) return false
-
+    fun hentAdressebeskyttelse(fnr: String): List<AdressebeskyttelseGradering> {
         return harAdressebeskyttelseMetric.measure {
             val response = client.hentAdressebeskyttelse(fnr)
 
             if (!response.errors.isNullOrEmpty()) handleError(response.errors)
 
-            val personer = response.data?.hentPersonBolk ?: return@measure false
+            val personer = response.data?.hentPersonBolk ?: return@measure emptyList()
 
             return@measure personer
                     .filterNot { it.person == null }
                     .flatMap { it.person!!.adressebeskyttelse }
-                    .any { it.gradering in gradering }
+                    .map { it.gradering }
+                    .distinct()
         }
     }
 

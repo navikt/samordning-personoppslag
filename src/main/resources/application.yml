@@ -4,6 +4,39 @@ no.nav.security.jwt:
       discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
       accepted-audience: ${AZURE_APP_CLIENT_ID}
 
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS}
+    security.protocol: SSL
+
+    consumer:
+      group-id: ${KAFKA_GROUP_ID}
+
+    ssl:
+      key-store-type: PKCS12
+      key-store-location: file:${KAFKA_KEYSTORE_PATH}
+      key-store-password: ${KAFKA_CREDSTORE_PASSWORD}
+      trust-store-type: JKS
+      trust-store-location: file:${KAFKA_TRUSTSTORE_PATH}
+      trust-store-password: ${KAFKA_CREDSTORE_PASSWORD}
+
+    properties:
+      schema:
+        registry:
+          url: ${KAFKA_SCHEMA_REGISTRY}
+      basic:
+        auth:
+          credentials:
+            source: USER_INFO
+          user:
+            info: ${KAFKA_SCHEMA_REGISTRY_USER}:${KAFKA_SCHEMA_REGISTRY_PASSWORD}
+    listener:
+      ack-mode: manual
+
+pdl:
+  kafka:
+    autoStartup: false
+
 management:
   endpoint:
     health:
