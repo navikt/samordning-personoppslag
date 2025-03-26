@@ -18,6 +18,10 @@ internal data class HentPersonResponseData(
     val hentPerson: HentPerson? = null
 )
 
+internal data class HentAdresseResponseData(
+    val hentAdresse: HentAdresse? = null
+)
+
 internal data class HentPersonnavnResponseData(
     val hentPerson: HentPersonnavn? = null
 )
@@ -31,4 +35,10 @@ internal data class HentPersonUidResponse(
 
 internal data class HentPersonUidResponseData(
     val hentPerson: HentPersonUtenlandskIdent? = null
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+internal data class HentAdresseResponse(
+    val data: HentAdresseResponseData? = null,
+    val errors: List<ResponseError>? = null
 )

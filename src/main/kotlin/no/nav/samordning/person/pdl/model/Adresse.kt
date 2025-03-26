@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Bostedsadresse(
+        val coAdressenavn: String? = null,
         val gyldigFraOgMed: LocalDateTime? = null,
         val gyldigTilOgMed: LocalDateTime? = null,
         val vegadresse: Vegadresse? = null,
