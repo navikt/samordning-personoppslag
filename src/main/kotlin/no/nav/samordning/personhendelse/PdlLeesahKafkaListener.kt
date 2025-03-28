@@ -42,6 +42,8 @@ class PdlLeesahKafkaListener(
             consumerRecords.forEach { consumerRecord ->
                 val personhendelse = consumerRecord.value()
 
+                logger.info("Prøver å behandler hendelse med opplysningstype: ${personhendelse.opplysningstype}")
+
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
                 if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 8, 0, 0))) {
 
