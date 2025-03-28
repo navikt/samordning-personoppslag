@@ -24,7 +24,7 @@ class SivilstandService(
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype,
             fomDato = personhendelse.sivilstand?.gyldigFraOgMed,
-            sivilstandsType = personhendelse.sivilstand?.type?.let(SivilstandsType::valueOf),
+            sivilstandsType = personhendelse.sivilstand?.type,
         )
 
     }
@@ -34,19 +34,18 @@ class SivilstandService(
         fnr: String,
         endringstype: Endringstype?,
         fomDato: LocalDate?,
-        sivilstandsType: SivilstandsType?
+        sivilstandsType: String?
     ) {
 
         when (endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
-                logger.info("Ignorer da endringstype OPPHOERT og ANNULLERT ikke støttes for sivilstand, hendelseId=${hendelseId}")
+                logger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
                 return
             }
 
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
-                //TODO kan dette gjøres enklere? evt fjerne nullable høyere opp?
                 if (sivilstandsType != null && fomDato != null) {
-                    logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId")
+                    logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId, endringstype=$endringstype, fomDato=$fomDato")
 
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
@@ -64,7 +63,7 @@ class SivilstandService(
         hendelseId: String,
         fnr: String,
         fomDato: LocalDate,
-        sivilstandsType: SivilstandsType,
+        sivilstandsType: String,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ) : OppdaterPersonaliaRequest {
         return OppdaterPersonaliaRequest(
@@ -72,23 +71,10 @@ class SivilstandService(
             meldingsKode = Meldingskode.SIVILSTAND,
             newPerson = PersonData(
                 fnr = fnr,
-                sivilstand = sivilstandsType.text,
+                sivilstand = sivilstandsType,
                 sivilstandDato = fomDato,
                 adressebeskyttelse = adressebeskyttelse,
             ),
-        ).apply { logger.debug("SivilstandRequest, meldingkode: {}, newPerson: {} ", meldingsKode, newPerson) }
+        )
     }
-}
-
-enum class SivilstandsType(val text: String) {
-    UOPPGITT("UOPPGITT"),
-    UGIFT("UGIFT"),
-    GIFT("GIFT"),
-    ENKE_ELLER_ENKEMANN("ENKE/ENKEMANN"),
-    SKILT("SKILT"),
-    SEPARERT("SEPARERT"),
-    REGISTRERT_PARTNER("REGISTERT PARTNER"),
-    SEPARERT_PARTNER("SEPARERT PARTNER"),
-    SKILT_PARTNER("SKILT PARTNER"),
-    GJENLEVENDE_PARTNER("GJENLEVENDE PARTNER");
 }

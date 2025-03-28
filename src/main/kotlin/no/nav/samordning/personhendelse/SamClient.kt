@@ -15,7 +15,7 @@ class SamClient(private val samRestTemplate: RestTemplate) {
 
         try {
             val urlpath = "/api/oppdaterpersonalia"
-            logger.debug("kaller opp : $urlpath")
+            logger.info("kaller opp : $urlpath")
             samRestTemplate.postForEntity(
                 urlpath,
                 request,
