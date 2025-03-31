@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonValue
  * B354, Alderspensjon: Samordning med offentlige TP-ordninger
  * B248, Gjenlevendepensjon og overgangsstønad: Samordning med offentlige TP-ordninger
  * B430, AFP i statlig og kommunal sektor: Samordning med offentlig tjenestepensjon
- * B429, AFP i privat sektor: Samordning med offentlige tjenestepensjon
+ * B429, AFP i privat sektor: Samordning med
  * B427, Barnepensjon: Samordning med offentlige TP-ordninger
-
+ * B920, Samordningsloven samordning med offentlige tjenestepensjon
  */
 enum class Behandlingsnummer(@JsonValue val nummer: String) {
       UFORETRYGD("B361"),
@@ -18,5 +18,6 @@ enum class Behandlingsnummer(@JsonValue val nummer: String) {
       GJENLEV_OG_OVERGANG("B428"),
       AFP_STATLIG_KOMMUNAL("B430"),
       AFP_PRIVAT_SEKTOR("B429"),
-      BARNEPENSJON("B427")
+      BARNEPENSJON("B427"),
+      SAMORDNING("B920")
 }

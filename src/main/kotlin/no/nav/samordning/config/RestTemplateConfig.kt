@@ -79,6 +79,7 @@ class RestTemplateConfig {
             request.headers["Tema"] = "PEN"
             request.headers[REQUEST_NAV_CALL] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             request.headers["Behandlingsnummer"] =
+                SAMORDNING.nummer + "," +
                 UFORETRYGD.nummer + "," +
                         ALDERPENSJON.nummer + "," +
                         GJENLEV_OG_OVERGANG.nummer + "," +
