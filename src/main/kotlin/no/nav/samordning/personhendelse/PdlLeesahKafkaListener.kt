@@ -43,7 +43,7 @@ class PdlLeesahKafkaListener(
                 val personhendelse = consumerRecord.value()
 
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
-                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 8, 0, 0))) {
+                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
 
                     when (personhendelse.opplysningstype) {
                         "SIVILSTAND_V1" -> {
