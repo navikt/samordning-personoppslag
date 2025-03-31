@@ -50,12 +50,6 @@ class DoedsfallService(
                 dodsdato = dodsdato,
                 adressebeskyttelse = adressebeskyttelse,
             )
-        ).apply {
-            logger.debug(
-                "DoedsfallRequest, meldingkode: {}, newPerson: {}",
-                meldingsKode,
-                newPerson
-            )
-        }
+        )
     }
 }

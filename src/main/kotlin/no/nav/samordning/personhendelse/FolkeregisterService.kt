@@ -59,13 +59,6 @@ class FolkeregisterService(
             oldPerson = PersonData(
                 fnr = gammeltFnr,
             )
-        ).apply {
-            logger.debug(
-                "FolkeregisterRequest, meldingkode: {}, newPerson: {} , oldPerson: {} ",
-                meldingsKode,
-                newPerson,
-                oldPerson
-            )
-        }
+        )
     }
 }
