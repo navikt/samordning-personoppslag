@@ -24,7 +24,7 @@ data class PersonData(
     val sivilstandDato: LocalDate? = null,
     val dodsdato: LocalDate? = null,
     val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList(),
-    val bostedsAdresse: Bostedsadresse? = null,
+    val bostedsAdresse: BostedsAdresseDto? = null,
 ) {
     override fun toString(): String {
         return """
@@ -36,21 +36,3 @@ data class PersonData(
         """.trimIndent()
     }
 }
-
-data class Bostedsadresse(
-    val boadresse1: String? = null,
-    val boadresse2: String? = null,
-    val bolignr: String? = null,
-    val kommunenr: String? = null,
-    val navenhet: String? = null,
-    val postAdresse: Tilleggsadresse? = null,
-    val tilleggsAdresse: Tilleggsadresse? = null,
-    val utenlandsAdresse: Tilleggsadresse? = null,
-)
-
-data class Tilleggsadresse(
-    val adresselinje1: String? = null,
-    val adresselinje2: String? = null,
-    val adresselinje3: String? = null,
-    val landkode: String? = null,
-)

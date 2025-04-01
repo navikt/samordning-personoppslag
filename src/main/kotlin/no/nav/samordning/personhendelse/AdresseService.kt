@@ -49,6 +49,7 @@ class AdresseService(
             newPerson = PersonData(
                 fnr = fnr,
                 adressebeskyttelse = adressebeskyttelse,
+                bostedsAdresse = pdlAdresse
             )
         ).apply {
             logger.debug(
