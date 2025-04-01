@@ -123,3 +123,6 @@ fragment utenlandskAdresseIFrittFormat on UtenlandskAdresseIFrittFormat {
     landkode
     postkode
 }
+fragment folkeregistermetadataDetails on Folkeregistermetadata {
+    gyldighetstidspunkt
+}

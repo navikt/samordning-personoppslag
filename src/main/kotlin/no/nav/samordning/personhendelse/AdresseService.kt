@@ -40,7 +40,7 @@ class AdresseService(
         fnr: String,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
-        val pdlAdresse = PdlAdresse(emptyList(), null, null, null, null, emptyList(), null)
+        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr))?.let { mapPdlAdresseToSamAdresse(it) }
 
 
         return OppdaterPersonaliaRequest(
@@ -61,7 +61,9 @@ class AdresseService(
 
     private fun mapPdlAdresseToSamAdresse(pdlAdresse: PdlAdresse): BostedsAdresseDto {
         val pdlBostedsadresse = pdlAdresse.bostedsadresse
-        val bostedsadresse = BostedsAdresseDto()
+        val bostedsadresse = BostedsAdresseDto().apply {
+            datoFom = pdlBostedsadresse?.gyldigFraOgMed?.toLocalDate()
+        }
         if (pdlBostedsadresse?.vegadresse != null) {
             bostedsadresse.also {
                 if (pdlBostedsadresse.coAdressenavn != null) {
@@ -78,34 +80,23 @@ class AdresseService(
             }
         }
         if (pdlBostedsadresse?.utenlandskAdresse != null) {
-            bostedsadresse.utenlandsAdresse = TilleggsAdresseDto().also {
-                val adresselinjer = standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(pdlBostedsadresse.utenlandskAdresse, pdlBostedsadresse.coAdressenavn)
-
-                if (adresselinjer.size == 3) {
-                    it.adresselinje1 = adresselinjer[0]
-                    it.adresselinje2 = adresselinjer[1]
-                    it.adresselinje3 = adresselinjer[2]
-                } else if (adresselinjer.size == 2) {
-                    it.adresselinje1 = adresselinjer[0]
-                    it.adresselinje2 = adresselinjer[1]
-                } else if (adresselinjer.size == 1) {
-                    it.adresselinje1 = adresselinjer[0]
-                }
+            bostedsadresse.also {
+                it.boadresse1 = listOfNotNull(
+                    pdlBostedsadresse.coAdressenavn,
+                    pdlBostedsadresse.utenlandskAdresse.adressenavnNummer
+                ).joinToString(" ")
+                it.boadresse2 = listOfNotNull(
+                    pdlBostedsadresse.utenlandskAdresse.bygningEtasjeLeilighet,
+                    pdlBostedsadresse.utenlandskAdresse.postboksNummerNavn
+                ).joinToString(" ")
+                it.bolignr = ""
+                it.postnr = pdlBostedsadresse.utenlandskAdresse.postkode ?: ""
+                it.poststed = pdlBostedsadresse.utenlandskAdresse.bySted ?: ""
+                it.kommunenr = ""
             }
         }
 
-        bostedsadresse.postAdresse = TilleggsAdresseDto().also {
-            it.datoFom = pdlBostedsadresse?.gyldigFraOgMed?.toLocalDate()
-            if (pdlBostedsadresse?.vegadresse != null) {
-                enrichWithVegadresse(it, pdlBostedsadresse.vegadresse)
-                it.landkode = "NOR"
-            }
-            if (pdlBostedsadresse?.utenlandskAdresse != null) {
-                enrichWithUtenlandskAdresse(it, pdlBostedsadresse.utenlandskAdresse)
-            }
-        }
-
-        return BostedsAdresseDto()
+        return bostedsadresse
     }
 
     fun coAdressenavn(coAdressenavn: String?): String? {
