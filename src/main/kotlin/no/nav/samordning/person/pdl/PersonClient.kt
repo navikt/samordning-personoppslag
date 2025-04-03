@@ -60,6 +60,8 @@ class PersonClient(
         val request = GraphqlRequest(query, Variables(ident))
         logger.info("Query: $query")
         logger.info("request: $request")
+        val response = pdlRestTemplate.postForObject<String>(url, HttpEntity(request), String::class)
+        logger.info("response: $response")
         return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request), HentAdresseResponse::class).also {
             logger.info("Response {}", it.data)
             loggPdlFeil(it.errors)
