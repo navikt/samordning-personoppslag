@@ -36,6 +36,7 @@ class SivilstandService(
         fomDato: LocalDate?,
         sivilstandsType: String?
     ) {
+        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: $endringstype, sivilstandsType: $sivilstandsType, sivilstandDato: $fomDato, sivilstandDato: $fomDato, hendelseId: $hendelseId")
 
         when (endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
