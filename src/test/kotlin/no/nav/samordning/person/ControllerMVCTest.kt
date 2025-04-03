@@ -623,11 +623,12 @@ internal class ControllerMVCTest {
         adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
         bostedsadresse = listOf(
             Bostedsadresse(
-                LocalDateTime.of(2020, 10, 5, 10,5,2),
-                LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                if (utlandsAdresse == false) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
-                if (utlandsAdresse) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
-                mockMeta()
+                null,
+                gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
+                gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
+                vegadresse = if (utlandsAdresse == false) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
+                utenlandskAdresse = if (utlandsAdresse) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
+                metadata = mockMeta()
             )
         ),
         oppholdsadresse = emptyList(),

@@ -2,7 +2,10 @@ package no.nav.samordning.person
 
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.Landkode
+import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.PersonoppslagException
+import no.nav.samordning.person.pdl.model.NorskIdent
+import no.nav.samordning.person.pdl.model.PdlAdresse
 import no.nav.samordning.person.pdl.model.PdlPerson
 import no.nav.samordning.person.sam.PersonSamordningService
 import no.nav.samordning.person.sam.model.Person
@@ -17,7 +20,9 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api")
 class Controller(
-    private val personSamordningService: PersonSamordningService) {
+    private val personSamordningService: PersonSamordningService,
+    private val personService: PersonService,
+) {
 
 
     @PostMapping("/person")
@@ -93,6 +98,13 @@ class Controller(
     @ProtectedWithClaims("entraid")
     fun henPdlPerson(@RequestBody request: PersonRequest) : ResponseEntity<PdlPerson> {
         return ResponseEntity.ok().body(personSamordningService.hentPdlPerson(request.fnr))
+    }
+
+    //TODO: utgåår når alt funker vi går mot prod
+    @PostMapping("/pdladresse")
+    @ProtectedWithClaims("entraid")
+    fun henPdlPersonAdresse(@RequestBody request: PersonRequest) : ResponseEntity<PdlAdresse> {
+        return ResponseEntity.ok().body(personService.hentPdlAdresse(NorskIdent(request.fnr)));
     }
 
 
