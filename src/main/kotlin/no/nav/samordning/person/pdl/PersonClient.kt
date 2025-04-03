@@ -58,7 +58,10 @@ class PersonClient(
     internal fun hentAdresse(ident: String): HentAdresseResponse {
         val query = getGraphqlResource("/graphql/hentAdresse.graphql")
         val request = GraphqlRequest(query, Variables(ident))
+        logger.info("Query: $query")
+        logger.info("request: $request")
         return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request), HentAdresseResponse::class).also {
+            logger.info("Response {}", it.data)
             loggPdlFeil(it.errors)
         }
     }
