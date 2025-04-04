@@ -11,6 +11,7 @@ import no.nav.samordning.person.sam.PersonSamordningService
 import no.nav.samordning.person.sam.model.Person
 import no.nav.samordning.person.sam.model.PersonSamordning
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import no.nav.samordning.personhendelse.BostedsAdresseDto
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -103,7 +104,7 @@ class Controller(
     //TODO: utgåår når alt funker vi går mot prod
     @PostMapping("/pdladresse")
     @ProtectedWithClaims("entraid")
-    fun henPdlPersonAdresse(@RequestBody request: PersonRequest) : ResponseEntity<PdlAdresse> {
+    fun henPdlPersonAdresse(@RequestBody request: PersonRequest) : ResponseEntity<BostedsAdresseDto> {
         return ResponseEntity.ok().body(personService.hentPdlAdresse(NorskIdent(request.fnr)));
     }
 

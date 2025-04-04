@@ -58,6 +58,24 @@ internal class PdlPersonTest {
         return mockPersonService.hentPerson(NorskIdent("2"))
     }
 
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+        val emptyResponseJson = """
+            {
+              "data": null,
+              "errors": null
+            }
+        """.trimIndent()
+        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        every { mockPersonClient.hentAdresse( any()) } returns response
+        every { mockPersonClient.hentIdenter (any()) } returns identResponse
+        every { mockPersonClient.hentGeografiskTilknytning (any()) }  returns geoResponse
+
+        return response
+    }
+
 
     @Test
     fun `hentPerson med manglende relatertPersonsIdent skal fortsatt gi gyldig resultat`() {
@@ -93,6 +111,18 @@ internal class PdlPersonTest {
 
         val bostedsadresse = person.bostedsadresse
         assertEquals("SANNERGATA", bostedsadresse?.vegadresse?.adressenavn)
+
+    }
+
+
+
+    @Test
+    fun `hentAdresse med data i json deserialisering`() {
+        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val adresse = hentAdresseFraFil(json)
+
+        val adressenavn = adresse.data?.hentPerson?.bostedsadresse?.first()?.vegadresse?.adressenavn
+        assertEquals("Mollandsveien", adressenavn)
 
     }
 
