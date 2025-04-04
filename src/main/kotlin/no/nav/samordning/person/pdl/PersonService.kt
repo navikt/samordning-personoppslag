@@ -1,5 +1,6 @@
 package no.nav.samordning.person.pdl
 
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.model.*
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 @Service
 class PersonService(
     private val client: PersonClient,
+    private val kodeverkService: KodeverkService,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
 ) {
 
@@ -258,8 +260,8 @@ class PersonService(
                     it.boadresse2 = ""
                 }
                 it.bolignr = "" // TODO: pdlBostedsadresse.vegadresse.bruksenhetsnummer
-                it.postnr = pdlBostedsadresse.vegadresse.postnummer ?: ""
-                it.poststed = "" // TODO: poststedKodeverkService.hentGyldigPoststed(it.postnummer).firstOrNull()?.poststed ?: ""
+                it.postnr = pdlBostedsadresse.vegadresse.postnummer  ?: ""
+                it.poststed = pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
                 it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer ?: ""
             }
         }
