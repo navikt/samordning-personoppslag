@@ -253,42 +253,45 @@ class PersonService(
         val bostedsadresse = BostedsAdresseDto().apply {
             datoFom = pdlBostedsadresse?.gyldigFraOgMed?.toLocalDate()
         }
-        if (pdlBostedsadresse?.vegadresse != null) {
-            bostedsadresse.also {
-                if (pdlBostedsadresse.coAdressenavn != null) {
-                    it.boadresse1 = pdlBostedsadresse.coAdressenavn
-                    it.boadresse2 = concatVegadresse(pdlBostedsadresse)
-                } else {
-                    it.boadresse1 = concatVegadresse(pdlBostedsadresse)
-                    it.boadresse2 = ""
+        when {
+            (pdlBostedsadresse?.vegadresse != null) -> {
+                bostedsadresse.also {
+                    if (pdlBostedsadresse.coAdressenavn != null) {
+                        it.boadresse1 = pdlBostedsadresse.coAdressenavn
+                        it.boadresse2 = concatVegadresse(pdlBostedsadresse)
+                    } else {
+                        it.boadresse1 = concatVegadresse(pdlBostedsadresse)
+                        it.boadresse2 = ""
+                    }
+                    it.bolignr = "" // TODO: pdlBostedsadresse.vegadresse.bruksenhetsnummer
+                    it.postnr = pdlBostedsadresse.vegadresse.postnummer ?: ""
+                    it.poststed =
+                        pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+                    it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer ?: ""
                 }
-                it.bolignr = "" // TODO: pdlBostedsadresse.vegadresse.bruksenhetsnummer
-                it.postnr = pdlBostedsadresse.vegadresse.postnummer  ?: ""
-                it.poststed = pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
-                it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer ?: ""
             }
+            harPostAdresse(pdlAdresse) -> bostedsadresse.postAdresse = mapPdlAdresseToTilleggsAdresseDtoPostAdresse(pdlAdresse)
+            harUtlandsadresse(pdlAdresse) -> bostedsadresse.utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse)
         }
-        if (pdlBostedsadresse?.utenlandskAdresse != null) {
-            bostedsadresse.also {
-                it.boadresse1 = listOfNotNull(
-                    pdlBostedsadresse.coAdressenavn,
-                    pdlBostedsadresse.utenlandskAdresse.adressenavnNummer
-                ).joinToString(" ")
-                it.boadresse2 = listOfNotNull(
-                    pdlBostedsadresse.utenlandskAdresse.bygningEtasjeLeilighet,
-                    pdlBostedsadresse.utenlandskAdresse.postboksNummerNavn
-                ).joinToString(" ")
-                it.bolignr = ""
-                it.postnr = pdlBostedsadresse.utenlandskAdresse.postkode ?: ""
-                it.poststed = pdlBostedsadresse.utenlandskAdresse.bySted ?: ""
-                it.kommunenr = ""
-            }
-        }
-
-        bostedsadresse.utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse)
 
         return bostedsadresse
     }
+
+    private fun harUtlandsadresse(pdlAdresse: PdlAdresse) =
+        when {
+            pdlAdresse.kontaktadresse?.utenlandskAdresse != null -> true
+            pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> true
+            pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> true
+            pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null -> true
+            else -> false
+        }
+
+    private fun harPostAdresse(pdlAdresse: PdlAdresse) =
+        when {
+            pdlAdresse.kontaktadresse?.postboksadresse != null -> true
+            pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> true
+            else -> false
+        }
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse: PdlAdresse): TilleggsAdresseDto? {
         val coAdressenavn = pdlAdresse.bostedsadresse?.coAdressenavn
@@ -333,6 +336,30 @@ class PersonService(
             poststed = pdlUtenlandskAdresse.byEllerStedsnavn ?: ""
             landkode = pdlUtenlandskAdresse.landkode
             datoFom = null //TODO
+        }
+    }
+
+    private fun mapPdlAdresseToTilleggsAdresseDtoPostAdresse(pdlAdresse: PdlAdresse): TilleggsAdresseDto? {
+        val pesysPostAdresse = TilleggsAdresseDto().apply {
+            addAdresselinje(this, pdlAdresse.bostedsadresse?.coAdressenavn ?: "", isCoAdresse = true)
+            datoFom = null // TODO
+            landkode = "NOR"
+        }
+        return when {
+            pdlAdresse.kontaktadresse?.postboksadresse != null -> pesysPostAdresse.apply {
+                addAdresselinje(this, pdlAdresse.kontaktadresse.postboksadresse.postbokseier ?: "")
+                addAdresselinje(this, pdlAdresse.kontaktadresse.postboksadresse.postboks ?: "")
+                postnr = pdlAdresse.kontaktadresse.postboksadresse.postnummer ?: ""
+                poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            }
+            pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> pesysPostAdresse.apply {
+                adresselinje1 = listOfNotNull(adresselinje1, pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje1).joinToString(" ")
+                adresselinje2 = pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje2
+                adresselinje3 = pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje3
+                postnr = pdlAdresse.kontaktadresse.postadresseIFrittFormat.postnummer
+                poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            }
+            else -> null
         }
     }
 
@@ -507,33 +534,6 @@ class PersonService(
             it.adresselinje3 = adresse
         }
     }
-
-    fun enrichWithVegadresse(it: TilleggsAdresseDto, vegAddresse: Vegadresse?) {
-        addAdresselinje(
-            it, listOfNotNull(
-                vegAddresse?.adressenavn,
-                vegAddresse?.husnummer,
-                vegAddresse?.husbokstav
-            ).joinToString(" ")
-        )
-        addAdresselinje(it, "")
-        it.postnr = vegAddresse?.postnummer ?: ""
-        it.poststed = "" //TODO: poststedKodeverkService.hentGyldigPoststed(it.postnr).firstOrNull()?.poststed ?: ""
-    }
-
-    fun enrichWithUtenlandskAdresse(it: TilleggsAdresseDto, utenlandskAdresse: UtenlandskAdresse?) {
-        addAdresselinje(it, utenlandskAdresse?.adressenavnNummer ?: "")
-        addAdresselinje(
-            it, listOfNotNull(
-                utenlandskAdresse?.bygningEtasjeLeilighet,
-                utenlandskAdresse?.postboksNummerNavn
-            ).joinToString(" ")
-        )
-        it.postnr = utenlandskAdresse?.postkode ?: ""
-        it.poststed = utenlandskAdresse?.bySted ?: ""
-        it.landkode = utenlandskAdresse?.landkode ?: ""
-    }
-
 }
 
 fun String?.scrable() = if (this == null || this.length < 6 ) this else this.dropLast(5) + "xxxxx"
