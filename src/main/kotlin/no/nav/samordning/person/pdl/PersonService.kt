@@ -97,7 +97,7 @@ class PersonService(
         }
     }
 
-    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson) : PdlSamPerson {
+    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson): PdlSamPerson {
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -149,104 +149,107 @@ class PersonService(
 
 
     internal fun konverterTilPerson(
-            pdlPerson: HentPerson,
-            identer: List<IdentInformasjon>,
-            geografiskTilknytning: GeografiskTilknytning?
-        ): PdlPerson {
+        pdlPerson: HentPerson,
+        identer: List<IdentInformasjon>,
+        geografiskTilknytning: GeografiskTilknytning?
+    ): PdlPerson {
 
-            val navn = pdlPerson.navn
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val navn = pdlPerson.navn
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val graderingListe = pdlPerson.adressebeskyttelse
-                .map { it.gradering }
-                .distinct()
+        val graderingListe = pdlPerson.adressebeskyttelse
+            .map { it.gradering }
+            .distinct()
 
-            val statsborgerskap = pdlPerson.statsborgerskap
-                .distinctBy { it.land }
+        val statsborgerskap = pdlPerson.statsborgerskap
+            .distinctBy { it.land }
 
-            val foedsel = pdlPerson.foedsel
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val foedsel = pdlPerson.foedsel
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
-                ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
+            ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val kjoenn = pdlPerson.kjoenn
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val kjoenn = pdlPerson.kjoenn
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
-                .filterNot { it.doedsdato == null }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
+            .filterNot { it.doedsdato == null }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val forelderBarnRelasjon = pdlPerson.forelderBarnRelasjon
-            val sivilstand = pdlPerson.sivilstand
+        val forelderBarnRelasjon = pdlPerson.forelderBarnRelasjon
+        val sivilstand = pdlPerson.sivilstand
 
-            return PdlPerson(
-                identer,
-                navn,
-                graderingListe,
-                bostedsadresse,
-                oppholdsadresse,
-                statsborgerskap,
-                foedsel,
-                geografiskTilknytning,
-                kjoenn,
-                doedsfall,
-                forelderBarnRelasjon,
-                sivilstand,
-                kontaktadresse,
-                kontaktinformasjonForDoedsbo
-            )
-        }
+        return PdlPerson(
+            identer,
+            navn,
+            graderingListe,
+            bostedsadresse,
+            oppholdsadresse,
+            statsborgerskap,
+            foedsel,
+            geografiskTilknytning,
+            kjoenn,
+            doedsfall,
+            forelderBarnRelasjon,
+            sivilstand,
+            kontaktadresse,
+            kontaktinformasjonForDoedsbo
+        )
+    }
 
 
     internal fun konverterTilAdresse(
-            pdlPerson: HentAdresse,
-            geografiskTilknytning: GeografiskTilknytning?
-        ): BostedsAdresseDto {
+        pdlPerson: HentAdresse,
+        geografiskTilknytning: GeografiskTilknytning?
+    ): BostedsAdresseDto {
 
-            val graderingListe = pdlPerson.adressebeskyttelse
-                .map { it.gradering }
-                .distinct()
+        val graderingListe = pdlPerson.adressebeskyttelse
+            .map { it.gradering }
+            .distinct()
 
-            val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
-                ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
+            ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
-                .filterNot { it.doedsdato == null }
-                .maxByOrNull { it.metadata.sisteRegistrertDato() }
+        val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
+            .filterNot { it.doedsdato == null }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-            val sivilstand = pdlPerson.sivilstand
+        val sivilstand = pdlPerson.sivilstand
 
-            return PdlAdresse(
-                graderingListe,
-                bostedsadresse,
-                oppholdsadresse,
-                geografiskTilknytning,
-                doedsfall,
-                sivilstand,
-                kontaktadresse,
-            ).let { mapPdlAdresseToSamAdresse(it) }
+        return PdlAdresse(
+            graderingListe,
+            bostedsadresse,
+            oppholdsadresse,
+            geografiskTilknytning,
+            doedsfall,
+            sivilstand,
+            kontaktadresse,
+        ).let {
+            mapPdlAdresseToBostedsAdresseDto(it)
         }
+    }
 
 
 
-    private fun mapPdlAdresseToSamAdresse(pdlAdresse: PdlAdresse): BostedsAdresseDto {
+    private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse): BostedsAdresseDto {
         val pdlBostedsadresse = pdlAdresse.bostedsadresse
+
         val bostedsadresse = BostedsAdresseDto().apply {
             datoFom = pdlBostedsadresse?.gyldigFraOgMed?.toLocalDate()
         }
@@ -282,7 +285,55 @@ class PersonService(
             }
         }
 
+        bostedsadresse.utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse)
+
         return bostedsadresse
+    }
+
+    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse: PdlAdresse): TilleggsAdresseDto? {
+        val coAdressenavn = pdlAdresse.bostedsadresse?.coAdressenavn
+        return when {
+            pdlAdresse.kontaktadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  coAdressenavn)
+            pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  coAdressenavn)
+            pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  coAdressenavn)
+            pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresseIFrittFormat)
+            else -> null
+        }
+    }
+
+    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?): TilleggsAdresseDto {
+        return TilleggsAdresseDto().apply {
+            val adresselinjer =
+                standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(pdlUtenlandskAdresse, coAdressenavn)
+
+            if (adresselinjer.size == 3) {
+                adresselinje1 = adresselinjer[0]
+                adresselinje2 = adresselinjer[1]
+                adresselinje3 = adresselinjer[2]
+            } else if (adresselinjer.size == 2) {
+                adresselinje1 = adresselinjer[0]
+                adresselinje2 = adresselinjer[1]
+            } else if (adresselinjer.size == 1) {
+                adresselinje1 = adresselinjer[0]
+            }
+
+            postnr = pdlUtenlandskAdresse.postkode
+            poststed = pdlUtenlandskAdresse.bySted
+            landkode = pdlUtenlandskAdresse.landkode
+            datoFom = null //TODO
+        }
+    }
+
+    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat): TilleggsAdresseDto {
+        return TilleggsAdresseDto().apply {
+            adresselinje1 = pdlUtenlandskAdresse.adresselinje1 ?: ""
+            adresselinje2 = pdlUtenlandskAdresse.adresselinje2 ?: ""
+            adresselinje3 = pdlUtenlandskAdresse.adresselinje3 ?: ""
+            postnr = pdlUtenlandskAdresse.postkode ?: ""
+            poststed = pdlUtenlandskAdresse.byEllerStedsnavn ?: ""
+            landkode = pdlUtenlandskAdresse.landkode
+            datoFom = null //TODO
+        }
     }
 
     /**
