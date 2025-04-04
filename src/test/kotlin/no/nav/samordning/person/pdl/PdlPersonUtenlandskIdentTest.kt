@@ -4,13 +4,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.clearAllMocks
 import io.mockk.mockk
+import no.nav.samordning.kodeverk.KodeverkService
 import org.junit.jupiter.api.AfterEach
 
 
 class PdlPersonUtenlandskIdentTest {
 
     private val mockPersonClient: PersonClient = mockk(relaxed = true)
-    private val mockPersonService = PersonService(mockPersonClient)
+    private val mockKodeverkService: KodeverkService = mockk(relaxed = true)
+    private val mockPersonService = PersonService(mockPersonClient, mockKodeverkService)
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     @AfterEach

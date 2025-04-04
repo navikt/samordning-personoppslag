@@ -5,11 +5,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.*
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -17,7 +16,8 @@ import java.time.LocalDateTime
 internal class PdlPersonTest {
 
     private val mockPersonClient: PersonClient = mockk(relaxed = true)
-    private val mockPersonService = PersonService(mockPersonClient)
+    private val mockKodeverkService: KodeverkService = mockk(relaxed = true)
+    private val mockPersonService = PersonService(mockPersonClient, mockKodeverkService)
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     @AfterEach

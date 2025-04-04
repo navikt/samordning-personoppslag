@@ -2,6 +2,7 @@ package no.nav.samordning.person.pdl
 
 import io.mockk.every
 import io.mockk.mockk
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.IdentGruppe.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,8 +17,9 @@ import java.time.LocalDateTime
 internal class PdlPersonServiceTest {
 
     private val client = mockk<PersonClient>()
+    private val kodeverkService = mockk<KodeverkService>()
 
-    private val service: PersonService = PersonService(client)
+    private val service: PersonService = PersonService(client, kodeverkService)
 
     private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(

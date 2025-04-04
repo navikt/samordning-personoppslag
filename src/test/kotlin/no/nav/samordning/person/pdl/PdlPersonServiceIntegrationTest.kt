@@ -1,6 +1,8 @@
 package no.nav.samordning.person.pdl
 
+import io.mockk.mockk
 import no.nav.samordning.config.RestTemplateConfig
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.NorskIdent
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -29,7 +31,8 @@ internal class PdlPersonServiceIntegrationTest {
      * Example: kubectl port-forward svc/pdl-api 8089:80
      */
     private val service = PersonService(
-            PersonClient(mockClient, "https://pdl-api.intern.dev.nav.no/graphql")
+            PersonClient(mockClient, "https://pdl-api.intern.dev.nav.no/graphql"),
+            mockk<KodeverkService>()
     )
 
     @Test
