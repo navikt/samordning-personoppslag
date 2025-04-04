@@ -45,6 +45,7 @@ class PdlLeesahKafkaListener(
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
                 if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
 
+                    logger.info("Prøver å behandle hendelse med opplysningstype=${personhendelse.opplysningstype} og endringstype=${personhendelse.endringstype}")
                     when (personhendelse.opplysningstype) {
                         "SIVILSTAND_V1" -> {
                             sivilstandService.opprettSivilstandsMelding(personhendelse)
