@@ -41,7 +41,7 @@ class SivilstandService(
 
         when (endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
-                secureLogger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
+                secureLogger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, fnr=${fnr}, hendelseId=${hendelseId}")
                 logger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
                 return
             }
