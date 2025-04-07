@@ -20,6 +20,7 @@ class PdlLeesahKafkaListener(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     @KafkaListener(
         autoStartup = "\${pdl.kafka.autoStartup}",
@@ -47,18 +48,22 @@ class PdlLeesahKafkaListener(
 
                     when (personhendelse.opplysningstype) {
                         "SIVILSTAND_V1" -> {
+                            secureLogger.info("Behandler SIVILSTAND_V1: $personhendelse")
                             sivilstandService.opprettSivilstandsMelding(personhendelse)
                         }
 
                         "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
+                            secureLogger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
                             folkeregisterService.opprettFolkeregistermelding(personhendelse)
                         }
 
                         "DOEDSFALL_V1" -> {
+                            secureLogger.info("Behandler DOEDSFALL_V1: $personhendelse")
                             doedsfallService.opprettDoedsfallmelding(personhendelse)
                         }
 
                         "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
+                            secureLogger.info("Behandler adresse: $personhendelse")
                             adresseService.opprettAdressemelding(personhendelse)
                         }
 
