@@ -33,7 +33,7 @@ spec:
   ingresses:
     - https://samordning-personoppslag-q2.dev.intern.nav.no
   secureLogs:
-    enabled: false
+    enabled: true
   prometheus:
     enabled: true
     path: actuator/prometheus

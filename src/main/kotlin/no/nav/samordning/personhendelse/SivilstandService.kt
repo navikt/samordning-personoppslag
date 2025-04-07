@@ -17,6 +17,7 @@ class SivilstandService(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
         opprettSivilstandsMelding(
@@ -40,6 +41,7 @@ class SivilstandService(
 
         when (endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
+                secureLogger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
                 logger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
                 return
             }
