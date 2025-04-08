@@ -32,7 +32,7 @@ spec:
           cluster: dev-fss
 
         - application: azure-token-generator
-          namespace: aura
+          namespace: nais
           cluster: dev-gcp
 
   image: {{ image }}
