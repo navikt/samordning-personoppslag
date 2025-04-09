@@ -4,7 +4,6 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
-import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,7 +24,7 @@ class SivilstandService(
             hendelseId = personhendelse.hendelseId,
             fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
             endringstype = personhendelse.endringstype,
-            gyldigFraOgMed = personhendelse.sivilstand?.gyldigFraOgMed,
+            fomDato = personhendelse.sivilstand?.gyldigFraOgMed,
             sivilstandsType = personhendelse.sivilstand?.type,
         )
 
@@ -35,10 +34,10 @@ class SivilstandService(
         hendelseId: String,
         fnr: String,
         endringstype: Endringstype?,
-        gyldigFraOgMed: LocalDate?,
+        fomDato: LocalDate?,
         sivilstandsType: String?
     ) {
-        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: $endringstype, sivilstandsType: $sivilstandsType, sivilstandDato: $gyldigFraOgMed, hendelseId: $hendelseId")
+        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: $endringstype, sivilstandsType: $sivilstandsType, sivilstandDato: $fomDato, hendelseId: $hendelseId")
 
         when (endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
@@ -48,13 +47,6 @@ class SivilstandService(
             }
 
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
-                val fomDato = if (gyldigFraOgMed == null) {
-                    val person = personService.hentPerson(NorskIdent(fnr))
-                    person?.sivilstand?.maxByOrNull { it.metadata.sisteRegistrertDato() }?.gyldigFraOgMed
-                } else {
-                    gyldigFraOgMed
-                }.also { logger.info("Hentet fomDato : $it") }
-
                 if (sivilstandsType != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId, endringstype=$endringstype, fomDato=$fomDato")
 
