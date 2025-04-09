@@ -18,7 +18,7 @@ class FolkeregisterService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettFolkeregistermelding(personhendelse: Personhendelse) {
-        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
+        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT || personhendelse.endringstype == Endringstype.KORRIGERT) {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
