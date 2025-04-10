@@ -18,29 +18,31 @@ class FolkeregisterService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettFolkeregistermelding(personhendelse: Personhendelse) {
-        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT || personhendelse.endringstype == Endringstype.KORRIGERT) {
+        if (personhendelse.endringstype == Endringstype.OPPRETTET) {
+            val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
+            val gammeltFnr =
+                personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull { Fodselsnummer.validFnr(it) }
+
+            if (gammeltFnr == null) {
+                logger.info("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
+                return
+            }
+
+            val adressebeskyttelse =
+                personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
+
+            samClient.oppdaterSamPersonalia(
+                createFolkeregisterRequest(
+                    hendelseId = personhendelse.hendelseId,
+                    nyttFnr = nyttFnr,
+                    gammeltFnr = gammeltFnr,
+                    adressebeskyttelse = adressebeskyttelse
+                )
+            )
+        } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
-
-        val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
-        val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull{ Fodselsnummer.validFnr(it) }
-
-        if (gammeltFnr == null) {
-            logger.info("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
-            return
-        }
-
-        val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
-
-        samClient.oppdaterSamPersonalia(
-            createFolkeregisterRequest(
-                hendelseId = personhendelse.hendelseId,
-                nyttFnr = nyttFnr,
-                gammeltFnr = gammeltFnr,
-                adressebeskyttelse = adressebeskyttelse
-            )
-        )
     }
 
     private fun createFolkeregisterRequest(

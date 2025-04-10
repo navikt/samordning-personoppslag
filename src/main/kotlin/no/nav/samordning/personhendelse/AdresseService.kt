@@ -19,19 +19,19 @@ class AdresseService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettAdressemelding(personhendelse: Personhendelse) {
-        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
+        if (personhendelse.endringstype == Endringstype.OPPRETTET) {
+            personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.forEach { ident ->
+                samClient.oppdaterSamPersonalia(
+                    createAdresseRequest(
+                        hendelseId = personhendelse.hendelseId,
+                        fnr = ident,
+                        adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident)
+                    )
+                )
+            }
+        } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
-        }
-
-        personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.forEach { ident ->
-            samClient.oppdaterSamPersonalia(
-                createAdresseRequest(
-                    hendelseId = personhendelse.hendelseId,
-                    fnr = ident,
-                    adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident)
-                )
-            )
         }
     }
 
