@@ -23,7 +23,8 @@ data class PersonData(
     val sivilstand: String? = null,
     val sivilstandDato: LocalDate? = null,
     val dodsdato: LocalDate? = null,
-    val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList()
+    val adressebeskyttelse: List<AdressebeskyttelseGradering> = emptyList(),
+    val bostedsAdresse: BostedsAdresseDto? = null,
 ) {
     override fun toString(): String {
         return """

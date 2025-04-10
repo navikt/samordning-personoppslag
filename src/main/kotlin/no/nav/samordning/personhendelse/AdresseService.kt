@@ -4,6 +4,7 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -39,12 +40,16 @@ class AdresseService(
         fnr: String,
         adressebeskyttelse: List<AdressebeskyttelseGradering>
     ): OppdaterPersonaliaRequest {
+        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr))
+
+
         return OppdaterPersonaliaRequest(
             hendelseId = hendelseId,
             meldingsKode = Meldingskode.ADRESSE,
             newPerson = PersonData(
                 fnr = fnr,
                 adressebeskyttelse = adressebeskyttelse,
+                bostedsAdresse = pdlAdresse
             )
         ).apply {
             logger.debug(
