@@ -1,10 +1,15 @@
 package no.nav.samordning.person.pdl
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.mockk
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.IdentGruppe.*
+import no.nav.samordning.personhendelse.BostedsAdresseDto
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle
@@ -14,10 +19,12 @@ import java.time.LocalDateTime
 
 @TestInstance(Lifecycle.PER_CLASS)
 internal class PdlPersonServiceTest {
+    private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     private val client = mockk<PersonClient>()
+    private val kodeverkService = mockk<KodeverkService>()
 
-    private val service: PersonService = PersonService(client)
+    private val service: PersonService = PersonService(client, kodeverkService)
 
     private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(
@@ -72,6 +79,7 @@ internal class PdlPersonServiceTest {
             adressebeskyttelse = listOf(Adressebeskyttelse(AdressebeskyttelseGradering.UGRADERT)),
             bostedsadresse = listOf(
                 Bostedsadresse(
+                    null,
                     LocalDateTime.of(2020, 10, 5, 10,5,2),
                     LocalDateTime.of(2030, 10, 5, 10, 5, 2),
                     Vegadresse("TESTVEIEN","1020","A","0234", "231", null),
@@ -386,22 +394,6 @@ internal class PdlPersonServiceTest {
         assertEquals("$code: $msg", exception.message)
     }
 
-//    @Test
-//    fun hentAktorId_handleError() {
-//        val msg = "test message"
-//        val code = "test_code"
-//
-//        val errors = listOf(ResponseError(msg, extensions = ErrorExtension(code, null, null)))
-//
-//        every { client.hentAktorId(any()) } returns IdenterResponse(data = null, errors = errors)
-//
-//        val exception = assertThrows<PersonoppslagException> {
-//            service.hentAktorId("12345")
-//        }
-//
-//        assertEquals("$code: $msg", exception.message)
-//    }
-
     @Test
     fun hentIdenter_handleError() {
         val msg = "test message"
@@ -434,85 +426,53 @@ internal class PdlPersonServiceTest {
         assertEquals("$code: $msg", exception.message)
     }
 
-//    @Test
-//    fun `SokPerson med perfekt resultat`() {
-//
-//        val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-//            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-//
-//        val response = """
-//            {"data":{"sokPerson":{"pageNumber":1,"totalHits":1,"totalPages":1,"hits":[{"score":42.012856,"identer":[{"ident":"20035325957","gruppe":"FOLKEREGISTERIDENT"},{"ident":"2026844753303","gruppe":"AKTORID"}]}]}}}
-//        """.trimIndent()
-//
-//        val sokPersonRespons = mapper.readValue(response, SokPersonResponse::class.java)
-//        every { client.sokPerson(any()) } returns sokPersonRespons
-//
-//
-//        val sokeKriterie = SokKriterier(
-//            fornavn = "Fornavn",
-//            etternavn = "Etternavn",
-//            foedselsdato = LocalDate.of(1953, 3, 20))
-//
-//        val result = service.sokPerson(sokeKriterie)
-//
-//        assertEquals("20035325957", result.firstOrNull { it.gruppe == FOLKEREGISTERIDENT }?.ident)
-//
-//    }
+    @Test
+    fun sjekkUtlandadresse() {
+        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val adresseResponse = hentAdresseFraFil(json)
 
-//    @Test
-//    @Disabled
-//    fun `SokPerson med flere hits enn en leverer et tomt resultat`() {
-//
-//        val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-//            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-//
-//        val response = """
-//            {"data":{"sokPerson":{"pageNumber":1,"totalHits":2,"totalPages":1,
-//            "hits":[
-//            {"score":42.012856,"identer":[{"ident":"20035325957","gruppe":"FOLKEREGISTERIDENT"},{"ident":"2026844753303","gruppe":"AKTORID"}]},
-//            {"score":52.012856,"identer":[{"ident":"20099999999","gruppe":"FOLKEREGISTERIDENT"},{"ident":"2026844799999","gruppe":"AKTORID"}]}
-//            ]}}}
-//        """.trimIndent()
-//
-//        val sokPersonRespons = mapper.readValue(response, SokPersonResponse::class.java)
-//        every { client.sokPerson(any()) } returns sokPersonRespons
-//
-//
-//        val sokeKriterie = SokKriterier(
-//            fornavn = "Fornavn",
-//            etternavn = "Etternavn",
-//            foedselsdato = LocalDate.of(1953, 3, 20))
-//
-//        val result = service.sokPerson(sokeKriterie)
-//
-//        assertEquals(emptySet<IdentInformasjon>(), result)
-//
-//    }
 
-//    @Test
-//    fun `SokPerson returnerer json med UNAUTHORIZED error som kaster en PersonoppslagException`() {
-//
-//        val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-//            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-//
-//        val response = """
-//             {"errors":[{"message":"Ikke autentisert","locations":[{"line":1,"column":52}],"path":["sokPerson"],"extensions":{"code":"unauthenticated","classification":"ExecutionAborted"}}],"data":{"sokPerson":null}}
-//        """.trimIndent()
-//
-//        val sokPersonRespons = mapper.readValue(response, SokPersonResponse::class.java)
-//        every { client.sokPerson(any()) } returns sokPersonRespons
-//
-//
-//        val sokeKriterie = SokKriterier(
-//            fornavn = "Fornavn",
-//            etternavn = "Etternavn",
-//            foedselsdato = LocalDate.of(1953, 3, 20))
-//
-//        assertThrows<PersonoppslagException> {
-//            service.sokPerson(sokeKriterie)
-//        }
-//
-//    }
+        every { client.hentAdresse(any())  } returns adresseResponse
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "ETT_ELLER_ANNETSTED"
+
+        val adresseDto = service.hentPdlAdresse(NorskIdent("12331231231"))
+        assertNotNull(adresseDto)
+        val expectedJson = """
+            {
+              "boadresse1": "c/o TREIG ANALYSERENDE GRANITT",
+              "boadresse2": "Mollandsveien 95",
+              "bolignr": null,
+              "kommunenr": "4202",
+              "navenhet": null,
+              "postAdresse": null,
+              "tilleggsAdresse": null,
+              "utenlandsAdresse": null,
+              "postnr": "4879",
+              "poststed": "ETT_ELLER_ANNETSTED",
+              "datoFom": "2024-05-15"
+            }
+        """.trimIndent()
+        val expected = mapper.readValue(expectedJson, BostedsAdresseDto::class.java)
+        assertEquals(expected, adresseDto)
+    }
+
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+        val emptyResponseJson = """
+            {
+              "data": null,
+              "errors": null
+            }
+        """.trimIndent()
+        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        every { client.hentAdresse( any()) } returns response
+        every { client.hentIdenter (any()) } returns identResponse
+        every { client.hentGeografiskTilknytning (any()) }  returns geoResponse
+
+        return response
+    }
 
     private fun createHentPerson(
         adressebeskyttelse: List<Adressebeskyttelse> = emptyList(),

@@ -5,11 +5,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.*
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -17,7 +16,8 @@ import java.time.LocalDateTime
 internal class PdlPersonTest {
 
     private val mockPersonClient: PersonClient = mockk(relaxed = true)
-    private val mockPersonService = PersonService(mockPersonClient)
+    private val mockKodeverkService: KodeverkService = mockk(relaxed = true)
+    private val mockPersonService = PersonService(mockPersonClient, mockKodeverkService)
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     @AfterEach
@@ -58,6 +58,24 @@ internal class PdlPersonTest {
         return mockPersonService.hentPerson(NorskIdent("2"))
     }
 
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+        val emptyResponseJson = """
+            {
+              "data": null,
+              "errors": null
+            }
+        """.trimIndent()
+        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        every { mockPersonClient.hentAdresse( any()) } returns response
+        every { mockPersonClient.hentIdenter (any()) } returns identResponse
+        every { mockPersonClient.hentGeografiskTilknytning (any()) }  returns geoResponse
+
+        return response
+    }
+
 
     @Test
     fun `hentPerson med manglende relatertPersonsIdent skal fortsatt gi gyldig resultat`() {
@@ -93,6 +111,18 @@ internal class PdlPersonTest {
 
         val bostedsadresse = person.bostedsadresse
         assertEquals("SANNERGATA", bostedsadresse?.vegadresse?.adressenavn)
+
+    }
+
+
+
+    @Test
+    fun `hentAdresse med data i json deserialisering`() {
+        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val adresse = hentAdresseFraFil(json)
+
+        val adressenavn = adresse.data?.hentPerson?.bostedsadresse?.first()?.vegadresse?.adressenavn
+        assertEquals("Mollandsveien", adressenavn)
 
     }
 

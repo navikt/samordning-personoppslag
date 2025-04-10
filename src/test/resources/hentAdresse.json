@@ -1,0 +1,61 @@
+{
+  "data": {
+    "hentPerson": {
+      "adressebeskyttelse": [],
+      "bostedsadresse": [
+        {
+          "vegadresse": {
+            "husbokstav": null,
+            "husnummer": "95",
+            "adressenavn": "Mollandsveien",
+            "postnummer": "4879",
+            "kommunenummer": "4202",
+            "bydelsnummer": null
+          },
+          "utenlandskAdresse": null,
+          "coAdressenavn": "c/o TREIG ANALYSERENDE GRANITT",
+          "gyldigFraOgMed": "2024-05-15T00:00",
+          "gyldigTilOgMed": null,
+          "metadata": {
+            "endringer": [
+              {
+                "kilde": "Dolly",
+                "registrert": "2024-05-30T15:53:02",
+                "registrertAv": "Folkeregisteret",
+                "systemkilde": "FREG",
+                "type": "OPPRETT"
+              }
+            ],
+            "master": "FREG",
+            "opplysningsId": "ba847a1d-68a7-4820-baf4-6a61e25bb765",
+            "historisk": false
+          }
+        }
+      ],
+      "oppholdsadresse": [],
+      "kontaktadresse": [],
+      "doedsfall": [],
+      "sivilstand": [
+        {
+          "type": "UGIFT",
+          "gyldigFraOgMed": "1981-03-17",
+          "relatertVedSivilstand": null,
+          "metadata": {
+            "endringer": [
+              {
+                "kilde": "Dolly",
+                "registrert": "2024-05-30T15:53:02",
+                "registrertAv": "Folkeregisteret",
+                "systemkilde": "FREG",
+                "type": "OPPRETT"
+              }
+            ],
+            "master": "FREG",
+            "opplysningsId": "e72be44a-efb9-4b48-affa-72abd990273a",
+            "historisk": false
+          }
+        }
+      ]
+    }
+  }
+}

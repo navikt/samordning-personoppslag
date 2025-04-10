@@ -21,6 +21,14 @@ internal data class HentPerson(
 internal data class HentPersonnavn(
         val navn: List<Navn>
 )
+internal data class HentAdresse(
+        val adressebeskyttelse: List<Adressebeskyttelse>,
+        val bostedsadresse: List<Bostedsadresse>,
+        val oppholdsadresse: List<Oppholdsadresse>,
+        val doedsfall: List<Doedsfall>,
+        val sivilstand: List<Sivilstand>,
+        val kontaktadresse: List<Kontaktadresse>?,
+)
 
 internal data class HentPersonUtenlandskIdent(
         val navn: List<Navn>,
@@ -132,6 +140,77 @@ data class PdlPerson(
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: Kontaktadresse? = null,
         val kontaktinformasjonForDoedsbo: KontaktinformasjonForDoedsbo? = null
+) {
+        private val logger = LoggerFactory.getLogger(PdlPerson::class.java)
+
+        fun erDoed() = doedsfall?.doedsdato != null
+
+        /**
+         * Velger en landkode blant adressene tilknyttet personen, etter hva som først er definert av:
+         *
+         * 1. utenlandsk kontaktadresse (i fritt format)
+         * 2. utenlandsk bostedsadresse (strukturert)
+         * 3. utenlandsk oppholdsadresse
+         * 4. utenlandsk bostedsadresse
+         * 5. geografisk tilknytning
+         * 6. norsk bostedsadresse
+         * 7. norsk kontaktadresse (i fritt format)
+         * 8. eller returnerer tom streng om ingen av adressene er definert
+         */
+        fun landkode(): String {
+                val landkodeOppholdKontakt = kontaktadresse?.utenlandskAdresseIFrittFormat?.landkode
+                val landkodeUtlandsAdresse = kontaktadresse?.utenlandskAdresse?.landkode
+                val landkodeOppholdsadresse = oppholdsadresse?.utenlandskAdresse?.landkode
+                val landkodeBostedsadresse = bostedsadresse?.utenlandskAdresse?.landkode
+                val geografiskLandkode = geografiskTilknytning?.gtLand
+                val landkodeBostedNorge = bostedsadresse?.vegadresse
+                val landkodeKontaktNorge = kontaktadresse?.postadresseIFrittFormat
+
+                return when {
+                        landkodeOppholdKontakt != null -> {
+                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresseIFrittFormat ")
+                                landkodeOppholdKontakt
+                        }
+                        landkodeUtlandsAdresse != null -> {
+                                logger.info("Velger landkode fra kontaktadresse.utenlandskAdresse")
+                                landkodeUtlandsAdresse
+                        }
+                        landkodeOppholdsadresse != null -> {
+                                logger.info("Velger landkode fra oppholdsadresse.utenlandskAdresse")
+                                landkodeOppholdsadresse
+                        }
+                        landkodeBostedsadresse != null -> {
+                                logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse")
+                                landkodeBostedsadresse
+                        }
+                        geografiskLandkode != null -> {
+                                logger.info("Velger landkode fra geografiskTilknytning.gtLand")
+                                geografiskLandkode
+                        }
+                        landkodeBostedNorge != null -> {
+                                logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom")
+                                "NOR"
+                        }
+                        landkodeKontaktNorge != null -> {
+                                logger.info("Velger landkode NOR fordi  kontaktadresse.postadresseIFrittFormat ikke er tom")
+                                "NOR"
+                        }
+                        else -> {
+                                logger.info("Velger tom landkode siden ingen særregler for adresseutvelger inntraff")
+                                ""
+                        }
+                }
+        }
+}
+
+data class PdlAdresse(
+        val adressebeskyttelse: List<AdressebeskyttelseGradering>,
+        val bostedsadresse: Bostedsadresse? = null,
+        val oppholdsadresse: Oppholdsadresse? = null,
+        val geografiskTilknytning: GeografiskTilknytning? = null,
+        val doedsfall: Doedsfall? = null,
+        val sivilstand: List<Sivilstand>,
+        val kontaktadresse: Kontaktadresse? = null,
 ) {
         private val logger = LoggerFactory.getLogger(PdlPerson::class.java)
 

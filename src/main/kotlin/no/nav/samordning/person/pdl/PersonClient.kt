@@ -1,6 +1,7 @@
 package no.nav.samordning.person.pdl
 
 import no.nav.samordning.person.pdl.model.*
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -18,6 +19,7 @@ class PersonClient(
     @Value("\${PDL_URL}") private val url: String
 ) {
     private val logger = LoggerFactory.getLogger(PersonClient::class.java)
+    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
 //    @Retryable(
 //        exclude = [HttpClientErrorException.NotFound::class],
@@ -50,6 +52,19 @@ class PersonClient(
             loggPdlFeil(it.errors)
         }
   }
+
+    @Retryable(
+        exclude = [HttpClientErrorException.NotFound::class],
+        backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
+    )
+    internal fun hentAdresse(ident: String): HentAdresseResponse {
+        val query = getGraphqlResource("/graphql/hentAdresse.graphql")
+        val request = GraphqlRequest(query, Variables(ident))
+        return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request), HentAdresseResponse::class).also {
+            secureLogger.info("Response {}", it.data)
+            loggPdlFeil(it.errors)
+        }
+    }
 
     @Retryable(
         exclude = [HttpClientErrorException.NotFound::class],
