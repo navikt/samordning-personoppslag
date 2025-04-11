@@ -25,7 +25,8 @@ class AdresseService(
                     createAdresseRequest(
                         hendelseId = personhendelse.hendelseId,
                         fnr = ident,
-                        adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident)
+                        adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident),
+                        personhendelse.opplysningstype
                     )
                 )
             }
@@ -38,9 +39,10 @@ class AdresseService(
     private fun createAdresseRequest(
         hendelseId: String,
         fnr: String,
-        adressebeskyttelse: List<AdressebeskyttelseGradering>
+        adressebeskyttelse: List<AdressebeskyttelseGradering>,
+        opplysningstype: String
     ): OppdaterPersonaliaRequest {
-        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr))
+        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
 
 
         return OppdaterPersonaliaRequest(

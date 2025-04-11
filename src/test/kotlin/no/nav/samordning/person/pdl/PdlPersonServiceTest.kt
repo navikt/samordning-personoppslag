@@ -435,7 +435,7 @@ internal class PdlPersonServiceTest {
         every { client.hentAdresse(any())  } returns adresseResponse
         every { kodeverkService.hentPoststedforPostnr(any()) } returns "ETT_ELLER_ANNETSTED"
 
-        val adresseDto = service.hentPdlAdresse(NorskIdent("12331231231"))
+        val adresseDto = service.hentPdlAdresse(NorskIdent("12331231231"), "BOSTEDSADRESSE_V1")
         assertNotNull(adresseDto)
         val expectedJson = """
             {
