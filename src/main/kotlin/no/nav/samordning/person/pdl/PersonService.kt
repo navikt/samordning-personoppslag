@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Service
 class PersonService(
@@ -247,15 +248,46 @@ class PersonService(
         }
     }
 
-
     private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse, opplysningstype: String,): BostedsAdresseDto {
 
-        val gyldigFraOgMed = pdlAdresse.bostedsadresse?.gyldigFraOgMed?.toLocalDate()
+        val gyldigFraOgMedMap = lagGyldigFraOgMedMap(pdlAdresse)
+        val gjeldendeAdresseType = gyldigFraOgMedMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
+        val gyldigFraOgMed = gjeldendeAdresseType?.let { gyldigFraOgMedMap.get(it)?.toLocalDate() }
 
-        return when {
-            harNorskVegadresse(pdlAdresse) -> mapNorskVegadresse(pdlAdresse, gyldigFraOgMed)
-            harPostAdresse(pdlAdresse) -> BostedsAdresseDto().apply { postAdresse = mapPdlAdresseToTilleggsAdresseDtoPostAdresse(pdlAdresse, gyldigFraOgMed) }
-            harUtlandsadresse(pdlAdresse) -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse, gyldigFraOgMed) }
+        return when (gjeldendeAdresseType) {
+            "KONTAKTADRESSE" -> {
+                when {
+                    pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.postboksadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postboksadresse, pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postadresseIFrittFormat, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.utenlandskAdresse != null  -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null  -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresseIFrittFormat, gyldigFraOgMed) }
+                    else -> {
+                        logger.warn("Fant ingen kontaktadresse å mappe")
+                        BostedsAdresseDto()
+                    }
+                }
+            }
+            "OPPHOLDSADRESSE" -> {
+                when {
+                    pdlAdresse.oppholdsadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlOppholdsadresse(pdlAdresse.oppholdsadresse, gyldigFraOgMed) }
+                    pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
+                    else -> {
+                        logger.warn("Fant ingen oppholdsadresse å mappe")
+                        BostedsAdresseDto()
+                    }
+                }
+            }
+            "BOSTEDSADRESSE" -> {
+                when {
+                    pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse, gyldigFraOgMed)
+                    pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse.coAdressenavn, gyldigFraOgMed) }
+                    else -> {
+                        logger.warn("Fant ingen bostedsadresse å mappe")
+                        BostedsAdresseDto()
+                    }
+                }
+            }
             else -> {
                 logger.warn("Fant ingen adresse å mappe")
                 BostedsAdresseDto()
@@ -263,22 +295,13 @@ class PersonService(
         }
     }
 
-    private fun mapNorskVegadresse(pdlAdresse: PdlAdresse, gyldigFraOgMed: LocalDate?): BostedsAdresseDto {
-        return when {
-            pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse, gyldigFraOgMed) }
-            pdlAdresse.oppholdsadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlOppholdsadresse(pdlAdresse.oppholdsadresse, gyldigFraOgMed) }
-            pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse, gyldigFraOgMed)
-            else -> throw IllegalStateException("PDL adresse not found")
-        }
+    private fun lagGyldigFraOgMedMap(pdlAdresse: PdlAdresse): Map<String, LocalDateTime?> {
+        return mapOf(
+            "KONTAKTADRESSE" to pdlAdresse.kontaktadresse?.gyldigFraOgMed,
+            "OPPHOLDSADRESSE" to pdlAdresse.oppholdsadresse?.gyldigFraOgMed,
+            "BOSTEDSADRESSE" to pdlAdresse.bostedsadresse?.gyldigFraOgMed,
+        )
     }
-
-    private fun harNorskVegadresse(pdlAdresse: PdlAdresse) : Boolean =
-        when {
-            pdlAdresse.kontaktadresse?.vegadresse != null -> true
-            pdlAdresse.oppholdsadresse?.vegadresse != null -> true
-            pdlAdresse.bostedsadresse?.vegadresse != null -> true
-            else -> false
-        }
 
     private fun mapPdlBostedsadresse(pdlBostedsadresse: Bostedsadresse, gyldigFraOgMed: LocalDate?): BostedsAdresseDto {
         return BostedsAdresseDto().also {
@@ -297,7 +320,6 @@ class PersonService(
             it.datoFom = gyldigFraOgMed
         }
     }
-
 
     private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
@@ -347,33 +369,6 @@ class PersonService(
         }
     }
 
-    private fun harUtlandsadresse(pdlAdresse: PdlAdresse) =
-        when {
-            pdlAdresse.kontaktadresse?.utenlandskAdresse != null -> true
-            pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> true
-            pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> true
-            pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null -> true
-            else -> false
-        }
-
-    private fun harPostAdresse(pdlAdresse: PdlAdresse) =
-        when {
-            pdlAdresse.kontaktadresse?.postboksadresse != null -> true
-            pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> true
-            else -> false
-        }
-
-    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse: PdlAdresse, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto? {
-        val coAdressenavn = pdlAdresse.bostedsadresse?.coAdressenavn
-        return when {
-            pdlAdresse.kontaktadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  coAdressenavn, gyldigFraOgMed)
-            pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  coAdressenavn, gyldigFraOgMed)
-            pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  coAdressenavn, gyldigFraOgMed)
-            pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresseIFrittFormat, gyldigFraOgMed)
-            else -> null
-        }
-    }
-
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
             val adresselinjer =
@@ -409,27 +404,27 @@ class PersonService(
         }
     }
 
-    private fun mapPdlAdresseToTilleggsAdresseDtoPostAdresse(pdlAdresse: PdlAdresse, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto? {
-        val pesysPostAdresse = TilleggsAdresseDto().apply {
-            addAdresselinje(this, pdlAdresse.bostedsadresse?.coAdressenavn ?: "", isCoAdresse = true)
+    private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
+        return TilleggsAdresseDto().apply {
+            addAdresselinje(this, coAdressenavn ?: "", isCoAdresse = true)
+            addAdresselinje(this, postboksadresse.postbokseier ?: "")
+            addAdresselinje(this, postboksadresse.postboks)
+            postnr = postboksadresse.postnummer ?: ""
+            poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
             datoFom = gyldigFraOgMed
             landkode = "NOR"
         }
-        return when {
-            pdlAdresse.kontaktadresse?.postboksadresse != null -> pesysPostAdresse.apply {
-                addAdresselinje(this, pdlAdresse.kontaktadresse.postboksadresse.postbokseier ?: "")
-                addAdresselinje(this, pdlAdresse.kontaktadresse.postboksadresse.postboks ?: "")
-                postnr = pdlAdresse.kontaktadresse.postboksadresse.postnummer ?: ""
-                poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
-            }
-            pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> pesysPostAdresse.apply {
-                adresselinje1 = listOfNotNull(adresselinje1, pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje1).joinToString(" ")
-                adresselinje2 = pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje2
-                adresselinje3 = pdlAdresse.kontaktadresse.postadresseIFrittFormat.adresselinje3
-                postnr = pdlAdresse.kontaktadresse.postadresseIFrittFormat.postnummer
-                poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
-            }
-            else -> null
+    }
+
+    private fun mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(postadresseIFrittFormat: PostadresseIFrittFormat, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
+        return TilleggsAdresseDto().apply {
+            adresselinje1 = listOfNotNull(adresselinje1, postadresseIFrittFormat.adresselinje1).joinToString(" ")
+            adresselinje2 = postadresseIFrittFormat.adresselinje2
+            adresselinje3 = postadresseIFrittFormat.adresselinje3
+            postnr = postadresseIFrittFormat.postnummer
+            poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            datoFom = gyldigFraOgMed
+            landkode = "NOR"
         }
     }
 
