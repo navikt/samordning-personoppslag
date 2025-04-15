@@ -109,7 +109,7 @@ class PersonSamordningService(
         val mellomnavn = pdlSamPerson.navn?.mellomnavn  // if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
         val etternavn = pdlSamPerson.navn?.etternavn    // if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
 
-        val sivilstand = pdlSamPerson.sivilstand?.type?.name
+        val sivilstand = mapSivilstand(pdlSamPerson.sivilstand?.type?.name)
 
         val dodsdato = pdlSamPerson.doedsfall?.doedsdato?.let { java.sql.Date.valueOf(it) as Date }
 
@@ -212,6 +212,21 @@ class PersonSamordningService(
             logger.debug("Bygget ferdig utenlandsAdresse i fritt format")
         }
     }
+
+    private fun mapSivilstand(sivilstand: String?) =
+        when (sivilstand) {
+            "ENKE_ELLER_ENKEMANN" -> "ENKE"
+            "GIFT" -> "GIFT"
+            "GJENLEVENDE_PARTNER" -> "GJPA"
+            "REGISTRERT_PARTNER" -> "REPA"
+            "SEPARERT" -> "SEPR"
+            "SEPARERT_PARTNER" -> "SEPA"
+            "SKILT" -> "SKIL"
+            "SKILT_PARTNER" -> "SKPA"
+            "UGIFT" -> "UGIF"
+            "UOPPGITT" -> "NULL"
+            else -> null
+        }
 
     internal fun finnUtbetalingsadresse(utenlandsAdresse: AdresseSamordning?, tilleggsAdresse: AdresseSamordning?, postAdresse: AdresseSamordning?, bostedsAdresse: BostedsAdresseSamordning?): AdresseSamordning {
         return if (utenlandsAdresse != null && utenlandsAdresse.isUAdresse()) {
