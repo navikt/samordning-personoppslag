@@ -250,14 +250,16 @@ class PersonService(
 
     private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse, opplysningstype: String,): BostedsAdresseDto {
 
-        val gyldigFraOgMedMap = lagGyldigFraOgMedMap(pdlAdresse)
-        val gjeldendeAdresseType = gyldigFraOgMedMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
-        val gyldigFraOgMed = gjeldendeAdresseType?.let { gyldigFraOgMedMap.get(it)?.toLocalDate() }
+        val sisteRegistrertDatoMap = lagSisteRegistrertDatoMap(pdlAdresse)
+        val gjeldendeAdresseType = sisteRegistrertDatoMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
+        val gyldigFraOgMed = pdlAdresse.bostedsadresse?.gyldigFraOgMed?.toLocalDate()
+
+        logger.info("Siste registrerte adresse er en $gjeldendeAdresseType")
 
         return when (gjeldendeAdresseType) {
             "KONTAKTADRESSE" -> {
                 when {
-                    pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.postboksadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postboksadresse, pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postadresseIFrittFormat, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.utenlandskAdresse != null  -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
@@ -295,11 +297,11 @@ class PersonService(
         }
     }
 
-    private fun lagGyldigFraOgMedMap(pdlAdresse: PdlAdresse): Map<String, LocalDateTime?> {
+    private fun lagSisteRegistrertDatoMap(pdlAdresse: PdlAdresse): Map<String, LocalDateTime?> {
         return mapOf(
-            "KONTAKTADRESSE" to pdlAdresse.kontaktadresse?.gyldigFraOgMed,
-            "OPPHOLDSADRESSE" to pdlAdresse.oppholdsadresse?.gyldigFraOgMed,
-            "BOSTEDSADRESSE" to pdlAdresse.bostedsadresse?.gyldigFraOgMed,
+            "KONTAKTADRESSE" to pdlAdresse.kontaktadresse?.metadata?.sisteRegistrertDato(),
+            "OPPHOLDSADRESSE" to pdlAdresse.oppholdsadresse?.metadata?.sisteRegistrertDato(),
+            "BOSTEDSADRESSE" to pdlAdresse.bostedsadresse?.metadata?.sisteRegistrertDato(),
         )
     }
 
