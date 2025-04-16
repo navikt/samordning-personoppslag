@@ -299,8 +299,8 @@ class PersonService(
     private fun lagSisteRegistrertDatoMap(pdlAdresse: PdlAdresse): Map<String, LocalDateTime?> {
         return mapOf(
             "BOSTEDSADRESSE" to pdlAdresse.bostedsadresse?.metadata?.sisteRegistrertDato(),
-            "KONTAKTADRESSE" to pdlAdresse.kontaktadresse?.metadata?.sisteRegistrertDato(),
             "OPPHOLDSADRESSE" to pdlAdresse.oppholdsadresse?.metadata?.sisteRegistrertDato(),
+            "KONTAKTADRESSE" to pdlAdresse.kontaktadresse?.metadata?.sisteRegistrertDato(),
         )
     }
 
