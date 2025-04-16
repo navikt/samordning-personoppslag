@@ -319,7 +319,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.utenlandsAdresse.poststed") { value("") }
                 jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
                 jsonPath("$.diskresjonskode") { value(null) }
 
             }
@@ -355,7 +355,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.utenlandsAdresse.poststed") { value("London") }
                 jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
                 jsonPath("$.diskresjonskode") { value(null) }
 
             }
@@ -388,7 +388,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                 jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
                 jsonPath("$.diskresjonskode") { value(null) }
 
             }
@@ -420,7 +420,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                 jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
                 jsonPath("$.diskresjonskode") { value(null) }
 
             }
@@ -454,7 +454,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                 jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
                 jsonPath("$.diskresjonskode") { value("SPFO") }
             }
 
@@ -487,7 +487,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
                 jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO")}
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
 
             }
 
@@ -516,7 +516,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.etternavn") { value("") }
                 jsonPath("$.utbetalingsAdresse") { value(null) }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
             }
 
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
@@ -546,7 +546,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
                 jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
             }
 
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
@@ -579,7 +579,7 @@ internal class ControllerMVCTest {
                 jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
 
                 jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKILT") }
+                jsonPath("$.sivilstand") { value("SKIL") }
             }
 
         verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
