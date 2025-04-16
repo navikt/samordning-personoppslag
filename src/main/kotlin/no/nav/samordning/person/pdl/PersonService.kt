@@ -309,16 +309,16 @@ class PersonService(
         return BostedsAdresseDto().also {
             if (pdlBostedsadresse.coAdressenavn != null) {
                 it.boadresse1 = pdlBostedsadresse.coAdressenavn
-                it.boadresse2 = concatVegadresse(pdlBostedsadresse.vegadresse)
+                it.boadresse2 = pdlBostedsadresse.vegadresse?.let { concatVegadresse(it) }
             } else {
-                it.boadresse1 = concatVegadresse(pdlBostedsadresse.vegadresse)
-                it.boadresse2 = ""
+                it.boadresse1 = pdlBostedsadresse.vegadresse?.let { concatVegadresse(it) }
+                it.boadresse2 = null
             }
             it.bolignr = pdlBostedsadresse.vegadresse!!.bruksenhetsnummer
-            it.postnr = pdlBostedsadresse.vegadresse.postnummer ?: ""
+            it.postnr = pdlBostedsadresse.vegadresse.postnummer
             it.poststed =
-                pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
-            it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer ?: ""
+                pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
+            it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer
             it.datoFom = gyldigFraOgMed
         }
     }
@@ -327,21 +327,21 @@ class PersonService(
         return TilleggsAdresseDto().apply {
             if (kontaktadresse?.coAdressenavn != null) {
                 adresselinje1 = kontaktadresse.coAdressenavn
-                adresselinje2 = concatVegadresse(kontaktadresse.vegadresse)
-                adresselinje3 = ""
+                adresselinje2 = kontaktadresse.vegadresse?.let { concatVegadresse(it) }
+                adresselinje3 = null
 
                 /*   } else if (pdlAdresse.navn? != null) {
                 adresselinje1 = pdlAdresse.navn
                 adresselinje2 = concatVegadresse(bostedsadresse)
-                adresselinje3 = ""*/ //TODO
+                adresselinje3 = null*/ //TODO
             } else {
-                adresselinje1 = kontaktadresse?.let { concatVegadresse(it.vegadresse) }
-                adresselinje2 = ""
-                adresselinje3 = ""
+                adresselinje1 = kontaktadresse?.vegadresse?.let { concatVegadresse(it) }
+                adresselinje2 = null
+                adresselinje3 = null
             }
 
-            postnr = kontaktadresse?.vegadresse?.postnummer ?: ""
-            poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            postnr = kontaktadresse?.vegadresse?.postnummer
+            poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
             landkode = "NOR"
             datoFom = gyldigFraOgMed
         }
@@ -351,21 +351,21 @@ class PersonService(
         return TilleggsAdresseDto().apply {
             if (bostedsadresse?.coAdressenavn != null) {
                 adresselinje1 = bostedsadresse.coAdressenavn
-                adresselinje2 = concatVegadresse(bostedsadresse.vegadresse)
-                adresselinje3 = ""
+                adresselinje2 = bostedsadresse.vegadresse?.let { concatVegadresse(it) }
+                adresselinje3 = null
 
                 /*   } else if (pdlAdresse.navn? != null) {
                 adresselinje1 = pdlAdresse.navn
                 adresselinje2 = concatVegadresse(bostedsadresse)
-                adresselinje3 = ""*/ //TODO
+                adresselinje3 = null*/ //TODO
             } else {
-                adresselinje1 = bostedsadresse?.let { concatVegadresse(it.vegadresse) }
-                adresselinje2 = ""
-                adresselinje3 = ""
+                adresselinje1 = bostedsadresse?.vegadresse?.let { concatVegadresse(it) }
+                adresselinje2 = null
+                adresselinje3 = null
             }
 
-            postnr = bostedsadresse?.vegadresse?.postnummer ?: ""
-            poststed = bostedsadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            postnr = bostedsadresse?.vegadresse?.postnummer
+            poststed = bostedsadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
             landkode = "NOR"
             datoFom = gyldigFraOgMed
         }
@@ -396,11 +396,11 @@ class PersonService(
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
-            adresselinje1 = pdlUtenlandskAdresse.adresselinje1 ?: ""
-            adresselinje2 = pdlUtenlandskAdresse.adresselinje2 ?: ""
-            adresselinje3 = pdlUtenlandskAdresse.adresselinje3 ?: ""
-            postnr = pdlUtenlandskAdresse.postkode ?: ""
-            poststed = pdlUtenlandskAdresse.byEllerStedsnavn ?: ""
+            adresselinje1 = pdlUtenlandskAdresse.adresselinje1
+            adresselinje2 = pdlUtenlandskAdresse.adresselinje2
+            adresselinje3 = pdlUtenlandskAdresse.adresselinje3
+            postnr = pdlUtenlandskAdresse.postkode
+            poststed = pdlUtenlandskAdresse.byEllerStedsnavn
             landkode = pdlUtenlandskAdresse.landkode
             datoFom = gyldigFraOgMed
         }
@@ -408,11 +408,11 @@ class PersonService(
 
     private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
-            addAdresselinje(this, coAdressenavn ?: "", isCoAdresse = true)
-            addAdresselinje(this, postboksadresse.postbokseier ?: "")
+            addAdresselinje(this, coAdressenavn, isCoAdresse = true)
+            addAdresselinje(this, postboksadresse.postbokseier)
             addAdresselinje(this, postboksadresse.postboks)
-            postnr = postboksadresse.postnummer ?: ""
-            poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            postnr = postboksadresse.postnummer
+            poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) }
             datoFom = gyldigFraOgMed
             landkode = "NOR"
         }
@@ -424,7 +424,7 @@ class PersonService(
             adresselinje2 = postadresseIFrittFormat.adresselinje2
             adresselinje3 = postadresseIFrittFormat.adresselinje3
             postnr = postadresseIFrittFormat.postnummer
-            poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) } ?: ""
+            poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) }
             datoFom = gyldigFraOgMed
             landkode = "NOR"
         }
@@ -556,11 +556,11 @@ class PersonService(
         return coAdressenavn
     }
 
-    private fun concatVegadresse(vegadresse: Vegadresse?): String =
+    private fun concatVegadresse(vegadresse: Vegadresse): String =
         listOfNotNull(
-            vegadresse?.adressenavn,
-            vegadresse?.husnummer,
-            vegadresse?.husbokstav
+            vegadresse.adressenavn,
+            vegadresse.husnummer,
+            vegadresse.husbokstav
         ).joinToString(" ")
 
     private fun standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(utenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?): List<String> {
@@ -588,7 +588,7 @@ class PersonService(
         return adresselinje.trim()
     }
 
-    fun addAdresselinje(it: TilleggsAdresseDto, adresse: String, isCoAdresse: Boolean = false) {
+    fun addAdresselinje(it: TilleggsAdresseDto, adresse: String?, isCoAdresse: Boolean = false) {
         if (it.adresselinje1.isNullOrEmpty()) {
             it.adresselinje1 = adresse
         } else if (isCoAdresse) {
