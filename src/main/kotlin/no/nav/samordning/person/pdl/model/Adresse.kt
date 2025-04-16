@@ -49,7 +49,7 @@ data class Kontaktadresse(
 )
 
 data class Postboksadresse(
-        val  postbokseier: String? = null ,
+        val postbokseier: String? = null,
         val postboks: String,
         val postnummer: String? = null
 )

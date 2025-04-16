@@ -61,7 +61,7 @@ class PersonService(
         }
     }
 
-    fun <T : Ident> hentPdlAdresse(ident: T, opplysningstype: String): BostedsAdresseDto? {
+    fun <T : Ident> hentPdlAdresse(ident: T): BostedsAdresseDto? {
         return hentAdresseMetric.measure {
 
             logger.debug("Henter adresse: ${ident.id.scrable()} fra pdl")
@@ -71,7 +71,7 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilAdresse(it, hentGeografiskTilknytning(ident), opplysningstype)
+                konverterTilAdresse(it, hentGeografiskTilknytning(ident))
             }
         }
     }
@@ -213,7 +213,6 @@ class PersonService(
     internal fun konverterTilAdresse(
         pdlPerson: HentAdresse,
         geografiskTilknytning: GeografiskTilknytning?,
-        opplysningstype: String,
     ): BostedsAdresseDto {
 
         val graderingListe = pdlPerson.adressebeskyttelse
@@ -244,11 +243,11 @@ class PersonService(
             sivilstand,
             kontaktadresse,
         ).let {
-            mapPdlAdresseToBostedsAdresseDto(it, opplysningstype)
+            mapPdlAdresseToBostedsAdresseDto(it)
         }
     }
 
-    private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse, opplysningstype: String,): BostedsAdresseDto {
+    private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse): BostedsAdresseDto {
 
         val sisteRegistrertDatoMap = lagSisteRegistrertDatoMap(pdlAdresse)
         val gjeldendeAdresseType = sisteRegistrertDatoMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
@@ -272,8 +271,8 @@ class PersonService(
             }
             "OPPHOLDSADRESSE" -> {
                 when {
-                    pdlAdresse.oppholdsadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlOppholdsadresse(pdlAdresse.oppholdsadresse, gyldigFraOgMed) }
-                    pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
+                    pdlAdresse.oppholdsadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlOppholdsadresse(pdlAdresse.oppholdsadresse) }
+                    pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, pdlAdresse.oppholdsadresse.gyldigFraOgMed?.toLocalDate()) }
                     else -> {
                         logger.warn("Fant ingen oppholdsadresse å mappe")
                         BostedsAdresseDto()
@@ -282,7 +281,7 @@ class PersonService(
             }
             "BOSTEDSADRESSE" -> {
                 when {
-                    pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse, gyldigFraOgMed)
+                    pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse)
                     pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse.coAdressenavn, gyldigFraOgMed) }
                     else -> {
                         logger.warn("Fant ingen bostedsadresse å mappe")
@@ -305,7 +304,7 @@ class PersonService(
         )
     }
 
-    private fun mapPdlBostedsadresse(pdlBostedsadresse: Bostedsadresse, gyldigFraOgMed: LocalDate?): BostedsAdresseDto {
+    private fun mapPdlBostedsadresse(pdlBostedsadresse: Bostedsadresse): BostedsAdresseDto {
         return BostedsAdresseDto().also {
             if (pdlBostedsadresse.coAdressenavn != null) {
                 it.boadresse1 = pdlBostedsadresse.coAdressenavn
@@ -319,7 +318,7 @@ class PersonService(
             it.poststed =
                 pdlBostedsadresse.vegadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
             it.kommunenr = pdlBostedsadresse.vegadresse.kommunenummer
-            it.datoFom = gyldigFraOgMed
+            it.datoFom = pdlBostedsadresse.gyldigFraOgMed?.toLocalDate()
         }
     }
 
@@ -347,11 +346,11 @@ class PersonService(
         }
     }
 
-    private fun mapPdlOppholdsadresse(bostedsadresse: Bostedsadresse?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
+    private fun mapPdlOppholdsadresse(oppholdsadresse: Oppholdsadresse?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
-            if (bostedsadresse?.coAdressenavn != null) {
-                adresselinje1 = bostedsadresse.coAdressenavn
-                adresselinje2 = bostedsadresse.vegadresse?.let { concatVegadresse(it) }
+            if (oppholdsadresse?.coAdressenavn != null) {
+                adresselinje1 = oppholdsadresse.coAdressenavn
+                adresselinje2 = oppholdsadresse.vegadresse?.let { concatVegadresse(it) }
                 adresselinje3 = null
 
                 /*   } else if (pdlAdresse.navn? != null) {
@@ -359,15 +358,15 @@ class PersonService(
                 adresselinje2 = concatVegadresse(bostedsadresse)
                 adresselinje3 = null*/ //TODO
             } else {
-                adresselinje1 = bostedsadresse?.vegadresse?.let { concatVegadresse(it) }
+                adresselinje1 = oppholdsadresse?.vegadresse?.let { concatVegadresse(it) }
                 adresselinje2 = null
                 adresselinje3 = null
             }
 
-            postnr = bostedsadresse?.vegadresse?.postnummer
-            poststed = bostedsadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
+            postnr = oppholdsadresse?.vegadresse?.postnummer
+            poststed = oppholdsadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
             landkode = "NOR"
-            datoFom = gyldigFraOgMed
+            datoFom = oppholdsadresse?.gyldigFraOgMed?.toLocalDate()
         }
     }
 
