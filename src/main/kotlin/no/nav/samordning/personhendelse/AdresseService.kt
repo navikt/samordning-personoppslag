@@ -26,6 +26,7 @@ class AdresseService(
                         hendelseId = personhendelse.hendelseId,
                         fnr = ident,
                         adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = ident),
+                        opplysningstype = personhendelse.opplysningstype,
                     )
                 )
             }
@@ -39,8 +40,9 @@ class AdresseService(
         hendelseId: String,
         fnr: String,
         adressebeskyttelse: List<AdressebeskyttelseGradering>,
+        opplysningstype: String,
     ): OppdaterPersonaliaRequest {
-        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr))
+        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
 
 
         return OppdaterPersonaliaRequest(

@@ -104,7 +104,7 @@ class Controller(
     @PostMapping("/pdladresse")
     @ProtectedWithClaims("entraid")
     fun henPdlPersonAdresse(@RequestBody request: PersonRequest) : ResponseEntity<BostedsAdresseDto> {
-        return ResponseEntity.ok().body(personService.hentPdlAdresse(NorskIdent(request.fnr)));
+        return ResponseEntity.ok().body(personService.hentPdlAdresse(NorskIdent(request.fnr), "KONTAKTADRESSE_V1"));
     }
 
 

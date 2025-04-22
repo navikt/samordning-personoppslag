@@ -61,7 +61,7 @@ class PersonService(
         }
     }
 
-    fun <T : Ident> hentPdlAdresse(ident: T): BostedsAdresseDto? {
+    fun <T : Ident> hentPdlAdresse(ident: T, opplysningstype: String): BostedsAdresseDto? {
         return hentAdresseMetric.measure {
 
             logger.debug("Henter adresse: ${ident.id.scrable()} fra pdl")
@@ -71,7 +71,7 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilAdresse(it, hentGeografiskTilknytning(ident))
+                konverterTilAdresse(it, hentGeografiskTilknytning(ident), opplysningstype)
             }
         }
     }
@@ -213,6 +213,7 @@ class PersonService(
     internal fun konverterTilAdresse(
         pdlPerson: HentAdresse,
         geografiskTilknytning: GeografiskTilknytning?,
+        opplysningstype: String,
     ): BostedsAdresseDto {
 
         val graderingListe = pdlPerson.adressebeskyttelse
@@ -243,16 +244,16 @@ class PersonService(
             sivilstand,
             kontaktadresse,
         ).let {
-            mapPdlAdresseToBostedsAdresseDto(it)
+            mapPdlAdresseToBostedsAdresseDto(it, opplysningstype)
         }
     }
 
-    private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse): BostedsAdresseDto {
+    private fun mapPdlAdresseToBostedsAdresseDto(pdlAdresse: PdlAdresse, opplysningstype: String): BostedsAdresseDto {
 
         val sisteRegistrertDatoMap = lagSisteRegistrertDatoMap(pdlAdresse)
         val gjeldendeAdresseType = sisteRegistrertDatoMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
 
-        logger.info("Siste registrerte adresse er en $gjeldendeAdresseType")
+        logger.info("Siste registrerte adresse er en $gjeldendeAdresseType, mens opplysningstypen er $opplysningstype")
 
         return when (gjeldendeAdresseType) {
             "KONTAKTADRESSE" -> {
