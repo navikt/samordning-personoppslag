@@ -261,8 +261,8 @@ class PersonService(
                     pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse) }
                     pdlAdresse.kontaktadresse?.postboksadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postboksadresse, pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postadresseIFrittFormat, gyldigFraOgMed) }
-                    pdlAdresse.kontaktadresse?.utenlandskAdresse != null  -> BostedsAdresseDto().apply { postAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
-                    pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null  -> BostedsAdresseDto().apply { postAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresseIFrittFormat, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.utenlandskAdresse != null  -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.utenlandskAdresseIFrittFormat != null  -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresseIFrittFormat, gyldigFraOgMed) }
                     else -> {
                         logger.warn("Fant ingen kontaktadresse å mappe")
                         BostedsAdresseDto()
