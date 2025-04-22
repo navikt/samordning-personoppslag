@@ -255,8 +255,8 @@ class PersonService(
 
         logger.info("Siste registrerte adresse er en $gjeldendeAdresseType, mens opplysningstypen er $opplysningstype")
 
-        return when (gjeldendeAdresseType) {
-            "KONTAKTADRESSE" -> {
+        return when (opplysningstype) {
+            "KONTAKTADRESSE_V1" -> {
                 val gyldigFraOgMed = pdlAdresse.kontaktadresse?.gyldigFraOgMed?.toLocalDate()
                 when {
                     pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse) }
@@ -270,7 +270,7 @@ class PersonService(
                     }
                 }
             }
-            "OPPHOLDSADRESSE" -> {
+            "OPPHOLDSADRESSE_V1" -> {
                 when {
                     pdlAdresse.oppholdsadresse?.vegadresse != null -> BostedsAdresseDto().apply { tilleggsAdresse = mapPdlOppholdsadresse(pdlAdresse.oppholdsadresse) }
                     pdlAdresse.oppholdsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.oppholdsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, pdlAdresse.oppholdsadresse.gyldigFraOgMed?.toLocalDate()) }
@@ -280,7 +280,7 @@ class PersonService(
                     }
                 }
             }
-            "BOSTEDSADRESSE" -> {
+            "BOSTEDSADRESSE_V1" -> {
                 when {
                     pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse)
                     pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse.coAdressenavn, pdlAdresse.bostedsadresse.gyldigFraOgMed?.toLocalDate()) }
