@@ -251,14 +251,14 @@ class PersonService(
 
         val sisteRegistrertDatoMap = lagSisteRegistrertDatoMap(pdlAdresse)
         val gjeldendeAdresseType = sisteRegistrertDatoMap.filterValues { it != null }.maxByOrNull { it.value!! }?.key
-        val gyldigFraOgMed = pdlAdresse.bostedsadresse?.gyldigFraOgMed?.toLocalDate()
 
         logger.info("Siste registrerte adresse er en $gjeldendeAdresseType")
 
         return when (gjeldendeAdresseType) {
             "KONTAKTADRESSE" -> {
+                val gyldigFraOgMed = pdlAdresse.kontaktadresse?.gyldigFraOgMed?.toLocalDate()
                 when {
-                    pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse, gyldigFraOgMed) }
+                    pdlAdresse.kontaktadresse?.vegadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlKontantadresse(pdlAdresse.kontaktadresse) }
                     pdlAdresse.kontaktadresse?.postboksadresse != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postboksadresse, pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.postadresseIFrittFormat != null -> BostedsAdresseDto().apply { postAdresse = mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(pdlAdresse.kontaktadresse.postadresseIFrittFormat, gyldigFraOgMed) }
                     pdlAdresse.kontaktadresse?.utenlandskAdresse != null  -> BostedsAdresseDto().apply { postAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.kontaktadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse?.coAdressenavn, gyldigFraOgMed) }
@@ -282,7 +282,7 @@ class PersonService(
             "BOSTEDSADRESSE" -> {
                 when {
                     pdlAdresse.bostedsadresse?.vegadresse != null -> mapPdlBostedsadresse(pdlAdresse.bostedsadresse)
-                    pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse.coAdressenavn, gyldigFraOgMed) }
+                    pdlAdresse.bostedsadresse?.utenlandskAdresse != null -> BostedsAdresseDto().apply { utenlandsAdresse = mapPdlAdresseToTilleggsAdresseDtoUtland(pdlAdresse.bostedsadresse.utenlandskAdresse,  pdlAdresse.bostedsadresse.coAdressenavn, pdlAdresse.bostedsadresse.gyldigFraOgMed?.toLocalDate()) }
                     else -> {
                         logger.warn("Fant ingen bostedsadresse å mappe")
                         BostedsAdresseDto()
@@ -322,7 +322,7 @@ class PersonService(
         }
     }
 
-    private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse?, gyldigFraOgMed: LocalDate?): TilleggsAdresseDto {
+    private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse?): TilleggsAdresseDto {
         return TilleggsAdresseDto().apply {
             if (kontaktadresse?.coAdressenavn != null) {
                 adresselinje1 = kontaktadresse.coAdressenavn
@@ -342,7 +342,7 @@ class PersonService(
             postnr = kontaktadresse?.vegadresse?.postnummer
             poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
             landkode = "NOR"
-            datoFom = gyldigFraOgMed
+            datoFom = kontaktadresse?.gyldigFraOgMed?.toLocalDate()
         }
     }
 
