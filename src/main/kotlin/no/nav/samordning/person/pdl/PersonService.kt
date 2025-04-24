@@ -112,9 +112,6 @@ class PersonService(
 
         val sivilstand = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk }
 
-        val foedsel = pdlPerson.foedsel
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -137,7 +134,6 @@ class PersonService(
         return PdlSamPerson(
             navn,
             kjoenn,
-            foedsel,
             graderingListe,
             doedsfall,
             statsborgerskap,
@@ -165,9 +161,6 @@ class PersonService(
 
         val statsborgerskap = pdlPerson.statsborgerskap
             .distinctBy { it.land }
-
-        val foedsel = pdlPerson.foedsel
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -198,7 +191,6 @@ class PersonService(
             bostedsadresse,
             oppholdsadresse,
             statsborgerskap,
-            foedsel,
             geografiskTilknytning,
             kjoenn,
             doedsfall,

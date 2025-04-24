@@ -71,7 +71,6 @@ class DoedsfallServiceTest {
                 "doedsfall": {
                     "doedsdato": "2025-02-11"
                 }, 
-                "foedsel": null, 
                 "forelderBarnRelasjon": null,
                 "sivilstand": null,
                 "vergemaalEllerFremtidsfullmakt": null,

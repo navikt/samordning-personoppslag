@@ -86,7 +86,6 @@ class SivilstandServiceTest {
                 "tidligereHendelseId": null, 
                 "adressebeskyttelse": null, 
                 "doedsfall": null, 
-                "foedsel": null, 
                 "forelderBarnRelasjon": null,
                 "sivilstand": {"type": "GIFT", "gyldigFraOgMed": ${ if (gyldigFraOgMed == null) null else "\"$gyldigFraOgMed\""}, "relatertVedSivilstand": "02859797027", "bekreftelsesdato": null},
                 "vergemaalEllerFremtidsfullmakt": null, 

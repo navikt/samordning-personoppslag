@@ -96,10 +96,6 @@ internal class PdlPersonTest {
         assertEquals("BLÅ", navn?.fornavn)
         assertEquals("STAUDE", navn?.etternavn)
 
-        val foedsel = person?.foedsel
-        assertEquals(LocalDate.of(1985, 1, 1), foedsel?.foedselsdato)
-        assertNotNull(foedsel?.folkeregistermetadata)
-
         val kjoenn = person?.kjoenn
         assertEquals(KjoennType.KVINNE, kjoenn?.kjoenn)
         assertNotNull(kjoenn?.folkeregistermetadata)
@@ -252,7 +248,7 @@ internal class PdlPersonTest {
 
 
     @Test
-    fun `hentPerson kjoenn og foedsel and konvert`() {
+    fun `hentPerson kjoenn and konvert`() {
         val json = javaClass.getResource("/hentPerson2Kjoenn.json").readText()
         val person = hentPersonFraFil(json)
 
@@ -271,10 +267,6 @@ internal class PdlPersonTest {
 
         assertEquals("HEST", navn?.etternavn)
         assertEquals("ÅPENHJERTIG", navn?.fornavn)
-
-        val foedsel = person?.foedsel
-
-        assertEquals(LocalDate.of(1974, 3 , 17), foedsel?.foedselsdato)
 
         val kjoenn = person?.kjoenn
 
@@ -301,10 +293,6 @@ internal class PdlPersonTest {
 
         assertEquals("HEST", navn?.etternavn)
         assertEquals("ÅPENHJERTIG", navn?.fornavn)
-
-        val foedsel = person?.foedsel
-
-        assertEquals(LocalDate.of(1974, 3 , 17), foedsel?.foedselsdato)
 
         val kjoenn = person?.kjoenn
 
