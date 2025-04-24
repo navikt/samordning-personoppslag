@@ -23,6 +23,10 @@ class FolkeregisterService(
             val gammeltFnr =
                 personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull { Fodselsnummer.validFnr(it) }
 
+            if (personhendelse.personidenter.filterNot { it == nyttFnr }.filter { Fodselsnummer.validFnr(it) }.size > 1) {
+                logger.warn("Det finnes flere gamle fnr ved opprettFolkeregistermelding. Bruker kun første gamle fnr")
+            }
+
             if (gammeltFnr == null) {
                 logger.info("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
                 return

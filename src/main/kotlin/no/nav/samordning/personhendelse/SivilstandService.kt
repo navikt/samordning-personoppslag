@@ -4,6 +4,7 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
@@ -21,9 +22,23 @@ class SivilstandService(
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
+        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
+
+        val gyldigident = if (identer.size > 1) {
+            try {
+                logger.info("identer fra pdl inneholder flere enn 1")
+                personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+            } catch (ex: Exception) {
+                secureLogger.warn("Feil ved henting av ident fra PDL for hendelse: ${identer.first()}")
+                identer.first()
+            }
+        } else {
+            identer.first()
+        }
+
         opprettSivilstandsMelding(
             hendelseId = personhendelse.hendelseId,
-            fnr = personhendelse.personidenter.first { Fodselsnummer.validFnr(it) },
+            fnr = gyldigident,
             endringstype = personhendelse.endringstype,
             gyldigFraOgMed = personhendelse.sivilstand?.gyldigFraOgMed,
             sivilstandsType = personhendelse.sivilstand?.type,
