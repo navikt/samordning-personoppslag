@@ -10,6 +10,7 @@ import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
+import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
 
@@ -26,28 +27,31 @@ class DoedsfallServiceTest {
     fun processHendelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
         justRun { samClient.oppdaterSamPersonalia(any()) }
 
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
 
 
-        verify(exactly = 2) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 2) { samClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any()) }
 
     }
 
     @Test
     fun processHendelseMedAdressebeskyttelse() {
 
+        val mockHendelse = mockPersonhendelse()
+
         every { personService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+        every { personService.hentIdent(any(), any()) } returns  NorskIdent("24828296260")
         justRun { samClient.oppdaterSamPersonalia(any()) }
 
-        val mockHendelse = mockPersonhendelse()
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
 
 
-        verify(exactly = 2) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 2) {
+        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) {
             samClient.oppdaterSamPersonalia(
                 match {
                     mockHendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.contains(it.newPerson.fnr) &&
