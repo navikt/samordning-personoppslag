@@ -90,19 +90,12 @@ internal class PdlPersonServiceTest {
             oppholdsadresse = emptyList(),
             navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
             statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
-            foedsel = listOf(Foedsel(LocalDate.of(2000,10,3), "NOR", "OSLO", 2020, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             forelderBarnRelasjon = listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
             kontaktadresse = emptyList(),
             kontaktinformasjonForDoedsbo = emptyList()
-        )
-
-        val pdlUidPerson = HentPersonUtenlandskIdent(
-            navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
-            kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-            utenlandskIdentifikasjonsnummer = listOf(UtenlandskIdentifikasjonsnummer("231234-12331", "SE",false, null, mockMeta()))
         )
 
         val identer = listOf(
@@ -131,10 +124,6 @@ internal class PdlPersonServiceTest {
         assertEquals("0234", vegadresse?.postnummer)
 
         assertEquals("NOR", resultat.statsborgerskap.lastOrNull()?.land)
-
-        assertEquals(LocalDate.of(2000,10,3), resultat.foedsel?.foedselsdato)
-        assertEquals("NOR", resultat.foedsel?.foedeland)
-        assertEquals("OSLO", resultat.foedsel?.foedested)
 
         assertEquals(KjoennType.KVINNE, resultat.kjoenn?.kjoenn)
 
@@ -331,7 +320,6 @@ internal class PdlPersonServiceTest {
             oppholdsadresse = emptyList(),
             navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
             statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
-            foedsel = listOf(Foedsel(LocalDate.of(2000,10,3), "NOR", "OSLO", 2020, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             forelderBarnRelasjon = listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
@@ -480,7 +468,6 @@ internal class PdlPersonServiceTest {
         oppholdsadresse: List<Oppholdsadresse> = emptyList(),
         navn: List<Navn> = emptyList(),
         statsborgerskap: List<Statsborgerskap> = emptyList(),
-        foedsel: List<Foedsel> = emptyList(),
         kjoenn: List<Kjoenn> = emptyList(),
         doedsfall: List<Doedsfall> = emptyList(),
         familierelasjoner: List<ForelderBarnRelasjon> = emptyList(),
@@ -488,7 +475,7 @@ internal class PdlPersonServiceTest {
         kontaktadresse: List<Kontaktadresse> = emptyList(),
         kontaktinformasjonForDoedsbo: List<KontaktinformasjonForDoedsbo> = emptyList()
     ) = HentPerson(
-            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn, statsborgerskap, foedsel, kjoenn, doedsfall, familierelasjoner, sivilstand, kontaktadresse, kontaktinformasjonForDoedsbo
+            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn, statsborgerskap, kjoenn, doedsfall, familierelasjoner, sivilstand, kontaktadresse, kontaktinformasjonForDoedsbo
     )
 
     private fun createHentPersonnavn(navn: List<Navn>) = HentPersonnavn(navn)

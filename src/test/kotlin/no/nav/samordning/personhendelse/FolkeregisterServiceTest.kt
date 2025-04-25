@@ -69,7 +69,6 @@ class FolkeregisterServiceTest {
                 "tidligereHendelseId": null, 
                 "adressebeskyttelse": null, 
                 "doedsfall": null, 
-                "foedsel": null, 
                 "forelderBarnRelasjon": null,
                 "sivilstand": {"type": "GIFT", "gyldigFraOgMed": "2018-11-27", "relatertVedSivilstand": "02859797027", "bekreftelsesdato": null},
                 "vergemaalEllerFremtidsfullmakt": null,

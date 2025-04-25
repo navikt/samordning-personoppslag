@@ -10,7 +10,6 @@ internal data class HentPerson(
         val oppholdsadresse: List<Oppholdsadresse>,
         val navn: List<Navn>,
         val statsborgerskap: List<Statsborgerskap>,
-        val foedsel: List<Foedsel>,
         val kjoenn: List<Kjoenn>,
         val doedsfall: List<Doedsfall>,
         val forelderBarnRelasjon: List<ForelderBarnRelasjon>,
@@ -47,7 +46,6 @@ data class UtenlandskIdentifikasjonsnummer(
 data class PdlSamPerson(
         val navn: Navn? = null,
         val kjoenn: Kjoenn? = null,
-        val foedsel: Foedsel? = null,
         val adressebeskyttelse: List<AdressebeskyttelseGradering>,
         val doedsfall: Doedsfall? = null,
         val statsborgerskap: List<Statsborgerskap>,
@@ -132,7 +130,6 @@ data class PdlPerson(
         val bostedsadresse: Bostedsadresse? = null,
         val oppholdsadresse: Oppholdsadresse? = null,
         val statsborgerskap: List<Statsborgerskap>,
-        val foedsel: Foedsel? = null,
         val geografiskTilknytning: GeografiskTilknytning? = null,
         val kjoenn: Kjoenn? = null,
         val doedsfall: Doedsfall? = null,
@@ -294,15 +291,6 @@ data class Statsborgerskap(
         val land: String,
         val gyldigFraOgMed: LocalDate? = null,
         val gyldigTilOgMed: LocalDate? = null,
-        val metadata: Metadata
-)
-
-data class Foedsel(
-        val foedselsdato: LocalDate? = null,
-        val foedeland: String? = null,
-        val foedested: String? = null,
-        val foedselsaar: Int? = null,
-        val folkeregistermetadata: Folkeregistermetadata? = null,
         val metadata: Metadata
 )
 
