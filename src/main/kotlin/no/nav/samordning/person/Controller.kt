@@ -30,10 +30,25 @@ class Controller(
     fun hentPerson(@RequestBody request: PersonRequest) : ResponseEntity<Person> {
         try {
             return ResponseEntity.ok().body(personSamordningService.hentPerson(request.fnr))
+        } catch (ise: IllegalStateException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
         } catch (pe: PersonoppslagException) {
+            if (pe.code == "not_found") throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
         }
+    }
 
+    @PostMapping("/personsam")
+    @ProtectedWithClaims("entraid")
+    fun hentPersonSam(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning> {
+        try {
+            return ResponseEntity.ok().body(personSamordningService.hentPersonSam(request.fnr))
+        } catch (ise: IllegalStateException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
+        } catch (pe: PersonoppslagException) {
+            if (pe.code == "not_found") throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
+        }
     }
 
     @PostMapping("/samperson")

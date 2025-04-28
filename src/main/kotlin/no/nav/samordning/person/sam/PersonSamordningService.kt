@@ -49,7 +49,6 @@ class PersonSamordningService(
 
     //for SAM
     fun hentPersonSamordning(fnr: String) : PersonSamordning? {
-
         try {
             val pdlSamPerson = personService.hentSamPerson(NorskIdent(fnr))
             logger.debug("Ferdig hentet pdlSamPerson -> konverter til PersonSamordning")
@@ -62,25 +61,41 @@ class PersonSamordningService(
                 logger.warn("Feil ved henting av person fra PDL", pe)
             }
         }
-
     }
+
 
     fun hentIdent(fnr: String): String? = personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(fnr))?.id
 
-    //for eksterne-samhandlere
     fun hentPerson(fnr: String): Person = konverterTilPerson(fnr, hentPersonSamordning(fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet"))
+
+    fun hentPersonSam(fnr: String): PersonSamordning = konverterTilPersonSamordning(fnr, hentPerson(fnr))
+
+    internal fun konverterTilPersonSamordning(fnr: String, person: Person): PersonSamordning {
+        return PersonSamordning(
+            fnr = fnr,
+            fornavn = person.fornavn,
+            etternavn = person.etternavn,
+            mellomnavn = person.mellomnavn,
+            sivilstand = person.sivilstand,
+            dodsdato = person.dodsdato,
+            utbetalingsAdresse = person.utbetalingsAdresse,
+        )
+    }
 
     internal fun konverterTilPerson(fnr: String, personSamordning: PersonSamordning): Person {
         return if (personSamordning.diskresjonskode != null) {
+
                 populatePersonWithDiskresjonskode(fnr, personSamordning).also {
                     logger.debug("person med diskresjonkode ferdig")
                 }
+
             } else {
                 val utbetaling = finnUtbetalingsadresse(
                     personSamordning.utenlandsAdresse,
                     personSamordning.tilleggsAdresse,
                     personSamordning.postAdresse,
                     personSamordning.bostedsAdresse)
+
             Person(
                 fnr,
                 fornavn = personSamordning.fornavn,
@@ -89,7 +104,7 @@ class PersonSamordningService(
                 sivilstand = personSamordning.sivilstand,
                 dodsdato = personSamordning.dodsdato,
                 utbetalingsAdresse = utbetaling
-            ).also { logger.debug("person ferdig") }
+            ).also { logger.info("person ferdig") }
 
         }
     }
@@ -110,9 +125,7 @@ class PersonSamordningService(
         val etternavn = pdlSamPerson.navn?.etternavn    // if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
 
         val sivilstand = mapSivilstand(pdlSamPerson.sivilstand?.type?.name)
-
         val dodsdato = pdlSamPerson.doedsfall?.doedsdato?.let { java.sql.Date.valueOf(it) as Date }
-
         val utenlandsAdresse = when (pdlSamPerson.landkodeMedAdressevalg().second)
         {
             AdressevalgUtland.KONTAKTADRESSE_UTLANDFRITT -> pdlSamPerson.kontaktadresse?.utenlandskAdresseIFrittFormat?.let { mapUtenlandskAdresseIFrittFormat(it, pdlSamPerson) }
@@ -229,22 +242,19 @@ class PersonSamordningService(
         }
 
     internal fun finnUtbetalingsadresse(utenlandsAdresse: AdresseSamordning?, tilleggsAdresse: AdresseSamordning?, postAdresse: AdresseSamordning?, bostedsAdresse: BostedsAdresseSamordning?): AdresseSamordning {
-        return if (utenlandsAdresse != null && utenlandsAdresse.isUAdresse()) {
-            logger.debug("populateUtbetalingsAdresse fra utenlandsAdresse")
-            populateUtbetalingsAdresse(utenlandsAdresse, null)
-        } else if (tilleggsAdresse != null && tilleggsAdresse.isTAdresse()) {
-            logger.debug("populateUtbetalingsAdresse fra tilleggsAdresse")
-            populateUtbetalingsAdresse(tilleggsAdresse, null)
-        } else if (postAdresse != null && postAdresse.isPAdresse()) {
-            logger.debug("populateUtbetalingsAdresse fra postAdresse")
-            populateUtbetalingsAdresse(postAdresse, null)
-        } else if (bostedsAdresse != null && bostedsAdresse.isAAdresse()) {
-            logger.debug("populateUtbetalingsAdresse fra bostedsAdresse")
-            populateUtbetalingsAdresse(null, bostedsAdresse)
-        } else {
-            logger.warn("feil! populateUtbetalingsAdresse fra n/a")
-            AdresseSamordning()
+        return when {
+            utenlandsAdresse != null && utenlandsAdresse.isUAdresse() -> populateUtbetalingsAdresse(utenlandsAdresse, null).also { logger.info("populateUtbetalingsAdresse fra utenlandsAdresse") }
+
+            tilleggsAdresse != null && tilleggsAdresse.isTAdresse() -> populateUtbetalingsAdresse(tilleggsAdresse, null).also { logger.info("populateUtbetalingsAdresse fra tilleggsAdresse") }
+
+            postAdresse != null && postAdresse.isPAdresse() -> populateUtbetalingsAdresse(postAdresse, null).also { logger.info("populateUtbetalingsAdresse fra postAdresse") }
+
+            bostedsAdresse != null && bostedsAdresse.isAAdresse() -> populateUtbetalingsAdresse(null, bostedsAdresse).also { logger.info("populateUtbetalingsAdresse fra bostedsAdresse") }
+
+            else -> AdresseSamordning().also { logger.warn("feil! populateUtbetalingsAdresse fra n/a") }
+
         }
+
     }
 
     internal fun populateUtbetalingsAdresse(adresse: AdresseSamordning?, bostedAdresse: BostedsAdresseSamordning?): AdresseSamordning {
