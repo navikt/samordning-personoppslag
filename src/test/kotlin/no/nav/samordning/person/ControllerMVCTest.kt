@@ -80,513 +80,602 @@ internal class ControllerMVCTest {
 
     @BeforeEach
     fun setup() {
-
         every { kodeverkRestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) }  returns ResponseEntity<String>(landkoder, HttpStatus.OK)
         every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
         every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
 
     }
 
-    @Test
-    fun `Test Kodeverk Landkoder med korrekt apiurl bruk av KodeverkAPIRespone`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+    @Nested
+    @DisplayName("Kodeverk")
+    inner class Kodeverktest {
 
-        val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
-        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
+         @Test
+        fun `Test Kodeverk Landkoder med korrekt apiurl bruk av KodeverkAPIRespone`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        mvc.get("/api/kodeverkapi/Landkoder") {
-            header("Authorization", "Bearer $token")
-            header(REQUEST_NAV_CALL, "NAV-CALL-ID-${UUID.randomUUID()}")
+            val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
+            every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
 
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andDo { print() }
-            .andExpect { status { isOk() }
+            mvc.get("/api/kodeverkapi/Landkoder") {
+                header("Authorization", "Bearer $token")
+                header(REQUEST_NAV_CALL, "NAV-CALL-ID-${UUID.randomUUID()}")
 
+                contentType = MediaType.APPLICATION_JSON
             }
+                .andDo { print() }
+                .andExpect { status { isOk() }
 
-    }
+                }
 
-    @Test
-    fun `Test Kodeverk Postnummer med korrekt apiurl bruk av KodeverkAPIRespone`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
-
-        every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
-
-        mvc.get("/api/kodeverkapi/Postnummer") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
         }
-            .andDo { print() }
-            .andExpect { status { isOk() }
 
+        @Test
+        fun `Test Kodeverk Postnummer med korrekt apiurl bruk av KodeverkAPIRespone`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
+
+            every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
+
+            mvc.get("/api/kodeverkapi/Postnummer") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
             }
+                .andDo { print() }
+                .andExpect { status { isOk() }
 
-    }
+                }
 
-    @Test
-    fun `PDLPerson correct call with valid fnr response return persondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-
-        val identerResponse = IdenterResponse(data = IdenterDataResponse(
-            hentIdenter = HentIdenter(
-                identer = listOf(
-                    IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
-                    IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
-                )
-            )
-        )
-        )
-
-        val geografiskTilknytningResponse = GeografiskTilknytningResponse(
-            data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
-        )
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
-        every { pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(any(), any(), GeografiskTilknytningResponse::class) } returns geografiskTilknytningResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-
-        mvc.post("/api/pdlperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
         }
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
 
-                jsonPath("$.navn.fornavn") { value("Fornavn") }
-                jsonPath("$.navn.etternavn") { value("Etternavn") }
-                jsonPath("$.identer.size()") { value(2) }
-                jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
+        @Test
+        fun `kodeverk call to hierarki returns land and landkoder`() {
+            assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NO").toString())
+            assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NOR").toString())
+
+            assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SE").toString())
+            assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SWE").toString())
+
+            assertEquals("NORGE", kodeverkService.finnLandkode("NOR")?.land)
+            assertEquals("SVERIGE", kodeverkService.finnLandkode("SWE")?.land)
+
+            assertEquals("Landkode(landkode2=FR, landkode3=FRA, land=FRANKRIKE)", kodeverkService.finnLandkode("FRA").toString())
+            assertEquals("Landkode(landkode2=DE, landkode3=DEU, land=TYSKLAND)", kodeverkService.finnLandkode("DEU").toString())
+            assertEquals("FRANKRIKE", kodeverkService.finnLandkode("FRA")?.land)
+
+        }
+
+        @Test
+        fun `kodeverk call returns postnummer`() {
+
+            (0..5).forEach {
+
+                println("Start time hentPostnr,land...")
+                val start = System.nanoTime()
+
+                val sted1 = kodeverkService.hentPoststedforPostnr("0950")
+                val sted2 = kodeverkService.hentPoststedforPostnr("4980")
+                val land = kodeverkService.finnLandkode("FRA")?.land
+                val land2 = kodeverkService.finnLandkode("SWE")
+
+                assertEquals("OSLO", sted1)
+                assertEquals("GJERSTAD", sted2)
+                assertEquals("FRANKRIKE", land)
+                assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", land2.toString())
+
+                val totaltime = System.nanoTime() - start
+                println("Total time used: $totaltime (in nanotime)")
             }
+            printCacheStats()
 
+            val postnrsted = kodeverkService.hentAllePostnrOgSted()
+            assertTrue(postnrsted.contains("0950") && postnrsted.contains("OSLO"))
 
-    }
-
-
-    @Test
-    fun `kodeverk call returns postnummer`() {
-
-        (0..5).forEach {
-
-            println("Start time hentPostnr,land...")
-            val start = System.nanoTime()
-
-            val sted1 = kodeverkService.hentPoststedforPostnr("0950")
-            val sted2 = kodeverkService.hentPoststedforPostnr("4980")
-            val land = kodeverkService.finnLandkode("FRA")?.land
-            val land2 = kodeverkService.finnLandkode("SWE")
-
-            assertEquals("OSLO", sted1)
-            assertEquals("GJERSTAD", sted2)
-            assertEquals("FRANKRIKE", land)
-            assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", land2.toString())
-
-            val totaltime = System.nanoTime() - start
-            println("Total time used: $totaltime (in nanotime)")
-        }
-        printCacheStats()
-
-        val postnrsted = kodeverkService.hentAllePostnrOgSted()
-        assertTrue(postnrsted.contains("0950") && postnrsted.contains("OSLO"))
-
-    }
-
-    @Test
-    fun `kodeverk call to hierarki returns land and landkoder`() {
-        assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NO").toString())
-        assertEquals("Landkode(landkode2=NO, landkode3=NOR, land=NORGE)", kodeverkService.finnLandkode("NOR").toString())
-
-        assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SE").toString())
-        assertEquals("Landkode(landkode2=SE, landkode3=SWE, land=SVERIGE)", kodeverkService.finnLandkode("SWE").toString())
-
-        assertEquals("NORGE", kodeverkService.finnLandkode("NOR")?.land)
-        assertEquals("SVERIGE", kodeverkService.finnLandkode("SWE")?.land)
-
-        assertEquals("Landkode(landkode2=FR, landkode3=FRA, land=FRANKRIKE)", kodeverkService.finnLandkode("FRA").toString())
-        assertEquals("Landkode(landkode2=DE, landkode3=DEU, land=TYSKLAND)", kodeverkService.finnLandkode("DEU").toString())
-        assertEquals("FRANKRIKE", kodeverkService.finnLandkode("FRA")?.land)
-
-    }
-
-    @Test
-    fun `kodeverk call postnr return poststed`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        mvc.get("/api/kodeverk/postnr/0950") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andDo { print() }
-            .andExpect { status { isOk() }
-            jsonPath("$") { value("OSLO") }
         }
 
-    }
+        @Test
+        fun `kodeverk call postnr return poststed`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-    @Test
-    fun `hentIdent call for sjekk fnr er ok`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val identerResponse = IdenterResponse(
-            data = IdenterDataResponse(
-                hentIdenter = HentIdenter(
-                identer = listOf(IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT))
-                )
-            )
-        )
-
-        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
-
-        val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
-
-        mvc.post("/api/hentIdent") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$") { value("25078521492") }
+            mvc.get("/api/kodeverk/postnr/0950") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
             }
+                .andDo { print() }
+                .andExpect { status { isOk() }
+                    jsonPath("$") { value("OSLO") }
+                }
+
+        }
+
+
     }
 
-    @Test
-    fun `hentIdent call for sjekk fnr ikke funnet`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+    @Nested
+    @DisplayName("PDLperson")
+    inner class PDLpersontest {
 
-        val identerResponse = IdenterResponse(
-            data = null,
-            errors = listOf(
-                ResponseError(
-                    message = "Fant ikke person",
-                    locations = null,
-                    path = listOf("hentIdenter"),
-                    extensions = ErrorExtension(code = "not_found",  null, null)
+        @Test
+        fun `PDLPerson correct call with valid fnr response return persondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+            val identerResponse = IdenterResponse(
+                data = IdenterDataResponse(
+                    hentIdenter = HentIdenter(
+                        identer = listOf(
+                            IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT),
+                            IdentInformasjon("100000000000053", IdentGruppe.AKTORID)
+                        )
                     )
+                )
             )
-        )
 
-        every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+            val geografiskTilknytningResponse = GeografiskTilknytningResponse(
+                data = GeografiskTilknytningResponseData(geografiskTilknytning = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null))
+            )
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+            every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+            every {
+                pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(
+                    any(),
+                    any(),
+                    GeografiskTilknytningResponse::class
+                )
+            } returns geografiskTilknytningResponse
 
-        val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
 
-        mvc.post("/api/hentIdent") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
-
-            .andDo { print() }
-            .andExpect { status { isNotFound() }
-
-            }
-    }
-
-    @Test
-    fun `samPerson correct call ugradert boested utland with valid fnr response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
-
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/samperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.kortnavn") { value("FME") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
-                jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
-                jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
-                jsonPath("$.utenlandsAdresse.postnr") { value("") }
-                jsonPath("$.utenlandsAdresse.poststed") { value("") }
-                jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-                jsonPath("$.diskresjonskode") { value(null) }
-
+            mvc.post("/api/pdlperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
 
-        printCacheStats()
-    }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
 
-    @Test
-    fun `samPerson call with utenlandskAdresse and utenlandskAdresseIFrittFormat then response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+                    jsonPath("$.navn.fornavn") { value("Fornavn") }
+                    jsonPath("$.navn.etternavn") { value("Etternavn") }
+                    jsonPath("$.identer.size()") { value(2) }
+                    jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
+                }
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true,  utlandIFrittFormat = true)))
 
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/samperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
         }
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
+        @Test
+        fun `hentIdent call for sjekk fnr er ok`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.kortnavn") { value("FME") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utenlandsAdresse.adresselinje1") { value("adresselinje1 fritt") }
-                jsonPath("$.utenlandsAdresse.adresselinje2") { value("adresselinje2 fritt") }
-                jsonPath("$.utenlandsAdresse.adresselinje3") { value("adresselinje3 fritt") }
-                jsonPath("$.utenlandsAdresse.postnr") { value(471000) }
-                jsonPath("$.utenlandsAdresse.poststed") { value("London") }
-                jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-                jsonPath("$.diskresjonskode") { value(null) }
+            val identerResponse = IdenterResponse(
+                data = IdenterDataResponse(
+                    hentIdenter = HentIdenter(
+                        identer = listOf(IdentInformasjon("25078521492", IdentGruppe.FOLKEREGISTERIDENT))
+                    )
+                )
+            )
 
+            every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+
+            val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
+
+            mvc.post("/api/hentIdent") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
 
-        printCacheStats()
-    }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
 
-    @Test
-    fun `samPerson call with vegadresse norge then response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/samperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
+                    jsonPath("$") { value("25078521492") }
+                }
         }
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
+        @Test
+        fun `hentIdent call for sjekk fnr ikke funnet`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.kortnavn") { value("FME") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
-                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
-                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-                jsonPath("$.diskresjonskode") { value(null) }
+            val identerResponse = IdenterResponse(
+                data = null,
+                errors = listOf(
+                    ResponseError(
+                        message = "Fant ikke person",
+                        locations = null,
+                        path = listOf("hentIdenter"),
+                        extensions = ErrorExtension(code = "not_found", null, null)
+                    )
+                )
+            )
 
+            every { pdlRestTemplate.postForObject<IdenterResponse>(any(), any(), IdenterResponse::class) } returns identerResponse
+
+            val requestBody = """ { "fnr": "25078521492" }  """.trimIndent()
+
+            mvc.post("/api/hentIdent") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isNotFound() }
+
+                }
+        }
 
     }
 
-    @Test
-    fun `samPerson call with vegadresse and postboks then response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+    @Nested
+    @DisplayName("SamPerson")
+    inner class SamPersontest {
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+        @Test
+        fun `samPerson correct call ugradert boested utland with valid fnr response return samPersondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+            val hentPersonResponse =
+                HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
 
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/samperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
+                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
+                    jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
+                    jsonPath("$.utenlandsAdresse.postnr") { value("") }
+                    jsonPath("$.utenlandsAdresse.poststed") { value("") }
+                    jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value(null) }
+
+                }
+
+            printCacheStats()
         }
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
+        @Test
+        fun `samPerson call with utenlandskAdresse and utenlandskAdresseIFrittFormat then response return samPersondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.kortnavn") { value("FME") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
-                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
-                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-                jsonPath("$.diskresjonskode") { value(null) }
+            val hentPersonResponse = HentPersonResponse(
+                data = HentPersonResponseData(
+                    hentPerson = mockHentAltPerson(
+                        utlandsAdresse = true,
+                        utlandIFrittFormat = true
+                    )
+                )
+            )
 
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("adresselinje1 fritt") }
+                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("adresselinje2 fritt") }
+                    jsonPath("$.utenlandsAdresse.adresselinje3") { value("adresselinje3 fritt") }
+                    jsonPath("$.utenlandsAdresse.postnr") { value(471000) }
+                    jsonPath("$.utenlandsAdresse.poststed") { value("London") }
+                    jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value(null) }
+
+                }
+
+            printCacheStats()
+        }
+
+        @Test
+        fun `samPerson call with vegadresse norge then response return samPersondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value(null) }
+
+                }
+
+        }
+
+        @Test
+        fun `samPerson call with vegadresse and postboks then response return samPersondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value(null) }
+
+                }
+
+        }
+
+
+        @Test
+        fun `samperson call gradert vegadresse norge then response return samPersondata`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("SPFO") }
+                }
+
+        }
 
     }
 
+    @Nested
+    @DisplayName("Person (sam person med utbetaling)")
+    inner class Persontest {
 
-    @Test
-    fun `samperson call gradert vegadresse norge then response return samPersondata`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+        @Test
+        fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
 
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/samperson") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+
+                }
+
         }
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
 
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("Fornavn") }
-                jsonPath("$.kortnavn") { value("FME") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
-                jsonPath("$.bostedsAdresse.postnr") { value("1109") }
-                jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-                jsonPath("$.diskresjonskode") { value("SPFO") }
+        @Test
+        fun `person call gradert vegadresse norge then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("") }
+                    jsonPath("$.etternavn") { value("") }
+                    jsonPath("$.utbetalingsAdresse") { value(null) }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                }
+
+            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+        }
+
+        @Test
+        fun `person call vegadresse norge then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                }
+
+            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+        }
+
+        @Test
+        fun `person call utenlandskAdresse then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+            val hentPersonResponse =
+                HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
+
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                }
+
+            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+        }
 
     }
 
-    @Test
-    fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+    @Nested
+    @DisplayName("PersonSam (samperson med utbetaling)")
+    inner class PersonSamtest {
 
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+        @Test
+        fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
 
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/person") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("Fornavn") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
-                jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
-                jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO")}
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
             }
 
-    }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
 
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
 
-    @Test
-    fun `person call gradert vegadresse norge then response return persondata med utbetaling`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/person") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
+                }
         }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("") }
-                jsonPath("$.etternavn") { value("") }
-                jsonPath("$.utbetalingsAdresse") { value(null) }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-            }
-
-        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
     }
 
-    @Test
-    fun `person call vegadresse norge then response return persondata med utbetaling`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/person") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("Fornavn") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020 A") }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-            }
-
-        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
-    }
-
-    @Test
-    fun `person call utenlandskAdresse then response return persondata med utbetaling`() {
-        val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-        val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
-
-        every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-        val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-        mvc.post("/api/person") {
-            header("Authorization", "Bearer $token")
-            contentType = MediaType.APPLICATION_JSON
-            content = requestBody
-        }
-
-            .andDo { print() }
-            .andExpect { status { isOk() }
-
-                jsonPath("$.fnr") { value("1213123123")}
-                jsonPath("$.fornavn") { value("Fornavn") }
-                jsonPath("$.etternavn") { value("Etternavn") }
-                jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
-                jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
-                jsonPath("$.utbetalingsAdresse.postnr") { value("") }
-                jsonPath("$.utbetalingsAdresse.poststed") { value("") }
-                jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
-
-                jsonPath("$.dodsdato") { value(null) }
-                jsonPath("$.sivilstand") { value("SKIL") }
-            }
-
-        verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
-    }
-
-
-    @Suppress("UNCHECKED_CAST")
+        @Suppress("UNCHECKED_CAST")
     private fun printCacheStats(vararg strings: String = arrayOf(KODEVERK_LANDKODER_CACHE, KODEVERK_POSTNR_CACHE)) {
 
         strings.forEach { cacheName ->

@@ -153,6 +153,15 @@ class PersonSamordningService(
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                     land = "NORGE"
                 )
+            } else if (it.postadresseIFrittFormat != null) it.postadresseIFrittFormat.run {
+                AdresseSamordning(
+                    adresselinje1 =  adresselinje1,
+                    adresselinje2 =  adresselinje2,
+                    adresselinje3 =  adresselinje3,
+                    postnr = postnummer,
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    land = "NORGE"
+                )
             } else it.vegadresse?.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
