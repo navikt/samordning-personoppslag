@@ -348,7 +348,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
-                    jsonPath("$.diskresjonskode") { value(null) }
+                    jsonPath("$.diskresjonskode") { value("") }
 
                 }
 
@@ -392,7 +392,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
-                    jsonPath("$.diskresjonskode") { value(null) }
+                    jsonPath("$.diskresjonskode") { value("") }
 
                 }
 
@@ -426,7 +426,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
-                    jsonPath("$.diskresjonskode") { value(null) }
+                    jsonPath("$.diskresjonskode") { value("") }
 
                 }
 
@@ -459,7 +459,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
-                    jsonPath("$.diskresjonskode") { value(null) }
+                    jsonPath("$.diskresjonskode") { value("") }
 
                 }
 

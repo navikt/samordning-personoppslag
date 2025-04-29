@@ -71,7 +71,7 @@ class PersonSamordningService(
     fun hentPerson(fnr: String): Person = konverterTilPerson(fnr, hentPersonSamordning(fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet"))
 
     internal fun konverterTilPerson(fnr: String, personSamordning: PersonSamordning): Person {
-        return if (personSamordning.diskresjonskode != null) {
+        return if (!personSamordning.diskresjonskode.isNullOrBlank()) {
                 populatePersonWithDiskresjonskode(fnr, personSamordning).also {
                     logger.debug("person med diskresjonkode ferdig")
                 }
@@ -100,7 +100,7 @@ class PersonSamordningService(
             when {
                 STRENGT_FORTROLIG in it || STRENGT_FORTROLIG_UTLAND in it -> DISKRESJONSKODE_6_SPSF
                 FORTROLIG in it -> DISKRESJONSKODE_7_SPFO
-                else -> null
+                else -> ""
             }
         }
 
@@ -155,9 +155,9 @@ class PersonSamordningService(
                 )
             } else if (it.postadresseIFrittFormat != null) it.postadresseIFrittFormat.run {
                 AdresseSamordning(
-                    adresselinje1 =  adresselinje1,
-                    adresselinje2 =  adresselinje2,
-                    adresselinje3 =  adresselinje3,
+                    adresselinje1 =  adresselinje1 ?: "",
+                    adresselinje2 =  adresselinje2 ?: "",
+                    adresselinje3 =  adresselinje3 ?: "",
                     postnr = postnummer,
                     poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
                     land = "NORGE"
