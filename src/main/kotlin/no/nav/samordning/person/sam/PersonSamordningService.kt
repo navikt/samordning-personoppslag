@@ -124,23 +124,41 @@ class PersonSamordningService(
 
         val bostedsAdresse = pdlSamPerson.bostedsadresse?.vegadresse?.run {
             val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
-            BostedsAdresseSamordning(
-                boadresse1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
-                postnr = postnummer ?: "",
-                poststed = poststed ?: ""
-            ).also{
-                logger.debug("Bygget ferdig bostedsAdresse")
+            if (pdlSamPerson.bostedsadresse.coAdressenavn?.isNotBlank() == true ) {
+                BostedsAdresseSamordning(
+                    boadresse1 = pdlSamPerson.bostedsadresse.coAdressenavn,
+                    boadresse2 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                    postnr = postnummer ?: "",
+                    poststed = poststed ?: ""
+                )
+            } else {
+                BostedsAdresseSamordning(
+                    boadresse1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                    postnr = postnummer ?: "",
+                    poststed = poststed ?: ""
+                ).also{
+                    logger.debug("Bygget ferdig bostedsAdresse")
+                }
             }
         }
 
         val tilleggsAdresse: AdresseSamordning? = pdlSamPerson.oppholdsadresse?.vegadresse?.let {
             it.run {
-                AdresseSamordning(
-                    adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
-                    postnr = postnummer,
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
-                ).also{
-                    logger.debug("Bygget ferdig tilleggsAdresse result")
+                if (pdlSamPerson.oppholdsadresse.coAdressenavn?.isNotBlank() == true) {
+                    AdresseSamordning(
+                        adresselinje1 = pdlSamPerson.oppholdsadresse.coAdressenavn,
+                        adresselinje2 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                        postnr = postnummer,
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    )
+                } else {
+                    AdresseSamordning(
+                        adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                        postnr = postnummer,
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    ).also{
+                        logger.debug("Bygget ferdig tilleggsAdresse result")
+                    }
                 }
              }
         }
@@ -163,15 +181,23 @@ class PersonSamordningService(
                     land = "NORGE"
                 )
             } else it.vegadresse?.run {
-                AdresseSamordning(
-                    adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
-                    postnr = postnummer ?: "",
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
-                ).also{
-                    logger.debug("Bygget ferdig postAdresse")
+                if (pdlSamPerson.kontaktadresse.coAdressenavn?.isNotBlank() == true) {
+                    AdresseSamordning(
+                        adresselinje1 = pdlSamPerson.kontaktadresse.coAdressenavn,
+                        adresselinje2 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                        postnr = postnummer ?: "",
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                    )
+                } else {
+                    AdresseSamordning(
+                        adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
+                        postnr = postnummer ?: "",
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                    ).also {
+                        logger.debug("Bygget ferdig postAdresse")
+                    }
                 }
             }
-
         }
 
         val personSamordning = PersonSamordning(
