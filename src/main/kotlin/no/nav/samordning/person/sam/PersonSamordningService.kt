@@ -27,7 +27,7 @@ class PersonSamordningService(
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
 ) {
 
-    private lateinit var personSamordningMetric: Metric
+    private var personSamordningMetric: Metric
     private val logger = LoggerFactory.getLogger(javaClass)
 
     init {
@@ -104,9 +104,9 @@ class PersonSamordningService(
             }
         }
 
-        val kortnavn = pdlSamPerson.navn?.forkortetNavn //  if (diskresjonskode == null)  pdlSamPerson.navn?.forkortetNavn else ""
+        val kortnavn = pdlSamPerson.navn?.forkortetNavn ?: "" //  if (diskresjonskode == null)  pdlSamPerson.navn?.forkortetNavn else ""
         val fornavn = pdlSamPerson.navn?.fornavn        // if (diskresjonskode == null)  pdlSamPerson.navn?.fornavn  else ""
-        val mellomnavn = pdlSamPerson.navn?.mellomnavn  // if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
+        val mellomnavn = pdlSamPerson.navn?.mellomnavn ?: ""  // if (diskresjonskode == null) pdlSamPerson.navn?.mellomnavn else ""
         val etternavn = pdlSamPerson.navn?.etternavn    // if (diskresjonskode == null) pdlSamPerson.navn?.etternavn else ""
 
         val sivilstand = mapSivilstand(pdlSamPerson.sivilstand?.type?.name)
@@ -126,8 +126,8 @@ class PersonSamordningService(
             val poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr)
             BostedsAdresseSamordning(
                 boadresse1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
-                postnr = postnummer,
-                poststed = poststed
+                postnr = postnummer ?: "",
+                poststed = poststed ?: ""
             ).also{
                 logger.debug("Bygget ferdig bostedsAdresse")
             }
@@ -149,8 +149,8 @@ class PersonSamordningService(
             if (it.postboksadresse != null) it.postboksadresse.run {
                 AdresseSamordning(
                     adresselinje1 = if (postboks.contains("postboks", true)) postboks else "Postboks $postboks",
-                    postnr = postnummer,
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    postnr = postnummer ?: "",
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
                     land = "NORGE"
                 )
             } else if (it.postadresseIFrittFormat != null) it.postadresseIFrittFormat.run {
@@ -158,15 +158,15 @@ class PersonSamordningService(
                     adresselinje1 =  adresselinje1 ?: "",
                     adresselinje2 =  adresselinje2 ?: "",
                     adresselinje3 =  adresselinje3 ?: "",
-                    postnr = postnummer,
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    postnr = postnummer ?: "",
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
                     land = "NORGE"
                 )
             } else it.vegadresse?.run {
                 AdresseSamordning(
                     adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
-                    postnr = postnummer,
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr),
+                    postnr = postnummer ?: "",
+                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
                 ).also{
                     logger.debug("Bygget ferdig postAdresse")
                 }
@@ -198,7 +198,7 @@ class PersonSamordningService(
         logger.info("landkode: {} -> land: {}", pdlSamPerson.landkodeMedAdressevalg(), kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land)
         return AdresseSamordning(
             adresselinje1 = utlandskAdresse.adressenavnNummer,
-            adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted}",
+            adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted} ${utlandskAdresse.regionDistriktOmraade}",
             adresselinje3 = utlandskAdresse.postboksNummerNavn ?: "",
             postnr = "", //postkode
             poststed = "", //bySted
@@ -212,11 +212,11 @@ class PersonSamordningService(
         logger.info("landkode: {} -> land: {}", pdlSamPerson.landkodeMedAdressevalg(), kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land)
         return AdresseSamordning(
             adresselinje1 = utlandskAdresseIFrittFormat.adresselinje1,
-            adresselinje2 = utlandskAdresseIFrittFormat.adresselinje2,
-            adresselinje3 = utlandskAdresseIFrittFormat.adresselinje3,
-            postnr = utlandskAdresseIFrittFormat.postkode,
-            poststed = utlandskAdresseIFrittFormat.byEllerStedsnavn,
-            land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land
+            adresselinje2 = utlandskAdresseIFrittFormat.adresselinje2 ?: "",
+            adresselinje3 = utlandskAdresseIFrittFormat.adresselinje3 ?: "",
+            postnr = utlandskAdresseIFrittFormat.postkode ?: "",
+            poststed = utlandskAdresseIFrittFormat.byEllerStedsnavn ?: "",
+            land = pdlSamPerson.landkode().let(kodeverkService::finnLandkode)?.land ?: ""
         ).also{
             logger.debug("Bygget ferdig utenlandsAdresse i fritt format")
         }
@@ -262,9 +262,9 @@ class PersonSamordningService(
                 adresselinje1 = adresse.adresselinje1 ?: "",
                 adresselinje2 = adresse.adresselinje2 ?: "",
                 adresselinje3 = adresse.adresselinje3 ?: "",
-                postnr = adresse.postnr,
-                poststed = adresse.poststed,
-                land = adresse.land
+                postnr = adresse.postnr ?: "",
+                poststed = adresse.poststed ?: "",
+                land = adresse.land ?: ""
             )
         } else {
             AdresseSamordning(

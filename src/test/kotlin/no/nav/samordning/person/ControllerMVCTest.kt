@@ -341,7 +341,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.kortnavn") { value("FME") }
                     jsonPath("$.etternavn") { value("Etternavn") }
                     jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
-                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
+                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
                     jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
                     jsonPath("$.utenlandsAdresse.postnr") { value("") }
                     jsonPath("$.utenlandsAdresse.poststed") { value("") }
@@ -623,9 +623,10 @@ internal class ControllerMVCTest {
                     jsonPath("$.fornavn") { value("Fornavn") }
                     jsonPath("$.etternavn") { value("Etternavn") }
                     jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
-                    jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
                     jsonPath("$.utbetalingsAdresse.postnr") { value("") }
                     jsonPath("$.utbetalingsAdresse.poststed") { value("") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("") }
                     jsonPath("$.utbetalingsAdresse.land") { value("STORBRITANNIA") }
 
                     jsonPath("$.dodsdato") { value(null) }
@@ -715,8 +716,10 @@ internal class ControllerMVCTest {
                 null,
                 gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
                 gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                vegadresse = if (utlandsAdresse == false) Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
-                utenlandskAdresse = if (utlandsAdresse) UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK") else null,
+                vegadresse = if (utlandsAdresse == false)
+                    Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
+                utenlandskAdresse = if (utlandsAdresse)
+                    UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK", regionDistriktOmraade = "CAL") else null,
                 metadata = mockMeta()
             )
         ),

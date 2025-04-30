@@ -12,7 +12,7 @@ data class AdresseSamordning(
 ) {
 
     val postAdresse: String?
-        get() = if (postnr != null && poststed != null) "$postnr $poststed" else null
+        get() = if (postnr.isNullOrBlank() && poststed.isNullOrBlank()) "" else "$postnr $poststed"
 
     @JsonIgnore
     fun isTAdresse() = isSet(postnr)
