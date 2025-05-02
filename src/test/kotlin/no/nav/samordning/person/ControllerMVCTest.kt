@@ -433,6 +433,109 @@ internal class ControllerMVCTest {
         }
 
         @Test
+        fun `samPerson call with tilleggsAdresse med coAdressenavn`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harOppholdsadresseMco = true)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.tilleggsAdresse.adresselinje1") { value("CO_TEST") }
+                    jsonPath("$.tilleggsAdresse.adresselinje2") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.tilleggsAdresse.postnr") { value("1109") }
+                    jsonPath("$.tilleggsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
+        fun `samPerson call with bostedsAdresse med coAdressenavn`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harBoaCoAdresseNavn = true)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("CO_TEST") }
+                    jsonPath("$.bostedsAdresse.boadresse2") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
+        fun `samPerson call postAdresse med coAdressenavn`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harCoAdresseNavn = true)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.postAdresse.adresselinje1") { value("CO_TEST") }
+                    jsonPath("$.postAdresse.adresselinje2") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.postAdresse.adresselinje3") { value("") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
         fun `samPerson call with vegadresse and postboks then response return samPersondata`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
@@ -709,11 +812,19 @@ internal class ControllerMVCTest {
             ).serialize()
 
 
-    private fun mockHentAltPerson(beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT, utlandsAdresse: Boolean = false, utlandIFrittFormat: Boolean = false, postboks: Boolean = false) = HentPerson(
+    private fun mockHentAltPerson(
+        beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT,
+        utlandsAdresse: Boolean = false,
+        utlandIFrittFormat: Boolean = false,
+        postboks: Boolean = false,
+        harCoAdresseNavn: Boolean = false,
+        harBoaCoAdresseNavn: Boolean = false,
+        harOppholdsadresseMco: Boolean = false
+    ) = HentPerson(
         adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
         bostedsadresse = listOf(
             Bostedsadresse(
-                null,
+                if (harBoaCoAdresseNavn) "CO_TEST" else null,
                 gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
                 gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
                 vegadresse = if (utlandsAdresse == false)
@@ -723,7 +834,16 @@ internal class ControllerMVCTest {
                 metadata = mockMeta()
             )
         ),
-        oppholdsadresse = emptyList(),
+        oppholdsadresse = if(harOppholdsadresseMco) listOf(
+            Oppholdsadresse(
+                coAdressenavn = "CO_TEST",
+                gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
+                gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
+                vegadresse = Vegadresse("TESTVEIEN","1020","A","1109", "231", null),
+                utenlandskAdresse = null,
+                metadata = mockMeta()
+            ))
+            else emptyList(),
         navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", "FME", null, null, mockMeta())),
         statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
         kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
@@ -731,7 +851,9 @@ internal class ControllerMVCTest {
         forelderBarnRelasjon = emptyList(), //listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.SKILT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
         kontaktadresse =
-            if (utlandIFrittFormat) {
+            if (harCoAdresseNavn) {
+                listOf(Kontaktadresse(type = KontaktadresseType.Innland, coAdressenavn = "CO_TEST", vegadresse = Vegadresse("TESTVEIEN","1020","A","1109", "231", null), postboksadresse = null, metadata = mockMeta()))
+            } else if (utlandIFrittFormat) {
                 listOf(Kontaktadresse(
                 utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat("adresselinje1 fritt", "adresselinje2 fritt", "adresselinje3 fritt", "London", "GB", "471000"),
                 metadata = mockMeta(),
