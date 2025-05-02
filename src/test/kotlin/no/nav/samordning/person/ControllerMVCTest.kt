@@ -340,7 +340,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.fnr") { value("1213123123") }
                     jsonPath("$.kortnavn") { value("FME") }
                     jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001") }
+                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001 GREATEREAST") }
                     jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
                     jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
                     jsonPath("$.utenlandsAdresse.postnr") { value("") }
@@ -725,7 +725,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.fnr") { value("1213123123") }
                     jsonPath("$.fornavn") { value("Fornavn") }
                     jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("1001 GREATEREAST") }
                     jsonPath("$.utbetalingsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
                     jsonPath("$.utbetalingsAdresse.postnr") { value("") }
                     jsonPath("$.utbetalingsAdresse.poststed") { value("") }

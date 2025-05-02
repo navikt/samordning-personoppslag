@@ -187,12 +187,14 @@ class PersonSamordningService(
                         adresselinje2 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                         postnr = postnummer ?: "",
                         poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                        land = "NORGE"
                     )
                 } else {
                     AdresseSamordning(
                         adresselinje1 = "$adressenavn ${husnummer ?: ""} ${husbokstav ?: ""}".trim(),
                         postnr = postnummer ?: "",
                         poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                        land = "NORGE"
                     ).also {
                         logger.debug("Bygget ferdig postAdresse")
                     }
@@ -223,8 +225,8 @@ class PersonSamordningService(
     fun mapUtenlandskAdresse(utlandskAdresse: UtenlandskAdresse, pdlSamPerson: PdlSamPerson): AdresseSamordning {
         logger.info("landkode: {} -> land: {}", pdlSamPerson.landkodeMedAdressevalg(), kodeverkService.finnLandkode(pdlSamPerson.landkode())?.land)
         return AdresseSamordning(
-            adresselinje1 = utlandskAdresse.adressenavnNummer,
-            adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted} ${utlandskAdresse.regionDistriktOmraade}",
+            adresselinje1 = "${utlandskAdresse.adressenavnNummer} ${utlandskAdresse.bygningEtasjeLeilighet}".trim(),
+            adresselinje2 = "${utlandskAdresse.postkode} ${utlandskAdresse.bySted} ${utlandskAdresse.regionDistriktOmraade}".trim(),
             adresselinje3 = utlandskAdresse.postboksNummerNavn ?: "",
             postnr = "", //postkode
             poststed = "", //bySted
