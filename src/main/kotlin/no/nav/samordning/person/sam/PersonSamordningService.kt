@@ -165,12 +165,22 @@ class PersonSamordningService(
 
         val postAdresse = pdlSamPerson.kontaktadresse?.let {
             if (it.postboksadresse != null) it.postboksadresse.run {
-                AdresseSamordning(
-                    adresselinje1 = if (postboks.contains("postboks", true)) postboks else "Postboks $postboks",
-                    postnr = postnummer ?: "",
-                    poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
-                    land = "NORGE"
-                )
+                if (!it.postboksadresse.postbokseier.isNullOrEmpty()) {
+                    AdresseSamordning(
+                        adresselinje1 = it.postboksadresse.postbokseier,
+                        adresselinje2 = if (postboks.contains("postboks", true)) postboks else "Postboks $postboks",
+                        postnr = postnummer ?: "",
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                        land = "NORGE"
+                    )
+                } else {
+                    AdresseSamordning(
+                        adresselinje1 = if (postboks.contains("postboks", true)) postboks else "Postboks $postboks",
+                        postnr = postnummer ?: "",
+                        poststed = postnummer?.let(kodeverkService::hentPoststedforPostnr) ?: "",
+                        land = "NORGE"
+                    )
+                }
             } else if (it.postadresseIFrittFormat != null) it.postadresseIFrittFormat.run {
                 AdresseSamordning(
                     adresselinje1 =  adresselinje1 ?: "",
