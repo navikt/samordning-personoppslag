@@ -107,6 +107,7 @@ class PersonService(
 
     internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson): PdlSamPerson {
         secureLogger.info("hentPerson: {}", StructuredArguments.kv("pdl-response", mapper.writeValueAsString(pdlPerson)) )
+
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 

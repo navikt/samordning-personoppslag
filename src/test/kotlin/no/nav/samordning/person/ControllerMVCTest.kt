@@ -93,8 +93,8 @@ internal class ControllerMVCTest {
          @Test
         fun `Test Kodeverk Landkoder med korrekt apiurl bruk av KodeverkAPIRespone`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
             val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
+
             every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Landkoder/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkLandResponse, HttpStatus.OK)
 
             mvc.get("/api/kodeverkapi/Landkoder") {
@@ -105,15 +105,12 @@ internal class ControllerMVCTest {
             }
                 .andDo { print() }
                 .andExpect { status { isOk() }
-
                 }
-
         }
 
         @Test
         fun `Test Kodeverk Postnummer med korrekt apiurl bruk av KodeverkAPIRespone`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
             val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
 
             every { kodeverkRestTemplate.exchange(eq("/api/v1/kodeverk/Postnummer/koder/betydninger?spraak=nb"), any(), any<HttpEntity<Unit>>(), eq(KodeverkResponse::class.java)) }  returns ResponseEntity<KodeverkResponse>(kodeverkPostnrResponse, HttpStatus.OK)
@@ -124,11 +121,8 @@ internal class ControllerMVCTest {
             }
                 .andDo { print() }
                 .andExpect { status { isOk() }
-
                 }
-
         }
-
 
         @Test
         fun `kodeverk call to hierarki returns land and landkoder`() {
@@ -144,7 +138,6 @@ internal class ControllerMVCTest {
             assertEquals("Landkode(landkode2=FR, landkode3=FRA, land=FRANKRIKE)", kodeverkService.finnLandkode("FRA").toString())
             assertEquals("Landkode(landkode2=DE, landkode3=DEU, land=TYSKLAND)", kodeverkService.finnLandkode("DEU").toString())
             assertEquals("FRANKRIKE", kodeverkService.finnLandkode("FRA")?.land)
-
         }
 
         @Test
@@ -201,7 +194,7 @@ internal class ControllerMVCTest {
         fun `PDLPerson correct call with valid fnr response return persondata`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = HentPerson.mockTestPerson()))
 
             val identerResponse = IdenterResponse(
                 data = IdenterDataResponse(
@@ -244,8 +237,6 @@ internal class ControllerMVCTest {
                     jsonPath("$.identer.size()") { value(2) }
                     jsonPath("$.geografiskTilknytning.gtKommune") { value("0301") }
                 }
-
-
         }
 
         @Test
@@ -318,11 +309,16 @@ internal class ControllerMVCTest {
     inner class SamPersontest {
 
         @Test
-        fun `samPerson correct call ugradert boested utland with valid fnr response return samPersondata`() {
+        fun `samperson with bostedsadresse utland then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse =
-                HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList()).copy(
+                bostedsadresse = mockBostedsadresse(
+                    vegadresse = null,
+                    utenlandskAdresse = mockUtenlandskAdresse()
+                )
+            )
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -351,22 +347,56 @@ internal class ControllerMVCTest {
                     jsonPath("$.diskresjonskode") { value("") }
 
                 }
-
-            printCacheStats()
         }
 
         @Test
-        fun `samPerson call with utenlandskAdresse and utenlandskAdresseIFrittFormat then response return samPersondata`() {
+        fun `samperson with bostedsadresse utland and doeadsfall then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(
-                data = HentPersonResponseData(
-                    hentPerson = mockHentAltPerson(
-                        utlandsAdresse = true,
-                        utlandIFrittFormat = true
-                    )
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList(), doedsfall = mockDoedsfall()).copy(
+                bostedsadresse = mockBostedsadresse(
+                    vegadresse = null,
+                    utenlandskAdresse = mockUtenlandskAdresse()
                 )
             )
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001 GREATEREAST") }
+                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
+                    jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
+                    jsonPath("$.utenlandsAdresse.postnr") { value("") }
+                    jsonPath("$.utenlandsAdresse.poststed") { value("") }
+                    jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
+                    jsonPath("$.dodsdato") { value("2024-04-21") }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+        }
+
+
+        @Test
+        fun `samperson with kontaktadresse utlandfrittformat then return valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse =  mockKontaktadresseUtenlandIFrittFormat())
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -396,14 +426,14 @@ internal class ControllerMVCTest {
 
                 }
 
-            printCacheStats()
         }
 
         @Test
-        fun `samPerson call with vegadresse norge then response return samPersondata`() {
+        fun `samperson with vegadresse then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -422,6 +452,7 @@ internal class ControllerMVCTest {
                     jsonPath("$.kortnavn") { value("FME") }
                     jsonPath("$.etternavn") { value("Etternavn") }
                     jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.boadresse2") { value("") }
                     jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                     jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
@@ -433,44 +464,11 @@ internal class ControllerMVCTest {
         }
 
         @Test
-        fun `samPerson call with tilleggsAdresse med coAdressenavn`() {
+        fun `samperson with vegadresse and coAdressenavn then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harOppholdsadresseMco = true)))
-
-            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-            mvc.post("/api/samperson") {
-                header("Authorization", "Bearer $token")
-                contentType = MediaType.APPLICATION_JSON
-                content = requestBody
-            }
-
-                .andDo { print() }
-                .andExpect {
-                    status { isOk() }
-
-                    jsonPath("$.fnr") { value("1213123123") }
-                    jsonPath("$.kortnavn") { value("FME") }
-                    jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.tilleggsAdresse.adresselinje1") { value("CO_TEST") }
-                    jsonPath("$.tilleggsAdresse.adresselinje2") { value("TESTVEIEN 1020 A") }
-                    jsonPath("$.tilleggsAdresse.postnr") { value("1109") }
-                    jsonPath("$.tilleggsAdresse.poststed") { value("OSLO") }
-                    jsonPath("$.dodsdato") { value(null) }
-                    jsonPath("$.sivilstand") { value("SKIL") }
-                    jsonPath("$.diskresjonskode") { value("") }
-
-                }
-
-        }
-
-        @Test
-        fun `samPerson call with bostedsAdresse med coAdressenavn`() {
-            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harBoaCoAdresseNavn = true)))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList(), bostedsadresse = mockBostedsadresse(true) )
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -501,10 +499,81 @@ internal class ControllerMVCTest {
         }
 
         @Test
-        fun `samPerson call postAdresse med coAdressenavn`() {
+        fun `samperson with oppholdsadresse and coAdressenavn then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(harCoAdresseNavn = true)))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList(), oppholdsadresse = mockOppholdsadresse(true))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.tilleggsAdresse.adresselinje1") { value("CO_TEST") }
+                    jsonPath("$.tilleggsAdresse.adresselinje2") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.tilleggsAdresse.postnr") { value("1109") }
+                    jsonPath("$.tilleggsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
+        fun `samperson with bostedsAdresse and coAdressenavn then return valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson(true, kontaktadresse = emptyList())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("CO_TEST") }
+                    jsonPath("$.bostedsAdresse.boadresse2") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
+        fun `samperson with postAdresse and coAdressenavn then return valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson(true)
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -536,10 +605,11 @@ internal class ControllerMVCTest {
         }
 
         @Test
-        fun `samPerson call with vegadresse and postboks then response return samPersondata`() {
+        fun `samperson with vegadresse and postboks with eier then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+            val hentPerson = HentPerson.mockTestPerson().copy(kontaktadresse = mockKontaktadresseInnlandPostboks(postbokseier = "Olsen byggmaker og fisk"))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -560,6 +630,10 @@ internal class ControllerMVCTest {
                     jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
                     jsonPath("$.bostedsAdresse.postnr") { value("1109") }
                     jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.postAdresse.adresselinje1") { value("Olsen byggmaker og fisk") }
+                    jsonPath("$.postAdresse.adresselinje2") { value("Postboks 1231") }
+                    jsonPath("$.postAdresse.adresselinje3") { value("") }
+                    jsonPath("$.postAdresse.postAdresse") { value("1109 OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
                     jsonPath("$.diskresjonskode") { value("") }
@@ -568,12 +642,49 @@ internal class ControllerMVCTest {
 
         }
 
-
         @Test
-        fun `samperson call gradert vegadresse norge then response return samPersondata`() {
+        fun `samperson with vegadresse and postboks then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
+            val hentPerson = HentPerson.mockTestPerson().copy(kontaktadresse = mockKontaktadresseInnlandPostboks())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.bostedsAdresse.boadresse1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.bostedsAdresse.postnr") { value("1109") }
+                    jsonPath("$.bostedsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.postAdresse.adresselinje1") { value("Postboks 1231") }
+                    jsonPath("$.postAdresse.adresselinje2") { value("") }
+                    jsonPath("$.postAdresse.adresselinje3") { value("") }
+                    jsonPath("$.postAdresse.postAdresse") { value("1109 OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+
+        }
+
+        @Test
+        fun `samperson with gradert vegadresse norge then return valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = HentPerson.mockTestPerson(false, FORTROLIG)))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -609,10 +720,40 @@ internal class ControllerMVCTest {
     inner class Persontest {
 
         @Test
-        fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+        fun `person with gradert vegadresse norge then return valid response utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = HentPerson.mockTestPerson(false, FORTROLIG)))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("") }
+                    jsonPath("$.etternavn") { value("") }
+                    jsonPath("$.utbetalingsAdresse") { value(null) }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+
+                }
+        }
+
+
+        @Test
+        fun `person with vegadresse and postboks then return valid response utbetaling`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = mockKontaktadresseInnlandPostboks())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -639,44 +780,15 @@ internal class ControllerMVCTest {
                     jsonPath("$.sivilstand") { value("SKIL") }
 
                 }
-
-        }
-
-
-        @Test
-        fun `person call gradert vegadresse norge then response return persondata med utbetaling`() {
-            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(FORTROLIG)))
-            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
-
-            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
-            mvc.post("/api/person") {
-                header("Authorization", "Bearer $token")
-                contentType = MediaType.APPLICATION_JSON
-                content = requestBody
-            }
-
-                .andDo { print() }
-                .andExpect {
-                    status { isOk() }
-
-                    jsonPath("$.fnr") { value("1213123123") }
-                    jsonPath("$.fornavn") { value("") }
-                    jsonPath("$.etternavn") { value("") }
-                    jsonPath("$.utbetalingsAdresse") { value(null) }
-                    jsonPath("$.dodsdato") { value(null) }
-                    jsonPath("$.sivilstand") { value("SKIL") }
-                }
-
-            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
         }
 
         @Test
-        fun `person call vegadresse norge then response return persondata med utbetaling`() {
+        fun `person with vegadresse and postboks and doeadsfall then return valid response utbetaling`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson()))
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = mockKontaktadresseInnlandPostboks(), doedsfall = mockDoedsfall())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
             val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
@@ -693,21 +805,95 @@ internal class ControllerMVCTest {
                     jsonPath("$.fnr") { value("1213123123") }
                     jsonPath("$.fornavn") { value("Fornavn") }
                     jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020 A") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
                     jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
                     jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
+                    jsonPath("$.dodsdato") { value("2024-04-21") }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+
+                }
+        }
+
+        @Test
+        fun `person with vegadresse and postboks and eier then return valid response utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson().copy(kontaktadresse = mockKontaktadresseInnlandPostboks(postbokseier = "Olsen byggmaker og fisk"))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Olsen byggmaker og fisk") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje2") { value("Postboks 1231") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje3") { value("") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
+
                 }
 
-            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+        }
+
+        @Test
+        fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson(true, kontaktadresse = mockKontaktadresseInnlandPostboks())
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("Fornavn") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
+                    jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
+                    jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
+                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
+                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+
+                }
         }
 
         @Test
         fun `person call utenlandskAdresse then response return persondata med utbetaling`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
-            val hentPersonResponse =
-                HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(utlandsAdresse = true)))
+
+            val bostedmedUtland = mockBostedsadresse(vegadresse = null, utenlandskAdresse = mockUtenlandskAdresse())
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList(), bostedsadresse = bostedmedUtland)
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
@@ -739,18 +925,40 @@ internal class ControllerMVCTest {
             verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
         }
 
-    }
-
-    @Nested
-    @DisplayName("PersonSam (samperson med utbetaling)")
-    inner class PersonSamtest {
-
         @Test
-        fun `person call vegadresse and postboks then response return persondata med utbetaling`() {
+        fun `person call gradert vegadresse norge then response return persondata med utbetaling`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = mockHentAltPerson(postboks = true)))
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(hentPerson = HentPerson.mockTestPerson(false, FORTROLIG)))
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/person") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.fornavn") { value("") }
+                    jsonPath("$.etternavn") { value("") }
+                    jsonPath("$.utbetalingsAdresse") { value(null) }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("SKIL") }
+                }
+
+            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
+        }
+
+        @Test
+        fun `person call vegadresse norge then response return persondata med utbetaling`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPersonResponse = HentPersonResponse(data = HentPersonResponseData(HentPerson.mockTestPerson()))
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
 
             val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
@@ -767,19 +975,18 @@ internal class ControllerMVCTest {
                     jsonPath("$.fnr") { value("1213123123") }
                     jsonPath("$.fornavn") { value("Fornavn") }
                     jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("Postboks 1231") }
+                    jsonPath("$.utbetalingsAdresse.adresselinje1") { value("TESTVEIEN 1020 A") }
                     jsonPath("$.utbetalingsAdresse.postnr") { value("1109") }
                     jsonPath("$.utbetalingsAdresse.poststed") { value("OSLO") }
-                    jsonPath("$.utbetalingsAdresse.land") { value("NORGE") }
-                    jsonPath("$.utbetalingsAdresse.postAdresse") { value("1109 OSLO") }
                     jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("SKIL") }
-
                 }
+
+            verify(exactly = 1) { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) }
         }
     }
 
-        @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST")
     private fun printCacheStats(vararg strings: String = arrayOf(KODEVERK_LANDKODER_CACHE, KODEVERK_POSTNR_CACHE)) {
 
         strings.forEach { cacheName ->
@@ -811,73 +1018,192 @@ internal class ControllerMVCTest {
                 expiry = 360
             ).serialize()
 
+    private fun HentPerson.Companion.mockTestPerson(
+        coAdressenavn: Boolean = false,
+        adressebeskyttelseGradering: AdressebeskyttelseGradering? = null,
 
-    private fun mockHentAltPerson(
-        beskyttelse: AdressebeskyttelseGradering = AdressebeskyttelseGradering.UGRADERT,
-        utlandsAdresse: Boolean = false,
-        utlandIFrittFormat: Boolean = false,
-        postboks: Boolean = false,
-        harCoAdresseNavn: Boolean = false,
-        harBoaCoAdresseNavn: Boolean = false,
-        harOppholdsadresseMco: Boolean = false
+        adressebeskyttelse: List<Adressebeskyttelse> = adressebeskyttelseGradering?.let {listOf<Adressebeskyttelse>(Adressebeskyttelse(it)) } ?: emptyList(),
+        bostedsadresse: List<Bostedsadresse> = mockBostedsadresse(harCoAdressenavn = coAdressenavn),
+        oppholdsadresse: List<Oppholdsadresse> = emptyList(),
+        navn: List<Navn> = mockNavn(),
+        statsborgerskap: List<Statsborgerskap> = mockStatsborgerskap(),
+        kjoenn: List<Kjoenn> = mockKjoenn(),
+        doedsfall: List<Doedsfall> = emptyList(),
+        sivilstand: List<Sivilstand> = mockSivilstand(),
+        kontaktadresse: List<Kontaktadresse> = mockKontaktadresseInnland(harCoAdressenavn = coAdressenavn),
     ) = HentPerson(
-        adressebeskyttelse = listOf(Adressebeskyttelse(beskyttelse)),
-        bostedsadresse = listOf(
-            Bostedsadresse(
-                if (harBoaCoAdresseNavn) "CO_TEST" else null,
-                gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
-                gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                vegadresse = if (utlandsAdresse == false)
-                    Vegadresse("TESTVEIEN","1020","A","1109", "231", null) else null,
-                utenlandskAdresse = if (utlandsAdresse)
-                    UtenlandskAdresse(adressenavnNummer = "1001", bySted = "LONDON", bygningEtasjeLeilighet = "GREATEREAST", landkode = "GB", postkode = "1021 PLK UK", regionDistriktOmraade = "CAL") else null,
-                metadata = mockMeta()
-            )
-        ),
-        oppholdsadresse = if(harOppholdsadresseMco) listOf(
-            Oppholdsadresse(
-                coAdressenavn = "CO_TEST",
-                gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10,5,2),
-                gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
-                vegadresse = Vegadresse("TESTVEIEN","1020","A","1109", "231", null),
-                utenlandskAdresse = null,
-                metadata = mockMeta()
-            ))
-            else emptyList(),
-        navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", "FME", null, null, mockMeta())),
-        statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
-        kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-        doedsfall = emptyList(), // listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-        forelderBarnRelasjon = emptyList(), //listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.SKILT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
-        kontaktadresse =
-            if (harCoAdresseNavn) {
-                listOf(Kontaktadresse(type = KontaktadresseType.Innland, coAdressenavn = "CO_TEST", vegadresse = Vegadresse("TESTVEIEN","1020","A","1109", "231", null), postboksadresse = null, metadata = mockMeta()))
-            } else if (utlandIFrittFormat) {
-                listOf(Kontaktadresse(
-                utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat("adresselinje1 fritt", "adresselinje2 fritt", "adresselinje3 fritt", "London", "GB", "471000"),
-                metadata = mockMeta(),
-                type = KontaktadresseType.Utland))
-            } else if (postboks) {
-                listOf(Kontaktadresse(type = KontaktadresseType.Innland, postboksadresse = Postboksadresse(null, "1231", "1109"), metadata = mockMeta()))
-            } else {
-                emptyList() },
+        adressebeskyttelse = adressebeskyttelse,
+        bostedsadresse = bostedsadresse,
+        oppholdsadresse = oppholdsadresse,
+        navn = navn,
+        statsborgerskap = statsborgerskap,
+        kjoenn = kjoenn,
+        doedsfall = doedsfall,
+        forelderBarnRelasjon = emptyList<ForelderBarnRelasjon>(),
+        sivilstand = sivilstand,
+        kontaktadresse = kontaktadresse,
         kontaktinformasjonForDoedsbo = emptyList()
     )
 
-    private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
+    private fun mockNavn() = listOf(
+        Navn(
+            fornavn = "Fornavn",
+            mellomnavn = "Mellomnavn",
+            etternavn = "Etternavn",
+            forkortetNavn = "FME",
+            gyldigFraOgMed = null,
+            folkeregistermetadata = null,
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockStatsborgerskap() = listOf(
+        Statsborgerskap(
+            land = "NOR",
+            gyldigFraOgMed = LocalDate.of(2010, 7, 7),
+            gyldigTilOgMed = LocalDate.of(2020, 10, 10),
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockKjoenn() = listOf(
+        Kjoenn(
+            kjoenn = KjoennType.KVINNE,
+            folkeregistermetadata = Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10, 5, 2)),
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockDoedsfall(doedsdato: LocalDate = LocalDate.of(2024, 4, 21)) = listOf(
+        Doedsfall(
+            doedsdato = doedsdato,
+            folkeregistermetadata = null,
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockSivilstand() = listOf(
+        Sivilstand(
+            type = Sivilstandstype.SKILT,
+            gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+            relatertVedSivilstand = "1020203010",
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockSivilstandParalell() = listOf(
+        Sivilstand(
+            type = Sivilstandstype.SKILT,
+            gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+            relatertVedSivilstand = "1020203010",
+            metadata = mockMeta(master = "NAV")
+        ),
+        Sivilstand(
+            type = Sivilstandstype.GIFT,
+            gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+            relatertVedSivilstand = "1020203010",
+            metadata = mockMeta(master = "FREG")
+        )
+
+    )
+
+
+    private fun mockUtenlandskAdresse() = UtenlandskAdresse(
+        adressenavnNummer = "1001",
+        bySted = "LONDON",
+        bygningEtasjeLeilighet = "GREATEREAST",
+        landkode = "GB",
+        postkode = "1021 PLK UK",
+        regionDistriktOmraade = "CAL"
+    )
+
+    private fun mockVegadresse() = Vegadresse(
+        adressenavn = "TESTVEIEN",
+        husnummer = "1020",
+        husbokstav = "A",
+        postnummer = "1109",
+        kommunenummer = "231",
+        bruksenhetsnummer = null
+    )
+
+    private fun mockBostedsadresse(harCoAdressenavn: Boolean = false, vegadresse: Vegadresse? = mockVegadresse(),  utenlandskAdresse: UtenlandskAdresse? = null): List<Bostedsadresse> {
+        return listOf(
+            Bostedsadresse(
+                coAdressenavn = if (harCoAdressenavn) "CO_TEST" else null,
+                gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10, 5, 2),
+                gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
+                vegadresse = vegadresse,
+                utenlandskAdresse = utenlandskAdresse,
+                metadata = mockMeta()
+            )
+        )
+    }
+
+    private fun mockOppholdsadresse(harCoAdressenavn: Boolean = false, vegadresse: Vegadresse? = mockVegadresse(),  utenlandskAdresse: UtenlandskAdresse? = null) = listOf(
+        Oppholdsadresse(
+            coAdressenavn = if (harCoAdressenavn) "CO_TEST" else null,
+            gyldigFraOgMed = LocalDateTime.of(2020, 10, 5, 10, 5, 2),
+            gyldigTilOgMed = LocalDateTime.of(2030, 10, 5, 10, 5, 2),
+            vegadresse = vegadresse,
+            utenlandskAdresse = utenlandskAdresse,
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockKontaktadresseInnland(harCoAdressenavn: Boolean = false): List<Kontaktadresse> {
+        return listOf(
+            Kontaktadresse(
+                type = KontaktadresseType.Innland,
+                coAdressenavn = if (harCoAdressenavn) "CO_TEST" else null,
+                vegadresse = Vegadresse("TESTVEIEN", "1020", "A", "1109", "231", null),
+                postboksadresse = null,
+                metadata = mockMeta()
+            )
+        )
+    }
+
+    private fun mockKontaktadresseInnlandPostboks(postbokseier: String? = null) = listOf(
+        Kontaktadresse(
+            type = KontaktadresseType.Innland,
+            postboksadresse = Postboksadresse(
+                postbokseier = postbokseier,
+                postboks = "1231",
+                postnummer = "1109"),
+            metadata = mockMeta()
+        )
+    )
+
+    private fun mockKontaktadresseUtenlandIFrittFormat(): List<Kontaktadresse> {
+        return listOf(
+            Kontaktadresse(
+                utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat(
+                    "adresselinje1 fritt",
+                    "adresselinje2 fritt",
+                    "adresselinje3 fritt",
+                    "London",
+                    "GB",
+                    "471000"
+                ),
+                metadata = mockMeta(),
+                type = KontaktadresseType.Utland
+            )
+        )
+    }
+
+
+    private fun mockMeta(master: String = "MetaMaster", registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(
-            listOf(
+            endringer = listOf(
                 Endring(
-                    "TEST",
-                    registrert,
-                    "Test",
-                    "Kilde test",
-                    Endringstype.OPPRETT
+                    kilde = "Endring_Test",
+                    registrert = registrert,
+                    registrertAv = "Test",
+                    systemkilde = "Kilde test",
+                    type = Endringstype.OPPRETT
                 )),
-            false,
-            "Test",
-            "acbe1a46-e3d1"
+            historisk = false,
+            master = master,
+            opplysningsId = "acbe1a46-e3d1"
         )
     }
 

@@ -16,7 +16,9 @@ internal data class HentPerson(
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: List<Kontaktadresse>?,
         val kontaktinformasjonForDoedsbo: List<KontaktinformasjonForDoedsbo>,
-)
+) {
+        companion object {}
+}
 internal data class HentPersonnavn(
         val navn: List<Navn>
 )
@@ -308,6 +310,7 @@ data class Metadata(
         fun sisteRegistrertDato(): LocalDateTime {
                 return endringer.maxByOrNull { it.registrert }?.registrert!!
         }
+
 }
 
 data class Endring(
