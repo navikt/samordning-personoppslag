@@ -42,14 +42,18 @@ internal class PdlPersonTest {
 
     private fun hentPersonFraFil(hentPersonfil: String): PdlPerson? {
         val response = mapper.readValue(hentPersonfil, HentPersonResponse::class.java)
-        val emptyResponseJson = """
-            {
-              "data": null,
-              "errors": null
-            }
-        """.trimIndent()
-        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
-        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        val identResponse = IdenterResponse()
+        val geoResponse = GeografiskTilknytningResponse()
+
+//        val emptyResponseJson = """
+//            {
+//              "data": null,
+//              "errors": null
+//            }
+//        """.trimIndent()
+//        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+//        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
         every { mockPersonClient.hentPerson( any()) } returns response
         every { mockPersonClient.hentIdenter (any()) } returns identResponse
@@ -60,14 +64,18 @@ internal class PdlPersonTest {
 
     private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
         val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
-        val emptyResponseJson = """
-            {
-              "data": null,
-              "errors": null
-            }
-        """.trimIndent()
-        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
-        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        val identResponse = IdenterResponse()
+        val geoResponse = GeografiskTilknytningResponse()
+
+//        val emptyResponseJson = """
+//            {
+//              "data": null,
+//              "errors": null
+//            }
+//        """.trimIndent()
+//        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+//        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
         every { mockPersonClient.hentAdresse( any()) } returns response
         every { mockPersonClient.hentIdenter (any()) } returns identResponse
@@ -299,6 +307,37 @@ internal class PdlPersonTest {
         assertEquals(KjoennType.UKJENT, kjoenn?.kjoenn)
 
     }
+
+    @Test
+    fun `Test running empty value from response`() {
+        val emptyResponseJson = """
+        {
+          "data": null,
+          "errors": null
+        }
+        """.trimIndent()
+        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+
+
+        assertEquals(null, identResponse.data)
+        assertEquals(null, identResponse.errors)
+
+    }
+
+    @Test
+    fun `Test running empty response value for geografiskTilknytning`() {
+        val emptyGeografiskResponseJson = """
+        {
+          "data": null,
+          "errors": null
+        }
+        """.trimIndent()
+        val geoResponse = mapper.readValue(emptyGeografiskResponseJson, GeografiskTilknytningResponse::class.java)
+
+        assertEquals(null, geoResponse.data)
+        assertEquals(null, geoResponse.errors)
+    }
+
 
 
 }

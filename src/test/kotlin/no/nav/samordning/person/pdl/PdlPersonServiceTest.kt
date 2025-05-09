@@ -446,14 +446,18 @@ internal class PdlPersonServiceTest {
 
     private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
         val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
-        val emptyResponseJson = """
-            {
-              "data": null,
-              "errors": null
-            }
-        """.trimIndent()
-        val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
-        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
+
+        val identResponse  = IdenterResponse()
+        val geoResponse = GeografiskTilknytningResponse()
+
+//        val emptyResponseJson = """
+//            {
+//              "data": null,
+//              "errors": null
+//            }
+//        """.trimIndent()
+        //val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
+        //val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
         every { client.hentAdresse( any()) } returns response
         every { client.hentIdenter (any()) } returns identResponse
