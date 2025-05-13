@@ -4,6 +4,7 @@ import no.nav.person.pdl.leesah.Personhendelse
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
@@ -49,21 +50,25 @@ class PdlLeesahKafkaListener(
                     when (personhendelse.opplysningstype) {
                         "SIVILSTAND_V1" -> {
                             secureLogger.info("Behandler SIVILSTAND_V1: $personhendelse")
+                            MDC.put("personhendelseId", personhendelse.hendelseId)
                             sivilstandService.opprettSivilstandsMelding(personhendelse)
                         }
 
                         "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                             secureLogger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
+                            MDC.put("personhendelseId", personhendelse.hendelseId)
                             folkeregisterService.opprettFolkeregistermelding(personhendelse)
                         }
 
                         "DOEDSFALL_V1" -> {
                             secureLogger.info("Behandler DOEDSFALL_V1: $personhendelse")
+                            MDC.put("personhendelseId", personhendelse.hendelseId)
                             doedsfallService.opprettDoedsfallmelding(personhendelse)
                         }
 
                         "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
                             secureLogger.info("Behandler adresse: $personhendelse")
+                            MDC.put("personhendelseId", personhendelse.hendelseId)
                             adresseService.opprettAdressemelding(personhendelse)
                         }
 
@@ -73,10 +78,12 @@ class PdlLeesahKafkaListener(
             }
         } catch (e: Exception) {
             logger.error("Behandling av hendelse feilet", e)
+            MDC.remove("personhendelseId")
             throw e
         }
 
         ack.acknowledge()
-        logger.debug("Acket personhendelse")
+        logger.info("Acket personhendelse")
+        MDC.remove("personhendelseId")
     }
 }

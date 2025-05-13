@@ -22,8 +22,8 @@ class SivilstandService(
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
-        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
+        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
         val gyldigident = if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
