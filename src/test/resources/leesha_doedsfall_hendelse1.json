@@ -1,26 +1,23 @@
 {
-  "hendelseId": "bb118557-02ae-4941-a967-2253a7a5afcb",
+  "hendelseId": "87573b9b-8395-45fd-a24a-c93ab88f9807",
   "personidenter": [
-    "999309822813",
-    "21883649874"
+    "1000016953359",
+    "03123538209"
   ],
   "master": "FREG",
-  "opprettet": "2025-05-13T08:45:35.430Z",
-  "opplysningstype": "SIVILSTAND_V1",
+  "opprettet": "2025-05-14T12:51:18.529Z",
+  "opplysningstype": "DOEDSFALL_V1",
   "endringstype": "OPPRETTET",
   "tidligereHendelseId": null,
   "adressebeskyttelse": null,
   "doedfoedtBarn": null,
-  "doedsfall": null,
+  "doedsfall": {
+    "doedsdato": "2025-05-13"
+  },
   "foedsel": null,
   "forelderBarnRelasjon": null,
   "familierelasjon": null,
-  "sivilstand": {
-    "type": "SKILT",
-    "gyldigFraOgMed": "2025-05-13",
-    "relatertVedSivilstand": null,
-    "bekreftelsesdato": null
-  },
+  "sivilstand": null,
   "vergemaalEllerFremtidsfullmakt": null,
   "utflyttingFraNorge": null,
   "innflyttingTilNorge": null,

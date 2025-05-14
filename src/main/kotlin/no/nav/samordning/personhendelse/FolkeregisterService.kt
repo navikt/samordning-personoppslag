@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class FolkeregisterService(
     private val personService: PersonService,
-    private val samClient: SamClient,
+    private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -35,7 +35,7 @@ class FolkeregisterService(
             val adressebeskyttelse =
                 personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
-            samClient.oppdaterSamPersonalia(
+            samPersonaliaClient.oppdaterSamPersonalia(
                 createFolkeregisterRequest(
                     hendelseId = personhendelse.hendelseId,
                     nyttFnr = nyttFnr,

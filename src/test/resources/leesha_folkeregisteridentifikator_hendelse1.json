@@ -1,5 +1,5 @@
 {
-  "hendelseId": "8f529358-a949-431b-8c8a-4f1868b9c78c",
+  "hendelseId": "8f529358-5555-431b-8c8a-4f1868b9c78c",
   "personidenter": [
     "05840399895",
     "2969647419749"
@@ -18,8 +18,8 @@
   "sivilstand": null,
   "vergemaalEllerFremtidsfullmakt": null,
   "utflyttingFraNorge": null,
-  "InnflyttingTilNorge": null,
-  "Folkeregisteridentifikator": {
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": {
     "identifikasjonsnummer": "05840399895",
     "type": "DNR",
     "status": "iBruk"
