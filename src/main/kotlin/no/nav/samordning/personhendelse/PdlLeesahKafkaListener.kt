@@ -121,19 +121,19 @@ class MessureOpplysningstype() {
     private val unkownType : MutableList<String> = mutableListOf()
 
     fun addKjent(personhendelse: Personhendelse) = knownType.add(personhendelse.opplysningstype)
-        .also { logger.info("opplysningstype: ${personhendelse.opplysningstype}") }
+        .also { logger.debug("opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun addUkjent(personhendelse: Personhendelse) = unkownType.add(personhendelse.opplysningstype)
-        .also { logger.info("ukjent opplysningstype: ${personhendelse.opplysningstype}") }
+        .also { logger.debug("ukjent opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun createMetrics() {
         try {
                knownType.groupBy { it }.map {
-                    logger.info("Opplysningstype: ${it.key}, size: ${it.value.size}")
+                    logger.debug("Opplysningstype: ${it.key}, size: ${it.value.size}")
                     Metrics.counter("Opplysningstype", "Kjent", it.key, "Antall", it.value.size.toString()).increment()
                 }
                 unkownType.groupBy { it }.map {
-                    logger.info("Ukjentopplysningstype: ${it.key}, size: ${it.value.size}")
+                    logger.debug("Ukjentopplysningstype: ${it.key}, size: ${it.value.size}")
                     Metrics.counter("Opplysningstype", "Ukjent", it.key, "Antall", it.value.size.toString()).increment()
                 }
         } catch (_: Exception) {
