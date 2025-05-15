@@ -130,11 +130,11 @@ class MessureOpplysningstype() {
         try {
                knownType.groupBy { it }.map {
                     logger.debug("Opplysningstype: ${it.key}, size: ${it.value.size}")
-                    Metrics.counter("Opplysningstype", "Kjent", it.key, "Antall", it.value.size.toString()).increment()
+                    Metrics.counter("sp_kjent_opplysningstype", "Kjent", it.key, "Antall", it.value.size.toString()).increment()
                 }
                 unkownType.groupBy { it }.map {
                     logger.debug("Ukjentopplysningstype: ${it.key}, size: ${it.value.size}")
-                    Metrics.counter("Opplysningstype", "Ukjent", it.key, "Antall", it.value.size.toString()).increment()
+                    Metrics.counter("sp_ukjent_opplysningstype", "Ukjent", it.key, "Antall", it.value.size.toString()).increment()
                 }
         } catch (_: Exception) {
             logger.warn("Metrics feilet på opplysningstype")
