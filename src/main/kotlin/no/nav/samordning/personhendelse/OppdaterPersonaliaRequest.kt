@@ -18,6 +18,33 @@ enum class Meldingskode {
     DOEDSFALL
 }
 
+
+data class TilleggsAdresseDto(
+    var adresselinje1: String? = null,
+    var adresselinje2: String? = null,
+    var adresselinje3: String? = null,
+    var landkode: String? = null,
+    var postnr: String? = null,
+    var poststed: String? = null,
+    var datoFom: LocalDate? = null,
+)
+
+
+data class BostedsAdresseDto(
+    var boadresse1: String? = null,
+    var boadresse2: String? = null,
+    var bolignr: String? = null,
+    var kommunenr: String? = null,
+    var navenhet: String? = null,
+    var postAdresse: TilleggsAdresseDto? = null,
+    var tilleggsAdresse: TilleggsAdresseDto? = null,
+    var utenlandsAdresse: TilleggsAdresseDto? = null,
+    var postnr: String? = null,
+    var poststed: String? = null,
+    var datoFom: LocalDate? = null,
+)
+
+
 data class PersonData(
     val fnr: String,
     val sivilstand: String? = null,

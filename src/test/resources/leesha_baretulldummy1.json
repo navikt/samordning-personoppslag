@@ -1,0 +1,29 @@
+{
+  "hendelseId": "bb118557-5555-7777-a967-2253a7a5afcb",
+  "personidenter": [
+    "9993098999913",
+    "21883649874"
+  ],
+  "master": "FREG",
+  "opprettet": "2025-05-13T08:45:35.430Z",
+  "opplysningstype": "SUPPEHENDELSEN_V1",
+  "endringstype": "OPPRETTET",
+  "tidligereHendelseId": null,
+  "adressebeskyttelse": null,
+  "doedfoedtBarn": null,
+  "doedsfall": null,
+  "foedsel": null,
+  "forelderBarnRelasjon": null,
+  "familierelasjon": null,
+  "sivilstand": null,
+  "vergemaalEllerFremtidsfullmakt": null,
+  "utflyttingFraNorge": null,
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": null,
+  "navn": null,
+  "sikkerhetstiltak": null,
+  "statsborgerskap": null,
+  "telefonnummer": null,
+  "kontaktadresse": null,
+  "bostedsadresse": null
+}

@@ -7,7 +7,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
 @Service
-class SamClient(private val samRestTemplate: RestTemplate) {
+class SamPersonaliaClient(private val samRestTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 

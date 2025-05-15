@@ -15,15 +15,15 @@ import java.time.LocalDate
 @Service
 class SivilstandService(
     private val personService: PersonService,
-    private val samClient: SamClient,
+    private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
-        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
+        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
         val gyldigident = if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
@@ -75,7 +75,7 @@ class SivilstandService(
 
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
 
-                    samClient.oppdaterSamPersonalia(createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
+                    samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
                 }
             }
 

@@ -19,22 +19,22 @@ import java.time.LocalDateTime
 class SivilstandServiceTest {
 
     private val personService = mockk<PersonService>()
-    private val samClient = mockk<SamClient>()
+    private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val sivilstandService = SivilstandService(personService, samClient)
+    private val sivilstandService = SivilstandService(personService, samPersonaliaClient)
 
 
     @Test
     fun processHendelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
 
@@ -43,13 +43,13 @@ class SivilstandServiceTest {
 
         every { personService.hentPerson(any()) } returns mockPdlPerson()
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(gyldigFraOgMed = null))
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
 
@@ -57,7 +57,7 @@ class SivilstandServiceTest {
     fun processHendelseMedAdressebeskyttelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
@@ -65,7 +65,7 @@ class SivilstandServiceTest {
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
-            samClient.oppdaterSamPersonalia(
+            samPersonaliaClient.oppdaterSamPersonalia(
                 match {
                     it.newPerson.fnr == mockHendelse.personidenter.first { Fodselsnummer.validFnr(it) } &&
                     it.newPerson.adressebeskyttelse == listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)

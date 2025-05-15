@@ -1,0 +1,33 @@
+{
+  "hendelseId": "8f529358-5555-431b-8c8a-4f1868b9c78c",
+  "personidenter": [
+    "05840399895",
+    "2969647419749"
+  ],
+  "master": "FREG",
+  "opprettet": "2025-05-13T08:44:34.013Z",
+  "opplysningstype": "FOLKEREGISTERIDENTIFIKATOR_V1",
+  "endringstype": "OPPRETTET",
+  "tidligereHendelseId": null,
+  "adressebeskyttelse": null,
+  "doedfoedtBarn": null,
+  "doedsfall": null,
+  "foedsel": null,
+  "forelderBarnRelasjon": null,
+  "familierelasjon": null,
+  "sivilstand": null,
+  "vergemaalEllerFremtidsfullmakt": null,
+  "utflyttingFraNorge": null,
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": {
+    "identifikasjonsnummer": "05840399895",
+    "type": "DNR",
+    "status": "iBruk"
+  },
+  "navn": null,
+  "sikkerhetstiltak": null,
+  "statsborgerskap": null,
+  "telefonnummer": null,
+  "kontaktadresse": null,
+  "bostedsadresse": null
+}

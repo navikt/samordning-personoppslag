@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Test
 class DoedsfallServiceTest {
 
     private val personService = mockk<PersonService>()
-    private val samClient = mockk<SamClient>()
+    private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val doedsfallService = DoedsfallService(personService, samClient)
+    private val doedsfallService = DoedsfallService(personService, samPersonaliaClient)
 
 
     @Test
@@ -28,13 +28,13 @@ class DoedsfallServiceTest {
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         every { personService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
 
@@ -45,14 +45,14 @@ class DoedsfallServiceTest {
 
         every { personService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
         every { personService.hentIdent(any(), any()) } returns  NorskIdent("24828296260")
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
-            samClient.oppdaterSamPersonalia(
+            samPersonaliaClient.oppdaterSamPersonalia(
                 match {
                     mockHendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.contains(it.newPerson.fnr) &&
                             it.newPerson.adressebeskyttelse == listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)

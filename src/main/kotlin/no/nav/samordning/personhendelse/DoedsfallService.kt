@@ -15,7 +15,7 @@ import java.time.LocalDate
 @Service
 class DoedsfallService(
     private val personService: PersonService,
-    private val samClient: SamClient,
+    private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -41,7 +41,7 @@ class DoedsfallService(
             identer.first()
         }
 
-        samClient.oppdaterSamPersonalia(
+        samPersonaliaClient.oppdaterSamPersonalia(
             createDoedsfallRequest(
                 hendelseId = personhendelse.hendelseId,
                 fnr = gyldigident,

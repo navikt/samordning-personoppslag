@@ -17,22 +17,22 @@ import org.junit.jupiter.api.Test
 class FolkeregisterServiceTest {
 
     private val personService = mockk<PersonService>()
-    private val samClient = mockk<SamClient>()
+    private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val folkeregisterService = FolkeregisterService(personService, samClient)
+    private val folkeregisterService = FolkeregisterService(personService, samPersonaliaClient)
 
 
     @Test
     fun processHendelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
 
@@ -40,7 +40,7 @@ class FolkeregisterServiceTest {
     fun processHendelseMedAdressebeskyttelse() {
 
         every { personService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
-        justRun { samClient.oppdaterSamPersonalia(any()) }
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse())
@@ -48,7 +48,7 @@ class FolkeregisterServiceTest {
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
-            samClient.oppdaterSamPersonalia(
+            samPersonaliaClient.oppdaterSamPersonalia(
                 match {
                     it.newPerson.fnr == mockHendelse.personidenter.first { Fodselsnummer.validFnr(it) } &&
                             it.newPerson.adressebeskyttelse == listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
