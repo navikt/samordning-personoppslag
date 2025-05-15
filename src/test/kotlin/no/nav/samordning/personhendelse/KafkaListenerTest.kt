@@ -10,6 +10,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.person.pdl.leesah.Personhendelse
+import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -33,12 +34,14 @@ class KafkaListenerTest {
     //private val mapper =  jacksonObjectMapper().registerModule(JavaTimeModule())
     private val mapper = configureObjectMapper()
     private val mockAck = mockk<Acknowledgment>()
+    private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
 
     private val listener = PdlLeesahKafkaListener(
         adresseService = adresseService,
         doedsfallService = doedsfallService,
         folkeregisterService = folkeregisterService,
-        sivilstandService = sivilstandService
+        sivilstandService = sivilstandService,
+        metricsHelper = metricsHelper
     )
 
     @Test
@@ -76,6 +79,25 @@ class KafkaListenerTest {
         verify(exactly = 2) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         verify(exactly = 1) { personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) }
 
+    }
+
+    @Test
+    fun `personalhendelse på litt forskjellige records skal gå ok`() {
+        val hendelse1 = hentHendelsefraFil("/leesha_sivilstandhendelse1.json")
+        val hendelse2 = hentHendelsefraFil("/leesha_folkeregisteridentifikator_hendelse2.json", "54496214261", "17912099997")
+        val hendelse3 = hentHendelsefraFil("/leesha_sivilstandhendelse1.json", "21883649874", "17912099997")
+        val hendelse4 = hentHendelsefraFil("/leesha_doedsfall_hendelse1.json")
+
+
+        every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList() andThen emptyList() andThen emptyList()
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        justRun { mockAck.acknowledge() }
+
+        listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2, hendelse3, hendelse4)), mockAck)
+
+        verify(exactly = 4) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 4) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { mockAck.acknowledge() }
     }
 
     @Test
