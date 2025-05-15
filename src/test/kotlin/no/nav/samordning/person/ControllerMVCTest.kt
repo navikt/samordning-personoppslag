@@ -309,6 +309,49 @@ internal class ControllerMVCTest {
     inner class SamPersontest {
 
         @Test
+        fun `samperson with sivilstand i parallell valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList()).copy(
+                bostedsadresse = mockBostedsadresse(
+                    vegadresse = null,
+                    utenlandskAdresse = mockUtenlandskAdresse()
+                ),
+                sivilstand = mockSivilstandParalell()
+            )
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.kortnavn") { value("FME") }
+                    jsonPath("$.etternavn") { value("Etternavn") }
+                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001 GREATEREAST") }
+                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
+                    jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
+                    jsonPath("$.utenlandsAdresse.postnr") { value("") }
+                    jsonPath("$.utenlandsAdresse.poststed") { value("") }
+                    jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
+                    jsonPath("$.dodsdato") { value(null) }
+                    jsonPath("$.sivilstand") { value("GIFT") }
+                    jsonPath("$.diskresjonskode") { value("") }
+
+                }
+        }
+
+
+        @Test
         fun `samperson with bostedsadresse utland then return valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 

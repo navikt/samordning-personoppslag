@@ -27,13 +27,13 @@ class PersonService(
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
-    private lateinit var hentPersonMetric: Metric
-    private lateinit var hentAdresseMetric: Metric
-    private lateinit var hentSamPersonMetric: Metric
-    private lateinit var harAdressebeskyttelseMetric: Metric
-    private lateinit var hentIdentMetric: Metric
-    private lateinit var hentIdenterMetric: Metric
-    private lateinit var hentGeografiskTilknytningMetric: Metric
+    private var hentPersonMetric: Metric
+    private var hentAdresseMetric: Metric
+    private var hentSamPersonMetric: Metric
+    private var harAdressebeskyttelseMetric: Metric
+    private var hentIdentMetric: Metric
+    private var hentIdenterMetric: Metric
+    private var hentGeografiskTilknytningMetric: Metric
 
     init {
         hentPersonMetric = metricsHelper.init("hentPerson")
@@ -100,12 +100,12 @@ class PersonService(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilSamPerson(ident, it).also { logger.debug("ferdig med koverting til PdlSamPerson") }
+                konverterTilSamPerson(it).also { logger.debug("ferdig med koverting til PdlSamPerson") }
             }
         }
     }
 
-    internal fun <T : Ident> konverterTilSamPerson(ident: T, pdlPerson: HentPerson): PdlSamPerson {
+    internal fun konverterTilSamPerson(pdlPerson: HentPerson): PdlSamPerson {
         secureLogger.info("hentPerson: {}", StructuredArguments.kv("pdl-response", mapper.writeValueAsString(pdlPerson)) )
 
         val navn = pdlPerson.navn
@@ -118,7 +118,11 @@ class PersonService(
         val statsborgerskap = pdlPerson.statsborgerskap
             .distinctBy { it.land }
 
-        val sivilstand = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk }
+        val sivilstandFreg = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk && it.metadata.master == "FREG" }
+        val sivilstandTmp = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk && it.metadata.master != "FREG" }
+
+        //val sivilstand = sivilstandFreg?.metadata?.sisteRegistrertDato() != sivilstandTmp?.metadata?.sisteRegistrertDato()
+        val sivilstand : Sivilstand? = sivilstandFreg?.takeIf { it.metadata.sisteRegistrertDato() == sivilstandTmp?.metadata?.sisteRegistrertDato() } ?: sivilstandTmp
 
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
