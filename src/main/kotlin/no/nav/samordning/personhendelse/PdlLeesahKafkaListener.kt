@@ -27,7 +27,7 @@ class PdlLeesahKafkaListener(
     private var leesahKafkaListenerMetric: Metric
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
-    private val messureOpplysningstype = MessureOpplysningstype()
+    private val messureOpplysningstype = MessureOpplysningstypeHelper()
 
     init {
         leesahKafkaListenerMetric = metricsHelper.init("leesahPersonoppslag")
@@ -63,33 +63,29 @@ class PdlLeesahKafkaListener(
                             "SIVILSTAND_V1" -> {
                                 secureLogger.info("Behandler SIVILSTAND_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                sivilstandService.opprettSivilstandsMelding(personhendelse)
-                                messureOpplysningstype.addKjent(personhendelse)
+                                sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
                             }
 
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                                 secureLogger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                folkeregisterService.opprettFolkeregistermelding(personhendelse)
-                                messureOpplysningstype.addKjent(personhendelse)
+                                folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
                             }
 
                             "DOEDSFALL_V1" -> {
                                 secureLogger.info("Behandler DOEDSFALL_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                doedsfallService.opprettDoedsfallmelding(personhendelse)
-                                messureOpplysningstype.addKjent(personhendelse)
+                                doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
                             }
 
                             "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
                                 secureLogger.info("Behandler adresse: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                adresseService.opprettAdressemelding(personhendelse)
-                                messureOpplysningstype.addKjent(personhendelse)
+                                adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
                             }
 
                             else -> {
-                                logger.info("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
+                                logger.debug("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
                                 messureOpplysningstype.addUkjent(personhendelse)
                             }
                         }
@@ -113,10 +109,9 @@ class PdlLeesahKafkaListener(
 
 }
 
-class MessureOpplysningstype() {
+class MessureOpplysningstypeHelper() {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-
     private val knownType : MutableList<String> = mutableListOf()
     private val unkownType : MutableList<String> = mutableListOf()
 
@@ -128,14 +123,14 @@ class MessureOpplysningstype() {
 
     fun createMetrics() {
         try {
-               knownType.groupBy { it }.map {
-                    logger.debug("Opplysningstype: ${it.key}, size: ${it.value.size}")
-                    Metrics.counter("sp_kjent_opplysningstype", "Kjent", it.key, "Antall", it.value.size.toString()).increment()
-                }
-                unkownType.groupBy { it }.map {
-                    logger.debug("Ukjentopplysningstype: ${it.key}, size: ${it.value.size}")
-                    Metrics.counter("sp_ukjent_opplysningstype", "Ukjent", it.key, "Antall", it.value.size.toString()).increment()
-                }
+            knownType.map { navn ->
+                logger.debug("Opplysningstype: $navn")
+                Metrics.counter("sp_kjent_opplysningstype", "Navn", navn).increment()
+            }
+            unkownType.map { navn ->
+                logger.debug("Ukjentopplysningstype: $navn")
+                Metrics.counter("sp_ukjent_opplysningstype", "Navn", navn).increment()
+            }
         } catch (_: Exception) {
             logger.warn("Metrics feilet på opplysningstype")
         }

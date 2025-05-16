@@ -30,7 +30,7 @@ class SivilstandServiceTest {
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
-        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -45,7 +45,7 @@ class SivilstandServiceTest {
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
-        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(gyldigFraOgMed = null))
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(gyldigFraOgMed = null), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -60,7 +60,7 @@ class SivilstandServiceTest {
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
-        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse())
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }

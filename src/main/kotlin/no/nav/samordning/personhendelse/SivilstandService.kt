@@ -21,14 +21,14 @@ class SivilstandService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
-    fun opprettSivilstandsMelding(personhendelse: Personhendelse) {
+    fun opprettSivilstandsMelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
 
         val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
         val gyldigident = if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
                 personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 secureLogger.warn("Feil ved henting av ident fra PDL for hendelse: ${identer.first()}")
                 identer.first()
             }
@@ -36,51 +36,41 @@ class SivilstandService(
             identer.first()
         }
 
-        opprettSivilstandsMelding(
-            hendelseId = personhendelse.hendelseId,
-            fnr = gyldigident,
-            endringstype = personhendelse.endringstype,
-            gyldigFraOgMed = personhendelse.sivilstand?.gyldigFraOgMed,
-            sivilstandsType = personhendelse.sivilstand?.type,
-        )
+        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: ${personhendelse.endringstype}, sivilstandsType: ${personhendelse.sivilstand?.type}, sivilstandDato: ${personhendelse.sivilstand?.gyldigFraOgMed}, hendelseId: ${personhendelse.hendelseId}")
 
-    }
-
-    private fun opprettSivilstandsMelding(
-        hendelseId: String,
-        fnr: String,
-        endringstype: Endringstype?,
-        gyldigFraOgMed: LocalDate?,
-        sivilstandsType: String?
-    ) {
-        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: $endringstype, sivilstandsType: $sivilstandsType, sivilstandDato: $gyldigFraOgMed, hendelseId: $hendelseId")
-
-        when (endringstype) {
+        when (personhendelse.endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
-                secureLogger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, fnr=${fnr}, hendelseId=${hendelseId}")
-                logger.info("Ignorer da endringstype $endringstype ikke støttes for sivilstand, hendelseId=${hendelseId}")
+                secureLogger.info("Ignorer da endringstype ${personhendelse.endringstype} ikke støttes for sivilstand, fnr=$gyldigident, hendelseId=${personhendelse.hendelseId}")
+                logger.info("Ignorer da endringstype ${personhendelse.endringstype} ikke støttes for sivilstand, hendelseId=${personhendelse.hendelseId}")
                 return
             }
 
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
-                val fomDato = if (gyldigFraOgMed == null) {
-                    val person = personService.hentPerson(NorskIdent(fnr))
+                val fomDato = if (personhendelse.sivilstand?.gyldigFraOgMed == null) {
+                    val person = personService.hentPerson(NorskIdent(gyldigident))
                     person?.sivilstand?.maxByOrNull { it.metadata.sisteRegistrertDato() }?.gyldigFraOgMed
                 } else {
-                    gyldigFraOgMed
+                    personhendelse.sivilstand?.gyldigFraOgMed
                 }.also { logger.info("Hentet fomDato : $it") }
 
-                if (sivilstandsType != null && fomDato != null) {
-                    logger.info("Oppretter hendelse for sivilstand, hendelseId=$hendelseId, endringstype=$endringstype, fomDato=$fomDato")
+                if (personhendelse.sivilstand?.type != null && fomDato != null) {
+                    logger.info("Oppretter hendelse for sivilstand, hendelseId=$personhendelse.hendelseId, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
-                    val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr)
+                    val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
 
-                    samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(hendelseId, fnr, fomDato, sivilstandsType, adressebeskyttelse))
+                    samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(
+                        hendelseId = personhendelse.hendelseId,
+                        fnr = gyldigident,
+                        fomDato = fomDato,
+                        sivilstandsType = personhendelse.sivilstand?.type ?: "",
+                        adressebeskyttelse = adressebeskyttelse
+                    ))
                 }
+                messure.addKjent(personhendelse)
             }
 
             else -> {
-                throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${hendelseId}")
+                throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${personhendelse.hendelseId}")
             }
         }
     }

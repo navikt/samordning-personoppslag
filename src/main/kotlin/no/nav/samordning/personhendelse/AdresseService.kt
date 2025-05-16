@@ -19,7 +19,7 @@ class AdresseService(
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    fun opprettAdressemelding(personhendelse: Personhendelse) {
+    fun opprettAdressemelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.OPPRETTET) {
             val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
@@ -27,7 +27,7 @@ class AdresseService(
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
                     personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-                } catch (ex: Exception) {
+                } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL")
                     identer.first()
                 }
@@ -43,6 +43,7 @@ class AdresseService(
                     opplysningstype = personhendelse.opplysningstype,
                 )
             )
+            messure.addKjent(personhendelse)
         } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return

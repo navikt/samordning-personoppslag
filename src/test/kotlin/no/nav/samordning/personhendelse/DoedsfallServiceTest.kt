@@ -30,7 +30,7 @@ class DoedsfallServiceTest {
         every { personService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
-        doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
+        doedsfallService.opprettDoedsfallmelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -47,7 +47,7 @@ class DoedsfallServiceTest {
         every { personService.hentIdent(any(), any()) } returns  NorskIdent("24828296260")
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
-        doedsfallService.opprettDoedsfallmelding(mockPersonhendelse())
+        doedsfallService.opprettDoedsfallmelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }

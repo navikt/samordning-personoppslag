@@ -17,7 +17,7 @@ class FolkeregisterService(
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    fun opprettFolkeregistermelding(personhendelse: Personhendelse) {
+    fun opprettFolkeregistermelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.OPPRETTET) {
             val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
             val gammeltFnr =
@@ -43,6 +43,7 @@ class FolkeregisterService(
                     adressebeskyttelse = adressebeskyttelse
                 )
             )
+            messure.addKjent(personhendelse)
         } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return

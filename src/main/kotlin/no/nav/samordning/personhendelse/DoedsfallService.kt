@@ -21,7 +21,7 @@ class DoedsfallService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
-    fun opprettDoedsfallmelding(personhendelse: Personhendelse) {
+    fun opprettDoedsfallmelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
@@ -33,7 +33,7 @@ class DoedsfallService(
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
                 personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 secureLogger.warn("Feil ved henting av ident fra PDL for hendelse: ${identer.first()}")
                 identer.first()
             }
@@ -50,6 +50,7 @@ class DoedsfallService(
             )
         )
 
+        messure.addKjent(personhendelse)
     }
 
     private fun createDoedsfallRequest(

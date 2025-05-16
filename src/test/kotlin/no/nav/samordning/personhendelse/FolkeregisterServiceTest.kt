@@ -28,7 +28,7 @@ class FolkeregisterServiceTest {
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
-        folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse())
+        folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -43,7 +43,7 @@ class FolkeregisterServiceTest {
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
-        folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse())
+        folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
