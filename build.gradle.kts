@@ -59,7 +59,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-actuator:$springbootVersion")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
-    implementation("org.springframework.retry:spring-retry:2.0.11")
+    implementation("org.springframework.retry:spring-retry:2.0.12")
 
     //caffeine cache manager
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
