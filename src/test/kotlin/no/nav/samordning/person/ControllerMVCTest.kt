@@ -305,20 +305,14 @@ internal class ControllerMVCTest {
     }
 
     @Nested
-    @DisplayName("SamPerson")
-    inner class SamPersontest {
+    @DisplayName("SamPerson sivilstand")
+    inner class SamPersonSivilstandtest {
 
         @Test
         fun `samperson with sivilstand i parallell valid response`() {
             val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
 
-            val hentPerson = HentPerson.mockTestPerson(kontaktadresse = emptyList()).copy(
-                bostedsadresse = mockBostedsadresse(
-                    vegadresse = null,
-                    utenlandskAdresse = mockUtenlandskAdresse()
-                ),
-                sivilstand = mockSivilstandParalell()
-            )
+            val hentPerson = HentPerson.mockTestPerson(sivilstand = mockSivilstandParalell())
             val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
 
             every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
@@ -335,21 +329,177 @@ internal class ControllerMVCTest {
                     status { isOk() }
 
                     jsonPath("$.fnr") { value("1213123123") }
-                    jsonPath("$.kortnavn") { value("FME") }
-                    jsonPath("$.etternavn") { value("Etternavn") }
-                    jsonPath("$.utenlandsAdresse.adresselinje1") { value("1001 GREATEREAST") }
-                    jsonPath("$.utenlandsAdresse.adresselinje2") { value("1021 PLK UK LONDON CAL") }
-                    jsonPath("$.utenlandsAdresse.adresselinje3") { value("") }
-                    jsonPath("$.utenlandsAdresse.postnr") { value("") }
-                    jsonPath("$.utenlandsAdresse.poststed") { value("") }
-                    jsonPath("$.utenlandsAdresse.land") { value("STORBRITANNIA") }
-                    jsonPath("$.dodsdato") { value(null) }
                     jsonPath("$.sivilstand") { value("GIFT") }
-                    jsonPath("$.diskresjonskode") { value("") }
-
                 }
         }
 
+        @Test
+        fun `samperson with sivilstand i parallell freg gml valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val mockSivilstand = listOf(
+                Sivilstand(
+                    type = Sivilstandstype.ENKE_ELLER_ENKEMANN,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 11),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "NAV", registrert = LocalDateTime.of(2010, 10, 11, 12, 0, 0))
+                ),
+                Sivilstand(
+                    type = Sivilstandstype.SKILT_PARTNER,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "FREG", registrert = LocalDateTime.of(2010, 10, 10, 12, 0, 0))
+                )
+            )
+
+            val hentPerson = HentPerson.mockTestPerson(sivilstand = mockSivilstand)
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.sivilstand") { value("ENKE") }
+                }
+        }
+
+        @Test
+        fun `samperson with sivilstand i parallell freg nyest valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val mockSivilstand = listOf(
+                Sivilstand(
+                    type = Sivilstandstype.ENKE_ELLER_ENKEMANN,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 11),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "NAV", registrert = LocalDateTime.of(2010, 10, 11, 12, 0, 0))
+                ),
+                Sivilstand(
+                    type = Sivilstandstype.SKILT_PARTNER,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "FREG", registrert = LocalDateTime.of(2010, 10, 11, 12, 10, 50))
+                )
+            )
+
+            val hentPerson = HentPerson.mockTestPerson(sivilstand = mockSivilstand)
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.sivilstand") { value("SKPA") }
+                }
+        }
+
+        @Test
+        fun `samperson with sivilstand i parallell ingen freg valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val mockSivilstand = listOf(
+                Sivilstand(
+                    type = Sivilstandstype.SKILT_PARTNER,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "NAV", registrert = LocalDateTime.of(2010, 10, 10, 12, 0, 0))
+                ),
+                Sivilstand(
+                    type = Sivilstandstype.ENKE_ELLER_ENKEMANN,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 11),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "NAV", registrert = LocalDateTime.of(2010, 10, 11, 12, 0, 0))
+                )
+            )
+
+            val hentPerson = HentPerson.mockTestPerson(sivilstand = mockSivilstand)
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.sivilstand") { value("ENKE") }
+                }
+        }
+
+
+        @Test
+        fun `samperson with sivilstand kun freg valid response`() {
+            val token = issueSystembrukerToken(roles = listOf("SAM", "BRUKER"))
+
+            val mockSivilstand = listOf(
+                Sivilstand(
+                    type = Sivilstandstype.SKILT_PARTNER,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 10),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "FREG", registrert = LocalDateTime.of(2010, 10, 10, 12, 0, 0))
+                ),
+                Sivilstand(
+                    type = Sivilstandstype.UGIFT,
+                    gyldigFraOgMed = LocalDate.of(2010, 10, 11),
+                    relatertVedSivilstand = "1020203010",
+                    metadata = mockMeta(master = "FREG", registrert = LocalDateTime.of(2010, 10, 11, 12, 0, 0))
+                )
+            )
+
+            val hentPerson = HentPerson.mockTestPerson(sivilstand = mockSivilstand)
+            val hentPersonResponse = HentPersonResponse(HentPersonResponseData(hentPerson))
+
+            every { pdlRestTemplate.postForObject<HentPersonResponse>(any(), any(), HentPersonResponse::class) } returns hentPersonResponse
+
+            val requestBody = """ { "fnr": "1213123123" }  """.trimIndent()
+            mvc.post("/api/samperson") {
+                header("Authorization", "Bearer $token")
+                contentType = MediaType.APPLICATION_JSON
+                content = requestBody
+            }
+
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+
+                    jsonPath("$.fnr") { value("1213123123") }
+                    jsonPath("$.sivilstand") { value("UGIF") }
+                }
+        }
+
+    }
+
+
+    @Nested
+    @DisplayName("SamPerson")
+    inner class SamPersontest {
 
         @Test
         fun `samperson with bostedsadresse utland then return valid response`() {
@@ -1234,7 +1384,7 @@ internal class ControllerMVCTest {
     }
 
 
-    private fun mockMeta(master: String = "MetaMaster", registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
+    private fun mockMeta(master: String = "MetaMaster", registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14), historisk: Boolean = false): Metadata {
         return Metadata(
             endringer = listOf(
                 Endring(
@@ -1244,7 +1394,7 @@ internal class ControllerMVCTest {
                     systemkilde = "Kilde test",
                     type = Endringstype.OPPRETT
                 )),
-            historisk = false,
+            historisk = historisk,
             master = master,
             opplysningsId = "acbe1a46-e3d1"
         )

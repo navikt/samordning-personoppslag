@@ -118,11 +118,7 @@ class PersonService(
         val statsborgerskap = pdlPerson.statsborgerskap
             .distinctBy { it.land }
 
-        val sivilstandFreg = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk && it.metadata.master == "FREG" }
-        val sivilstandTmp = pdlPerson.sivilstand.firstOrNull { !it.metadata.historisk && it.metadata.master != "FREG" }
-
-        //val sivilstand = sivilstandFreg?.metadata?.sisteRegistrertDato() != sivilstandTmp?.metadata?.sisteRegistrertDato()
-        val sivilstand : Sivilstand? = sivilstandFreg?.takeIf { it.metadata.sisteRegistrertDato() == sivilstandTmp?.metadata?.sisteRegistrertDato() } ?: sivilstandTmp
+        val sivilstand : Sivilstand? = filterSivilstand(pdlPerson)
 
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -156,6 +152,17 @@ class PersonService(
             kontaktinformasjonForDoedsbo,
         ).also {
             secureLogger.info("pdlPerson: {}", StructuredArguments.kv("pdl-response", mapper.writeValueAsString(it)) )
+        }
+    }
+
+    internal fun filterSivilstand(pdlPerson: HentPerson) : Sivilstand? {
+        //val sivilstand = sivilstandFreg?.metadata?.sisteRegistrertDato() != sivilstandTmp?.metadata?.sisteRegistrertDato()
+        val sivilstandFreg = pdlPerson.sivilstand.filter { !it.metadata.historisk && it.metadata.master == "FREG" }.maxByOrNull { it.metadata.sisteRegistrertDato()}
+        val sivilstandTmp = pdlPerson.sivilstand.filter { !it.metadata.historisk && it.metadata.master != "FREG"}.maxByOrNull { it.metadata.sisteRegistrertDato()}
+        return if (sivilstandTmp != null) {
+            sivilstandFreg?.takeIf { it.metadata.sisteRegistrertDato() >= sivilstandTmp.metadata.sisteRegistrertDato() } ?: sivilstandTmp
+        } else {
+            sivilstandFreg
         }
     }
 
