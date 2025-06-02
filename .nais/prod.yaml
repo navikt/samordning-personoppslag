@@ -45,15 +45,14 @@ spec:
     periodSeconds: 5
   replicas:
     min: 2
-    max: 3
+    max: 4
     cpuThresholdPercentage: 80
   resources:
     limits:
-      cpu: 1000m
-      memory: 1Gi
+      memory: 750Mi
     requests:
-      cpu: 500m
-      memory: 650Mi
+      cpu: 150m
+      memory: 500Mi
   kafka:
     pool: nav-prod
   vault:
