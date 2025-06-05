@@ -3,11 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val kotlinVersion = "2.1.21"
 val prometeusVersion = "1.15.0"
-val springbootVersion = "3.4.5"
-val springkafkaVersion="3.3.5"
+val springbootVersion = "3.5.0"
+val springkafkaVersion="3.3.6"
 val springwebmvcpac4jVersion = "8.0.1"
 val springframeworkbomVersion = "6.2.7"
-val jacksonkotlinVersion = "2.18.3"
+val jacksonkotlinVersion = "2.19.0"
 val slf4jVersion = "2.0.17"
 val logstashlogbackVersion = "8.1"
 val tokensupportVersion = "5.0.29"
@@ -20,7 +20,7 @@ val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.13.0"
 
 plugins {
-    val pluginSpringBootVersion = "3.4.5"
+    val pluginSpringBootVersion = "3.5.0"
     val pluginKotlinVersion = "2.1.21"
 
     kotlin("jvm") version pluginKotlinVersion
