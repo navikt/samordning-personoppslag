@@ -1,15 +1,11 @@
 package no.nav.samordning.person.pdl
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import net.logstash.logback.argument.StructuredArguments
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.personhendelse.BostedsAdresseDto
 import no.nav.samordning.personhendelse.TilleggsAdresseDto
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,8 +20,6 @@ class PersonService(
 ) {
 
     private val logger = LoggerFactory.getLogger(PersonService::class.java)
-    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
-    private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     private var hentPersonMetric: Metric
     private var hentAdresseMetric: Metric
@@ -106,8 +100,6 @@ class PersonService(
     }
 
     internal fun konverterTilSamPerson(pdlPerson: HentPerson): PdlSamPerson {
-        secureLogger.info("hentPerson: {}", StructuredArguments.kv("pdl-response", mapper.writeValueAsString(pdlPerson)) )
-
         val navn = pdlPerson.navn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -150,9 +142,7 @@ class PersonService(
             bostedsadresse,
             kontaktadresse,
             kontaktinformasjonForDoedsbo,
-        ).also {
-            secureLogger.info("pdlPerson: {}", StructuredArguments.kv("pdl-response", mapper.writeValueAsString(it)) )
-        }
+        )
     }
 
     internal fun filterSivilstand(pdlPerson: HentPerson) : Sivilstand? {
