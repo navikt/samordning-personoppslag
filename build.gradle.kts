@@ -66,7 +66,7 @@ dependencies {
 
     implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
-    implementation("io.confluent:kafka-avro-serializer:7.9.1") {
+    implementation("io.confluent:kafka-avro-serializer:8.0.0") {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2023.12.14-13.21-9d7ae4bfc982")
