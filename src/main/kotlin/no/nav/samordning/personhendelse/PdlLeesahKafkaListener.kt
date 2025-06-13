@@ -26,7 +26,6 @@ class PdlLeesahKafkaListener(
 
     private var leesahKafkaListenerMetric: Metric
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
     private val messureOpplysningstype = MessureOpplysningstypeHelper()
 
     init {
@@ -61,25 +60,21 @@ class PdlLeesahKafkaListener(
                     leesahKafkaListenerMetric.measure {
                         when (personhendelse.opplysningstype) {
                             "SIVILSTAND_V1" -> {
-                                secureLogger.info("Behandler SIVILSTAND_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
                             }
 
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
-                                secureLogger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
                             }
 
                             "DOEDSFALL_V1" -> {
-                                secureLogger.info("Behandler DOEDSFALL_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
                             }
 
                             "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
-                                secureLogger.info("Behandler adresse: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
                             }
