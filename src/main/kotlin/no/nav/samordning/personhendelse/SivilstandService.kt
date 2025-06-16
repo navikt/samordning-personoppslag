@@ -19,7 +19,6 @@ class SivilstandService(
 ) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val secureLogger: Logger = LoggerFactory.getLogger("SECURE_LOG")
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
 
@@ -29,7 +28,7 @@ class SivilstandService(
                 logger.info("identer fra pdl inneholder flere enn 1")
                 personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
             } catch (_: Exception) {
-                secureLogger.warn("Feil ved henting av ident fra PDL for hendelse: ${identer.first()}")
+                logger.warn("Feil ved henting av ident fra PDL for hendelse")
                 identer.first()
             }
         } else {
@@ -40,7 +39,6 @@ class SivilstandService(
 
         when (personhendelse.endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
-                secureLogger.info("Ignorer da endringstype ${personhendelse.endringstype} ikke støttes for sivilstand, fnr=$gyldigident, hendelseId=${personhendelse.hendelseId}")
                 logger.info("Ignorer da endringstype ${personhendelse.endringstype} ikke støttes for sivilstand, hendelseId=${personhendelse.hendelseId}")
                 return
             }
