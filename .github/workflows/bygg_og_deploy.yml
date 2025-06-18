@@ -10,15 +10,14 @@ on:
     branches:
       - main
 
-env:
-  is_dependabot_run: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.actor.login == 'dependabot[bot]' }}
-  is_push: ${{ github.event_name == 'push' }}
-  is_manual: ${{ github.event_name == 'workflow_dispatch' }}
-
 jobs:
   build_and_tag:
-    if: env.is_dependabot_run == 'true' || env.is_push == 'true' || env.is_manual == 'true'
-
+    if: >
+      (github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]') ||
+      (github.event_name == 'push') ||
+      (github.event_name == 'workflow_dispatch')
     name: 'Build and tag'
     runs-on: ubuntu-latest
     permissions:
