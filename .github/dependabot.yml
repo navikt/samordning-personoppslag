@@ -7,6 +7,10 @@ updates:
       time: "05:00"
       timezone: Europe/Oslo
     open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "direct"
+    commit-message:
+      prefix: "deps"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
