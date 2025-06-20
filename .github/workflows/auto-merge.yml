@@ -51,6 +51,10 @@ jobs:
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Checkout repo
+        if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
+        uses: actions/checkout@v4
+
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
         env:
