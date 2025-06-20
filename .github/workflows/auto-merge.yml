@@ -2,7 +2,7 @@ name: Auto-merge Dependabot Patch Updates
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
+    types: [opened, synchronize, labeled]
 
 permissions:
   contents: write
@@ -12,7 +12,24 @@ jobs:
   automerge:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    env:
+      PR_URL: ${{ github.event.pull_request.html_url }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Check for merged
+        run: |
+          MERGED=$(gh pr view "$PR_NUMBER" --json merged --jq '.merged')
+          
+          if [ "$MERGED" = "true" ]; then
+            echo "PR $PR_NUMBER already merged exiting..."
+            exit 1
+          else
+            echo "Continue merging PR: $PR_URL"
+          fi
+
       - name: Check for dependencies label
         id: label_check
         env:
@@ -51,16 +68,10 @@ jobs:
             echo "patch_update=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Checkout repo
-        if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
-        uses: actions/checkout@v4
-
       - name: Enable auto-merge
         if: steps.check.outputs.patch_update == 'true' && steps.label_check.outputs.has_dependencies_label == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: gh pr merge "$PR_NUMBER" --auto --merge
 
       - name: Failed auto-merge
