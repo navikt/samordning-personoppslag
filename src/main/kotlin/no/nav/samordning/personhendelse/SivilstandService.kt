@@ -52,7 +52,7 @@ class SivilstandService(
                 }.also { logger.info("Hentet fomDato : $it") }
 
                 if (personhendelse.sivilstand?.type != null && fomDato != null) {
-                    logger.info("Oppretter hendelse for sivilstand, hendelseId=$personhendelse.hendelseId, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
+                    logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
 
