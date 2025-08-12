@@ -37,14 +37,20 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 repositories {
     mavenCentral()
 
+
+    maven {
+        url = uri("https://packages.confluent.io/maven")
+    }
+
+    maven {
+        url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
+    }
+
     maven {
         url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
         metadataSources {
             artifact() //Look directly for artifact
         }
-    }
-    maven {
-        url = uri("https://packages.confluent.io/maven")
     }
 
 }
