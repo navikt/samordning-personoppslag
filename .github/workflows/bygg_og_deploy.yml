@@ -28,7 +28,7 @@ jobs:
     steps:
       # PULL REPO
       - name: Pull repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # JAVA
       - name: Java 21
@@ -62,7 +62,7 @@ jobs:
     name: Deploy NAIS Q1
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Deploy to Q1
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -79,7 +79,7 @@ jobs:
     name: Deploy NAIS Q2
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Deploy to Q2
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -99,7 +99,7 @@ jobs:
     name: Deploy NAIS PROD
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Deploy to PROD
         uses: nais/deploy/actions/deploy@v2
         env:
