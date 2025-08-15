@@ -75,7 +75,7 @@ dependencies {
     implementation("io.confluent:kafka-avro-serializer:7.9.1") {
         exclude(group = "org.apache.avro", module = "avro")
     }
-    implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2023.12.14-13.21-9d7ae4bfc982")
+    implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
     implementation("org.apache.avro:avro:1.12.0")
 
     //spring boot 3.0 jakaera-api
