@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.1.21"
+val kotlinVersion = "2.2.10"
 val prometeusVersion = "1.15.3"
 val springbootVersion = "3.5.5"
 val springkafkaVersion="3.3.9"
@@ -21,7 +21,7 @@ val junitplatformVersion = "1.13.4"
 
 plugins {
     val pluginSpringBootVersion = "3.5.5"
-    val pluginKotlinVersion = "2.1.21"
+    val pluginKotlinVersion = "2.2.10"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -72,10 +72,10 @@ dependencies {
 
     implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
-    implementation("io.confluent:kafka-avro-serializer:7.9.1") {
+    implementation("io.confluent:kafka-avro-serializer:8.0.0") {
         exclude(group = "org.apache.avro", module = "avro")
     }
-    implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2023.12.14-13.21-9d7ae4bfc982")
+    implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
     implementation("org.apache.avro:avro:1.12.0")
 
     //spring boot 3.0 jakaera-api
