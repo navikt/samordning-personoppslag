@@ -18,6 +18,7 @@ val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.5"
 val springmockkVersion = "4.0.2"
 val junitplatformVersion = "1.13.4"
+val commonsLang3Version = "3.18.0"
 
 plugins {
     val pluginSpringBootVersion = "3.5.6"
@@ -104,6 +105,9 @@ dependencies {
     // Micrometer
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
 
+    // div
+    implementation("org.apache.commons:commons-lang3:3.18.0")
+
     // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4jVersion")
@@ -140,4 +144,11 @@ tasks {
         gradleVersion = "8.13"
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.apache.commons" && requested.module.toString() == "commons-lang") {
+                useVersion(commonsLang3Version)
+            }
+        }
+    }
 }
