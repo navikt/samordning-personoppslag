@@ -77,7 +77,7 @@ dependencies {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
-    implementation("org.apache.avro:avro:1.12.0")
+    implementation("org.apache.avro:avro:1.12.1")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
