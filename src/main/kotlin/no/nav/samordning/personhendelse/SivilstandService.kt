@@ -23,16 +23,21 @@ class SivilstandService(
     fun opprettSivilstandsMelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
 
         val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
-        val gyldigident = if (identer.size > 1) {
-            try {
-                logger.info("identer fra pdl inneholder flere enn 1")
-                personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-            } catch (_: Exception) {
-                logger.warn("Feil ved henting av ident fra PDL for hendelse")
-                identer.first()
+        val gyldigident = when(identer.size) {
+            0 -> {
+                logger.warn("Ingen gyldige identer funnet i PDL.")
+                return
             }
-        } else {
-            identer.first()
+            1 -> identer.first()
+            else -> {
+                try {
+                    logger.info("Identer fra PDL inneholder flere enn 1.")
+                    personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                } catch (_: Exception) {
+                    logger.warn("Feil ved henting av ident fra PDL for hendelse.")
+                    identer.firstOrNull() ?: return
+                }
+            }
         }
 
         logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: ${personhendelse.endringstype}, sivilstandsType: ${personhendelse.sivilstand?.type}, sivilstandDato: ${personhendelse.sivilstand?.gyldigFraOgMed}, hendelseId: ${personhendelse.hendelseId}")
