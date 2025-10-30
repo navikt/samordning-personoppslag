@@ -88,22 +88,22 @@ jobs:
           "IMAGE": ${{ needs.build_and_tag.outputs.image }}
 
 
-  deployToProd:
-    needs:
-     - build_and_tag
-     - deployToQ1
-     - deployToQ2
-    permissions:
-      contents: read
-      id-token: write
-    name: Deploy NAIS PROD
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Deploy to PROD
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          "CLUSTER": prod-fss
-          "RESOURCE": .nais/prod.yaml
-          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
-
+#  deployToProd:
+#    needs:
+#     - build_and_tag
+#     - deployToQ1
+#     - deployToQ2
+#    permissions:
+#      contents: read
+#      id-token: write
+#    name: Deploy NAIS PROD
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v5
+#      - name: Deploy to PROD
+#        uses: nais/deploy/actions/deploy@v2
+#        env:
+#          "CLUSTER": prod-fss
+#          "RESOURCE": .nais/prod.yaml
+#          "IMAGE": ${{ needs.build_and_tag.outputs.image }}
+#

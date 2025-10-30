@@ -4,7 +4,7 @@ import no.nav.samordning.interceptor.AzureAdTokenRequestInterceptor
 import no.nav.samordning.interceptor.IOExceptionRetryInterceptor
 import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
 import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_NAV_CALL
-import no.nav.samordning.person.pdl.Behandlingsnummer.*
+import no.nav.samordning.person.pdl.Behandlingsnummer
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
@@ -78,15 +78,7 @@ class RestTemplateConfig {
             request.headers[HttpHeaders.CONTENT_TYPE] = "application/json"
             request.headers["Tema"] = "PEN"
             request.headers[REQUEST_NAV_CALL] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
-            request.headers["Behandlingsnummer"] =
-                SAMORDNING.nummer + "," +
-                UFORETRYGD.nummer + "," +
-                        ALDERPENSJON.nummer + "," +
-                        GJENLEV_OG_OVERGANG.nummer + "," +
-                        AFP_STATLIG_KOMMUNAL.nummer + "," +
-                        AFP_PRIVAT_SEKTOR.nummer + "," +
-                        BARNEPENSJON.nummer
-            // [Borger, Saksbehandler eller System]
+            request.headers["Behandlingsnummer"] = Behandlingsnummer.getAll()
 
             logger.debug("PdlInterceptor httpRequest headers: {}", request.headers)
 
