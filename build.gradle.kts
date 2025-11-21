@@ -106,7 +106,7 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
 
     // div
-    implementation("org.apache.commons:commons-lang3:3.19.0")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
 
     // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
