@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.mockk.every
-import io.mockk.justRun
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonService
@@ -17,14 +14,15 @@ import no.nav.samordning.person.pdl.model.NorskIdent
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.springframework.http.ResponseEntity
 import org.springframework.kafka.support.Acknowledgment
-
-//no.nav.samordning.personhendelse.KafkaListenerTest
+import org.springframework.web.client.RestTemplate
 
 class KafkaListenerTest {
 
     private val personService = mockk<PersonService>()
-    private val samPersonaliaClient = mockk<SamPersonaliaClient>()
+    private val samRestTemplate = mockk<RestTemplate>()
+    private val samPersonaliaClient = SamPersonaliaClient(samRestTemplate)
 
     private val sivilstandService = SivilstandService(personService, samPersonaliaClient)
     private val adresseService = AdresseService(personService, samPersonaliaClient)
@@ -49,7 +47,12 @@ class KafkaListenerTest {
         val hendelse = hentHendelsefraFil("/leesha_sivilstandhendelse1.json")
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        every { samRestTemplate.postForEntity(
+            eq("/api/oppdaterpersonalia"),
+            any<OppdaterPersonaliaRequest>(),
+            eq(Unit::class.java)
+        ) } returns ResponseEntity.ok().build()
+
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
@@ -69,7 +72,14 @@ class KafkaListenerTest {
         val hendelse2 = hentHendelsefraFil("/leesha_sivilstandhendelse1.json", "21883649874", "54496214261\", \"17912099997")
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+
+        every { samRestTemplate.postForEntity(
+            eq("/api/oppdaterpersonalia"),
+            any<OppdaterPersonaliaRequest>(),
+            eq(Unit::class.java)
+        ) } returns ResponseEntity.ok().build()
+
+        //justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
         every { personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
 
@@ -90,7 +100,11 @@ class KafkaListenerTest {
 
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList() andThen emptyList() andThen emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        every { samRestTemplate.postForEntity(
+            eq("/api/oppdaterpersonalia"),
+            any<OppdaterPersonaliaRequest>(),
+            eq(Unit::class.java)
+        ) } returns ResponseEntity.ok().build()
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2, hendelse3, hendelse4)), mockAck)
@@ -106,7 +120,11 @@ class KafkaListenerTest {
         val hendelse2 = hentHendelsefraFil("/leesha_folkeregisteridentifikator_hendelse2.json")
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        every { samRestTemplate.postForEntity(
+            eq("/api/oppdaterpersonalia"),
+            any<OppdaterPersonaliaRequest>(),
+            eq(Unit::class.java)
+        ) } returns ResponseEntity.ok().build()
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2)), mockAck)
@@ -125,7 +143,11 @@ class KafkaListenerTest {
         val hendelse1 = hentHendelsefraFil("/leesha_doedsfall_hendelse1.json")
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        every { samRestTemplate.postForEntity(
+            eq("/api/oppdaterpersonalia"),
+            any<OppdaterPersonaliaRequest>(),
+            eq(Unit::class.java)
+        ) } returns ResponseEntity.ok().build()
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1)), mockAck)

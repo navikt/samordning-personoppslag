@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
+import java.net.URI
 
 @Service
 class SamPersonaliaClient(private val samRestTemplate: RestTemplate) {
@@ -15,7 +16,7 @@ class SamPersonaliaClient(private val samRestTemplate: RestTemplate) {
 
         try {
             val urlpath = "/api/oppdaterpersonalia"
-            logger.info("kaller opp : $urlpath")
+            logger.info("kaller opp : $urlpath, kode: ${request.meldingsKode}, hendelseId: ${request.hendelseId}")
             samRestTemplate.postForEntity(
                 urlpath,
                 request,

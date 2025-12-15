@@ -13,27 +13,26 @@ import org.springframework.stereotype.Service
 class FolkeregisterService(
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
-) {
+): HendelseService(personService) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettFolkeregistermelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.OPPRETTET) {
+
             val nyttFnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer
-            val gammeltFnr =
-                personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull { Fodselsnummer.validFnr(it) }
+            val gammeltFnr = personhendelse.personidenter.filterNot { it == nyttFnr }.firstOrNull { Fodselsnummer.validFnr(it) }
 
             if (personhendelse.personidenter.filterNot { it == nyttFnr }.filter { Fodselsnummer.validFnr(it) }.size > 1) {
                 logger.warn("Det finnes flere gamle fnr ved opprettFolkeregistermelding. Bruker kun første gamle fnr")
             }
 
             if (gammeltFnr == null) {
-                logger.info("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
+                logger.debug("Nytt fødselsnummer er ikke annerledes enn eksisterende fødelsnummer")
                 return
             }
 
-            val adressebeskyttelse =
-                personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
+            val adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = nyttFnr)
 
             samPersonaliaClient.oppdaterSamPersonalia(
                 createFolkeregisterRequest(

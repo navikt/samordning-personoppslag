@@ -15,24 +15,18 @@ import org.springframework.stereotype.Service
 class AdresseService(
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
-) {
+): HendelseService(personService) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettAdressemelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.OPPRETTET) {
-            val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
-            val gyldigident = if (identer.size > 1) {
-                try {
-                    logger.info("identer fra pdl inneholder flere enn 1")
-                    personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-                } catch (_: Exception) {
-                    logger.warn("Feil ved henting av ident fra PDL")
-                    identer.first()
-                }
-            } else {
-                identer.first()
+            val gyldigident = try {
+                getGyldigIdent(personhendelse)
+            } catch (e: Exception) {
+                logger.error(e.message, e)
+                return
             }
 
             samPersonaliaClient.oppdaterSamPersonalia(

@@ -16,7 +16,7 @@ import java.time.LocalDate
 class DoedsfallService(
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
-) {
+): HendelseService(personService) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -26,18 +26,11 @@ class DoedsfallService(
             return
         }
 
-        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
-
-        val gyldigident = if (identer.size > 1) {
-            try {
-                logger.info("identer fra pdl inneholder flere enn 1")
-                personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-            } catch (_: Exception) {
-                logger.warn("Feil ved henting av ident fra PDL for hendelse")
-                identer.first()
-            }
-        } else {
-            identer.first()
+        val gyldigident = try {
+            getGyldigIdent(personhendelse)
+        } catch (e: Exception) {
+            logger.error(e.message, e)
+            return
         }
 
         samPersonaliaClient.oppdaterSamPersonalia(

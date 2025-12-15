@@ -16,31 +16,13 @@ import java.time.LocalDate
 class SivilstandService(
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
-) {
+): HendelseService(personService) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettSivilstandsMelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
 
-        val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
-        val gyldigident = when(identer.size) {
-            0 -> {
-                logger.warn("Ingen gyldige identer funnet i PDL.")
-                return
-            }
-            1 -> identer.first()
-            else -> {
-                try {
-                    logger.info("Identer fra PDL inneholder flere enn 1.")
-                    personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
-                } catch (_: Exception) {
-                    logger.warn("Feil ved henting av ident fra PDL for hendelse.")
-                    identer.firstOrNull() ?: return
-                }
-            }
-        }
-
-        logger.info("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: ${personhendelse.endringstype}, sivilstandsType: ${personhendelse.sivilstand?.type}, sivilstandDato: ${personhendelse.sivilstand?.gyldigFraOgMed}, hendelseId: ${personhendelse.hendelseId}")
+        logger.debug("Kaller opprettSivilstandsMelding med SivilstandRequest: Endringstype: ${personhendelse.endringstype}, sivilstandsType: ${personhendelse.sivilstand?.type}, sivilstandDato: ${personhendelse.sivilstand?.gyldigFraOgMed}, hendelseId: ${personhendelse.hendelseId}")
 
         when (personhendelse.endringstype) {
             Endringstype.OPPHOERT, Endringstype.ANNULLERT ->  {
@@ -49,12 +31,21 @@ class SivilstandService(
             }
 
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
+                val gyldigident = try {
+
+                    getGyldigIdent(personhendelse)
+
+                } catch (e: Exception) {
+                    logger.error(e.message, e)
+                    return
+                }
+
                 val fomDato = if (personhendelse.sivilstand?.gyldigFraOgMed == null) {
                     val person = personService.hentPerson(NorskIdent(gyldigident))
                     person?.sivilstand?.maxByOrNull { it.metadata.sisteRegistrertDato() }?.gyldigFraOgMed
                 } else {
                     personhendelse.sivilstand?.gyldigFraOgMed
-                }.also { logger.info("Hentet fomDato : $it") }
+                }.also { logger.debug("Hentet fomDato : $it") }
 
                 if (personhendelse.sivilstand?.type != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")

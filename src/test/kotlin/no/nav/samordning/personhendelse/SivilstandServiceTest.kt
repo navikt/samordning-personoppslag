@@ -11,6 +11,7 @@ import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -31,6 +32,59 @@ class SivilstandServiceTest {
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
+        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia( withArg{ request ->
+                assertEquals("c53fded7-6b4e-434b-b5d8-e14769efa835", request.hendelseId)
+                assertEquals(Meldingskode.SIVILSTAND, request.meldingsKode )
+                assertEquals("24828296260", request.newPerson.fnr )
+                assertEquals(Sivilstandstype.GIFT.name, request.newPerson.sivilstand )
+                assertEquals("2018-11-27", request.newPerson.sivilstandDato.toString() )
+                assertEquals("[]", request.newPerson.adressebeskyttelse.toString())
+            })
+        }
+
+    }
+
+    @Test
+    fun processHendelseMedOPPHOERT() {
+
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(endringsType = Endringstype.OPPHOERT), MessureOpplysningstypeHelper())
+
+        verify(exactly = 0) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 0) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+
+    }
+
+    @Test
+    fun processHendelseMedANNULLERT() {
+
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(endringsType = Endringstype.ANNULLERT), MessureOpplysningstypeHelper())
+
+        verify(exactly = 0) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 0) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+
+    }
+
+
+    @Test
+    fun processHendelseWithTooFewIdents() {
+        val listIdenter = listOf("2309615048568")
+
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(listIdenter), MessureOpplysningstypeHelper())
+
+        verify(exactly = 0) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 0) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+
+    }
+
+    @Test
+    fun processHendelseWithTooManyIdents() {
+        val listIdenter = listOf("24828296260", "54496214261", "2309615048568")
+
+        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+
+        sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(listIdenter), MessureOpplysningstypeHelper())
 
 
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
@@ -74,11 +128,17 @@ class SivilstandServiceTest {
         }
 }
 
-    private fun mockPersonhendelse(fnr: String = "24828296260",gyldigFraOgMed: String? = "2018-11-27", endringsType: Endringstype = Endringstype.OPPRETTET ): Personhendelse {
+    private fun mockIdenter(fnrList: List<String>): String {
+        val identer = fnrList.joinToString(",")
+        return """ [  $identer ] """
+    }
+
+    private fun mockPersonhendelse(fnrList: List<String> = listOf("2309615048568", "24828296260"), gyldigFraOgMed: String? = "2018-11-27", endringsType: Endringstype = Endringstype.OPPRETTET ): Personhendelse {
+        val identer = mockIdenter(fnrList)
         val json = """
             {
                 "hendelseId": "c53fded7-6b4e-434b-b5d8-e14769efa835", 
-                "personidenter": ["2309615048568", "$fnr"], 
+                "personidenter": $identer, 
                 "master": "FREG", 
                 "opprettet": "2025-02-11T13:25:24.600Z", 
                 "opplysningstype": "SIVILSTAND_V1", 

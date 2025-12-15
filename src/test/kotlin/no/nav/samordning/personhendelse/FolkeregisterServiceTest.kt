@@ -11,6 +11,7 @@ import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
@@ -30,9 +31,18 @@ class FolkeregisterServiceTest {
 
         folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
-
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(withArg{ request ->
+                assertEquals("c53fded7-6b4e-434b-b5d8-e14769efa835", request.hendelseId)
+                assertEquals(Meldingskode.FODSELSNUMMER, request.meldingsKode )
+                assertEquals("24828296260", request.newPerson.fnr )
+                assertEquals(null, request.newPerson.sivilstand )
+                assertEquals(null, request.newPerson.sivilstandDato )
+                assertEquals(null, request.newPerson.dodsdato)
+                assertEquals("[]", request.newPerson.adressebeskyttelse.toString())
+                assertEquals("25637424842", request.oldPerson?.fnr)
+            })
+        }
 
     }
 

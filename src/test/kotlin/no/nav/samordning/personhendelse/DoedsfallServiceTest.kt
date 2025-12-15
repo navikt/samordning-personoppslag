@@ -11,7 +11,9 @@ import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.NorskIdent
+import no.nav.samordning.person.pdl.model.Sivilstandstype
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
@@ -32,9 +34,20 @@ class DoedsfallServiceTest {
 
         doedsfallService.opprettDoedsfallmelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
-
         verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia( withArg{ request ->
+                assertEquals("c53fded7-6b4e-434b-b5d8-e14769efa835", request.hendelseId)
+                assertEquals(Meldingskode.DOEDSFALL, request.meldingsKode )
+                assertEquals("24828296260", request.newPerson.fnr )
+                assertEquals(null, request.newPerson.sivilstand )
+                assertEquals(null, request.newPerson.sivilstandDato )
+                assertEquals("2025-02-11", request.newPerson.dodsdato.toString())
+                assertEquals("[]", request.newPerson.adressebeskyttelse.toString())
+                assertEquals(null, request.oldPerson)
+        })
+
+
+        }
 
     }
 
@@ -61,11 +74,11 @@ class DoedsfallServiceTest {
         }
 }
 
-    private fun mockPersonhendelse(nyttFnr: String = "24828296260", gammeltFnr: String = "25637424842", endringsType: Endringstype = Endringstype.OPPRETTET ): Personhendelse {
+    private fun mockPersonhendelse(fnr: String = "24828296260", endringsType: Endringstype = Endringstype.OPPRETTET): Personhendelse {
         val json = """
             {
                 "hendelseId": "c53fded7-6b4e-434b-b5d8-e14769efa835", 
-                "personidenter": ["2309615048568", "$nyttFnr", "$gammeltFnr"], 
+                "personidenter": ["2309615048568", "$fnr"], 
                 "master": "FREG", 
                 "opprettet": "2025-02-11T13:25:24.600Z", 
                 "opplysningstype": "DOEDSFALL_V1", 
