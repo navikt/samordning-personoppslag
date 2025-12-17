@@ -22,7 +22,7 @@ val commonsLang3Version = "3.18.0"
 
 plugins {
     val pluginSpringBootVersion = "3.5.7"
-    val pluginKotlinVersion = "2.2.21"
+    val pluginKotlinVersion = "2.3.0"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
