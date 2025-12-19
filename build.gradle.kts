@@ -141,7 +141,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.13"
+        gradleVersion = "9.2.1"
     }
 
     configurations.all {
