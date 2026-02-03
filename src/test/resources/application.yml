@@ -8,6 +8,8 @@ pdl:
   kafka:
     autoStartup: false
 
+PERSON_ENDRING_KAFKA_TOPIC: person-endring-test
+
 no.nav.security.jwt:
   issuer:
     entraid:

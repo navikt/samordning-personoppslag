@@ -37,6 +37,8 @@ pdl:
   kafka:
     autoStartup: true
 
+PERSON_ENDRING_KAFKA_TOPIC: ${PERSON_ENDRING_KAFKA_TOPIC:person-endring}
+
 management:
   endpoint:
     health:
