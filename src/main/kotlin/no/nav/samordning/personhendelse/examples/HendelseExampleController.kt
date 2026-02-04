@@ -1,6 +1,6 @@
 package no.nav.samordning.personhendelse.examples
 
-import no.nav.samordning.personhendelse.HendelseService
+import no.nav.samordning.personhendelse.PersonEndringHendelseProducer
 import no.nav.samordning.personhendelse.Meldingskode
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,7 +14,7 @@ import java.time.LocalDate
  */
 @RestController
 @RequestMapping("/api/hendelse/example")
-class HendelseExampleController(private val hendelseService: HendelseService) {
+class HendelseExampleController(private val personEndringHendelseProducer: PersonEndringHendelseProducer) {
 
     /**
      * Publiserer en sivilstandsendring hendelse
@@ -27,7 +27,7 @@ class HendelseExampleController(private val hendelseService: HendelseService) {
         @RequestParam sivilstand: String,
         @RequestParam sivilstandDato: LocalDate
     ): Map<String, String> {
-        val hendelseId = hendelseService.publiserPersonEndringHendelse(
+        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = Meldingskode.SIVILSTAND,
@@ -47,7 +47,7 @@ class HendelseExampleController(private val hendelseService: HendelseService) {
         @RequestParam oldFnr: String,
         @RequestParam tpNr: List<String>
     ): Map<String, String> {
-        val hendelseId = hendelseService.publiserPersonEndringHendelse(
+        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             oldFnr = oldFnr,
@@ -66,7 +66,7 @@ class HendelseExampleController(private val hendelseService: HendelseService) {
         @RequestParam tpNr: List<String>,
         @RequestParam dodsdato: LocalDate
     ): Map<String, String> {
-        val hendelseId = hendelseService.publiserPersonEndringHendelse(
+        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = Meldingskode.DOEDSFALL,

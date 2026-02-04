@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AdresseService(
+    private val hendelseService: PersonEndringHendelseService,
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
@@ -34,6 +35,12 @@ class AdresseService(
             } else {
                 identer.first()
             }
+
+            hendelseService.opprettPersonEndringHendelse(
+                meldingsKode = Meldingskode.ADRESSE,
+                fnr = gyldigident,
+                hendelseId = personhendelse.hendelseId,
+            )
 
             samPersonaliaClient.oppdaterSamPersonalia(
                 createAdresseRequest(

@@ -14,6 +14,7 @@ import java.time.LocalDate
 
 @Service
 class DoedsfallService(
+    private val hendelseService: PersonEndringHendelseService,
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
@@ -39,6 +40,13 @@ class DoedsfallService(
         } else {
             identer.first()
         }
+
+        hendelseService.opprettPersonEndringHendelse(
+            meldingsKode = Meldingskode.DOEDSFALL,
+            fnr = gyldigident,
+            dodsdato = personhendelse.doedsfall?.doedsdato,
+            hendelseId = personhendelse.hendelseId,
+        )
 
         samPersonaliaClient.oppdaterSamPersonalia(
             createDoedsfallRequest(

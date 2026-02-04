@@ -17,10 +17,11 @@ import org.junit.jupiter.api.Test
 
 class DoedsfallServiceTest {
 
+    private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
     private val personService = mockk<PersonService>()
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val doedsfallService = DoedsfallService(personService, samPersonaliaClient)
+    private val doedsfallService = DoedsfallService(personEndringService, personService, samPersonaliaClient)
 
 
     @Test

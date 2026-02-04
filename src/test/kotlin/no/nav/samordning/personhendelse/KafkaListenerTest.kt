@@ -23,13 +23,14 @@ import org.springframework.kafka.support.Acknowledgment
 
 class KafkaListenerTest {
 
+    private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
     private val personService = mockk<PersonService>()
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val sivilstandService = SivilstandService(personService, samPersonaliaClient)
-    private val adresseService = AdresseService(personService, samPersonaliaClient)
-    private val folkeregisterService = FolkeregisterService(personService, samPersonaliaClient)
-    private val doedsfallService = DoedsfallService(personService, samPersonaliaClient)
+    private val sivilstandService = SivilstandService(personEndringService, personService, samPersonaliaClient)
+    private val adresseService = AdresseService(personEndringService, personService, samPersonaliaClient)
+    private val folkeregisterService = FolkeregisterService(personEndringService, personService, samPersonaliaClient)
+    private val doedsfallService = DoedsfallService(personEndringService, personService, samPersonaliaClient)
 
     //private val mapper =  jacksonObjectMapper().registerModule(JavaTimeModule())
     private val mapper = configureObjectMapper()

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class FolkeregisterService(
+    private val hendelseService: PersonEndringHendelseService,
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
@@ -34,6 +35,13 @@ class FolkeregisterService(
 
             val adressebeskyttelse =
                 personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
+
+            hendelseService.opprettPersonEndringHendelse(
+                meldingsKode = Meldingskode.FODSELSNUMMER,
+                fnr = nyttFnr,
+                oldFnr  = gammeltFnr,
+                hendelseId = personhendelse.hendelseId,
+            )
 
             samPersonaliaClient.oppdaterSamPersonalia(
                 createFolkeregisterRequest(

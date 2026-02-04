@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class PersonEndringKafkaHendelse(
-    val hendelseId: String = UUID.randomUUID().toString(),
+    val hendelseId: String,
     val tpNr: List<String>,
     val fnr: String,
     val oldFnr: String? = null,

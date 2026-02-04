@@ -12,7 +12,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 @Service
-class HendelseService(
+class PersonEndringHendelseProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>,
     @Value("\${PERSON_ENDRING_KAFKA_TOPIC:person-endring}") private val topic: String
 ) {

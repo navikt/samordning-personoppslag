@@ -14,6 +14,7 @@ import java.time.LocalDate
 
 @Service
 class SivilstandService(
+    private val hendelseService: PersonEndringHendelseService,
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
@@ -60,6 +61,14 @@ class SivilstandService(
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
+
+                    hendelseService.opprettPersonEndringHendelse(
+                        meldingsKode = Meldingskode.SIVILSTAND,
+                        fnr = gyldigident,
+                        sivilstand = personhendelse.sivilstand?.type ?: "",
+                        sivilstandDato = fomDato,
+                        hendelseId = personhendelse.hendelseId,
+                    )
 
                     samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(
                         hendelseId = personhendelse.hendelseId,

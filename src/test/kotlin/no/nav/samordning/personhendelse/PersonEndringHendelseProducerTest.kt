@@ -13,9 +13,9 @@ import org.springframework.kafka.core.KafkaTemplate
 import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 
-class HendelseServiceTest {
+class PersonEndringHendelseProducerTest {
     private lateinit var kafkaTemplate: KafkaTemplate<String, String>
-    private lateinit var hendelseService: HendelseService
+    private lateinit var personEndringHendelseProducer: PersonEndringHendelseProducer
     private val objectMapper: ObjectMapper = ObjectMapper()
         .registerModule(KotlinModule.Builder().build())
         .registerModule(JavaTimeModule())
@@ -23,7 +23,7 @@ class HendelseServiceTest {
     @BeforeEach
     fun setup() {
         kafkaTemplate = mockk(relaxed = true)
-        hendelseService = HendelseService(kafkaTemplate, "person-endring-test")
+        personEndringHendelseProducer = PersonEndringHendelseProducer(kafkaTemplate, "person-endring-test")
     }
 
     @Test
@@ -35,7 +35,7 @@ class HendelseServiceTest {
         val sivilstandDato = LocalDate.of(2025, 1, 15)
         val hendelseId = "hendelse-123"
 
-        hendelseService.publiserPersonEndringHendelse(
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = meldingsKode,
@@ -72,7 +72,7 @@ class HendelseServiceTest {
             mockk()
         }
 
-        hendelseService.publiserPersonEndringHendelse(
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             oldFnr = oldFnr,
@@ -97,7 +97,7 @@ class HendelseServiceTest {
             mockk()
         }
 
-        hendelseService.publiserPersonEndringHendelse(
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = meldingsKode,
