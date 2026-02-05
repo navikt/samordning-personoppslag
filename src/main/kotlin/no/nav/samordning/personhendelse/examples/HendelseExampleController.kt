@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
+import java.util.UUID
 
 /**
  * Eksempel REST kontroller som bruker HendelseService for å publisere person endring hendelser.
@@ -26,15 +27,15 @@ class HendelseExampleController(private val personEndringHendelseProducer: Perso
         @RequestParam tpNr: List<String>,
         @RequestParam sivilstand: String,
         @RequestParam sivilstandDato: LocalDate
-    ): Map<String, String> {
-        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
+    ) {
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = Meldingskode.SIVILSTAND,
             sivilstand = sivilstand,
-            sivilstandDato = sivilstandDato
+            sivilstandDato = sivilstandDato,
+            hendelseId = UUID.randomUUID().toString()
         )
-        return mapOf("hendelseId" to hendelseId, "status" to "published")
     }
 
     /**
@@ -46,14 +47,14 @@ class HendelseExampleController(private val personEndringHendelseProducer: Perso
         @RequestParam fnr: String,
         @RequestParam oldFnr: String,
         @RequestParam tpNr: List<String>
-    ): Map<String, String> {
-        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
+    ) {
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             oldFnr = oldFnr,
-            meldingsKode = Meldingskode.FODSELSNUMMER
+            meldingsKode = Meldingskode.FODSELSNUMMER,
+            hendelseId = UUID.randomUUID().toString()
         )
-        return mapOf("hendelseId" to hendelseId, "status" to "published")
     }
 
     /**
@@ -65,13 +66,14 @@ class HendelseExampleController(private val personEndringHendelseProducer: Perso
         @RequestParam fnr: String,
         @RequestParam tpNr: List<String>,
         @RequestParam dodsdato: LocalDate
-    ): Map<String, String> {
-        val hendelseId = personEndringHendelseProducer.publiserPersonEndringHendelse(
+    ) {
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
             meldingsKode = Meldingskode.DOEDSFALL,
-            dodsdato = dodsdato
+            dodsdato = dodsdato,
+            hendelseId = UUID.randomUUID().toString()
         )
-        return mapOf("hendelseId" to hendelseId, "status" to "published")
+
     }
 }

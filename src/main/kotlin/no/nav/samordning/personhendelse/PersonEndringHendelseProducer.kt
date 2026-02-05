@@ -14,7 +14,7 @@ import java.util.UUID
 @Service
 class PersonEndringHendelseProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    @Value("\${PERSON_ENDRING_KAFKA_TOPIC:person-endring}") private val topic: String
+    @Value("\${PERSON_ENDRING_KAFKA_TOPIC}") private val topic: String
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val objectMapper: ObjectMapper = ObjectMapper()
@@ -29,8 +29,8 @@ class PersonEndringHendelseProducer(
         sivilstand: String? = null,
         sivilstandDato: LocalDate? = null,
         dodsdato: LocalDate? = null,
-        hendelseId: String = UUID.randomUUID().toString()
-    ): String {
+        hendelseId: String
+    ) {
         val hendelse = PersonEndringKafkaHendelse(
             hendelseId = hendelseId,
             tpNr = tpNr,
@@ -48,6 +48,5 @@ class PersonEndringHendelseProducer(
         kafkaTemplate.send(topic, hendelseId, json)
         logger.debug("PersonEndringHendelse sendt: $json")
 
-        return hendelseId
     }
 }

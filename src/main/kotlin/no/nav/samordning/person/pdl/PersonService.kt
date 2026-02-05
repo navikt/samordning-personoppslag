@@ -457,6 +457,14 @@ class PersonService(
         }
     }
 
+    fun erAdressebeskyttelseGradert(fnr: String ): Boolean = hentAdressebeskyttelse(fnr).let {
+        it.none {
+            it == AdressebeskyttelseGradering.STRENGT_FORTROLIG ||
+                    it == AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND ||
+                    it == AdressebeskyttelseGradering.FORTROLIG
+            }
+        }
+
     /**
      * Funksjon for å hente ut en person sin Aktør ID.
      *

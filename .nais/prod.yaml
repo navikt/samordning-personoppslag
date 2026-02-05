@@ -77,8 +77,14 @@ spec:
       value: api://prod-fss.pensjonsamhandling.sam/.default
     - name: SAM_URL
       value: https://sam.intern.nav.no
+    - name: TP_URL
+      value: https://tp.intern.nav.no
+    - name: TP_SCOPE
+      value: api://prod-fss.pensjonsamhandling.tp/.default
     - name: KAFKA_GROUP_ID
       value: samordning-personoppslag
+    - name: PERSON_ENDRING_KAFKA_TOPIC
+      value: pensjonsamhandling.person-endring
   observability:
     autoInstrumentation:
       enabled: true

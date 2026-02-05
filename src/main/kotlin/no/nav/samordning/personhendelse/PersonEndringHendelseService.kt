@@ -1,12 +1,14 @@
 package no.nav.samordning.personhendelse
 
 import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.personhendelse.tjenesepensjon.SjekkTpYtelserService
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
 class PersonEndringHendelseService(
     private val personEndringHendelseProducer: PersonEndringHendelseProducer,
+    private val sjekkTpYtelserService: SjekkTpYtelserService,
     private val personService: PersonService,
 ) {
     fun opprettPersonEndringHendelse(
@@ -17,14 +19,13 @@ class PersonEndringHendelseService(
         sivilstandDato: LocalDate? = null,
         dodsdato: LocalDate? = null,
         hendelseId: String
-    ): String {
-        // TODO: Sjekk gradering
-        val gradering = personService.hentAdressebeskyttelse(fnr)
+    ) {
+        if (personService.erAdressebeskyttelseGradert(fnr) ) { return }
 
-        // TODO: Sjekk TP-forhold
-        val tpNr = listOf("")
+        val tpNr = sjekkTpYtelserService.sjekkForYtelser(fnr)
+        if (tpNr.isEmpty()) { return }
 
-        return personEndringHendelseProducer.publiserPersonEndringHendelse(
+        personEndringHendelseProducer.publiserPersonEndringHendelse(
             hendelseId = hendelseId,
             tpNr = tpNr,
             fnr = fnr,
@@ -34,5 +35,9 @@ class PersonEndringHendelseService(
             dodsdato = dodsdato,
             meldingsKode = meldingsKode
         )
+
+
     }
+
+
 }

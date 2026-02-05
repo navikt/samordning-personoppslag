@@ -69,6 +69,22 @@ class RestTemplateConfig {
             .build()
     }
 
+    @Bean
+    fun tpTokenInteceptor(@Value("\${TP_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+        AzureAdTokenRequestInterceptor(scope)
+
+
+    @Bean
+    fun tpRestTemplate(@Value("\${TP_URL}") tpUrl: String, tpTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
+        return RestTemplateBuilder()
+            .rootUri(tpUrl)
+            .errorHandler(DefaultResponseErrorHandler())
+            .additionalInterceptors(tpTokenInteceptor)
+            .build()
+    }
+
+
+
     internal class PdlInterceptor : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(javaClass)
