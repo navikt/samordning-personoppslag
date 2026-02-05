@@ -91,6 +91,10 @@ spec:
       value: https://sam-q1.intern.dev.nav.no
     - name: KAFKA_GROUP_ID
       value: samordning-personoppslag-q1
+    - name: PERSON_ENDRING_KAFKA_TOPIC
+      value: pensjonsamhandling.person-endring-q1
+    - name: PDL_KAFKA_AUTOSTARTUP
+      value: "false"
   observability:
     autoInstrumentation:
       enabled: true

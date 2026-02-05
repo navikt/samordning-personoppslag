@@ -90,6 +90,8 @@ spec:
       value: samordning-personoppslag-q2
     - name: PERSON_ENDRING_KAFKA_TOPIC
       value: pensjonsamhandling.person-endring-q2
+    - name: PDL_KAFKA_AUTOSTARTUP
+      value: "true"
 
   observability:
     autoInstrumentation:
