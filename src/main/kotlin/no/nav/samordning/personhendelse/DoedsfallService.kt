@@ -29,7 +29,10 @@ class DoedsfallService(
 
         val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
-        val gyldigident = if (identer.size > 1) {
+        val gyldigident = if (identer.isEmpty()) {
+            logger.warn("Ingen gyldige identer funnet i PDL.")
+            return
+        } else if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
                 personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
