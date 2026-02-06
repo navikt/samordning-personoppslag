@@ -83,7 +83,7 @@ spec:
     - name: SAM_URL
       value: https://sam-q2.intern.dev.nav.no
     - name: TP_URL
-      value: https://tp-q2.dev.intern.nav.no
+      value: https://tp-q2.intern.dev.nav.no
     - name: TP_SCOPE
       value: api://dev-fss.pensjonsamhandling.tp-q2/.default
     - name: KAFKA_GROUP_ID
