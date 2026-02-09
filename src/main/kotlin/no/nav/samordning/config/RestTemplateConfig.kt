@@ -96,8 +96,6 @@ class RestTemplateConfig {
             request.headers[REQUEST_NAV_CALL] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             request.headers["Behandlingsnummer"] = Behandlingsnummer.getAll()
 
-            logger.debug("PdlInterceptor httpRequest headers: {}", request.headers)
-
             return execution.execute(request, body)
         }
 
