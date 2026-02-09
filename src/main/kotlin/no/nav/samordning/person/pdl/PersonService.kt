@@ -457,12 +457,10 @@ class PersonService(
         }
     }
 
-    fun erAdressebeskyttelseGradert(fnr: String ): Boolean = hentAdressebeskyttelse(fnr).let {
-        it.none {
-            it == AdressebeskyttelseGradering.STRENGT_FORTROLIG ||
-                    it == AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND ||
-                    it == AdressebeskyttelseGradering.FORTROLIG
-            }
+    fun erAdressebeskyttelseGradert(fnr: String ): Boolean = hentAdressebeskyttelse(fnr).any {
+                it == AdressebeskyttelseGradering.STRENGT_FORTROLIG ||
+                it == AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND ||
+                it == AdressebeskyttelseGradering.FORTROLIG
         }
 
     /**
