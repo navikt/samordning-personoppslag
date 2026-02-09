@@ -26,6 +26,11 @@ class PersonEndringHendelseService(
     ) {
         logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
 
+        val personbeskyttelse = personService.hentAdressebeskyttelse(fnr)
+        logger.debug("hentAdressebeskyttelse: $personbeskyttelse")
+
+        val erBeskyttet = personService.erAdressebeskyttelseGradert(fnr)
+        logger.debug("erAdressebeskyttelseGradert: $erBeskyttet")
         if (personService.erAdressebeskyttelseGradert(fnr) ) { return }
 
         val tpNr = sjekkTpYtelserService.sjekkForYtelser(fnr)
