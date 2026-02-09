@@ -2,6 +2,8 @@ package no.nav.samordning.personhendelse.examples
 
 import no.nav.samordning.personhendelse.PersonEndringHendelseProducer
 import no.nav.samordning.personhendelse.Meldingskode
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -27,7 +29,7 @@ class HendelseExampleController(private val personEndringHendelseProducer: Perso
         @RequestParam tpNr: List<String>,
         @RequestParam sivilstand: String,
         @RequestParam sivilstandDato: LocalDate
-    ) {
+    ): ResponseEntity<Any>? {
         personEndringHendelseProducer.publiserPersonEndringHendelse(
             tpNr = tpNr,
             fnr = fnr,
@@ -36,6 +38,8 @@ class HendelseExampleController(private val personEndringHendelseProducer: Perso
             sivilstandDato = sivilstandDato,
             hendelseId = UUID.randomUUID().toString()
         )
+        return ResponseEntity.ok().build()
+
     }
 
     /**
