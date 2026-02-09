@@ -1,7 +1,7 @@
 package no.nav.samordning.personhendelse
 
 import no.nav.samordning.person.pdl.PersonService
-import no.nav.samordning.personhendelse.tjenesepensjon.SjekkTpYtelserService
+import no.nav.samordning.personhendelse.tjenestepensjon.SjekkTpYtelserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

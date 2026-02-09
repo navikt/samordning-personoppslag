@@ -1,4 +1,4 @@
-package no.nav.samordning.personhendelse.tjenesepensjon
+package no.nav.samordning.personhendelse.tjenestepensjon
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDate
@@ -35,3 +35,21 @@ data class PersonTjenestepensjonInternDto(
     var fnr: String,
     var forhold: List<ForholdTjenestepensjonInternDto>,
 )
+
+enum class YtelseTypeCode {
+    AFP,
+    ALDER,
+    BARN,
+    BETINGET_TP,
+    GJENLEVENDE,
+    LIVSVARIG_AFP,
+    OPPSATT_BTO_PEN,
+    OVERGANGSTILLEGG,
+    PAASLAGSPENSJON,
+    SAERALDER,
+    TIDLIGPENSJON,
+    TIDLIGPEN_OVERGANG,
+    SAERALDERSPAASLAG,
+    UFORE,
+    UKJENT
+}

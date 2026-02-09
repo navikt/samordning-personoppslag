@@ -1,4 +1,4 @@
-package no.nav.samordning.personhendelse.tjenesepensjon
+package no.nav.samordning.personhendelse.tjenestepensjon
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
