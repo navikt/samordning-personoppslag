@@ -111,19 +111,15 @@ class MessureOpplysningstypeHelper() {
     private val unkownType : MutableList<String> = mutableListOf()
 
     fun addKjent(personhendelse: Personhendelse) = knownType.add(personhendelse.opplysningstype)
-        .also { logger.debug("opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun addUkjent(personhendelse: Personhendelse) = unkownType.add(personhendelse.opplysningstype)
-        .also { logger.debug("ukjent opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun createMetrics() {
         try {
             knownType.map { navn ->
-                logger.debug("Opplysningstype: $navn")
                 Metrics.counter("sp_kjent_opplysningstype", "Navn", navn).increment()
             }
             unkownType.map { navn ->
-                logger.debug("Ukjentopplysningstype: $navn")
                 Metrics.counter("sp_ukjent_opplysningstype", "Navn", navn).increment()
             }
         } catch (_: Exception) {
@@ -134,7 +130,6 @@ class MessureOpplysningstypeHelper() {
     fun clearAll() {
         knownType.clear()
         unkownType.clear()
-        logger.info("messureOpplysningstype all cleared")
     }
 
 }

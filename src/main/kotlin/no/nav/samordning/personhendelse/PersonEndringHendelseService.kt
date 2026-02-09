@@ -2,6 +2,8 @@ package no.nav.samordning.personhendelse
 
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.personhendelse.tjenesepensjon.SjekkTpYtelserService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -11,6 +13,8 @@ class PersonEndringHendelseService(
     private val sjekkTpYtelserService: SjekkTpYtelserService,
     private val personService: PersonService,
 ) {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
     fun opprettPersonEndringHendelse(
         meldingsKode: Meldingskode,
         fnr: String,
@@ -20,9 +24,12 @@ class PersonEndringHendelseService(
         dodsdato: LocalDate? = null,
         hendelseId: String
     ) {
+        logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
+
         if (personService.erAdressebeskyttelseGradert(fnr) ) { return }
 
         val tpNr = sjekkTpYtelserService.sjekkForYtelser(fnr)
+        logger.info("tpNr: $tpNr")
         if (tpNr.isEmpty()) { return }
 
         personEndringHendelseProducer.publiserPersonEndringHendelse(
