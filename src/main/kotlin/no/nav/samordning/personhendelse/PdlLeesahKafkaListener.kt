@@ -60,16 +60,19 @@ class PdlLeesahKafkaListener(
                     leesahKafkaListenerMetric.measure {
                         when (personhendelse.opplysningstype) {
                             "SIVILSTAND_V1" -> {
+                                logger.info("Behandler SIVILSTAND_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
                             }
 
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
+                                logger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
                             }
 
                             "DOEDSFALL_V1" -> {
+                                logger.info("Behandler DOEDSFALL_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
                             }
