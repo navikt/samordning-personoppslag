@@ -22,11 +22,6 @@ class DoedsfallService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettDoedsfallmelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
-        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
-            logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
-            return
-        }
-
         val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
         val gyldigident = if (identer.isEmpty()) {
@@ -44,10 +39,12 @@ class DoedsfallService(
             identer.first()
         }
 
+        val erAnnullering = personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT
+
         hendelseService.opprettPersonEndringHendelse(
             meldingsKode = Meldingskode.DOEDSFALL,
             fnr = gyldigident,
-            dodsdato = personhendelse.doedsfall?.doedsdato,
+            dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
             hendelseId = personhendelse.hendelseId,
         )
 
@@ -55,7 +52,7 @@ class DoedsfallService(
             createDoedsfallRequest(
                 hendelseId = personhendelse.hendelseId,
                 fnr = gyldigident,
-                dodsdato = personhendelse.doedsfall?.doedsdato,
+                dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
                 adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = gyldigident)
             )
         )
