@@ -61,7 +61,18 @@ class KafkaListenerTest {
             assertEquals("SKILT", it.newPerson.sivilstand)
             assertEquals("2025-05-13", it.newPerson.sivilstandDato!!.toString())
         }) }
+    }
 
+    @Test
+    fun `personalhendelse på sivilstand fra FREG skal ikke behandles`() {
+        val hendelse = hentHendelsefraFil("/leesha_sivilstandhendelseFREG.json")
+
+        justRun { mockAck.acknowledge() }
+
+        listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
+
+        verify(exactly = 0) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 1) { mockAck.acknowledge() }
     }
 
     @Test

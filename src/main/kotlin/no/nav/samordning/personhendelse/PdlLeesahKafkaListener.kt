@@ -57,35 +57,40 @@ class PdlLeesahKafkaListener(
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
                 if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
 
-                    leesahKafkaListenerMetric.measure {
-                        when (personhendelse.opplysningstype) {
-                            "SIVILSTAND_V1" -> {
-                                MDC.put("personhendelseId", personhendelse.hendelseId)
-                                sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
-                            }
+                    // Behandler ikke hendelser fra folkeregisteret, siden konsumenter allerede har kobling til folkeregisteret
+                    if (personhendelse.master != "FREG") {
+                        leesahKafkaListenerMetric.measure {
+                            when (personhendelse.opplysningstype) {
+                                "SIVILSTAND_V1" -> {
+                                    MDC.put("personhendelseId", personhendelse.hendelseId)
+                                    sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
+                                }
 
-                            "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
-                                MDC.put("personhendelseId", personhendelse.hendelseId)
-                                folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
-                            }
+                                "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
+                                    MDC.put("personhendelseId", personhendelse.hendelseId)
+                                    folkeregisterService.opprettFolkeregistermelding(
+                                        personhendelse,
+                                        messureOpplysningstype
+                                    )
+                                }
 
-                            "DOEDSFALL_V1" -> {
-                                MDC.put("personhendelseId", personhendelse.hendelseId)
-                                doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
-                            }
+                                "DOEDSFALL_V1" -> {
+                                    MDC.put("personhendelseId", personhendelse.hendelseId)
+                                    doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
+                                }
 
-                            "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
-                                MDC.put("personhendelseId", personhendelse.hendelseId)
-                                adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
-                            }
+                                "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
+                                    MDC.put("personhendelseId", personhendelse.hendelseId)
+                                    adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
+                                }
 
-                            else -> {
-                                logger.debug("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
-                                messureOpplysningstype.addUkjent(personhendelse)
+                                else -> {
+                                    logger.debug("Fant ikke type: ${personhendelse.opplysningstype}, Det er helt OK!")
+                                    messureOpplysningstype.addUkjent(personhendelse)
+                                }
                             }
                         }
                     }
-
                 }
             }
         } catch (e: Exception) {
