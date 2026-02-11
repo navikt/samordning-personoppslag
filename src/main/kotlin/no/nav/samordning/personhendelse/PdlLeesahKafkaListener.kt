@@ -78,6 +78,7 @@ class PdlLeesahKafkaListener(
                             }
 
                             "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
+                                logger.info("Behandler ADRESSE: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
                                 adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
                             }
