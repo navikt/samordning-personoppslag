@@ -59,7 +59,7 @@ class KafkaListenerTest {
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(withArg {
             assertEquals("bb118557-02ae-4941-a967-2253a7a5afcb", it.hendelseId)
             assertEquals("SKILT", it.newPerson.sivilstand)
-            assertEquals("2025-05-13", it.newPerson.sivilstandDato!!.toString())
+            assertEquals("2026-05-13", it.newPerson.sivilstandDato!!.toString())
         }) }
     }
 

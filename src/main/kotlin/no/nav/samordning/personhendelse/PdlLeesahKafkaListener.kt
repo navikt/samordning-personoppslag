@@ -55,7 +55,7 @@ class PdlLeesahKafkaListener(
                 val personhendelse = consumerRecord.value()
 
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
-                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
+                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2026, Month.FEBRUARY, 23, 12, 0, 0))) {
 
                     // Behandler ikke hendelser fra folkeregisteret, siden konsumenter allerede har kobling til folkeregisteret
                     if (personhendelse.master != "FREG") {

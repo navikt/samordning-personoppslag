@@ -5,7 +5,7 @@
     "21883649874"
   ],
   "master": "FREG",
-  "opprettet": "2025-05-13T08:45:35.430Z",
+  "opprettet": "2026-05-13T08:45:35.430Z",
   "opplysningstype": "SIVILSTAND_V1",
   "endringstype": "OPPRETTET",
   "tidligereHendelseId": null,
@@ -17,7 +17,7 @@
   "familierelasjon": null,
   "sivilstand": {
     "type": "SKILT",
-    "gyldigFraOgMed": "2025-05-13",
+    "gyldigFraOgMed": "2026-05-13",
     "relatertVedSivilstand": null,
     "bekreftelsesdato": null
   },
