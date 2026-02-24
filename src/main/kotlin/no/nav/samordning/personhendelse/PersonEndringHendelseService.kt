@@ -22,7 +22,8 @@ class PersonEndringHendelseService(
         sivilstand: String? = null,
         sivilstandDato: LocalDate? = null,
         dodsdato: LocalDate? = null,
-        hendelseId: String
+        adresse: AdresseService.Adresse? = null,
+        hendelseId: String,
     ) {
         logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
 
