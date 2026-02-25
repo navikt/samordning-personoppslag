@@ -45,14 +45,15 @@ class AdresseService(
                 identer.first()
             }
 
-            val adresse = mapAdresse(personhendelse)
-
-            hendelseService.opprettPersonEndringHendelse(
-                meldingsKode = Meldingskode.ADRESSE,
-                fnr = gyldigident,
-                hendelseId = personhendelse.hendelseId,
-                adresse = adresse,
-            )
+            if (personhendelse.master != "FREG") {
+                val adresse = mapAdresse(personhendelse)
+                hendelseService.opprettPersonEndringHendelse(
+                    meldingsKode = Meldingskode.ADRESSE,
+                    fnr = gyldigident,
+                    hendelseId = personhendelse.hendelseId,
+                    adresse = adresse,
+                )
+            }
 
             samPersonaliaClient.oppdaterSamPersonalia(
                 createAdresseRequest(

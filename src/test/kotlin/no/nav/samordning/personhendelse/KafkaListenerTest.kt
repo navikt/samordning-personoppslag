@@ -72,11 +72,14 @@ class KafkaListenerTest {
     fun `personalhendelse på sivilstand fra FREG skal ikke behandles`() {
         val hendelse = hentHendelsefraFil("/leesah_sivilstandhendelseFREG.json")
 
+        every { personService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
+        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
+        every { personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
 
-        verify(exactly = 0) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
+        verify(exactly = 0) { personEndringService.opprettPersonEndringHendelse(any(), any(), any(), any(), any(), any(), any(), any()) }
         verify(exactly = 1) { mockAck.acknowledge() }
     }
 

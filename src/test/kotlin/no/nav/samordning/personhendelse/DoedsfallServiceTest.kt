@@ -112,7 +112,7 @@ class DoedsfallServiceTest {
             {
                 "hendelseId": "c53fded7-6b4e-434b-b5d8-e14769efa835", 
                 "personidenter": ["2309615048568", "$fnr"], 
-                "master": "FREG", 
+                "master": "PDL", 
                 "opprettet": "2025-02-11T13:25:24.600Z", 
                 "opplysningstype": "DOEDSFALL_V1", 
                 "endringstype": "${endringsType.name}", 

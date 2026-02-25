@@ -41,12 +41,14 @@ class DoedsfallService(
 
         val erAnnullering = personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT
 
-        hendelseService.opprettPersonEndringHendelse(
-            meldingsKode = Meldingskode.DOEDSFALL,
-            fnr = gyldigident,
-            dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
-            hendelseId = personhendelse.hendelseId,
-        )
+        if (personhendelse.master != "FREG") {
+            hendelseService.opprettPersonEndringHendelse(
+                meldingsKode = Meldingskode.DOEDSFALL,
+                fnr = gyldigident,
+                dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
+                hendelseId = personhendelse.hendelseId,
+            )
+        }
 
         samPersonaliaClient.oppdaterSamPersonalia(
             createDoedsfallRequest(
