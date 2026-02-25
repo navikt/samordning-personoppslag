@@ -1,0 +1,44 @@
+{
+  "hendelseId": "9573bb7e-7b98-46b3-ab73-17a23646aa09",
+  "personidenter": [
+    "2937953056187",
+    "05447024669"
+  ],
+  "master": "PDL",
+  "opprettet": "2026-02-25T10:30:03.706Z",
+  "opplysningstype": "KONTAKTADRESSE_V1",
+  "endringstype": "OPPRETTET",
+  "tidligereHendelseId": null,
+  "adressebeskyttelse": null,
+  "doedfoedtBarn": null,
+  "doedsfall": null,
+  "falskIdentitet": null,
+  "foedsel": null,
+  "forelderBarnRelasjon": null,
+  "familierelasjon": null,
+  "sivilstand": null,
+  "vergemaalEllerFremtidsfullmakt": null,
+  "utflyttingFraNorge": null,
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": null,
+  "navn": null,
+  "sikkerhetstiltak": null,
+  "statsborgerskap": null,
+  "telefonnummer": null,
+  "kontaktadresse": {
+    "gyldigFraOgMed": null,
+    "gyldigTilOgMed": null,
+    "type": "Innland",
+    "coAdressenavn": null,
+    "postboksadresse": {
+      "postbokseier": "SOT6 Vika",
+      "postboks": "2094",
+      "postnummer": "0125"
+    },
+    "vegadresse": null,
+    "postadresseIFrittFormat": null,
+    "utenlandskAdresse": null,
+    "utenlandskAdresseIFrittFormat": null
+  },
+  "bostedsadresse": null
+}

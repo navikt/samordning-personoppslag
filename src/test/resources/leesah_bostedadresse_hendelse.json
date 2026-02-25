@@ -1,0 +1,54 @@
+{
+  "hendelseId": "e8289a2f-bc01-418f-a40f-d71ece27b478",
+  "personidenter": [
+    "2255636405565",
+    "18462457452"
+  ],
+  "master": "PDL",
+  "opprettet": "2026-02-25T08:32:22.516Z",
+  "opplysningstype": "BOSTEDSADRESSE_V1",
+  "endringstype": "OPPRETTET",
+  "tidligereHendelseId": null,
+  "adressebeskyttelse": null,
+  "doedfoedtBarn": null,
+  "doedsfall": null,
+  "falskIdentitet": null,
+  "foedsel": null,
+  "forelderBarnRelasjon": null,
+  "familierelasjon": null,
+  "sivilstand": null,
+  "vergemaalEllerFremtidsfullmakt": null,
+  "utflyttingFraNorge": null,
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": null,
+  "navn": null,
+  "sikkerhetstiltak": null,
+  "statsborgerskap": null,
+  "telefonnummer": null,
+  "kontaktadresse": null,
+  "bostedsadresse": {
+    "angittFlyttedato": "1993-12-07",
+    "gyldigFraOgMed": "2024-06-18",
+    "gyldigTilOgMed": null,
+    "coAdressenavn": null,
+    "vegadresse": {
+      "matrikkelId": "54168942",
+      "husnummer": "5",
+      "husbokstav": "G",
+      "bruksenhetsnummer": null,
+      "adressenavn": "Storgata",
+      "kommunenummer": "1577",
+      "bydelsnummer": null,
+      "tilleggsnavn": null,
+      "postnummer": "6100",
+      "koordinater": {
+        "x": 347064.2,
+        "y": 6893907.0,
+        "z": null
+      }
+    },
+    "matrikkeladresse": null,
+    "utenlandskAdresse": null,
+    "ukjentBosted": null
+  }
+}
