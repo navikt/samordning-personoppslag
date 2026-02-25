@@ -31,12 +31,9 @@ class AdresseService(
 
     fun opprettAdressemelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
         if (personhendelse.endringstype == Endringstype.OPPRETTET) {
-            val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
+            val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.takeUnless { it.isEmpty() } ?: return
 
-            val gyldigident = if (identer.isEmpty()) {
-                logger.warn("Ingen gyldige identer funnet i PDL.")
-                return
-            } else if (identer.size > 1) {
+            val gyldigident = if (identer.size > 1) {
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
                     personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
@@ -106,20 +103,24 @@ class AdresseService(
     }
 
     private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse?): Adresse {
-        return Adresse().apply {
-            if (kontaktadresse?.coAdressenavn != null) {
-                adresselinje1 = kontaktadresse.coAdressenavn
-                adresselinje2 = kontaktadresse.vegadresse?.let { concatVegadresse(it) }
-                adresselinje3 = null
-            } else {
-                adresselinje1 = kontaktadresse?.vegadresse?.let { concatVegadresse(it) }
-                adresselinje2 = null
-                adresselinje3 = null
-            }
-
-            postnr = kontaktadresse?.vegadresse?.postnummer
-            poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
-            land = "NOR"
+        return if (kontaktadresse?.coAdressenavn != null) {
+            Adresse(
+                adresselinje1 = kontaktadresse.coAdressenavn,
+                adresselinje2 = kontaktadresse.vegadresse?.let { concatVegadresse(it) },
+                adresselinje3 = null,
+                postnr = kontaktadresse.vegadresse?.postnummer,
+                poststed = kontaktadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+                land = "NOR",
+            )
+        } else {
+            Adresse(
+                adresselinje1 = kontaktadresse?.vegadresse?.let { concatVegadresse(it) },
+                adresselinje2 = null,
+                adresselinje3 = null,
+                postnr = kontaktadresse?.vegadresse?.postnummer,
+                poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+                land = "NOR",
+            )
         }
     }
 
@@ -180,35 +181,36 @@ class AdresseService(
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?): Adresse {
         return Adresse().apply {
-            val adresselinjer =
-                standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(pdlUtenlandskAdresse, coAdressenavn)
-
-            if (adresselinjer.size == 3) {
-                adresselinje1 = adresselinjer[0]
-                adresselinje2 = adresselinjer[1]
-                adresselinje3 = adresselinjer[2]
-            } else if (adresselinjer.size == 2) {
-                adresselinje1 = adresselinjer[0]
-                adresselinje2 = adresselinjer[1]
-            } else if (adresselinjer.size == 1) {
-                adresselinje1 = adresselinjer[0]
+            val adresselinjer = standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(pdlUtenlandskAdresse, coAdressenavn)
+            when (adresselinjer.size) {
+                3 -> {
+                    adresselinje1 = adresselinjer[0]
+                    adresselinje2 = adresselinjer[1]
+                    adresselinje3 = adresselinjer[2]
+                }
+                2 -> {
+                    adresselinje1 = adresselinjer[0]
+                    adresselinje2 = adresselinjer[1]
+                }
+                1 -> {
+                    adresselinje1 = adresselinjer[0]
+                }
             }
-
             postnr = pdlUtenlandskAdresse.postkode
             poststed = pdlUtenlandskAdresse.bySted
-            land = pdlUtenlandskAdresse.landkode
+            land = kodeverkService.finnLandkode( pdlUtenlandskAdresse.landkode)?.land ?: pdlUtenlandskAdresse.landkode
         }
     }
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat): Adresse {
-        return Adresse().apply {
-            adresselinje1 = pdlUtenlandskAdresse.adresselinje1
-            adresselinje2 = pdlUtenlandskAdresse.adresselinje2
-            adresselinje3 = pdlUtenlandskAdresse.adresselinje3
-            postnr = pdlUtenlandskAdresse.postkode
-            poststed = pdlUtenlandskAdresse.byEllerStedsnavn
-            land = pdlUtenlandskAdresse.landkode
-        }
+        return Adresse(
+            adresselinje1 = pdlUtenlandskAdresse.adresselinje1,
+            adresselinje2 = pdlUtenlandskAdresse.adresselinje2,
+            adresselinje3 = pdlUtenlandskAdresse.adresselinje3,
+            postnr = pdlUtenlandskAdresse.postkode,
+            poststed = pdlUtenlandskAdresse.byEllerStedsnavn,
+            land = kodeverkService.finnLandkode(pdlUtenlandskAdresse.landkode)?.land ?: pdlUtenlandskAdresse.landkode,
+        )
     }
 
     private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?): Adresse {
@@ -253,9 +255,8 @@ class AdresseService(
         var adresselinje3: String? = null,
         var postnr: String? = null,
         var poststed: String? = null,
-        var land: String? = null,
+        var land: String? = null
     )
-
 
     private fun createAdresseRequest(
         hendelseId: String,

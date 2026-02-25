@@ -10,10 +10,12 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.person.pdl.leesah.Personhendelse
+import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonService
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
+import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,8 +29,10 @@ class KafkaListenerTest {
     private val personService = mockk<PersonService>()
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
+    private val kodeverkService = mockk<KodeverkService>(relaxed = true)
+
     private val sivilstandService = SivilstandService(personEndringService, personService, samPersonaliaClient)
-    private val adresseService = AdresseService(personEndringService, personService, samPersonaliaClient)
+    private val adresseService = AdresseService(personEndringService, kodeverkService, personService, samPersonaliaClient)
     private val folkeregisterService = FolkeregisterService(personEndringService, personService, samPersonaliaClient)
     private val doedsfallService = DoedsfallService(personEndringService, personService, samPersonaliaClient)
 
@@ -157,6 +161,20 @@ class KafkaListenerTest {
 
 
         verify(exactly = 1) { mockAck.acknowledge() }
+
+    }
+
+    @Test
+    fun sjekkforListelement() {
+        //val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.takeUnless { it.isNotEmpty() } ?: return
+
+        val listfromSource = listOf("05840399895", "05840399895")
+
+        val list = listfromSource.filter { Fodselsnummer.validFnr(it) }.takeUnless { it.isEmpty() } ?: return
+
+        list.forEach { println(it) }
+
+
 
     }
 
