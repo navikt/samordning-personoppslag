@@ -36,12 +36,14 @@ class FolkeregisterService(
             val adressebeskyttelse =
                 personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
-            hendelseService.opprettPersonEndringHendelse(
-                meldingsKode = Meldingskode.FODSELSNUMMER,
-                fnr = nyttFnr,
-                oldFnr  = gammeltFnr,
-                hendelseId = personhendelse.hendelseId,
-            )
+            if (personhendelse.master != "FREG") {
+                hendelseService.opprettPersonEndringHendelse(
+                    meldingsKode = Meldingskode.FODSELSNUMMER,
+                    fnr = nyttFnr,
+                    oldFnr = gammeltFnr,
+                    hendelseId = personhendelse.hendelseId,
+                )
+            }
 
             samPersonaliaClient.oppdaterSamPersonalia(
                 createFolkeregisterRequest(

@@ -55,8 +55,9 @@ class PdlLeesahKafkaListener(
                 val personhendelse = consumerRecord.value()
 
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
-                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
+                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2026, Month.FEBRUARY, 23, 12, 0, 0))) {
 
+                    // Behandler ikke hendelser fra folkeregisteret, siden konsumenter allerede har kobling til folkeregisteret
                     leesahKafkaListenerMetric.measure {
                         when (personhendelse.opplysningstype) {
                             "SIVILSTAND_V1" -> {
@@ -68,7 +69,10 @@ class PdlLeesahKafkaListener(
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                                 logger.info("Behandler FOLKEREGISTERIDENTIFIKATOR_V1: $personhendelse")
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
+                                folkeregisterService.opprettFolkeregistermelding(
+                                    personhendelse,
+                                    messureOpplysningstype
+                                )
                             }
 
                             "DOEDSFALL_V1" -> {
@@ -89,7 +93,6 @@ class PdlLeesahKafkaListener(
                             }
                         }
                     }
-
                 }
             }
         } catch (e: Exception) {

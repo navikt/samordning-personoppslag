@@ -1,0 +1,55 @@
+{
+  "hendelseId": "3a9531d2-76a7-43bf-942b-3e5529f992bd",
+  "personidenter": [
+    "01505820599",
+    "2136478325410"
+  ],
+  "master": "PDL",
+  "opprettet": "2026-02-25T08:35:43.907Z",
+  "opplysningstype": "KONTAKTADRESSE_V1",
+  "endringstype": "OPPRETTET",
+  "tidligereHendelseId": null,
+  "adressebeskyttelse": null,
+  "doedfoedtBarn": null,
+  "doedsfall": null,
+  "falskIdentitet": null,
+  "foedsel": null,
+  "forelderBarnRelasjon": null,
+  "familierelasjon": null,
+  "sivilstand": null,
+  "vergemaalEllerFremtidsfullmakt": null,
+  "utflyttingFraNorge": null,
+  "innflyttingTilNorge": null,
+  "folkeregisteridentifikator": null,
+  "navn": null,
+  "sikkerhetstiltak": null,
+  "statsborgerskap": null,
+  "telefonnummer": null,
+  "kontaktadresse": {
+    "gyldigFraOgMed": "2025-02-12",
+    "gyldigTilOgMed": null,
+    "type": "Innland",
+    "coAdressenavn": null,
+    "postboksadresse": null,
+    "vegadresse": {
+      "matrikkelId": "154924316",
+      "husnummer": "12",
+      "husbokstav": null,
+      "bruksenhetsnummer": null,
+      "adressenavn": "Styrmannsvegen",
+      "kommunenummer": "5060",
+      "bydelsnummer": null,
+      "tilleggsnavn": null,
+      "postnummer": "7950",
+      "koordinater": {
+        "x": 603603.0,
+        "y": 7180002.0,
+        "z": 0.0
+      }
+    },
+    "postadresseIFrittFormat": null,
+    "utenlandskAdresse": null,
+    "utenlandskAdresseIFrittFormat": null
+  },
+  "bostedsadresse": null
+}

@@ -62,13 +62,15 @@ class SivilstandService(
 
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
 
-                    hendelseService.opprettPersonEndringHendelse(
-                        meldingsKode = Meldingskode.SIVILSTAND,
-                        fnr = gyldigident,
-                        sivilstand = personhendelse.sivilstand?.type ?: "",
-                        sivilstandDato = fomDato,
-                        hendelseId = personhendelse.hendelseId,
-                    )
+                    if (personhendelse.master != "FREG") {
+                        hendelseService.opprettPersonEndringHendelse(
+                            meldingsKode = Meldingskode.SIVILSTAND,
+                            fnr = gyldigident,
+                            sivilstand = personhendelse.sivilstand?.type ?: "",
+                            sivilstandDato = fomDato,
+                            hendelseId = personhendelse.hendelseId,
+                        )
+                    }
 
                     samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(
                         hendelseId = personhendelse.hendelseId,
