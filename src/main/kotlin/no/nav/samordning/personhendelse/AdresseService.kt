@@ -102,26 +102,21 @@ class AdresseService(
         }
     }
 
-    private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse?): Adresse {
-        return if (kontaktadresse?.coAdressenavn != null) {
-            Adresse(
-                adresselinje1 = kontaktadresse.coAdressenavn,
-                adresselinje2 = kontaktadresse.vegadresse?.let { concatVegadresse(it) },
-                adresselinje3 = null,
-                postnr = kontaktadresse.vegadresse?.postnummer,
-                poststed = kontaktadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
-                land = "NOR",
-            )
-        } else {
-            Adresse(
-                adresselinje1 = kontaktadresse?.vegadresse?.let { concatVegadresse(it) },
-                adresselinje2 = null,
-                adresselinje3 = null,
-                postnr = kontaktadresse?.vegadresse?.postnummer,
-                poststed = kontaktadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
-                land = "NOR",
-            )
-        }
+    private fun mapPdlKontantadresse(kontaktadresse: Kontaktadresse): Adresse {
+
+        val adresselinjer = listOfNotNull(
+            kontaktadresse.coAdressenavn,
+            kontaktadresse.vegadresse?.let { concatVegadresse(it) }
+        )
+
+        return Adresse(
+            adresselinje1 = adresselinjer.getOrNull(0),
+            adresselinje2 = adresselinjer.getOrNull(1),
+            adresselinje3 = null,
+            postnr = kontaktadresse.vegadresse?.postnummer,
+            poststed = kontaktadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+            land = "NORGE",
+        )
     }
 
     private fun concatVegadresse(vegadresse: Vegadresse): String =
@@ -130,20 +125,6 @@ class AdresseService(
             vegadresse.husnummer,
             vegadresse.husbokstav
         ).joinToString(" ")
-
-    private fun standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(utenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?): List<String> {
-
-        return listOfNotNull(
-            coAdressenavn(coAdressenavn),
-            combineValuesToAdresselinje(
-                utenlandskAdresse.adressenavnNummer,
-                utenlandskAdresse.postboksNummerNavn,
-                utenlandskAdresse.bygningEtasjeLeilighet,
-                utenlandskAdresse.regionDistriktOmraade
-            ),
-            combineValuesToAdresselinje(utenlandskAdresse.postkode, utenlandskAdresse.bySted)
-        ).filterNot { it == "" }
-    }
 
     fun combineValuesToAdresselinje(vararg values: String?): String? {
         var adresselinje: String? = ""
@@ -156,50 +137,41 @@ class AdresseService(
         return adresselinje.trim()
     }
 
-    fun coAdressenavn(coAdressenavn: String?): String? {
-        if (coAdressenavn.isNullOrBlank()) return null
-        return coAdressenavn
-    }
+    private fun mapPdlBostedsadresse(bostedsadresse: Bostedsadresse): Adresse {
+        val adresselinjer = listOfNotNull(
+            bostedsadresse.coAdressenavn,
+            bostedsadresse.vegadresse?.let { concatVegadresse(it) }
+        )
 
-    private fun mapPdlBostedsadresse(bostedsadresse: Bostedsadresse?): Adresse {
-        return Adresse().apply {
-            if (bostedsadresse?.coAdressenavn != null) {
-                adresselinje1 = bostedsadresse.coAdressenavn
-                adresselinje2 = bostedsadresse.vegadresse?.let { concatVegadresse(it) }
-                adresselinje3 = null
-            } else {
-                adresselinje1 = bostedsadresse?.vegadresse?.let { concatVegadresse(it) }
-                adresselinje2 = null
-                adresselinje3 = null
-            }
-
-            postnr = bostedsadresse?.vegadresse?.postnummer
-            poststed = bostedsadresse?.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) }
-            land = "NOR"
-        }
+        return Adresse(
+            adresselinje1 = adresselinjer.getOrNull(0),
+            adresselinje2 = adresselinjer.getOrNull(1),
+            adresselinje3 = null,
+            postnr = bostedsadresse.vegadresse?.postnummer,
+            poststed = bostedsadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+            land = "NORGE",
+        )
     }
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?): Adresse {
-        return Adresse().apply {
-            val adresselinjer = standardAdresselinjeMappingUtenlandsKontaktAdresseTilAdresselinjer(pdlUtenlandskAdresse, coAdressenavn)
-            when (adresselinjer.size) {
-                3 -> {
-                    adresselinje1 = adresselinjer[0]
-                    adresselinje2 = adresselinjer[1]
-                    adresselinje3 = adresselinjer[2]
-                }
-                2 -> {
-                    adresselinje1 = adresselinjer[0]
-                    adresselinje2 = adresselinjer[1]
-                }
-                1 -> {
-                    adresselinje1 = adresselinjer[0]
-                }
-            }
-            postnr = pdlUtenlandskAdresse.postkode
-            poststed = pdlUtenlandskAdresse.bySted
-            land = kodeverkService.finnLandkode( pdlUtenlandskAdresse.landkode)?.land ?: pdlUtenlandskAdresse.landkode
-        }
+        val adresselinjer = listOfNotNull(
+            coAdressenavn,
+            combineValuesToAdresselinje(
+                pdlUtenlandskAdresse.adressenavnNummer,
+                pdlUtenlandskAdresse.postboksNummerNavn,
+                pdlUtenlandskAdresse.bygningEtasjeLeilighet,
+                pdlUtenlandskAdresse.regionDistriktOmraade
+            ),
+            combineValuesToAdresselinje(pdlUtenlandskAdresse.postkode, pdlUtenlandskAdresse.bySted)
+        ).filterNot { it.isBlank() }
+        return Adresse(
+            adresselinje1 = adresselinjer.getOrNull(0),
+            adresselinje2 = adresselinjer.getOrNull(1),
+            adresselinje3 = adresselinjer.getOrNull(2),
+            postnr = pdlUtenlandskAdresse.postkode,
+            poststed = pdlUtenlandskAdresse.bySted,
+            land = kodeverkService.finnLandkode( pdlUtenlandskAdresse.landkode)?.land ?: pdlUtenlandskAdresse.landkode,
+        )
     }
 
     private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat): Adresse {
@@ -214,48 +186,40 @@ class AdresseService(
     }
 
     private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?): Adresse {
-        return Adresse().apply {
-            addAdresselinje(this, coAdressenavn, isCoAdresse = true)
-            addAdresselinje(this, postboksadresse.postbokseier)
-            addAdresselinje(this, postboksadresse.postboks)
-            postnr = postboksadresse.postnummer
-            poststed = this.postnr?.let { kodeverkService.hentPoststedforPostnr(it) }
-            land = "NOR"
-        }
+        val adresselinjer = listOfNotNull(
+            coAdressenavn,
+            postboksadresse.postbokseier,
+            postboksadresse.postboks
+        ).filterNot { it.isBlank() }
+        
+        return Adresse(
+            adresselinje1 = adresselinjer.getOrNull(0),
+            adresselinje2 = adresselinjer.getOrNull(1),
+            adresselinje3 = adresselinjer.getOrNull(2),
+            postnr = postboksadresse.postnummer,
+            poststed = postboksadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+            land = "NORGE"
+        )
     }
 
     private fun mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(postadresseIFrittFormat: PostadresseIFrittFormat): Adresse {
-        return Adresse().apply {
-            adresselinje1 = listOfNotNull(adresselinje1, postadresseIFrittFormat.adresselinje1).joinToString(" ")
-            adresselinje2 = postadresseIFrittFormat.adresselinje2
-            adresselinje3 = postadresseIFrittFormat.adresselinje3
-            postnr = postadresseIFrittFormat.postnummer
-            poststed = postnr?.let { kodeverkService.hentPoststedforPostnr(it) }
-            land = "NOR"
-        }
-    }
-
-    fun addAdresselinje(it: Adresse, adresse: String?, isCoAdresse: Boolean = false) {
-        if (it.adresselinje1.isNullOrEmpty()) {
-            it.adresselinje1 = adresse
-        } else if (isCoAdresse) {
-            it.adresselinje3 = it.adresselinje2
-            it.adresselinje2 = it.adresselinje1
-            it.adresselinje1 = adresse
-        } else if (it.adresselinje2.isNullOrEmpty()) {
-            it.adresselinje2 = adresse
-        } else if (it.adresselinje3.isNullOrEmpty()) {
-            it.adresselinje3 = adresse
-        }
+        return Adresse(
+            adresselinje1 = postadresseIFrittFormat.adresselinje1,
+            adresselinje2 = postadresseIFrittFormat.adresselinje2,
+            adresselinje3 = postadresseIFrittFormat.adresselinje3,
+            postnr = postadresseIFrittFormat.postnummer,
+            poststed = postadresseIFrittFormat.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
+            land = "NORGE",
+        )
     }
 
     data class Adresse(
-        var adresselinje1: String? = null,
-        var adresselinje2: String? = null,
-        var adresselinje3: String? = null,
-        var postnr: String? = null,
-        var poststed: String? = null,
-        var land: String? = null
+        val adresselinje1: String? = null,
+        val adresselinje2: String? = null,
+        val adresselinje3: String? = null,
+        val postnr: String? = null,
+        val poststed: String? = null,
+        val land: String? = null,
     )
 
     private fun createAdresseRequest(
