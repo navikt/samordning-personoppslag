@@ -17,7 +17,7 @@ internal class PdlPersonTest {
 
     private val mockPersonClient: PersonClient = mockk(relaxed = true)
     private val mockKodeverkService: KodeverkService = mockk(relaxed = true)
-    private val mockPersonService = PersonService(mockPersonClient, mockKodeverkService)
+    private val mockPersonService = PersonServiceLegacy(mockPersonClient, mockKodeverkService)
     private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
 
     @AfterEach

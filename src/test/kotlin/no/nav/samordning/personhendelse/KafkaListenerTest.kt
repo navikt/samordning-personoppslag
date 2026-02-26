@@ -12,7 +12,7 @@ import io.mockk.verify
 import no.nav.person.pdl.leesah.Personhendelse
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
@@ -27,7 +27,7 @@ import org.springframework.kafka.support.Acknowledgment
 class KafkaListenerTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
-    private val personService = mockk<PersonService>(relaxed = true)
+    private val personService = mockk<PersonServiceLegacy>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
     private val kodeverkService = mockk<KodeverkService>(relaxed = true)

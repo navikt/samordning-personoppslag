@@ -24,7 +24,7 @@ internal class PdlPersonServiceTest {
     private val client = mockk<PersonClient>()
     private val kodeverkService = mockk<KodeverkService>()
 
-    private val service: PersonService = PersonService(client, kodeverkService)
+    private val service: PersonServiceLegacy = PersonServiceLegacy(client, kodeverkService)
 
     private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(

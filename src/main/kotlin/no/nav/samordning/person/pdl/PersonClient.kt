@@ -43,7 +43,7 @@ class PersonClient(
         backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
     )
     internal fun hentAdresse(ident: String): HentAdresseResponse {
-        val query = getGraphqlResource("/graphql/hentAdresse.graphql")
+        val query = getGraphqlResource("/graphql/hentAdresseLegacy.graphql")
         val request = GraphqlRequest(query, Variables(ident))
         return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request), HentAdresseResponse::class).also {
             loggPdlFeil(it.errors)

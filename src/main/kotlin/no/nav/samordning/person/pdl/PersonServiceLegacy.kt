@@ -13,13 +13,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
-class PersonService(
+class PersonServiceLegacy(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
 ) {
 
-    private val logger = LoggerFactory.getLogger(PersonService::class.java)
+    private val logger = LoggerFactory.getLogger(PersonServiceLegacy::class.java)
 
     private var hentPersonMetric: Metric
     private var hentAdresseMetric: Metric

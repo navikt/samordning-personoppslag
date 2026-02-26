@@ -10,7 +10,7 @@ import no.nav.person.pdl.leesah.common.adresse.UtenlandskAdresseIFrittFormat
 import no.nav.person.pdl.leesah.common.adresse.Vegadresse
 import no.nav.person.pdl.leesah.kontaktadresse.Kontaktadresse
 import no.nav.samordning.kodeverk.KodeverkService
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service
 class AdresseService(
     private val hendelseService: PersonEndringHendelseService,
     private val kodeverkService: KodeverkService,
-    private val personService: PersonService,
+    private val personServiceLegacy: PersonServiceLegacy,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -36,7 +36,7 @@ class AdresseService(
             val gyldigident = if (identer.size > 1) {
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
-                    personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    personServiceLegacy.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL")
                     identer.first()
@@ -65,7 +65,7 @@ class AdresseService(
                 createAdresseRequest(
                     hendelseId = personhendelse.hendelseId,
                     fnr = gyldigident,
-                    adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = gyldigident),
+                    adressebeskyttelse = personServiceLegacy.hentAdressebeskyttelse(fnr = gyldigident),
                     opplysningstype = personhendelse.opplysningstype,
                 )
             )
@@ -235,7 +235,7 @@ class AdresseService(
         adressebeskyttelse: List<AdressebeskyttelseGradering>,
         opplysningstype: String,
     ): OppdaterPersonaliaRequest {
-        val pdlAdresse = personService.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
+        val pdlAdresse = personServiceLegacy.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
 
 
         return OppdaterPersonaliaRequest(

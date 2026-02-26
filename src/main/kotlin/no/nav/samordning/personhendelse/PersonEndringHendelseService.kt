@@ -1,6 +1,6 @@
 package no.nav.samordning.personhendelse
 
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.personhendelse.tjenestepensjon.SjekkTpYtelserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,7 +11,7 @@ import java.time.LocalDate
 class PersonEndringHendelseService(
     private val personEndringHendelseProducer: PersonEndringHendelseProducer,
     private val sjekkTpYtelserService: SjekkTpYtelserService,
-    private val personService: PersonService,
+    private val personServiceLegacy: PersonServiceLegacy,
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -27,7 +27,7 @@ class PersonEndringHendelseService(
     ) {
         logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
 
-        if (personService.erAdressebeskyttelseGradert(fnr) ) { return }
+        if (personServiceLegacy.erAdressebeskyttelseGradert(fnr) ) { return }
 
         val tpNr = sjekkTpYtelserService.sjekkForYtelser(fnr)
         logger.info("tpNr: $tpNr")
