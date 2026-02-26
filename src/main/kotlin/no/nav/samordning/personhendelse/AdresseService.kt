@@ -46,13 +46,19 @@ class AdresseService(
             }
 
             if (personhendelse.master != "FREG") {
-                val adresse = mapAdresse(personhendelse)
-                hendelseService.opprettPersonEndringHendelse(
-                    meldingsKode = Meldingskode.ADRESSE,
-                    fnr = gyldigident,
-                    hendelseId = personhendelse.hendelseId,
-                    adresse = adresse,
-                )
+                try {
+                    val adresse = mapAdresse(personhendelse)
+                    if (adresse != null) {
+                        hendelseService.opprettPersonEndringHendelse(
+                            meldingsKode = Meldingskode.ADRESSE,
+                            fnr = gyldigident,
+                            hendelseId = personhendelse.hendelseId,
+                            adresse = adresse,
+                        )
+                    }
+                } catch (e: Exception) {
+                    logger.warn("Opprettelse av personendringhendelse feiler for adresse, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+                }
             }
 
             samPersonaliaClient.oppdaterSamPersonalia(
@@ -70,11 +76,11 @@ class AdresseService(
         }
     }
 
-    private fun mapAdresse(personhendelse: Personhendelse): Adresse {
+    private fun mapAdresse(personhendelse: Personhendelse): Adresse? {
         return if (personhendelse.opplysningstype == "KONTAKTADRESSE_V1") {
             personhendelse.kontaktadresse.asAdresse()
         } else {
-            personhendelse.bostedsadresse.asAdresse()
+            personhendelse.bostedsadresse?.asAdresse()
         }
     }
 

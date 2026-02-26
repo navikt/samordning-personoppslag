@@ -42,12 +42,16 @@ class DoedsfallService(
         val erAnnullering = personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT
 
         if (personhendelse.master != "FREG") {
-            hendelseService.opprettPersonEndringHendelse(
-                meldingsKode = Meldingskode.DOEDSFALL,
-                fnr = gyldigident,
-                dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
-                hendelseId = personhendelse.hendelseId,
-            )
+            try {
+                hendelseService.opprettPersonEndringHendelse(
+                    meldingsKode = Meldingskode.DOEDSFALL,
+                    fnr = gyldigident,
+                    dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
+                    hendelseId = personhendelse.hendelseId,
+                )
+            } catch (e: Exception) {
+                logger.warn("Opprettelse av personendringhendelse feiler for dødsfall, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+            }
         }
 
         samPersonaliaClient.oppdaterSamPersonalia(
