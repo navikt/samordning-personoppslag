@@ -58,8 +58,8 @@ internal class PdlPersonTest {
         return mockPersonService.hentPerson(NorskIdent("2"))
     }
 
-    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
-        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseLegacyResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseLegacyResponse::class.java)
         val emptyResponseJson = """
             {
               "data": null,
@@ -69,7 +69,7 @@ internal class PdlPersonTest {
         val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
         val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
-        every { mockPersonClient.hentAdresse( any()) } returns response
+        every { mockPersonClient.hentAdresseLegacy( any()) } returns response
         every { mockPersonClient.hentIdenter (any()) } returns identResponse
         every { mockPersonClient.hentGeografiskTilknytning (any()) }  returns geoResponse
 

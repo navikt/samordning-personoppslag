@@ -1,8 +1,5 @@
 query($ident: ID!) {
     hentPerson(ident: $ident) {
-        adressebeskyttelse {
-            gradering
-        }
         bostedsadresse {
             vegadresse {
                 ...vegadresseDetails
@@ -56,21 +53,6 @@ query($ident: ID!) {
                 ...utenlandskAdresseIFrittFormat
             }
         }
-        doedsfall {
-            doedsdato
-            metadata {
-                ...metadataDetails
-            }
-        }
-        sivilstand {
-            type
-            gyldigFraOgMed
-            relatertVedSivilstand
-            metadata {
-                ...metadataDetails
-            }
-        }
-
     }
 }
 

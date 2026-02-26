@@ -420,7 +420,7 @@ internal class PdlPersonServiceTest {
         val adresseResponse = hentAdresseFraFil(json)
 
 
-        every { client.hentAdresse(any())  } returns adresseResponse
+        every { client.hentAdresseLegacy(any())  } returns adresseResponse
         every { kodeverkService.hentPoststedforPostnr(any()) } returns "ETT_ELLER_ANNETSTED"
 
         val adresseDto = service.hentPdlAdresse(NorskIdent("12331231231"), "BOSTEDSADRESSE_V1")
@@ -444,8 +444,8 @@ internal class PdlPersonServiceTest {
         assertEquals(expected, adresseDto)
     }
 
-    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
-        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseLegacyResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseLegacyResponse::class.java)
         val emptyResponseJson = """
             {
               "data": null,
@@ -455,7 +455,7 @@ internal class PdlPersonServiceTest {
         val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
         val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
-        every { client.hentAdresse( any()) } returns response
+        every { client.hentAdresseLegacy( any()) } returns response
         every { client.hentIdenter (any()) } returns identResponse
         every { client.hentGeografiskTilknytning (any()) }  returns geoResponse
 

@@ -24,6 +24,7 @@ class AdresseService(
     private val hendelseService: PersonEndringHendelseService,
     private val kodeverkService: KodeverkService,
     private val personServiceLegacy: PersonServiceLegacy,
+    private val persondataService: PersonDataService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -229,6 +230,8 @@ class AdresseService(
         val land: String? = null,
     )
 
+
+
     private fun createAdresseRequest(
         hendelseId: String,
         fnr: String,
@@ -236,6 +239,7 @@ class AdresseService(
         opplysningstype: String,
     ): OppdaterPersonaliaRequest {
         val pdlAdresse = personServiceLegacy.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
+
 
 
         return OppdaterPersonaliaRequest(

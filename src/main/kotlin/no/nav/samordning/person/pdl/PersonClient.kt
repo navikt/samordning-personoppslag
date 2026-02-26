@@ -42,13 +42,26 @@ class PersonClient(
         exclude = [HttpClientErrorException.NotFound::class],
         backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
     )
-    internal fun hentAdresse(ident: String): HentAdresseResponse {
+    internal fun hentAdresseLegacy(ident: String): HentAdresseLegacyResponse {
         val query = getGraphqlResource("/graphql/hentAdresseLegacy.graphql")
         val request = GraphqlRequest(query, Variables(ident))
-        return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request), HentAdresseResponse::class).also {
+        return pdlRestTemplate.postForObject<HentAdresseLegacyResponse>(url, HttpEntity(request), HentAdresseLegacyResponse::class).also {
             loggPdlFeil(it.errors)
         }
     }
+
+    @Retryable(
+        exclude = [HttpClientErrorException.NotFound::class],
+        backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
+    )
+    internal fun hentAdresse(ident: String): HentAdresseResponse {
+        val query = getGraphqlResource("/graphql/hentAdresse.graphql")
+        val request = GraphqlRequest(query, Variables(ident))
+        return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request))
+            .also { loggPdlFeil(it.errors) }
+    }
+
+
 
     @Retryable(
         exclude = [HttpClientErrorException.NotFound::class],
