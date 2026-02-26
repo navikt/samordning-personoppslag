@@ -1,12 +1,12 @@
 {
-  "hendelseId": "8f529358-5555-431b-8c8a-4f1868b9c78c",
+  "hendelseId": "bb118557-02ae-4941-a967-2253a7a5afcb",
   "personidenter": [
-    "05840399895",
-    "2969647419749"
+    "999309822813",
+    "21883649874"
   ],
-  "master": "FREG",
-  "opprettet": "2025-05-13T08:44:34.013Z",
-  "opplysningstype": "FOLKEREGISTERIDENTIFIKATOR_V1",
+  "master": "PDL",
+  "opprettet": "2026-05-13T08:45:35.430Z",
+  "opplysningstype": "SIVILSTAND_V1",
   "endringstype": "OPPRETTET",
   "tidligereHendelseId": null,
   "adressebeskyttelse": null,
@@ -15,15 +15,16 @@
   "foedsel": null,
   "forelderBarnRelasjon": null,
   "familierelasjon": null,
-  "sivilstand": null,
+  "sivilstand": {
+    "type": "SKILT",
+    "gyldigFraOgMed": "2026-05-13",
+    "relatertVedSivilstand": null,
+    "bekreftelsesdato": null
+  },
   "vergemaalEllerFremtidsfullmakt": null,
   "utflyttingFraNorge": null,
   "innflyttingTilNorge": null,
-  "folkeregisteridentifikator": {
-    "identifikasjonsnummer": "05840399895",
-    "type": "DNR",
-    "status": "iBruk"
-  },
+  "folkeregisteridentifikator": null,
   "navn": null,
   "sikkerhetstiltak": null,
   "statsborgerskap": null,

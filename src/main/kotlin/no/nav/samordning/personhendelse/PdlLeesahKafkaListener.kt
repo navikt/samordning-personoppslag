@@ -55,8 +55,9 @@ class PdlLeesahKafkaListener(
                 val personhendelse = consumerRecord.value()
 
                 // Behandler kun hendelser etter oppgitt dato, i tilfelle resending bakover i tid
-                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2025, Month.MARCH, 31, 7, 0, 0))) {
+                if (LocalDateTime.ofInstant(personhendelse.opprettet, ZoneId.of("UTC")).isAfter(LocalDateTime.of(2026, Month.FEBRUARY, 23, 12, 0, 0))) {
 
+                    // Behandler ikke hendelser fra folkeregisteret, siden konsumenter allerede har kobling til folkeregisteret
                     leesahKafkaListenerMetric.measure {
                         when (personhendelse.opplysningstype) {
                             "SIVILSTAND_V1" -> {
@@ -66,7 +67,10 @@ class PdlLeesahKafkaListener(
 
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
-                                folkeregisterService.opprettFolkeregistermelding(personhendelse, messureOpplysningstype)
+                                folkeregisterService.opprettFolkeregistermelding(
+                                    personhendelse,
+                                    messureOpplysningstype
+                                )
                             }
 
                             "DOEDSFALL_V1" -> {
@@ -85,7 +89,6 @@ class PdlLeesahKafkaListener(
                             }
                         }
                     }
-
                 }
             }
         } catch (e: Exception) {
@@ -111,19 +114,15 @@ class MessureOpplysningstypeHelper() {
     private val unkownType : MutableList<String> = mutableListOf()
 
     fun addKjent(personhendelse: Personhendelse) = knownType.add(personhendelse.opplysningstype)
-        .also { logger.debug("opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun addUkjent(personhendelse: Personhendelse) = unkownType.add(personhendelse.opplysningstype)
-        .also { logger.debug("ukjent opplysningstype: ${personhendelse.opplysningstype}") }
 
     fun createMetrics() {
         try {
             knownType.map { navn ->
-                logger.debug("Opplysningstype: $navn")
                 Metrics.counter("sp_kjent_opplysningstype", "Navn", navn).increment()
             }
             unkownType.map { navn ->
-                logger.debug("Ukjentopplysningstype: $navn")
                 Metrics.counter("sp_ukjent_opplysningstype", "Navn", navn).increment()
             }
         } catch (_: Exception) {
@@ -134,7 +133,6 @@ class MessureOpplysningstypeHelper() {
     fun clearAll() {
         knownType.clear()
         unkownType.clear()
-        logger.info("messureOpplysningstype all cleared")
     }
 
 }

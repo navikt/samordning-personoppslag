@@ -18,10 +18,11 @@ import java.time.LocalDateTime
 
 class SivilstandServiceTest {
 
+    private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
     private val personService = mockk<PersonService>()
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val sivilstandService = SivilstandService(personService, samPersonaliaClient)
+    private val sivilstandService = SivilstandService(personEndringService, personService, samPersonaliaClient)
 
 
     @Test

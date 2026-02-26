@@ -14,6 +14,7 @@ import java.time.LocalDate
 
 @Service
 class DoedsfallService(
+    private val hendelseService: PersonEndringHendelseService,
     private val personService: PersonService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
@@ -21,14 +22,12 @@ class DoedsfallService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettDoedsfallmelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
-        if (personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT) {
-            logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
-            return
-        }
-
         val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }
 
-        val gyldigident = if (identer.size > 1) {
+        val gyldigident = if (identer.isEmpty()) {
+            logger.warn("Ingen gyldige identer funnet i PDL.")
+            return
+        } else if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
                 personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
@@ -40,11 +39,26 @@ class DoedsfallService(
             identer.first()
         }
 
+        val erAnnullering = personhendelse.endringstype == Endringstype.ANNULLERT || personhendelse.endringstype == Endringstype.OPPHOERT
+
+        if (personhendelse.master != "FREG") {
+            try {
+                hendelseService.opprettPersonEndringHendelse(
+                    meldingsKode = Meldingskode.DOEDSFALL,
+                    fnr = gyldigident,
+                    dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
+                    hendelseId = personhendelse.hendelseId,
+                )
+            } catch (e: Exception) {
+                logger.warn("Opprettelse av personendringhendelse feiler for dødsfall, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+            }
+        }
+
         samPersonaliaClient.oppdaterSamPersonalia(
             createDoedsfallRequest(
                 hendelseId = personhendelse.hendelseId,
                 fnr = gyldigident,
-                dodsdato = personhendelse.doedsfall?.doedsdato,
+                dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
                 adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = gyldigident)
             )
         )

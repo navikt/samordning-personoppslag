@@ -1,18 +1,19 @@
 {
-  "hendelseId": "a4f93df6-5555-4981-b7ff-9bcd8592be58",
+  "hendelseId": "87573b9b-8395-45fd-a24a-c93ab88f9807",
   "personidenter": [
-    "29822099635",
-    "54496214261",
-    "999993861139999"
+    "1000016953359",
+    "03123538209"
   ],
-  "master": "FREG",
-  "opprettet": "2025-05-14T10:52:40.009Z",
-  "opplysningstype": "FOLKEREGISTERIDENTIFIKATOR_V1",
+  "master": "PDL",
+  "opprettet": "2026-05-14T12:51:18.529Z",
+  "opplysningstype": "DOEDSFALL_V1",
   "endringstype": "OPPRETTET",
-  "tidligereHendelseId": "2d551a09-ff22-4dfc-b606-e2eaffd9adf4",
+  "tidligereHendelseId": null,
   "adressebeskyttelse": null,
   "doedfoedtBarn": null,
-  "doedsfall": null,
+  "doedsfall": {
+    "doedsdato": "2026-05-13"
+  },
   "foedsel": null,
   "forelderBarnRelasjon": null,
   "familierelasjon": null,
@@ -20,11 +21,7 @@
   "vergemaalEllerFremtidsfullmakt": null,
   "utflyttingFraNorge": null,
   "innflyttingTilNorge": null,
-  "folkeregisteridentifikator": {
-    "identifikasjonsnummer": "29822099635",
-    "type": "DNR",
-    "status": "opphoert"
-  },
+  "folkeregisteridentifikator": null,
   "navn": null,
   "sikkerhetstiltak": null,
   "statsborgerskap": null,

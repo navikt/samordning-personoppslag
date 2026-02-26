@@ -35,7 +35,9 @@ spring:
 
 pdl:
   kafka:
-    autoStartup: true
+    autoStartup: ${PDL_KAFKA_AUTOSTARTUP}
+
+PERSON_ENDRING_KAFKA_TOPIC: ${PERSON_ENDRING_KAFKA_TOPIC:person-endring}
 
 management:
   endpoint:

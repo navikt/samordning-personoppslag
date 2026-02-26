@@ -69,6 +69,22 @@ class RestTemplateConfig {
             .build()
     }
 
+    @Bean
+    fun tpTokenInteceptor(@Value("\${TP_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+        AzureAdTokenRequestInterceptor(scope)
+
+
+    @Bean
+    fun tpRestTemplate(@Value("\${TP_URL}") tpUrl: String, tpTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
+        return RestTemplateBuilder()
+            .rootUri(tpUrl)
+            .errorHandler(DefaultResponseErrorHandler())
+            .additionalInterceptors(tpTokenInteceptor)
+            .build()
+    }
+
+
+
     internal class PdlInterceptor : ClientHttpRequestInterceptor {
 
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -79,8 +95,6 @@ class RestTemplateConfig {
             request.headers["Tema"] = "PEN"
             request.headers[REQUEST_NAV_CALL] = MDC.get(REQUEST_ID_MDC_KEY) ?: UUID.randomUUID().toString()
             request.headers["Behandlingsnummer"] = Behandlingsnummer.getAll()
-
-            logger.debug("PdlInterceptor httpRequest headers: {}", request.headers)
 
             return execution.execute(request, body)
         }

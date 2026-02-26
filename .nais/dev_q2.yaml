@@ -82,8 +82,17 @@ spec:
       value: api://dev-fss.pensjonsamhandling.sam-q2/.default
     - name: SAM_URL
       value: https://sam-q2.intern.dev.nav.no
+    - name: TP_URL
+      value: https://tp-q2.intern.dev.nav.no
+    - name: TP_SCOPE
+      value: api://dev-fss.pensjonsamhandling.tp-q2/.default
     - name: KAFKA_GROUP_ID
       value: samordning-personoppslag-q2
+    - name: PERSON_ENDRING_KAFKA_TOPIC
+      value: pensjonsamhandling.person-endring-q2
+    - name: PDL_KAFKA_AUTOSTARTUP
+      value: "true"
+
   observability:
     autoInstrumentation:
       enabled: true
