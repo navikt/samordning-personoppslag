@@ -63,13 +63,17 @@ class SivilstandService(
                     val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
 
                     if (personhendelse.master != "FREG") {
-                        hendelseService.opprettPersonEndringHendelse(
-                            meldingsKode = Meldingskode.SIVILSTAND,
-                            fnr = gyldigident,
-                            sivilstand = personhendelse.sivilstand?.type ?: "",
-                            sivilstandDato = fomDato,
-                            hendelseId = personhendelse.hendelseId,
-                        )
+                        try {
+                            hendelseService.opprettPersonEndringHendelse(
+                                meldingsKode = Meldingskode.SIVILSTAND,
+                                fnr = gyldigident,
+                                sivilstand = personhendelse.sivilstand?.type ?: "",
+                                sivilstandDato = fomDato,
+                                hendelseId = personhendelse.hendelseId,
+                            )
+                        } catch (e: Exception) {
+                            logger.warn("Opprettelse av personendringhendelse feiler for sivilstand, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+                        }
                     }
 
                     samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(

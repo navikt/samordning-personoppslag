@@ -37,12 +37,16 @@ class FolkeregisterService(
                 personService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
             if (personhendelse.master != "FREG") {
-                hendelseService.opprettPersonEndringHendelse(
-                    meldingsKode = Meldingskode.FODSELSNUMMER,
-                    fnr = nyttFnr,
-                    oldFnr = gammeltFnr,
-                    hendelseId = personhendelse.hendelseId,
-                )
+                try {
+                    hendelseService.opprettPersonEndringHendelse(
+                        meldingsKode = Meldingskode.FODSELSNUMMER,
+                        fnr = nyttFnr,
+                        oldFnr = gammeltFnr,
+                        hendelseId = personhendelse.hendelseId,
+                    )
+                } catch (e: Exception) {
+                    logger.warn("Opprettelse av personendringhendelse feiler for endring av fnr, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+                }
             }
 
             samPersonaliaClient.oppdaterSamPersonalia(
