@@ -4,7 +4,6 @@ import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.*
-import no.nav.samordning.personhendelse.AdresseService.Adresse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -41,7 +40,7 @@ class PersonDataService(
 
     private fun konverterTilAdresse(hentAdresse: HentAdresse, opplysningstype: String): Adresse? {
 
-        val bostedsadressepdl = hentAdresse.bostedsadresse
+        val kontaktadressepdl = hentAdresse.kontaktadresse
             .filter { !it.metadata.historisk }
             .filter { it.metadata.master != "FREG" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -51,11 +50,10 @@ class PersonDataService(
             .filter { it.metadata.master != "FREG" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val kontaktadressepdl = hentAdresse.kontaktadresse
+        val bostedsadressepdl = hentAdresse.bostedsadresse
             .filter { !it.metadata.historisk }
             .filter { it.metadata.master != "FREG" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
-
 
         //1. kotanktadresse fra PDL  master = !FREG
         //2. kontaktadresse fra FREG,   (hopper over)
@@ -65,10 +63,10 @@ class PersonDataService(
         //if (kontaktadresse?.metadata?.sisteRegistrertDato()!! < bostedsadresse?.metadata?.sisteRegistrertDato()!! &&  bostedsadresse.utenlandskAdresse != null ) {
 
         val kontaktAdresse = kontaktadressepdl?.asAdresse()
-        val bostedsadresse = bostedsadressepdl?.asAdresse()
         val oppholdsadresse = oppholdsadressepdl?.asAdresse()
+        val bostedsadresse = bostedsadressepdl?.asAdresse()
 
-        logger.info("Opplsyningstype: $opplysningstype")
+        logger.info("Opplysningstype: $opplysningstype")
         logger.info("Kontaktadresse: ${kontaktAdresse?.sisteRegistrertDato}, bostedadresse: ${bostedsadresse?.sisteRegistrertDato}, oppholdsadresse: ${oppholdsadresse?.sisteRegistrertDato}")
 
         val prioritertAdresse = kontaktAdresse ?: oppholdsadresse ?: bostedsadresse

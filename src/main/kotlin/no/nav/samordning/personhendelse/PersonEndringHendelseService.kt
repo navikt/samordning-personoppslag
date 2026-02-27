@@ -22,7 +22,7 @@ class PersonEndringHendelseService(
         sivilstand: String? = null,
         sivilstandDato: LocalDate? = null,
         dodsdato: LocalDate? = null,
-        adresse: AdresseService.Adresse? = null,
+        adresse: Adresse? = null,
         hendelseId: String,
     ) {
         logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
@@ -41,6 +41,7 @@ class PersonEndringHendelseService(
             sivilstand = sivilstand,
             sivilstandDato = sivilstandDato,
             dodsdato = dodsdato,
+            adresse = adresse,
             meldingsKode = meldingsKode
         )
 

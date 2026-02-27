@@ -10,7 +10,6 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.IdentGruppe
@@ -18,7 +17,6 @@ import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.springframework.kafka.support.Acknowledgment
@@ -31,12 +29,11 @@ class KafkaListenerTest {
     private val personService = mockk<PersonServiceLegacy>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val kodeverkService = mockk<KodeverkService>(relaxed = true)
-
     private val personDataService = mockk<PersonDataService>(relaxed = true)
 
     private val sivilstandService = SivilstandService(personEndringService, personService, samPersonaliaClient)
-    private val adresseService = AdresseService(personEndringService, kodeverkService, personService, personDataService, samPersonaliaClient)
+    private val adresseService = AdresseService(personEndringService,
+        personService, personDataService, samPersonaliaClient)
     private val folkeregisterService = FolkeregisterService(personEndringService, personService, samPersonaliaClient)
     private val doedsfallService = DoedsfallService(personEndringService, personService, samPersonaliaClient)
 
@@ -159,14 +156,19 @@ class KafkaListenerTest {
     }
 
     @Test
-    @Disabled
     fun `personalhendelse på kontaktadresse skal gå ok`() {
         val hendelse = hentHendelsefraFil("/leesah_kontaktadresse_hendelse1.json")
 
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
-        //every { personService.hentPdlAdresse(any(), any()) } returns BostedsAdresseDto()
+        every { personDataService.hentPersonAdresse(any(), any()) } returns Adresse(
+            adresselinje1 = "SOT6 Vika",
+            adresselinje2 = "2094",
+            adresselinje3 = null,
+            postnr = "0125",
+            land = "NORGE",
+        )
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
 
@@ -194,48 +196,7 @@ class KafkaListenerTest {
         }) }
     }
 
-
     @Test
-    @Disabled
-    fun `personalhendelse på bostedadresse skal gå ok`() {
-        val hendelse = hentHendelsefraFil("/leesah_bostedadresse_hendelse.json")
-
-        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
-        justRun { mockAck.acknowledge() }
-        //every { personService.hentPdlAdresse(any(), any()) } returns BostedsAdresseDto()
-
-        listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
-
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
-
-        verify(exactly = 1) { personEndringService.opprettPersonEndringHendelse(
-            any(),
-            any(),
-            any(),
-            any(),
-            any(),
-            any(),
-            withArg { acutalAdr ->
-                println(acutalAdr)
-                assertEquals("Storgata 5 G", acutalAdr.adresselinje1)
-                assertEquals(null, acutalAdr.adresselinje2)
-                assertEquals(null, acutalAdr.adresselinje3)
-                assertEquals("6100", acutalAdr.postnr)
-            },
-            any()) }
-
-        verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(withArg {
-            assertEquals("e8289a2f-bc01-418f-a40f-d71ece27b478", it.hendelseId)
-            assertEquals(null, it.newPerson.sivilstand)
-            assertNotNull(it.newPerson.bostedsAdresse)
-        }) }
-    }
-
-
-
-    @Test
-    @Disabled
     fun `personhendelse av type ikke behandlet blir pent acket og avvist`() {
         val hendelse1 = hentHendelsefraFil("/leesah_baretulldummy1.json")
 

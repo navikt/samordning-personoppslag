@@ -1,7 +1,6 @@
 package no.nav.samordning.personhendelse
 
 import java.time.LocalDate
-import java.util.UUID
 
 data class PersonEndringKafkaHendelse(
     val hendelseId: String,
@@ -11,5 +10,6 @@ data class PersonEndringKafkaHendelse(
     val sivilstand: String? = null,
     val sivilstandDato: LocalDate? = null,
     val dodsdato: LocalDate? = null,
+    val adresse: Adresse? = null,
     val meldingsKode: Meldingskode
 )
