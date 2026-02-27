@@ -3,7 +3,7 @@ package no.nav.samordning.person.sam
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.metrics.MetricsHelper.Metric
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering.*
@@ -23,7 +23,7 @@ import java.util.*
 @Service
 class PersonSamordningService(
     private val kodeverkService: KodeverkService,
-    private val personService: PersonService,
+    private val personService: PersonServiceLegacy,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
 ) {
 

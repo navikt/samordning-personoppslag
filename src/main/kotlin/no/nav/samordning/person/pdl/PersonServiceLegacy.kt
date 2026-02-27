@@ -13,13 +13,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
-class PersonService(
+class PersonServiceLegacy(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest(),
 ) {
 
-    private val logger = LoggerFactory.getLogger(PersonService::class.java)
+    private val logger = LoggerFactory.getLogger(PersonServiceLegacy::class.java)
 
     private var hentPersonMetric: Metric
     private var hentAdresseMetric: Metric
@@ -65,7 +65,7 @@ class PersonService(
         return hentAdresseMetric.measure {
 
             logger.debug("Henter adresse: ${ident.id.scrable()} fra pdl")
-            val response = client.hentAdresse(ident.id)
+            val response = client.hentAdresseLegacy(ident.id)
 
             if (!response.errors.isNullOrEmpty())
                 handleError(response.errors)
@@ -214,29 +214,29 @@ class PersonService(
 
 
     internal fun konverterTilAdresse(
-        pdlPerson: HentAdresse,
+        legacyAdresse: HentAdresseLegacy,
         geografiskTilknytning: GeografiskTilknytning?,
         opplysningstype: String,
     ): BostedsAdresseDto {
 
-        val graderingListe = pdlPerson.adressebeskyttelse
+        val graderingListe = legacyAdresse.adressebeskyttelse
             .map { it.gradering }
             .distinct()
 
-        val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
+        val bostedsadresse = legacyAdresse.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val oppholdsadresse = pdlPerson.oppholdsadresse.filter { !it.metadata.historisk }
+        val oppholdsadresse = legacyAdresse.oppholdsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
+        val kontaktadresse = legacyAdresse.kontaktadresse?.filter { !it.metadata.historisk }
             ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
+        val doedsfall = legacyAdresse.doedsfall.filter { !it.metadata.historisk }
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val sivilstand = pdlPerson.sivilstand
+        val sivilstand = legacyAdresse.sivilstand
 
         return PdlAdresse(
             graderingListe,

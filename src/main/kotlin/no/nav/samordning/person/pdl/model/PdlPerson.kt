@@ -22,7 +22,7 @@ internal data class HentPerson(
 internal data class HentPersonnavn(
         val navn: List<Navn>
 )
-internal data class HentAdresse(
+internal data class HentAdresseLegacy(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val bostedsadresse: List<Bostedsadresse>,
         val oppholdsadresse: List<Oppholdsadresse>,
