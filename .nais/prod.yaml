@@ -27,8 +27,6 @@ spec:
   port: 8080
   ingresses:
     - https://samordning-personoppslag.intern.nav.no
-  secureLogs:
-    enabled: true
   prometheus:
     enabled: true
     path: actuator/prometheus
