@@ -72,7 +72,16 @@ class PersonDataService(
         logger.info("Kontaktadresse: ${kontaktAdresse?.sisteRegistrertDato}, bostedadresse: ${bostedsadresse?.sisteRegistrertDato}, oppholdsadresse: ${oppholdsadresse?.sisteRegistrertDato}")
 
         val prioritertAdresse = kontaktAdresse ?: oppholdsadresse ?: bostedsadresse
-        val adresseMedPrioritertUtland = if (kontaktAdresse?.sisteRegistrertDato!! < bostedsadresse?.sisteRegistrertDato!! && bostedsadresse.land  != "NORGE") {
+
+        // If person has foreign bostedsadresse newer than chosen address, use bostedsadresse
+        val adresseMedPrioritertUtland = if (
+            bostedsadresse != null &&
+            bostedsadresse.land != "NORGE" &&
+            prioritertAdresse != null &&
+            prioritertAdresse.sisteRegistrertDato != null &&
+            bostedsadresse.sisteRegistrertDato != null &&
+            prioritertAdresse.sisteRegistrertDato < bostedsadresse.sisteRegistrertDato
+        ) {
             bostedsadresse
         } else {
             prioritertAdresse
@@ -83,8 +92,8 @@ class PersonDataService(
 
     private fun Bostedsadresse.asAdresse(): PersonDataAdresse? {
         return when {
-            this.vegadresse != null -> mapPdlBostedsadresse(this)
             this.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresse,  this.coAdressenavn, this.metadata.sisteRegistrertDato(), this.gyldigFraOgMed)
+            this.vegadresse != null -> mapPdlBostedsadresse(this)
             else -> {
                 logger.warn("Fant ingen bostedsadresse å mappe")
                 null
