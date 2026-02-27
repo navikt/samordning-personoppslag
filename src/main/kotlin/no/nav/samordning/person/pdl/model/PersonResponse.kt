@@ -58,4 +58,6 @@ internal data class HentAdresse(
     val bostedsadresse: List<Bostedsadresse>,
     val oppholdsadresse: List<Oppholdsadresse>,
     val kontaktadresse: List<Kontaktadresse>,
-)
+) {
+    companion object {}
+}

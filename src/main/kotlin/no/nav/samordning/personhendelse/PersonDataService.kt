@@ -3,15 +3,7 @@ package no.nav.samordning.personhendelse
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.PersonoppslagException
-import no.nav.samordning.person.pdl.model.Bostedsadresse
-import no.nav.samordning.person.pdl.model.HentAdresse
-import no.nav.samordning.person.pdl.model.Kontaktadresse
-import no.nav.samordning.person.pdl.model.PostadresseIFrittFormat
-import no.nav.samordning.person.pdl.model.Postboksadresse
-import no.nav.samordning.person.pdl.model.ResponseError
-import no.nav.samordning.person.pdl.model.UtenlandskAdresse
-import no.nav.samordning.person.pdl.model.UtenlandskAdresseIFrittFormat
-import no.nav.samordning.person.pdl.model.Vegadresse
+import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.personhendelse.AdresseService.Adresse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -80,7 +72,6 @@ class PersonDataService(
         logger.info("Kontaktadresse: ${kontaktAdresse?.sisteRegistrertDato}, bostedadresse: ${bostedsadresse?.sisteRegistrertDato}, oppholdsadresse: ${oppholdsadresse?.sisteRegistrertDato}")
 
         val prioritertAdresse = kontaktAdresse ?: oppholdsadresse ?: bostedsadresse
-
         val adresseMedPrioritertUtland = if (kontaktAdresse?.sisteRegistrertDato!! < bostedsadresse?.sisteRegistrertDato!! && bostedsadresse.land  != "NORGE") {
             bostedsadresse
         } else {
