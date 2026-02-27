@@ -416,7 +416,7 @@ internal class PdlPersonServiceTest {
 
     @Test
     fun sjekkUtlandadresse() {
-        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val json = javaClass.getResource("/hentAdresseLegacy.json").readText()
         val adresseResponse = hentAdresseFraFil(json)
 
 

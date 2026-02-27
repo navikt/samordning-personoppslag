@@ -114,7 +114,7 @@ internal class PdlPersonTest {
 
     @Test
     fun `hentAdresse med data i json deserialisering`() {
-        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val json = javaClass.getResource("/hentAdresseLegacy.json").readText()
         val adresse = hentAdresseFraFil(json)
 
         val adressenavn = adresse.data?.hentPerson?.bostedsadresse?.first()?.vegadresse?.adressenavn
