@@ -73,21 +73,20 @@ class PersonDataService(
 
         val prioritertAdresse = kontaktAdresse ?: oppholdsadresse ?: bostedsadresse
 
-        // If person has foreign bostedsadresse newer than chosen address, use bostedsadresse
-        val adresseMedPrioritertUtland = if (
-            bostedsadresse != null &&
-            bostedsadresse.land != "NORGE" &&
-            prioritertAdresse != null &&
-            prioritertAdresse.sisteRegistrertDato != null &&
-            bostedsadresse.sisteRegistrertDato != null &&
-            prioritertAdresse.sisteRegistrertDato < bostedsadresse.sisteRegistrertDato
-        ) {
+        val adresseMedPrioritertUtland = if (erUtenlandskAdresseNyere(prioritertAdresse, bostedsadresse)) {
             bostedsadresse
         } else {
             prioritertAdresse
         }
 
         return  mapPersonDataServiceAdresseTilAdresse(adresseMedPrioritertUtland)
+    }
+
+    private fun erUtenlandskAdresseNyere(prioritertAdresse: PersonDataAdresse?, bostedsadresse: PersonDataAdresse?): Boolean {
+        return bostedsadresse?.land != "NORGE" &&
+                bostedsadresse?.sisteRegistrertDato != null &&
+                prioritertAdresse?.sisteRegistrertDato != null &&
+                prioritertAdresse.sisteRegistrertDato < bostedsadresse.sisteRegistrertDato
     }
 
     private fun Bostedsadresse.asAdresse(): PersonDataAdresse? {
@@ -252,7 +251,6 @@ class PersonDataService(
         )
     }
 
-
     private data class PersonDataAdresse(
         val adresselinje1: String? = null,
         val adresselinje2: String? = null,
@@ -263,5 +261,4 @@ class PersonDataService(
         val sisteRegistrertDato: LocalDateTime? = null,
         val gyldigFraOgMed: LocalDateTime? = null,
     )
-
 }
