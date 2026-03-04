@@ -39,9 +39,7 @@ class AdresseService(
 
             if (personhendelse.master != "FREG") {
                 try {
-
                     val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
-
                     if (adresse != null) {
                         hendelseService.opprettPersonEndringHendelse(
                             meldingsKode = Meldingskode.ADRESSE,
