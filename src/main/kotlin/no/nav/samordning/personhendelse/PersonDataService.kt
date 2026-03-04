@@ -40,30 +40,42 @@ class PersonDataService(
 
     private fun konverterTilAdresse(hentAdresse: HentAdresse, opplysningstype: String): Adresse? {
 
-        val kontaktadressepdl = hentAdresse.kontaktadresse
+        val kontaktadressePdl = hentAdresse.kontaktadresse
             .filter { !it.metadata.historisk }
-            .filter { it.metadata.master != "FREG" }
+            .filter { it.metadata.master == "PDL" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val oppholdsadressepdl = hentAdresse.oppholdsadresse
+        val kontaktadresseFreg = hentAdresse.kontaktadresse
             .filter { !it.metadata.historisk }
-            .filter { it.metadata.master != "FREG" }
+            .filter { it.metadata.master == "FREG" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+
+        val oppholdsadressePdl = hentAdresse.oppholdsadresse
+            .filter { !it.metadata.historisk }
+            .filter { it.metadata.master == "PDL" }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
+        val oppholdsadresseFreg = hentAdresse.oppholdsadresse
+            .filter { !it.metadata.historisk }
+            .filter { it.metadata.master == "FREG" }
+            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+
 
         val bostedsadressepdl = hentAdresse.bostedsadresse
             .filter { !it.metadata.historisk }
-            .filter { it.metadata.master != "FREG" }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
         //1. kotanktadresse fra PDL  master = !FREG
-        //2. kontaktadresse fra FREG,   (hopper over)
+        //2. kontaktadresse fra FREG,
         //3. Oppholdsadresse fra PDL master = !FREG
-        //4. Oppholdsadresse fra FREG, (hopper over)
+        //4. Oppholdsadresse fra FREG,
         //5. BostedAdrese fra PDL master = !FREG
         //if (kontaktadresse?.metadata?.sisteRegistrertDato()!! < bostedsadresse?.metadata?.sisteRegistrertDato()!! &&  bostedsadresse.utenlandskAdresse != null ) {
 
-        val kontaktAdresse = kontaktadressepdl?.asAdresse()
-        val oppholdsadresse = oppholdsadressepdl?.asAdresse()
+        val kontaktAdresse = kontaktadressePdl?.asAdresse() ?: kontaktadresseFreg?.asAdresse()
+        val oppholdsadresse = oppholdsadressePdl?.asAdresse() ?: oppholdsadresseFreg?.asAdresse()
+
         val bostedsadresse = bostedsadressepdl?.asAdresse()
 
         logger.info("Opplysningstype: $opplysningstype")
@@ -74,7 +86,7 @@ class PersonDataService(
         val adresseMedPrioritertUtland = if (erUtenlandskAdresseNyere(prioritertAdresse, bostedsadresse)) {
             bostedsadresse
         } else {
-            prioritertAdresse
+            prioritertAdresse?.getAdresseIfPdlOrNull()
         }
 
         return  mapPersonDataServiceAdresseTilAdresse(adresseMedPrioritertUtland)
@@ -89,7 +101,7 @@ class PersonDataService(
 
     private fun Bostedsadresse.asAdresse(): PersonDataAdresse? {
         return when {
-            this.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresse,  this.coAdressenavn, this.metadata.sisteRegistrertDato(), this.gyldigFraOgMed)
+            this.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresse,  this.coAdressenavn, this.metadata.sisteRegistrertDato(), Master.valueOf(this.metadata.master))
             this.vegadresse != null -> mapPdlBostedsadresse(this)
             else -> {
                 logger.warn("Fant ingen bostedsadresse å mappe")
@@ -100,13 +112,13 @@ class PersonDataService(
 
     private fun Kontaktadresse.asAdresse(): PersonDataAdresse? {
         val sisteRegistrertDato = this.metadata.sisteRegistrertDato()
-        val gyldigFraOgMed = this.gyldigFraOgMed
+        val master = Master.valueOf(this.metadata.master)
         return when {
             this.vegadresse != null -> mapPdlKontantadresse(this)
-            this.postboksadresse != null -> mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(this.postboksadresse, this.coAdressenavn, sisteRegistrertDato, gyldigFraOgMed)
-            this.postadresseIFrittFormat != null -> mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(this.postadresseIFrittFormat, sisteRegistrertDato, gyldigFraOgMed)
-            this.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresse, this.coAdressenavn, sisteRegistrertDato, gyldigFraOgMed)
-            this.utenlandskAdresseIFrittFormat != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresseIFrittFormat, sisteRegistrertDato, gyldigFraOgMed)
+            this.postboksadresse != null -> mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(this.postboksadresse, this.coAdressenavn, sisteRegistrertDato, master)
+            this.postadresseIFrittFormat != null -> mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(this.postadresseIFrittFormat, sisteRegistrertDato, master)
+            this.utenlandskAdresse != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresse, this.coAdressenavn, sisteRegistrertDato, master)
+            this.utenlandskAdresseIFrittFormat != null -> mapPdlAdresseToTilleggsAdresseDtoUtland(this.utenlandskAdresseIFrittFormat, sisteRegistrertDato, master)
             else -> {
                 logger.warn("Fant ingen kontaktadresse å mappe")
                 null
@@ -129,7 +141,7 @@ class PersonDataService(
             poststed = kontaktadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
             land = "NORGE",
             sisteRegistrertDato = kontaktadresse.metadata.sisteRegistrertDato(),
-            gyldigFraOgMed = kontaktadresse.gyldigFraOgMed,
+            master = Master.valueOf(kontaktadresse.metadata.master),
         )
     }
 
@@ -165,11 +177,11 @@ class PersonDataService(
             poststed = bostedsadresse.vegadresse?.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
             land = "NORGE",
             sisteRegistrertDato = bostedsadresse.metadata.sisteRegistrertDato(),
-            gyldigFraOgMed = bostedsadresse.gyldigFraOgMed,
+            master = Master.valueOf(bostedsadresse.metadata.master),
         )
     }
 
-    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?, sisteRegistrertDato: LocalDateTime, gyldigFraOgMed: LocalDateTime?): PersonDataAdresse {
+    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresse, coAdressenavn: String?, sisteRegistrertDato: LocalDateTime, master: Master): PersonDataAdresse {
         val adresselinjer = listOfNotNull(
             coAdressenavn,
             combineValuesToAdresselinje(
@@ -188,11 +200,11 @@ class PersonDataService(
             poststed = pdlUtenlandskAdresse.bySted,
             land = kodeverkService.finnLandkode( pdlUtenlandskAdresse.landkode)?.land ?: pdlUtenlandskAdresse.landkode,
             sisteRegistrertDato = sisteRegistrertDato,
-            gyldigFraOgMed = gyldigFraOgMed,
+            master = master,
         )
     }
 
-    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat, sisteRegistrertDato: LocalDateTime, gyldigFraOgMed: LocalDateTime?): PersonDataAdresse {
+    private fun mapPdlAdresseToTilleggsAdresseDtoUtland(pdlUtenlandskAdresse: UtenlandskAdresseIFrittFormat, sisteRegistrertDato: LocalDateTime, master: Master): PersonDataAdresse {
         return PersonDataAdresse(
             adresselinje1 = pdlUtenlandskAdresse.adresselinje1,
             adresselinje2 = pdlUtenlandskAdresse.adresselinje2,
@@ -201,15 +213,15 @@ class PersonDataService(
             poststed = pdlUtenlandskAdresse.byEllerStedsnavn,
             land = pdlUtenlandskAdresse.landkode?.let { kodeverkService.finnLandkode(it)?.land } ?: pdlUtenlandskAdresse.landkode,
             sisteRegistrertDato = sisteRegistrertDato,
-            gyldigFraOgMed = gyldigFraOgMed,
+            master = master,
         )
     }
 
-    private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?, sisteRegistrertDato: LocalDateTime, gyldigFraOgMed: LocalDateTime?): PersonDataAdresse {
+    private fun mapPdlPostboksadresseToTilleggsAdresseDtoPostAdresse(postboksadresse: Postboksadresse, coAdressenavn: String?, sisteRegistrertDato: LocalDateTime, master: Master): PersonDataAdresse {
         val adresselinjer = listOfNotNull(
             coAdressenavn,
             postboksadresse.postbokseier,
-            postboksadresse.postboks
+            postboksadresse.postboks.let { "Postboks $it" }
         ).filterNot { it.isBlank() }
 
         return PersonDataAdresse(
@@ -220,11 +232,11 @@ class PersonDataService(
             poststed = postboksadresse.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
             land = "NORGE",
             sisteRegistrertDato = sisteRegistrertDato,
-            gyldigFraOgMed = gyldigFraOgMed,
+            master = master,
         )
     }
 
-    private fun mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(postadresseIFrittFormat: PostadresseIFrittFormat, sisteRegistrertDato: LocalDateTime, gyldigFraOgMed: LocalDateTime?): PersonDataAdresse {
+    private fun mapPdlPostadresseIFrittFormatToTilleggsAdresseDtoPostAdresse(postadresseIFrittFormat: PostadresseIFrittFormat, sisteRegistrertDato: LocalDateTime, master: Master): PersonDataAdresse {
         return PersonDataAdresse(
             adresselinje1 = postadresseIFrittFormat.adresselinje1,
             adresselinje2 = postadresseIFrittFormat.adresselinje2,
@@ -233,7 +245,7 @@ class PersonDataService(
             poststed = postadresseIFrittFormat.postnummer?.let { kodeverkService.hentPoststedforPostnr(it) },
             land = "NORGE",
             sisteRegistrertDato = sisteRegistrertDato,
-            gyldigFraOgMed = gyldigFraOgMed,
+            master = master,
         )
     }
 
@@ -257,6 +269,12 @@ class PersonDataService(
         val poststed: String? = null,
         val land: String? = null,
         val sisteRegistrertDato: LocalDateTime? = null,
-        val gyldigFraOgMed: LocalDateTime? = null,
-    )
+        val master: Master
+    ) {
+        fun getAdresseIfPdlOrNull() : PersonDataAdresse? =  if (this.master == Master.PDL) this else null
+    }
+
+    private enum class Master {
+        FREG, PDL
+    }
 }

@@ -8,6 +8,7 @@ import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
 import java.time.LocalDateTime
 
 class PersonDataServiceTest {
@@ -101,6 +102,12 @@ class PersonDataServiceTest {
             vegadresse = Vegadresse("KONTAKTVEIEN", "1", null, "1109", "231", null),
             metadata = mockMeta(registrert = eldreRegistreringsdato)
         )
+        val kontaktFreg = Kontaktadresse(
+            type = KontaktadresseType.Innland,
+            vegadresse = Vegadresse("KONTAKTVEIEN_FREG", "1", null, "1109", "231", null),
+            metadata = mockMeta(master = "FREG", registrert = eldreRegistreringsdato)
+        )
+
         val utenlandsk = Bostedsadresse(
             utenlandskAdresse = mockUtenlandskAdresse(),
             metadata = mockMeta(registrert = nyereRegistreringsdato)
@@ -108,7 +115,7 @@ class PersonDataServiceTest {
         
         every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
             HentAdresse.mock(
-                kontaktadresse = listOf(kontakt),
+                kontaktadresse = listOf(kontaktFreg, kontakt),
                 oppholdsadresse = emptyList(),
                 bostedsadresse = listOf(utenlandsk)
             )
@@ -238,8 +245,8 @@ class PersonDataServiceTest {
         ))
 
         val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        assertNull(resultat)
 
-        assertEquals("BOSTEDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
 
     @Test
@@ -252,13 +259,12 @@ class PersonDataServiceTest {
             vegadresse = Vegadresse("GAMMELVEIEN", "1", null, "1109", "231", null),
             metadata = mockMeta(historisk = true)
         )
-        val pdlBosted = mockBostedsadresse()
-        
+
         every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
             HentAdresse.mock(
                 kontaktadresse = listOf(historiskKontakt),
                 oppholdsadresse = emptyList(),
-                bostedsadresse = pdlBosted
+                bostedsadresse = mockBostedsadresse()
             )
         ))
 
@@ -347,11 +353,11 @@ class PersonDataServiceTest {
         val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
 
         assertEquals("TEST_EIER", resultat?.adresselinje1)
-        assertEquals("1231", resultat?.adresselinje2)
+        assertEquals("Postboks 1231", resultat?.adresselinje2)
     }
 
     @Test
-    fun `test frittformat kontaktadresse`() {
+    fun `test kontaktadresse i frittformat`() {
         every { kodeverkService.hentPoststedforPostnr(any()) } returns "LONDON"
         every { kodeverkService.finnLandkode(any()) } returns Landkode("GB", "GBR", land = "STORBRITANNIA")
         
@@ -369,22 +375,124 @@ class PersonDataServiceTest {
 
         assertEquals("adresselinje1 fritt", resultat?.adresselinje1)
         assertEquals("adresselinje2 fritt", resultat?.adresselinje2)
+        assertEquals("adresselinje3 fritt", resultat?.adresselinje3)
         assertEquals("STORBRITANNIA", resultat?.land)
     }
 
     @Test
-    fun `test ingen adresser returnerer null`() {
+    fun `test oppholdsadresse med FREG master returnerer null`() {
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "OSLO"
+
+        val fregOppholds = Oppholdsadresse(
+            vegadresse = mockVegadresse("OPPHOLDSADRESSE"),
+            metadata = mockMeta(master = "FREG")
+        )
+
+        every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
+            HentAdresse.mock(
+                kontaktadresse = emptyList(),
+                oppholdsadresse = listOf(fregOppholds),
+                bostedsadresse = emptyList()
+            )
+        ))
+
+        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        assertNull(resultat)
+    }
+
+    @Test
+    fun `test bostedsadresse med FREG master returnerer null`() {
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "OSLO"
+
+        val fregBosted = Bostedsadresse(
+            vegadresse = mockVegadresse("BOSTEDSADRESSE"),
+            metadata = mockMeta(master = "FREG")
+        )
+
         every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
             HentAdresse.mock(
                 kontaktadresse = emptyList(),
                 oppholdsadresse = emptyList(),
-                bostedsadresse = emptyList()
+                bostedsadresse = listOf(fregBosted)
+            )
+        ))
+
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        assertNull(resultat)
+    }
+
+    @Test
+    fun `test FREG oppholdsadresse prioritert over PDL bostedsadresse returnerer null`() {
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "OSLO"
+
+        val fregOppholds = Oppholdsadresse(
+            vegadresse = mockVegadresse("OPPHOLDSADRESSE"),
+            metadata = mockMeta(master = "FREG")
+        )
+
+        every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
+            HentAdresse.mock(
+                kontaktadresse = emptyList(),
+                oppholdsadresse = listOf(fregOppholds),
+                bostedsadresse = mockBostedsadresse()
+            )
+        ))
+
+        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        assertNull(resultat)
+    }
+
+    @Test
+    fun `test FREG kontaktadresse prioritert over PDL oppholdsadresse returnerer null`() {
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "OSLO"
+
+        val fregKontakt = Kontaktadresse(
+            type = KontaktadresseType.Innland,
+            vegadresse = Vegadresse("FREGVEIEN", "1", null, "1109", "231", null),
+            metadata = mockMeta(master = "FREG")
+        )
+
+        every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
+            HentAdresse.mock(
+                kontaktadresse = listOf(fregKontakt),
+                oppholdsadresse = mockOppholdsadresse(),
+                bostedsadresse = mockBostedsadresse()
+            )
+        ))
+
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        assertNull(resultat)
+    }
+
+    @Test
+    fun `test alle adresser med FREG master returnerer null`() {
+        every { kodeverkService.hentPoststedforPostnr(any()) } returns "OSLO"
+
+        val fregKontakt = Kontaktadresse(
+            type = KontaktadresseType.Innland,
+            vegadresse = Vegadresse("FREGVEIEN", "1", null, "1109", "231", null),
+            metadata = mockMeta(master = "FREG")
+        )
+        val fregOppholds = Oppholdsadresse(
+            vegadresse = mockVegadresse("OPPHOLDSADRESSE"),
+            metadata = mockMeta(master = "FREG")
+        )
+        val fregBosted = Bostedsadresse(
+            vegadresse = mockVegadresse("BOSTEDSADRESSE"),
+            metadata = mockMeta(master = "FREG")
+        )
+
+        every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(
+            HentAdresse.mock(
+                kontaktadresse = listOf(fregKontakt),
+                oppholdsadresse = listOf(fregOppholds),
+                bostedsadresse = listOf(fregBosted)
             )
         ))
 
         val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
-        assertEquals(null, resultat)
+        assertNull(resultat)
     }
 
     @Test
@@ -506,7 +614,7 @@ class PersonDataServiceTest {
         )
     }
 
-    private fun mockMeta(master: String = "PDL", registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14), historisk: Boolean = false): no.nav.samordning.person.pdl.model.Metadata {
+    private fun mockMeta(master: String = "PDL", registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14), historisk: Boolean = false): Metadata {
         return Metadata(
             endringer = listOf(
                 Endring(
