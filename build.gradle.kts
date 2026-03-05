@@ -16,7 +16,7 @@ val mockOAuth2ServerVersion = "3.0.1"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.7"
-val springmockkVersion = "4.0.2"
+val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.0.1"
 val commonsLang3Version = "3.18.0"
 
