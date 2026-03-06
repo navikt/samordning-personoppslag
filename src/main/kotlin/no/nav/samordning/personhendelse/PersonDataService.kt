@@ -4,6 +4,7 @@ import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.*
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -84,9 +85,11 @@ class PersonDataService(
         val prioritertAdresse = kontaktAdresse ?: oppholdsadresse ?: bostedsadresse
 
         val adresseMedPrioritertUtland = if (erUtenlandskAdresseNyere(prioritertAdresse, bostedsadresse)) {
+            logger.debug("Bruker utenlandsadresse siden den er nyere")
             bostedsadresse
         } else {
-            prioritertAdresse?.hentRelevantAdresseEllerNull(opplysningstype)
+            logger.debug("Sjekker om ${prioritertAdresse?.opplysningstype} er relevant")
+            prioritertAdresse?.hentRelevantAdresseEllerNull(opplysningstype, logger)
         }
 
         return  mapPersonDataServiceAdresseTilAdresse(adresseMedPrioritertUtland)
@@ -278,10 +281,19 @@ class PersonDataService(
         val master: Master,
         val opplysningstype: Opplysningstype,
     ) {
-        fun hentRelevantAdresseEllerNull(opplysningstype: String) : PersonDataAdresse? {
+        fun hentRelevantAdresseEllerNull(opplysningstype: String, logger: Logger) : PersonDataAdresse? {
             return if (erMasterPdl() && erOpplysningstype(opplysningstype)) {
                 this
             } else {
+                if (!erMasterPdl()) {
+                    logger.debug("Master er ikke PDL. Master = {}", this.master)
+                } else {
+                    logger.debug(
+                        "Opplysningstypen er ikke lik opplysningstype på hendelsen. Fra hendelse: {}, fra adresse: {}",
+                        opplysningstype,
+                        this.opplysningstype
+                    )
+                }
                 null
             }
         }
