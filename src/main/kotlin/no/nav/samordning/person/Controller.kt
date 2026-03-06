@@ -2,7 +2,7 @@ package no.nav.samordning.person
 
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.Landkode
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.pdl.model.PdlPerson
@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException
 @RequestMapping("/api")
 class Controller(
     private val personSamordningService: PersonSamordningService,
-    private val personService: PersonService,
+    private val personService: PersonServiceLegacy,
 ) {
 
 
