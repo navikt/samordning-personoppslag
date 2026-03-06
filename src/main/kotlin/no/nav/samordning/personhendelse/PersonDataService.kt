@@ -40,6 +40,7 @@ class PersonDataService(
     }
 
     private fun konverterTilAdresse(hentAdresse: HentAdresse, opplysningstype: String): Adresse? {
+        logger.debug("Adresse fra PDL: {}", hentAdresse)
 
         val kontaktadressePdl = hentAdresse.kontaktadresse
             .filter { !it.metadata.historisk }
