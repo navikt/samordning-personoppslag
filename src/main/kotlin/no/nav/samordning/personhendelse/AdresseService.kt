@@ -22,7 +22,7 @@ class AdresseService(
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun opprettAdressemelding(personhendelse: Personhendelse, messure: MessureOpplysningstypeHelper) {
-        if (personhendelse.endringstype == Endringstype.OPPRETTET) {
+        if (personhendelse.endringstype == Endringstype.OPPRETTET || personhendelse.endringstype == Endringstype.KORRIGERT) {
             val identer = personhendelse.personidenter.filter { Fodselsnummer.validFnr(it) }.takeUnless { it.isEmpty() } ?: return
 
             val gyldigident = if (identer.size > 1) {
@@ -37,20 +37,18 @@ class AdresseService(
                 identer.first()
             }
 
-            if (personhendelse.master != "FREG") {
-                try {
-                    val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
-                    if (adresse != null) {
-                        hendelseService.opprettPersonEndringHendelse(
-                            meldingsKode = Meldingskode.ADRESSE,
-                            fnr = gyldigident,
-                            hendelseId = personhendelse.hendelseId,
-                            adresse = adresse,
-                        )
-                    }
-                } catch (e: Exception) {
-                    logger.warn("Opprettelse av personendringhendelse feiler for adresse, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
+            try {
+                val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
+                if (adresse != null) {
+                    hendelseService.opprettPersonEndringHendelse(
+                        meldingsKode = Meldingskode.ADRESSE,
+                        fnr = gyldigident,
+                        hendelseId = personhendelse.hendelseId,
+                        adresse = adresse,
+                    )
                 }
+            } catch (e: Exception) {
+                logger.warn("Opprettelse av personendringhendelse feiler for adresse, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
             }
 
             samPersonaliaClient.oppdaterSamPersonalia(
