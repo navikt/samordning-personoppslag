@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import java.util.UUID
 
 @Service
 class PersonEndringHendelseProducer(
@@ -29,6 +28,7 @@ class PersonEndringHendelseProducer(
         sivilstand: String? = null,
         sivilstandDato: LocalDate? = null,
         dodsdato: LocalDate? = null,
+        adresse: Adresse? = null,
         hendelseId: String
     ) {
         val hendelse = PersonEndringKafkaHendelse(
@@ -39,6 +39,7 @@ class PersonEndringHendelseProducer(
             sivilstand = sivilstand,
             sivilstandDato = sivilstandDato,
             dodsdato = dodsdato,
+            adresse = adresse,
             meldingsKode = meldingsKode
         )
 

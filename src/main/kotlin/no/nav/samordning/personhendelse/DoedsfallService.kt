@@ -2,7 +2,7 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -15,7 +15,7 @@ import java.time.LocalDate
 @Service
 class DoedsfallService(
     private val hendelseService: PersonEndringHendelseService,
-    private val personService: PersonService,
+    private val personService: PersonServiceLegacy,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 

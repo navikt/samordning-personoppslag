@@ -24,7 +24,7 @@ internal class PdlPersonServiceTest {
     private val client = mockk<PersonClient>()
     private val kodeverkService = mockk<KodeverkService>()
 
-    private val service: PersonService = PersonService(client, kodeverkService)
+    private val service: PersonServiceLegacy = PersonServiceLegacy(client, kodeverkService)
 
     private fun mockMeta(registrert: LocalDateTime = LocalDateTime.of(2010, 4,1, 10, 2, 14)): Metadata {
         return Metadata(
@@ -416,11 +416,11 @@ internal class PdlPersonServiceTest {
 
     @Test
     fun sjekkUtlandadresse() {
-        val json = javaClass.getResource("/hentAdresse.json").readText()
+        val json = javaClass.getResource("/hentAdresseLegacy.json").readText()
         val adresseResponse = hentAdresseFraFil(json)
 
 
-        every { client.hentAdresse(any())  } returns adresseResponse
+        every { client.hentAdresseLegacy(any())  } returns adresseResponse
         every { kodeverkService.hentPoststedforPostnr(any()) } returns "ETT_ELLER_ANNETSTED"
 
         val adresseDto = service.hentPdlAdresse(NorskIdent("12331231231"), "BOSTEDSADRESSE_V1")
@@ -444,8 +444,8 @@ internal class PdlPersonServiceTest {
         assertEquals(expected, adresseDto)
     }
 
-    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseResponse {
-        val response = mapper.readValue(hentPersonfil, HentAdresseResponse::class.java)
+    private fun hentAdresseFraFil(hentPersonfil: String): HentAdresseLegacyResponse {
+        val response = mapper.readValue(hentPersonfil, HentAdresseLegacyResponse::class.java)
         val emptyResponseJson = """
             {
               "data": null,
@@ -455,7 +455,7 @@ internal class PdlPersonServiceTest {
         val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
         val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
-        every { client.hentAdresse( any()) } returns response
+        every { client.hentAdresseLegacy( any()) } returns response
         every { client.hentIdenter (any()) } returns identResponse
         every { client.hentGeografiskTilknytning (any()) }  returns geoResponse
 

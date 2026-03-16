@@ -18,8 +18,8 @@ internal data class HentPersonResponseData(
     val hentPerson: HentPerson? = null
 )
 
-internal data class HentAdresseResponseData(
-    val hentPerson: HentAdresse? = null
+internal data class HentAdresseLegacyResponseData(
+    val hentPerson: HentAdresseLegacy? = null
 )
 
 internal data class HentPersonnavnResponseData(
@@ -38,7 +38,26 @@ internal data class HentPersonUidResponseData(
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+internal data class HentAdresseLegacyResponse(
+    val data: HentAdresseLegacyResponseData? = null,
+    val errors: List<ResponseError>? = null
+)
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 internal data class HentAdresseResponse(
     val data: HentAdresseResponseData? = null,
     val errors: List<ResponseError>? = null
 )
+
+internal data class HentAdresseResponseData(
+    val hentPerson: HentAdresse? = null
+)
+
+internal data class HentAdresse(
+    val bostedsadresse: List<Bostedsadresse>,
+    val oppholdsadresse: List<Oppholdsadresse>,
+    val kontaktadresse: List<Kontaktadresse>,
+) {
+    companion object {}
+}

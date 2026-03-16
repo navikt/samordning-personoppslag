@@ -2,7 +2,7 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -15,7 +15,7 @@ import java.time.LocalDate
 @Service
 class SivilstandService(
     private val hendelseService: PersonEndringHendelseService,
-    private val personService: PersonService,
+    private val personServiceLegacy: PersonServiceLegacy,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -33,7 +33,7 @@ class SivilstandService(
             else -> {
                 try {
                     logger.info("Identer fra PDL inneholder flere enn 1.")
-                    personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    personServiceLegacy.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL for hendelse.")
                     identer.firstOrNull() ?: return
@@ -51,7 +51,7 @@ class SivilstandService(
 
             Endringstype.OPPRETTET, Endringstype.KORRIGERT  -> {
                 val fomDato = if (personhendelse.sivilstand?.gyldigFraOgMed == null) {
-                    val person = personService.hentPerson(NorskIdent(gyldigident))
+                    val person = personServiceLegacy.hentPerson(NorskIdent(gyldigident))
                     person?.sivilstand?.maxByOrNull { it.metadata.sisteRegistrertDato() }?.gyldigFraOgMed
                 } else {
                     personhendelse.sivilstand?.gyldigFraOgMed
@@ -60,7 +60,7 @@ class SivilstandService(
                 if (personhendelse.sivilstand?.type != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
-                    val adressebeskyttelse = personService.hentAdressebeskyttelse(gyldigident)
+                    val adressebeskyttelse = personServiceLegacy.hentAdressebeskyttelse(gyldigident)
 
                     if (personhendelse.master != "FREG") {
                         try {

@@ -30,7 +30,7 @@ internal class PdlPersonServiceIntegrationTest {
      *
      * Example: kubectl port-forward svc/pdl-api 8089:80
      */
-    private val service = PersonService(
+    private val service = PersonServiceLegacy(
             PersonClient(mockClient, "https://pdl-api.intern.dev.nav.no/graphql"),
             mockk<KodeverkService>()
     )

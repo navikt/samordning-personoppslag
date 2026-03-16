@@ -8,7 +8,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonService
+import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 class FolkeregisterServiceTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
-    private val personService = mockk<PersonService>()
+    private val personService = mockk<PersonServiceLegacy>()
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
     private val folkeregisterService = FolkeregisterService(personEndringService, personService, samPersonaliaClient)

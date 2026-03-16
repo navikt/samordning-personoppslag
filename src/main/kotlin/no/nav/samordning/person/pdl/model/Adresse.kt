@@ -48,6 +48,7 @@ data class Kontaktadresse(
         val postadresseIFrittFormat: PostadresseIFrittFormat? = null
 )
 
+
 data class Postboksadresse(
         val postbokseier: String? = null,
         val postboks: String,
