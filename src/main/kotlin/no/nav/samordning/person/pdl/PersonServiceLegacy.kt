@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
+@Deprecated("Denne er ikke lenger gyldig, bruk PersonDataService i stedet", ReplaceWith("PersonDataService"))
 class PersonServiceLegacy(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
@@ -554,7 +555,10 @@ class PersonServiceLegacy(
         val message = error.message ?: "Error message from PDL is missing"
 
         throw PersonoppslagException(message, code).also {
-            logger.error("Feil med kall til PDL", it)
+            when (code) {
+                "not_found" -> logger.warn("Feil med kall til PDL, $it.message")
+                else -> logger.error("Feil med kall til PDL", it)
+            }
         }
 
     }
