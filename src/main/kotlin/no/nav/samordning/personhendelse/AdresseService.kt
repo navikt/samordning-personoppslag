@@ -38,7 +38,11 @@ class AdresseService(
             }
 
             try {
-                val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
+                val adresse = persondataService.hentPersonAdresse(
+                    fnr = gyldigident,
+                    opplysningstype = personhendelse.opplysningstype,
+                    hentKunRelevantAdresse = true
+                )
                 if (adresse != null) {
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.ADRESSE,

@@ -162,7 +162,7 @@ class KafkaListenerTest {
         every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
-        every { personDataService.hentPersonAdresse(any(), any()) } returns Adresse(
+        every { personDataService.hentPersonAdresse(any(), any(), any()) } returns Adresse(
             adresselinje1 = "SOT6 Vika",
             adresselinje2 = "2094",
             adresselinje3 = null,

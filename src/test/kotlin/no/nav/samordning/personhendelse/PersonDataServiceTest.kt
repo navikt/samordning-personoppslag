@@ -28,7 +28,7 @@ class PersonDataServiceTest {
         every { kodeverkService.finnLandkode(any()) } returns Landkode("NO", "NOR", land = "NORGE")
         every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(HentAdresse.mock(coAdressenavn = true)))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1", true)
 
         assertEquals("CO_TEST_KONTAKT", resultat?.adresselinje1)
         assertEquals("KONTAKTADRESSE_VEG 1020 A", resultat?.adresselinje2)
@@ -50,7 +50,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1", true)
 
         assertEquals("OPPHOLDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -67,7 +67,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("BOSTEDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -84,7 +84,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertNull(resultat)
     }
@@ -121,7 +121,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -152,7 +152,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -184,7 +184,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertNull(resultat)
     }
@@ -217,7 +217,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -243,7 +243,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
         assertNull(resultat)
 
     }
@@ -267,7 +267,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("BOSTEDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -296,7 +296,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertEquals("NYVEIEN 2", resultat?.adresselinje1)
     }
@@ -329,7 +329,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertNull(resultat)
     }
@@ -349,7 +349,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1", true)
 
         assertEquals("TEST_EIER", resultat?.adresselinje1)
         assertEquals("Postboks 1231", resultat?.adresselinje2)
@@ -370,7 +370,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1", true)
 
         assertEquals("adresselinje1 fritt", resultat?.adresselinje1)
         assertEquals("adresselinje2 fritt", resultat?.adresselinje2)
@@ -395,7 +395,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1", true)
         assertNull(resultat)
     }
 
@@ -416,7 +416,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
         assertNull(resultat)
     }
 
@@ -437,7 +437,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1", true)
         assertNull(resultat)
     }
 
@@ -459,7 +459,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1", true)
         assertNull(resultat)
     }
 
@@ -489,7 +489,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1", true)
 
         assertNull(resultat)
     }
@@ -514,7 +514,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1", true)
 
         assertEquals("CO_TEST_ADRESSE", resultat?.adresselinje1)
         assertEquals("TESTVEIEN 1020 A", resultat?.adresselinje2)

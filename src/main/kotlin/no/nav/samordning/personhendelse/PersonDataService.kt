@@ -16,14 +16,14 @@ class PersonDataService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun hentPersonAdresse(fnr: String, opplysningstype: String): Adresse? {
+    fun hentPersonAdresse(fnr: String, opplysningstype: String?, hentKunRelevantAdresse: Boolean): Adresse? {
         val response = client.hentAdresse(fnr)
 
         if (!response.errors.isNullOrEmpty())
             handleError(response.errors)
 
         return response.data?.hentPerson?.let {
-            konverterTilAdresse(it, opplysningstype)
+            konverterTilAdresse(it, opplysningstype, hentKunRelevantAdresse)
         }
     }
 
@@ -38,7 +38,14 @@ class PersonDataService(
         }
     }
 
-    private fun konverterTilAdresse(hentAdresse: HentAdresse, opplysningstype: String): Adresse? {
+    private fun konverterTilAdresse(hentAdresse: HentAdresse, opplysningstype: String?, hentKunRelevantAdresse: Boolean): Adresse? {
+        // Prioriteringsregler basert på dokumentasjon fra PDL (https://pdl-docs.ansatt.nav.no/ekstern/index.html#_adresser)
+        //1. kontaktadresse fra PDL  master = !FREG
+        //2. kontaktadresse fra FREG,
+        //3. Oppholdsadresse fra PDL master = !FREG
+        //4. Oppholdsadresse fra FREG,
+        //5. BostedAdrese fra PDL master = !FREG
+        //if (kontaktadresse?.metadata?.sisteRegistrertDato()!! < bostedsadresse?.metadata?.sisteRegistrertDato()!! &&  bostedsadresse.utenlandskAdresse != null ) {
 
         val kontaktadressePdl = hentAdresse.kontaktadresse
             .filter { !it.metadata.historisk }
@@ -66,13 +73,6 @@ class PersonDataService(
             .filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        //1. kotanktadresse fra PDL  master = !FREG
-        //2. kontaktadresse fra FREG,
-        //3. Oppholdsadresse fra PDL master = !FREG
-        //4. Oppholdsadresse fra FREG,
-        //5. BostedAdrese fra PDL master = !FREG
-        //if (kontaktadresse?.metadata?.sisteRegistrertDato()!! < bostedsadresse?.metadata?.sisteRegistrertDato()!! &&  bostedsadresse.utenlandskAdresse != null ) {
-
         val kontaktAdresse = kontaktadressePdl?.asAdresse(Opplysningstype.KONTAKTADRESSE) ?: kontaktadresseFreg?.asAdresse(Opplysningstype.KONTAKTADRESSE)
         val oppholdsadresse = oppholdsadressePdl?.asAdresse(Opplysningstype.OPPHOLDSADRESSE) ?: oppholdsadresseFreg?.asAdresse(Opplysningstype.OPPHOLDSADRESSE)
 
@@ -86,7 +86,11 @@ class PersonDataService(
         val adresseMedPrioritertUtland = if (erUtenlandskAdresseNyere(prioritertAdresse, bostedsadresse)) {
             bostedsadresse
         } else {
-            prioritertAdresse?.hentRelevantAdresseEllerNull(opplysningstype)
+            if (hentKunRelevantAdresse && opplysningstype != null) {
+                prioritertAdresse?.hentRelevantAdresseEllerNull(opplysningstype)
+            } else {
+                prioritertAdresse
+            }
         }
 
         return  mapPersonDataServiceAdresseTilAdresse(adresseMedPrioritertUtland)
