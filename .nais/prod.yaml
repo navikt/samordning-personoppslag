@@ -11,6 +11,8 @@ spec:
   azure:
     application:
       enabled: true
+  maskinporten:
+    enabled: true
   accessPolicy:
     inbound:
       rules:
