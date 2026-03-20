@@ -11,6 +11,8 @@ pdl:
 
 PERSON_ENDRING_KAFKA_TOPIC: person-endring-test
 
+MASKINPORTEN_ISSUER: placeholder
+
 no.nav.security.jwt:
   issuer:
     entraid:

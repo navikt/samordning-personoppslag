@@ -1,5 +1,7 @@
 package no.nav.samordning.person
 
+import com.nimbusds.jwt.JWTParser
+import no.nav.samordning.config.MaskinportenValidator
 import no.nav.samordning.kodeverk.KodeverkResponse
 import no.nav.samordning.kodeverk.Landkode
 import no.nav.samordning.person.pdl.PersonServiceLegacy
@@ -10,7 +12,9 @@ import no.nav.samordning.person.sam.PersonSamordningService
 import no.nav.samordning.person.sam.model.Person
 import no.nav.samordning.person.sam.model.PersonSamordning
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
+import no.nav.samordning.personhendelse.Adresse
 import no.nav.samordning.personhendelse.BostedsAdresseDto
+import no.nav.samordning.personhendelse.PersonDataService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,6 +24,8 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api")
 class Controller(
+    private val maskinportenValidator: MaskinportenValidator,
+    private val personDataService: PersonDataService,
     private val personSamordningService: PersonSamordningService,
     private val personService: PersonServiceLegacy,
 ) {
@@ -36,12 +42,36 @@ class Controller(
 
     }
 
+    @Deprecated("")
     @PostMapping("/samperson")
     @ProtectedWithClaims("entraid")
     fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning?> {
         try {
             Fodselsnummer.fra(request.fnr)
             return ResponseEntity.ok().body(personSamordningService.hentPersonSamordning(request.fnr))
+        } catch (ise: IllegalStateException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
+        } catch (pe: PersonoppslagException) {
+            if (pe.code == "not_found") throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke person")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, pe.message)
+        }
+    }
+
+    @PostMapping("/adresse")
+    fun hentAdresse(
+        @RequestBody request: PersonRequest,
+        @RequestHeader(name = "Authorization") bearerToken: String,
+    ) : ResponseEntity<Adresse?> {
+        maskinportenValidator.validateFnrAuthorization(
+            request.fnr,
+            JWTParser.parse(bearerToken.removePrefix("Bearer "))
+        )
+        try {
+            return ResponseEntity.ok().body(personDataService.hentPersonAdresse(
+                fnr = request.fnr,
+                opplysningstype = null,
+                hentKunRelevantAdresse = false
+            ))
         } catch (ise: IllegalStateException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
         } catch (pe: PersonoppslagException) {
