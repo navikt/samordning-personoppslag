@@ -58,6 +58,7 @@ class Controller(
     }
 
     @PostMapping("/adresse")
+    @ProtectedWithClaims("maskinporten")
     fun hentAdresse(
         @RequestBody request: PersonRequest,
         @RequestHeader(name = "Authorization") bearerToken: String,
