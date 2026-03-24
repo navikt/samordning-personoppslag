@@ -34,7 +34,10 @@ class PersonDataService(
         val message = error.message ?: "Error message from PDL is missing"
 
         throw PersonoppslagException(message, code).also {
-            logger.error("Feil med kall til PDL", it)
+            when (code) {
+                "not_found" -> logger.warn("Feil med kall til PDL, $it.message")
+                else -> logger.error("Feil med kall til PDL", it)
+            }
         }
     }
 
