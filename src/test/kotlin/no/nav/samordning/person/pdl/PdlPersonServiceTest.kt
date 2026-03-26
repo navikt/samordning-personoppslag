@@ -1,7 +1,6 @@
 package no.nav.samordning.person.pdl
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.samordning.kodeverk.KodeverkService
@@ -19,7 +18,7 @@ import java.time.LocalDateTime
 
 @TestInstance(Lifecycle.PER_CLASS)
 internal class PdlPersonServiceTest {
-    private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
+    private val mapper = jacksonObjectMapper()
 
     private val client = mockk<PersonClient>()
     private val kodeverkService = mockk<KodeverkService>()

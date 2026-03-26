@@ -1,8 +1,7 @@
 package no.nav.samordning.kodeverk
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -36,8 +35,9 @@ class KodeverkService(private val kodeverkClient: KodeverkClient) {
                 .writeValueAsString(data)
         }
 
-        fun mapperWithJavaTime(): ObjectMapper = jacksonObjectMapper()
-            .registerModule(JavaTimeModule())
+        fun mapperWithJavaTime(): JsonMapper = JsonMapper.builder()
+            .addModule(KotlinModule.Builder().build())
+            .build()
 
         fun Any.toJson() = mapAnyToJson(this)
     }

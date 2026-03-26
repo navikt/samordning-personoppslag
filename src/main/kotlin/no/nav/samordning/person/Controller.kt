@@ -38,7 +38,7 @@ class Controller(
 
     @PostMapping("/samperson")
     @ProtectedWithClaims("entraid")
-    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning?> {
+    fun hentSamPerson(@RequestBody request: PersonRequest) : ResponseEntity<PersonSamordning> {
         try {
             Fodselsnummer.fra(request.fnr)
             return ResponseEntity.ok().body(personSamordningService.hentPersonSamordning(request.fnr))

@@ -1,8 +1,7 @@
 package no.nav.samordning.personhendelse
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -16,9 +15,9 @@ class PersonEndringHendelseProducer(
     @Value("\${PERSON_ENDRING_KAFKA_TOPIC}") private val topic: String
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val objectMapper: ObjectMapper = ObjectMapper()
-        .registerModule(KotlinModule.Builder().build())
-        .registerModule(JavaTimeModule())
+    private val objectMapper: JsonMapper = JsonMapper.builder()
+        .addModule(KotlinModule.Builder().build())
+        .build()
 
     fun publiserPersonEndringHendelse(
         tpNr: List<String>,

@@ -1,10 +1,10 @@
 package no.nav.samordning.person
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.module.kotlin.readValue
 import com.github.benmanes.caffeine.cache.Cache
 import com.ninjasquad.springmockk.MockkBean
+import org.springframework.kafka.core.KafkaTemplate
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.verify
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.http.HttpEntity
@@ -71,7 +71,10 @@ internal class ControllerMVCTest {
     @MockkBean(relaxed = true, name = "tpRestTemplate")
     private lateinit var tpRestTemplate: RestTemplate
 
-    private val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
+    @MockkBean(relaxed = true)
+    private lateinit var kafkaTemplate: KafkaTemplate<String, String>
+
+    private val mapper = jacksonObjectMapper()
     private val kodeverkPostnrResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Postnummer.json")?.readText() ?: throw Exception("ikke funnet"))
     private val kodeverkLandResponse = mapper.readValue<KodeverkResponse>(javaClass.getResource("/kodeverk-api-v1-Landkoder.json")?.readText() ?: throw Exception("ikke funnet"))
     private val landkoder = javaClass.getResource("/kodeverk-landkoder.json")?.readText() ?: throw Exception("ikke funnet")

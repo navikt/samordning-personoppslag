@@ -1,6 +1,6 @@
 package no.nav.samordning.person.sam.model
 
-import java.util.*
+import java.time.LocalDate
 
 data class PersonSamordning(
     val fnr: String? = null,
@@ -10,7 +10,7 @@ data class PersonSamordning(
     val etternavn: String? = null,
     val diskresjonskode: String? = null,
     val sivilstand: String? = null,
-    val dodsdato: Date? = null,
+    val dodsdato: LocalDate? = null,
     val utenlandsAdresse: AdresseSamordning? = null,
     val tilleggsAdresse: AdresseSamordning? = null,
     val postAdresse: AdresseSamordning? = null,

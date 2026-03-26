@@ -1,7 +1,6 @@
 package no.nav.samordning.personhendelse
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -132,7 +131,7 @@ class DoedsfallServiceTest {
                 "bostedsadresse": null
             }
         """.trimIndent()
-        return jacksonObjectMapper().registerModule(JavaTimeModule()).readValue(json, Personhendelse::class.java)
+        return jacksonObjectMapper().readValue(json, Personhendelse::class.java)
     }
 
 

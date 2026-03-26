@@ -1,9 +1,8 @@
 package no.nav.samordning.personhendelse
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
+import tools.jackson.module.kotlin.readValue
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -16,9 +15,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 class PersonEndringHendelseProducerTest {
     private lateinit var kafkaTemplate: KafkaTemplate<String, String>
     private lateinit var personEndringHendelseProducer: PersonEndringHendelseProducer
-    private val objectMapper: ObjectMapper = ObjectMapper()
-        .registerModule(KotlinModule.Builder().build())
-        .registerModule(JavaTimeModule())
+    private val objectMapper: JsonMapper = JsonMapper.builder()
+        .addModule(KotlinModule.Builder().build())
+        .build()
 
     @BeforeEach
     fun setup() {
