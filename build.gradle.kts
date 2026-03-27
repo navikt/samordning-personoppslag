@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.3.0"
+val kotlinVersion = "2.3.20"
 val prometeusVersion = "1.16.1"
 val springbootVersion = "4.0.4"
 val springkafkaVersion="4.0.4"
@@ -19,7 +19,7 @@ val commonsLang3Version = "3.20.0"
 
 plugins {
     val pluginSpringBootVersion = "4.0.4"
-    val pluginKotlinVersion = "2.3.0"
+    val pluginKotlinVersion = "2.3.20"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -30,7 +30,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_25
 
 repositories {
     mavenCentral()
@@ -126,7 +126,7 @@ tasks {
 
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
             freeCompilerArgs.add("-Xjsr305=strict")
         }
     }
@@ -136,7 +136,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.13"
+        gradleVersion = "9.4.0"
     }
 
     configurations.all {
