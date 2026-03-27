@@ -69,7 +69,7 @@ dependencies {
     //caffeine cache manager
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
-    implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
+    implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
     implementation("io.confluent:kafka-avro-serializer:8.1.1") {
         exclude(group = "org.apache.avro", module = "avro")
