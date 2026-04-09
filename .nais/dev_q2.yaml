@@ -34,6 +34,7 @@ spec:
   port: 8080
   ingresses:
     - https://samordning-personoppslag-q2.dev.intern.nav.no
+    - https://samordning-personoppslag-q2.dev-fss-pub.nais.io
   prometheus:
     enabled: true
     path: actuator/prometheus
