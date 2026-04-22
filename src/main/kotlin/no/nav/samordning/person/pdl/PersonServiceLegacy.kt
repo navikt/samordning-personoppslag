@@ -548,6 +548,32 @@ class PersonServiceLegacy(
         }
     }
 
+    /**
+     * Funksjon for å søke etter en person basert på et utenlandsk identifikasjonsnummer
+     * med format: én bokstav etterfulgt av 6 siffer (f.eks. "A123456").
+     *
+     * @param uid: Utenlandsk identifikasjonsnummer på formatet [bokstav][6 siffer]
+     *
+     * @return Liste med [IdentInformasjon] for treff
+     */
+    fun sokPersonMedUid(uid: String): List<IdentInformasjon> {
+        require(uid.matches(Regex("[a-zA-Z]\\d{6}"))) {
+            "Ugyldig UID-format: forventet én bokstav etterfulgt av 6 siffer"
+        }
+        val criteria = listOf(
+            Criterion(
+                fieldName = "person.utenlandskIdentifikasjonsnummer.identifikasjonsnummer",
+                searchRule = SearchRule(equals = uid.uppercase()),
+            )
+        )
+        val response = client.sokPerson(criteria = criteria)
+
+        if (!response.errors.isNullOrEmpty())
+            handleError(response.errors)
+
+        return response.data?.sokPerson?.hits?.flatMap { it.identer } ?: emptyList()
+    }
+
     private fun handleError(errors: List<ResponseError>) {
         val error = errors.first()
 

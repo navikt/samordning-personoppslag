@@ -61,3 +61,25 @@ internal data class HentAdresse(
 ) {
     companion object {}
 }
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+internal data class SokPersonResponse(
+    val data: SokPersonResponseData? = null,
+    val errors: List<ResponseError>? = null,
+)
+
+internal data class SokPersonResponseData(
+    val sokPerson: PersonSearchResult? = null,
+)
+
+data class PersonSearchResult(
+    val pageNumber: Int? = null,
+    val totalHits: Int? = null,
+    val totalPages: Int? = null,
+    val hits: List<PersonSearchHit> = emptyList(),
+)
+
+data class PersonSearchHit(
+    val score: Float? = null,
+    val identer: List<IdentInformasjon> = emptyList(),
+)

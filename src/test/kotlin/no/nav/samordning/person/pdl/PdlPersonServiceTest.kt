@@ -486,4 +486,61 @@ internal class PdlPersonServiceTest {
                             adressebeskyttelse = listOf(Adressebeskyttelse(gradering))
                     )
             )
+
+    @Test
+    fun `sokPersonMedUid returnerer identer for gyldig UID`() {
+        val uid = "A123456"
+        val identer = listOf(
+            IdentInformasjon("25078521492", FOLKEREGISTERIDENT),
+            IdentInformasjon("100000000000053", AKTORID)
+        )
+        val searchHit = PersonSearchHit(score = 1.0f, identer = identer)
+        val searchResult = PersonSearchResult(pageNumber = 1, totalHits = 1, totalPages = 1, hits = listOf(searchHit))
+        val sokResponse = SokPersonResponse(data = SokPersonResponseData(sokPerson = searchResult))
+
+        every { client.sokPerson(any(), any()) } returns sokResponse
+
+        val result = service.sokPersonMedUid(uid)
+
+        assertEquals(2, result.size)
+        assertEquals("25078521492", result.first { it.gruppe == FOLKEREGISTERIDENT }.ident)
+    }
+
+    @Test
+    fun `sokPersonMedUid returnerer tom liste når ingen treff`() {
+        val uid = "B654321"
+        val searchResult = PersonSearchResult(pageNumber = 1, totalHits = 0, totalPages = 0, hits = emptyList())
+        val sokResponse = SokPersonResponse(data = SokPersonResponseData(sokPerson = searchResult))
+
+        every { client.sokPerson(any(), any()) } returns sokResponse
+
+        val result = service.sokPersonMedUid(uid)
+
+        assertEquals(0, result.size)
+    }
+
+    @Test
+    fun `sokPersonMedUid kaster feil for ugyldig UID-format`() {
+        assertThrows<IllegalArgumentException> { service.sokPersonMedUid("123456") }
+        assertThrows<IllegalArgumentException> { service.sokPersonMedUid("AB12345") }
+        assertThrows<IllegalArgumentException> { service.sokPersonMedUid("A12345") }
+        assertThrows<IllegalArgumentException> { service.sokPersonMedUid("A1234567") }
+        assertThrows<IllegalArgumentException> { service.sokPersonMedUid("") }
+    }
+
+    @Test
+    fun `sokPersonMedUid normaliserer UID til uppercase i søkekriteriet`() {
+        val uid = "a123456"
+        val identer = listOf(IdentInformasjon("25078521492", FOLKEREGISTERIDENT))
+        val searchResult = PersonSearchResult(hits = listOf(PersonSearchHit(identer = identer)))
+        val sokResponse = SokPersonResponse(data = SokPersonResponseData(sokPerson = searchResult))
+
+        val criteriaSlot = io.mockk.slot<List<Criterion>>()
+        every { client.sokPerson(any(), capture(criteriaSlot)) } returns sokResponse
+
+        val result = service.sokPersonMedUid(uid)
+
+        assertEquals(1, result.size)
+        assertEquals("A123456", criteriaSlot.captured.first().searchRule.equals)
+    }
 }
