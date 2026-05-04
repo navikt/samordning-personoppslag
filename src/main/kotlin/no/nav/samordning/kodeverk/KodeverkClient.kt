@@ -1,6 +1,6 @@
 package no.nav.samordning.kodeverk
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.annotation.PostConstruct
 import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
 import no.nav.samordning.metrics.MetricsHelper

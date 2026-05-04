@@ -27,7 +27,7 @@ class PersonClient(
     internal fun hentPerson(ident: String): HentPersonResponse {
         val query = getGraphqlResource("/graphql/hentPerson.graphql")
         val request = GraphqlRequest(query, Variables(ident))
-        return pdlRestTemplate.postForObject<HentPersonResponse>(url, HttpEntity(request), HentPersonResponse::class).also {
+        return pdlRestTemplate.postForObject<HentPersonResponse>(url, HttpEntity(request), HentPersonResponse::class)!!.also {
             loggPdlFeil(it.errors)
         }
   }
@@ -39,7 +39,7 @@ class PersonClient(
     internal fun hentAdresseLegacy(ident: String): HentAdresseLegacyResponse {
         val query = getGraphqlResource("/graphql/hentAdresseLegacy.graphql")
         val request = GraphqlRequest(query, Variables(ident))
-        return pdlRestTemplate.postForObject<HentAdresseLegacyResponse>(url, HttpEntity(request), HentAdresseLegacyResponse::class).also {
+        return pdlRestTemplate.postForObject<HentAdresseLegacyResponse>(url, HttpEntity(request), HentAdresseLegacyResponse::class)!!.also {
             loggPdlFeil(it.errors)
         }
     }
@@ -51,7 +51,7 @@ class PersonClient(
     internal fun hentAdresse(ident: String): HentAdresseResponse {
         val query = getGraphqlResource("/graphql/hentAdresse.graphql")
         val request = GraphqlRequest(query, Variables(ident))
-        return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request))
+        return pdlRestTemplate.postForObject<HentAdresseResponse>(url, HttpEntity(request))!!
             .also { loggPdlFeil(it.errors) }
     }
 
@@ -64,7 +64,7 @@ class PersonClient(
         val query = getGraphqlResource("/graphql/hentPersonnavn.graphql")
         val request = GraphqlRequest(query, Variables(ident))
 
-        return pdlRestTemplate.postForObject<HentPersonnavnResponse>(url, HttpEntity(request), HentPersonnavnResponse::class).also {
+        return pdlRestTemplate.postForObject<HentPersonnavnResponse>(url, HttpEntity(request), HentPersonnavnResponse::class)!!.also {
             loggPdlFeil(it.errors)
         }
     }
@@ -77,7 +77,7 @@ class PersonClient(
         val query = getGraphqlResource("/graphql/hentAdressebeskyttelse.graphql")
         val request = GraphqlRequest(query, Variables(identer = listOf(identer)))
 
-        return pdlRestTemplate.postForObject(url, HttpEntity(request), AdressebeskyttelseResponse::class)
+        return pdlRestTemplate.postForObject<AdressebeskyttelseResponse>(url, HttpEntity(request), AdressebeskyttelseResponse::class)!!
     }
 
 
@@ -89,7 +89,7 @@ class PersonClient(
         val query = getGraphqlResource("/graphql/hentIdenter.graphql")
         val request = GraphqlRequest(query, Variables(ident))
 
-        return pdlRestTemplate.postForObject<IdenterResponse>(url, HttpEntity(request), IdenterResponse::class).also {
+        return pdlRestTemplate.postForObject<IdenterResponse>(url, HttpEntity(request), IdenterResponse::class)!!.also {
             loggPdlFeil(it.errors)
         }
     }
@@ -102,7 +102,7 @@ class PersonClient(
         val query = getGraphqlResource("/graphql/hentGeografiskTilknytning.graphql")
         val request = GraphqlRequest(query, Variables(ident))
 
-        return pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(url, HttpEntity(request), GeografiskTilknytningResponse::class).also {
+        return pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(url, HttpEntity(request), GeografiskTilknytningResponse::class)!!.also {
             loggPdlFeil(it.errors)
         }
     }

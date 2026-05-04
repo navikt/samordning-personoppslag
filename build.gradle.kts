@@ -1,28 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.2.21"
-val prometeusVersion = "1.15.5"
-val springbootVersion = "3.5.8"
-val springkafkaVersion="3.3.10"
-val springwebmvcpac4jVersion = "8.0.1"
-val springframeworkbomVersion = "6.2.12"
-val jacksonkotlinVersion = "2.20.1"
+val kotlinVersion = "2.3.20"
+val prometeusVersion = "1.16.1"
+val springbootVersion = "4.0.6"
+val springkafkaVersion="4.0.5"
+val springframeworkbomVersion = "7.0.7"
 val slf4jVersion = "2.0.17"
 val logstashlogbackVersion = "9.0"
-val tokensupportVersion = "5.0.40"
-val tokensupporttestVersion = "2.0.5"
+val tokensupportVersion = "6.0.4"
 val mockOAuth2ServerVersion = "3.0.1"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.7"
-val springmockkVersion = "4.0.2"
+val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.0.1"
-val commonsLang3Version = "3.18.0"
+val commonsLang3Version = "3.20.0"
 
 plugins {
-    val pluginSpringBootVersion = "3.5.7"
-    val pluginKotlinVersion = "2.2.21"
+    val pluginSpringBootVersion = "4.0.4"
+    val pluginKotlinVersion = "2.3.20"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -33,7 +30,7 @@ plugins {
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_25
 
 repositories {
     mavenCentral()
@@ -60,10 +57,11 @@ dependencies {
 
     // Spring Boot & Framework
     implementation(platform("org.springframework.boot:spring-boot-dependencies:$springbootVersion"))
-    implementation("org.springframework.boot:spring-boot-starter-web:$springbootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-aop:$springbootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:$springbootVersion")
-    implementation("org.springframework.boot:spring-boot-actuator:$springbootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
     implementation("org.springframework.retry:spring-retry:2.0.12")
@@ -71,9 +69,9 @@ dependencies {
     //caffeine cache manager
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
-    implementation("org.springframework.kafka:spring-kafka:$springkafkaVersion")
+    implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
-    implementation("io.confluent:kafka-avro-serializer:8.0.2") {
+    implementation("io.confluent:kafka-avro-serializer:8.1.1") {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
@@ -83,9 +81,8 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("jakarta.inject:jakarta.inject-api:$jakartaInjectApiVersion")
 
-    // Kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonkotlinVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonkotlinVersion")
+    // Kotlin + Jackson 3 (tools.jackson group = Jackson 3 artifacts, JavaTimeModule now built into jackson-databind)
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
@@ -94,8 +91,6 @@ dependencies {
     implementation("no.nav.security:token-validation-jaxrs:$tokensupportVersion")
     implementation("no.nav.security:token-client-spring:$tokensupportVersion")
 
-    // Only used for starting up locally testing
-    implementation("no.nav.security:token-validation-test-support:$tokensupporttestVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
     testImplementation("no.nav.security:token-validation-spring-test:$tokensupportVersion")
 
@@ -106,16 +101,16 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$prometeusVersion")
 
     // div
-    implementation("org.apache.commons:commons-lang3:3.19.0")
+    implementation("org.apache.commons:commons-lang3:$commonsLang3Version")
 
     // test
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
-    testImplementation("org.pac4j:spring-webmvc-pac4j:$springwebmvcpac4jVersion")
 
     // mock - test
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.junit.platform:junit-platform-suite-api:$junitplatformVersion")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:$springbootVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-webmvc-test")
 }
 
 tasks {
@@ -131,7 +126,7 @@ tasks {
 
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
             freeCompilerArgs.add("-Xjsr305=strict")
         }
     }
@@ -141,7 +136,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.13"
+        gradleVersion = "9.4.0"
     }
 
     configurations.all {

@@ -111,7 +111,7 @@ class PersonSamordningService(
 
         val sivilstand = mapSivilstand(pdlSamPerson.sivilstand?.type?.name)
 
-        val dodsdato = pdlSamPerson.doedsfall?.doedsdato?.let { java.sql.Date.valueOf(it) as Date }
+        val dodsdato = pdlSamPerson.doedsfall?.doedsdato
 
         val utenlandsAdresse = when (pdlSamPerson.landkodeMedAdressevalg().second)
         {

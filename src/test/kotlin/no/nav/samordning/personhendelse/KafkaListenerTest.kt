@@ -1,10 +1,9 @@
 package no.nav.samordning.personhendelse
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.MapperFeature
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -237,8 +236,8 @@ class KafkaListenerTest {
 
     fun configureObjectMapper(): ObjectMapper {
         return JsonMapper.builder()
-            .addModule(JavaTimeModule())
             .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .build()
     }

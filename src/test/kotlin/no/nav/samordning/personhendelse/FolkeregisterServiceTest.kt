@@ -1,7 +1,7 @@
 package no.nav.samordning.personhendelse
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import tools.jackson.databind.MapperFeature
+import tools.jackson.databind.json.JsonMapper
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -58,7 +58,7 @@ class FolkeregisterServiceTest {
         }
 }
 
-    private fun mockPersonhendelse(nyttFnr: String = "24828296260", gammeltFnr: String = "25637424842", endringsType: Endringstype = Endringstype.OPPRETTET ): Personhendelse {
+    private fun mockPersonhendelse(nyttFnr: String = "24828296260", gammeltFnr: String = "25637424842", endringsType: Endringstype = Endringstype.OPPRETTET): Personhendelse {
         val json = """
             {
                 "hendelseId": "c53fded7-6b4e-434b-b5d8-e14769efa835", 
@@ -83,7 +83,10 @@ class FolkeregisterServiceTest {
                 "bostedsadresse": null
             }
         """.trimIndent()
-        return jacksonObjectMapper().registerModule(JavaTimeModule()).readValue(json, Personhendelse::class.java)
+        return JsonMapper.builder()
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .build()
+            .readValue(json, Personhendelse::class.java)
     }
 
 
