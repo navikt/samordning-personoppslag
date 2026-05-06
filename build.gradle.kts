@@ -67,7 +67,7 @@ dependencies {
     implementation("org.springframework.retry:spring-retry:2.0.12")
 
     //caffeine cache manager
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
 
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
