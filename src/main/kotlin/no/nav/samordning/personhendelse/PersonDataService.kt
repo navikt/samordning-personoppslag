@@ -1,9 +1,12 @@
 package no.nav.samordning.personhendelse
 
 import no.nav.samordning.kodeverk.KodeverkService
+import no.nav.samordning.metrics.MetricsHelper
+import no.nav.samordning.metrics.MetricsHelper.Metric
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.pdl.model.*
+import no.nav.samordning.person.pdl.scrable
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -13,17 +16,78 @@ import java.time.LocalDateTime
 class PersonDataService(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
+    private val metricsHelper: MetricsHelper
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private var hentAdresseMetric: Metric = metricsHelper.init("hentAdresse")
+    private var hentIdentMetric: Metric = metricsHelper.init("hentIdent")
+    private var hentIdenterMetric: Metric = metricsHelper.init("hentIdenter")
+    private var harAdressebeskyttelseMetric: Metric = metricsHelper.init("harAdressebeskyttelse")
+
+
     fun hentPersonAdresse(fnr: String, opplysningstype: String): Adresse? {
-        val response = client.hentAdresse(fnr)
+        return hentAdresseMetric.measure {
+            val response = client.hentAdresse(fnr)
 
-        if (!response.errors.isNullOrEmpty())
-            handleError(response.errors)
+            if (!response.errors.isNullOrEmpty())
+                handleError(response.errors)
 
-        return response.data?.hentPerson?.let {
-            konverterTilAdresse(it, opplysningstype)
+            response.data?.hentPerson?.let {
+                konverterTilAdresse(it, opplysningstype)
+            }
+        }
+    }
+
+    fun hentAdressebeskyttelse(fnr: String): List<AdressebeskyttelseGradering> {
+        return harAdressebeskyttelseMetric.measure {
+            val response = client.hentAdressebeskyttelse(fnr)
+
+            if (!response.errors.isNullOrEmpty()) handleError(response.errors)
+
+            val personer = response.data?.hentPersonBolk ?: return@measure emptyList()
+
+            return@measure personer
+                .filterNot { it.person == null }
+                .flatMap { it.person!!.adressebeskyttelse }
+                .map { it.gradering }
+                .distinct()
+        }
+    }
+
+    fun erAdressebeskyttelseGradert(fnr: String ): Boolean = hentAdressebeskyttelse(fnr).any {
+        it == AdressebeskyttelseGradering.STRENGT_FORTROLIG ||
+                it == AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND ||
+                it == AdressebeskyttelseGradering.FORTROLIG
+    }
+
+    fun hentIdent(fnr: String): String? = hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(fnr))?.id
+
+    fun <T : Ident, R : IdentGruppe> hentIdent(identTypeWanted: R, ident: T): Ident? {
+        return hentIdentMetric.measure {
+            val result = hentIdenter(ident)
+                .firstOrNull { it.gruppe == identTypeWanted }
+                ?.ident ?: return@measure null
+
+            @Suppress("USELESS_CAST", "UNCHECKED_CAST")
+            return@measure when (identTypeWanted) {
+                IdentGruppe.FOLKEREGISTERIDENT-> NorskIdent(result) as Ident
+                IdentGruppe.AKTORID-> AktoerId(result) as Ident
+                IdentGruppe.NPID -> Npid(result) as Ident
+            }
+        }
+    }
+
+    fun <T : Ident> hentIdenter(ident: T): List<IdentInformasjon> {
+        return hentIdenterMetric.measure {
+
+            logger.debug("Henter identer: ${ident.id.scrable()} fra pdl")
+            val response = client.hentIdenter(ident.id)
+
+            if (!response.errors.isNullOrEmpty())
+                handleError(response.errors)
+
+            return@measure response.data?.hentIdenter?.identer ?: emptyList()
         }
     }
 

@@ -28,7 +28,7 @@ class AdresseService(
             val gyldigident = if (identer.size > 1) {
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
-                    personServiceLegacy.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    persondataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL")
                     identer.first()
@@ -55,7 +55,7 @@ class AdresseService(
                 createAdresseRequest(
                     hendelseId = personhendelse.hendelseId,
                     fnr = gyldigident,
-                    adressebeskyttelse = personServiceLegacy.hentAdressebeskyttelse(fnr = gyldigident),
+                    adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = gyldigident),
                     opplysningstype = personhendelse.opplysningstype,
                 )
             )

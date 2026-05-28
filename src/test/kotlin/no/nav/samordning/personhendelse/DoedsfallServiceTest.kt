@@ -1,17 +1,16 @@
 package no.nav.samordning.personhendelse
 
-import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.NorskIdent
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.time.LocalDate
 import java.time.Month
 
@@ -19,17 +18,17 @@ import java.time.Month
 class DoedsfallServiceTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
-    private val personService = mockk<PersonServiceLegacy>()
+    private val persondataService = mockk<PersonDataService>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>(relaxed = true)
 
-    private val doedsfallService = DoedsfallService(personEndringService, personService, samPersonaliaClient)
+    private val doedsfallService = DoedsfallService(personEndringService, persondataService, samPersonaliaClient)
 
 
     @Test
     fun `verifiser at opprettPersonEndringHendelse blir kalt med riktig input når meldinskoden er OPPRETTET`() {
 
-        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        every { personService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
+        every { persondataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { persondataService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
 
         val fnr = "24828296260"
         val doedsdato = LocalDate.of(2026, Month.FEBRUARY, 1)
@@ -43,7 +42,7 @@ class DoedsfallServiceTest {
         doedsfallService.opprettDoedsfallmelding(doedsfallHendelse, MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { persondataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { personEndringService.opprettPersonEndringHendelse(
             meldingsKode = eq(Meldingskode.DOEDSFALL),
             fnr = eq(fnr),
@@ -55,8 +54,8 @@ class DoedsfallServiceTest {
     @Test
     fun `verifiser at opprettPersonEndringHendelse blir kalt med riktig input når meldinskoden er ANNULERT`() {
 
-        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
-        every { personService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
+        every { persondataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { persondataService.hentIdent(any(), any()) } answers { NorskIdent(it.invocation.args.last().toString()) }
 
         val fnr = "24828296260"
         val doedsdato = LocalDate.of(2026, Month.FEBRUARY, 1)
@@ -70,7 +69,7 @@ class DoedsfallServiceTest {
         doedsfallService.opprettDoedsfallmelding(doedsfallHendelse, MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { persondataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { personEndringService.opprettPersonEndringHendelse(
             meldingsKode = eq(Meldingskode.DOEDSFALL),
             fnr = eq(fnr),
@@ -84,14 +83,14 @@ class DoedsfallServiceTest {
 
         val mockHendelse = opprettDoedsfallHendelse()
 
-        every { personService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
-        every { personService.hentIdent(any(), any()) } returns  NorskIdent("24828296260")
+        every { persondataService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+        every { persondataService.hentIdent(any(), any()) } returns  NorskIdent("24828296260")
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         doedsfallService.opprettDoedsfallmelding(opprettDoedsfallHendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { persondataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
             samPersonaliaClient.oppdaterSamPersonalia(
                 match {

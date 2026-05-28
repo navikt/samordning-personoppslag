@@ -1,6 +1,5 @@
 package no.nav.samordning.personhendelse
 
-import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -11,6 +10,7 @@ import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.*
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.junit.jupiter.api.Test
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -19,21 +19,22 @@ class SivilstandServiceTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
     private val personService = mockk<PersonServiceLegacy>()
+    private val personDataService = mockk<PersonDataService>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val sivilstandService = SivilstandService(personEndringService, personService, samPersonaliaClient)
+    private val sivilstandService = SivilstandService(personEndringService, personService, personDataService, samPersonaliaClient)
 
 
     @Test
     fun processHendelse() {
 
-        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
@@ -42,13 +43,13 @@ class SivilstandServiceTest {
     fun processHendelseUtenFomDato() {
 
         every { personService.hentPerson(any()) } returns mockPdlPerson()
-        every { personService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(gyldigFraOgMed = null), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
@@ -56,14 +57,14 @@ class SivilstandServiceTest {
     @Test
     fun processHendelseMedAdressebeskyttelse() {
 
-        every { personService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+        every { personDataService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
             samPersonaliaClient.oppdaterSamPersonalia(
                 match {

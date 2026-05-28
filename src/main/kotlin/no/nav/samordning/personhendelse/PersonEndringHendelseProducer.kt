@@ -1,18 +1,18 @@
 package no.nav.samordning.personhendelse
 
-import tools.jackson.databind.json.JsonMapper
-import tools.jackson.module.kotlin.KotlinModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 import java.time.LocalDate
 
 @Service
 class PersonEndringHendelseProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    @Value("\${PERSON_ENDRING_KAFKA_TOPIC}") private val topic: String
+    @param:Value($$"${PERSON_ENDRING_KAFKA_TOPIC}") private val topic: String
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val objectMapper: JsonMapper = JsonMapper.builder()

@@ -2,7 +2,6 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
 import org.slf4j.Logger
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class FolkeregisterService(
     private val hendelseService: PersonEndringHendelseService,
-    private val personServiceLegacy: PersonServiceLegacy,
+    private val persondataService: PersonDataService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -33,8 +32,7 @@ class FolkeregisterService(
                 return
             }
 
-            val adressebeskyttelse =
-                personServiceLegacy.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
+            val adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
             if (personhendelse.master != "FREG") {
                 try {

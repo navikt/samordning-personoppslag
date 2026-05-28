@@ -15,7 +15,7 @@ import org.springframework.web.client.postForObject
 @Component
 class PersonClient(
     private val pdlRestTemplate: RestTemplate,
-    @Value("\${PDL_URL}") private val url: String
+    @param:Value($$"${PDL_URL}") private val url: String
 ) {
     private val logger = LoggerFactory.getLogger(PersonClient::class.java)
 

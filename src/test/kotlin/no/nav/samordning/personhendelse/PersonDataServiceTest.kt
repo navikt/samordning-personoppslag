@@ -1,25 +1,79 @@
 package no.nav.samordning.personhendelse
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.kodeverk.Landkode
+import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.model.*
+import no.nav.samordning.person.pdl.model.IdentGruppe.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
 import java.time.LocalDateTime
 
 class PersonDataServiceTest {
-
-
     private val client = mockk<PersonClient>(relaxed = true)
-
     private val kodeverkService = mockk<KodeverkService>()
+    private val personDataService = PersonDataService(client, kodeverkService, MetricsHelper(SimpleMeterRegistry()))
 
-    private val personDataService = PersonDataService(client, kodeverkService)
 
+
+    @Test
+    fun hentIdent() {
+        val identer = listOf(
+            IdentInformasjon("1", AKTORID),
+            IdentInformasjon("2", FOLKEREGISTERIDENT),
+            IdentInformasjon("3", NPID)
+        )
+
+        every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
+
+        // Hente ut NorskIdent med AktørID
+        val tomNorskIdentFraAktorId = personDataService.hentIdent(FOLKEREGISTERIDENT, AktoerId(""))
+        assertEquals("2", tomNorskIdentFraAktorId?.id)
+
+        // Hente ut NorskIdent med AktørID
+        val norskIdentFraAktorId = personDataService.hentIdent(FOLKEREGISTERIDENT, AktoerId("1"))
+        assertEquals("2", norskIdentFraAktorId?.id)
+
+        // Hente ut NPID med AktørID
+        val npidFraAktorId = personDataService.hentIdent(NPID, AktoerId("1"))
+        assertEquals("3", npidFraAktorId?.id)
+
+        // Hente ut AktørID med NorskIdent
+        val aktoeridFraNorskIdent = personDataService.hentIdent(AKTORID, NorskIdent("2"))
+        assertEquals("1", aktoeridFraNorskIdent?.id)
+
+        // Hente ut NPID med NorskIdent
+        val npidFraNorskIdent = personDataService.hentIdent(NPID, NorskIdent("2"))
+        assertEquals("3", npidFraNorskIdent?.id)
+
+        // Hente ut AktørID med Npid
+        val aktoeridFraNpid = personDataService.hentIdent(AKTORID, Npid("2"))
+        assertEquals("1", aktoeridFraNpid?.id)
+
+        // Hente ut NorskIdent med Npid
+        val norskIdentFraNpid = personDataService.hentIdent(FOLKEREGISTERIDENT, Npid("2"))
+        assertEquals("2", norskIdentFraNpid?.id)
+    }
+
+    @Test
+    fun hentIdenter() {
+        val identer = listOf(
+            IdentInformasjon("1", AKTORID),
+            IdentInformasjon("2", FOLKEREGISTERIDENT),
+            IdentInformasjon("3", NPID)
+        )
+
+        every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
+
+        val resultat = personDataService.hentIdenter(NorskIdent("12345"))
+
+        assertEquals(3, resultat.size)
+    }
 
     @Test
     fun `test mapping av kontaktadresse til adresse`() {
