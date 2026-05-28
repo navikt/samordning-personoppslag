@@ -617,7 +617,7 @@ class PersonServiceLegacy(
     }
 }
 
-fun String?.scrable() = if (this == null || this.length < 6 ) this else this.dropLast(5) + "xxxxx"
+fun String?.scrable() = if (this == null || this.length < 11) "***" else "***********"
 
 class PersonoppslagException(message: String, val code: String) : RuntimeException("$code: $message") {
     @Deprecated("Bruk PersonoppslagException(message, code)")

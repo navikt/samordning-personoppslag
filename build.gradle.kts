@@ -16,6 +16,7 @@ val mockkVersion = "1.14.9"
 val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.0.3"
 val commonsLang3Version = "3.20.0"
+val byteBuddyVersion = "1.18.3"
 
 plugins {
     val pluginSpringBootVersion = "4.0.4"
@@ -142,6 +143,9 @@ tasks {
         resolutionStrategy.eachDependency {
             if (requested.group == "org.apache.commons" && requested.module.toString() == "commons-lang") {
                 useVersion(commonsLang3Version)
+            }
+            if (requested.group == "net.bytebuddy") {
+                useVersion(byteBuddyVersion)
             }
         }
     }

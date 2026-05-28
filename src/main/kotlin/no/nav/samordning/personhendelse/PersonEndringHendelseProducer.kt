@@ -46,7 +46,7 @@ class PersonEndringHendelseProducer(
         logger.info("Publiserer PersonEndringHendelse med hendelseId: $hendelseId til topic: $topic")
 
         kafkaTemplate.send(topic, hendelseId, json)
-        logger.debug("PersonEndringHendelse sendt: $json")
+        logger.debug("PersonEndringHendelse sendt med hendelseId: $hendelseId, meldingsKode: $meldingsKode")
 
     }
 }
