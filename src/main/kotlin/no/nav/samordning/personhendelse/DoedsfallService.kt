@@ -14,7 +14,7 @@ import java.time.LocalDate
 @Service
 class DoedsfallService(
     private val hendelseService: PersonEndringHendelseService,
-    private val persondataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -29,7 +29,7 @@ class DoedsfallService(
         } else if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
-                persondataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
 
             } catch (_: Exception) {
                 logger.warn("Feil ved henting av ident fra PDL for hendelse")
@@ -59,7 +59,7 @@ class DoedsfallService(
                 hendelseId = personhendelse.hendelseId,
                 fnr = gyldigident,
                 dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
-                adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = gyldigident)
+                adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident)
             )
         )
 

@@ -16,7 +16,7 @@ import java.time.LocalDate
 class SivilstandService(
     private val hendelseService: PersonEndringHendelseService,
     private val personServiceLegacy: PersonServiceLegacy,
-    private val persondataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -34,7 +34,7 @@ class SivilstandService(
             else -> {
                 try {
                     logger.info("Identer fra PDL inneholder flere enn 1.")
-                    persondataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL for hendelse.")
                     identer.firstOrNull() ?: return
@@ -61,7 +61,7 @@ class SivilstandService(
                 if (personhendelse.sivilstand?.type != null && fomDato != null) {
                     logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
-                    val adressebeskyttelse = persondataService.hentAdressebeskyttelse(gyldigident)
+                    val adressebeskyttelse = personaliaService.hentAdressebeskyttelse(gyldigident)
 
                     if (personhendelse.master != "FREG") {
                         try {

@@ -4,7 +4,7 @@ import no.nav.samordning.person.pdl.PersonoppslagException
 import no.nav.samordning.person.sam.PersonSamordningService
 import no.nav.samordning.person.sam.model.PersonSamordning
 import no.nav.samordning.person.shared.fnr.Fodselsnummer
-import no.nav.samordning.personhendelse.PersonDataService
+import no.nav.samordning.personhendelse.PersonaliaService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException
 @RequestMapping("/api")
 class Controller(
     private val personSamordningService: PersonSamordningService,
-    private val personDataService: PersonDataService
+    private val personaliaService: PersonaliaService
 ) {
 
     @PostMapping("/samperson")
@@ -41,7 +41,7 @@ class Controller(
     fun hentIdent(@RequestBody request: PersonRequest) : ResponseEntity<String> {
         try {
             val fnr = Fodselsnummer.fra(request.fnr) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Ikke Gydlig ident")
-            return personDataService.hentIdent(fnr.value)?.let{ ResponseEntity.ok().body(it) } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet")
+            return personaliaService.hentIdent(fnr.value)?.let{ ResponseEntity.ok().body(it) } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Person ikke funnet")
         } catch (ise: IllegalStateException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, ise.message)
         } catch (pe: PersonoppslagException) {

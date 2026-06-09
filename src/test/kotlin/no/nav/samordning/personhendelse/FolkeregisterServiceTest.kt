@@ -16,22 +16,22 @@ import tools.jackson.databind.json.JsonMapper
 class FolkeregisterServiceTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
-    private val persondataService = mockk<PersonDataService>(relaxed = true)
+    private val personaliaService = mockk<PersonaliaService>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val folkeregisterService = FolkeregisterService(personEndringService, persondataService, samPersonaliaClient)
+    private val folkeregisterService = FolkeregisterService(personEndringService, personaliaService, samPersonaliaClient)
 
 
     @Test
     fun processHendelse() {
 
-        every { persondataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { persondataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
@@ -39,14 +39,14 @@ class FolkeregisterServiceTest {
     @Test
     fun processHendelseMedAdressebeskyttelse() {
 
-        every { persondataService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         folkeregisterService.opprettFolkeregistermelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { persondataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
             samPersonaliaClient.oppdaterSamPersonalia(
                 match {

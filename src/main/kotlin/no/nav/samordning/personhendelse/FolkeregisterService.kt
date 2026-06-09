@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class FolkeregisterService(
     private val hendelseService: PersonEndringHendelseService,
-    private val persondataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -32,7 +32,7 @@ class FolkeregisterService(
                 return
             }
 
-            val adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
+            val adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = personhendelse.folkeregisteridentifikator.identifikasjonsnummer)
 
             if (personhendelse.master != "FREG") {
                 try {

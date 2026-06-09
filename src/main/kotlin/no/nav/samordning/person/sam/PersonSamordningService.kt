@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
+@Deprecated("Depricated no replacment will be removoed in futurue")
 class PersonSamordningService(
     private val kodeverkService: KodeverkService,
     private val personService: PersonServiceLegacy,

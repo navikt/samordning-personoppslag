@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 class AdresseService(
     private val hendelseService: PersonEndringHendelseService,
     private val personServiceLegacy: PersonServiceLegacy,
-    private val persondataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -28,7 +28,7 @@ class AdresseService(
             val gyldigident = if (identer.size > 1) {
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
-                    persondataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL")
                     identer.first()
@@ -38,7 +38,7 @@ class AdresseService(
             }
 
             try {
-                val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
+                val adresse = personaliaService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
                 if (adresse != null) {
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.ADRESSE,
@@ -55,7 +55,7 @@ class AdresseService(
                 createAdresseRequest(
                     hendelseId = personhendelse.hendelseId,
                     fnr = gyldigident,
-                    adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = gyldigident),
+                    adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident),
                     opplysningstype = personhendelse.opplysningstype,
                 )
             )

@@ -28,14 +28,14 @@ class KafkaListenerTest {
     private val personService = mockk<PersonServiceLegacy>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val personDataService = mockk<PersonDataService>(relaxed = true)
+    private val personaliaService = mockk<PersonaliaService>(relaxed = true)
 
 
-    private val sivilstandService = SivilstandService(personEndringService, personService, personDataService, samPersonaliaClient)
+    private val sivilstandService = SivilstandService(personEndringService, personService, personaliaService, samPersonaliaClient)
     private val adresseService = AdresseService(personEndringService,
-        personService, personDataService, samPersonaliaClient)
-    private val folkeregisterService = FolkeregisterService(personEndringService, personDataService, samPersonaliaClient)
-    private val doedsfallService = DoedsfallService(personEndringService, personDataService, samPersonaliaClient)
+        personService, personaliaService, samPersonaliaClient)
+    private val folkeregisterService = FolkeregisterService(personEndringService, personaliaService, samPersonaliaClient)
+    private val doedsfallService = DoedsfallService(personEndringService, personaliaService, samPersonaliaClient)
 
     //private val mapper =  jacksonObjectMapper().registerModule(JavaTimeModule())
     private val mapper = configureObjectMapper()
@@ -54,13 +54,13 @@ class KafkaListenerTest {
     fun `personalhendelse på sivilstand skal gå ok`() {
         val hendelse = hentHendelsefraFil("/leesah_sivilstandhendelse1.json")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(withArg {
             assertEquals("bb118557-02ae-4941-a967-2253a7a5afcb", it.hendelseId)
             assertEquals("SKILT", it.newPerson.sivilstand)
@@ -72,10 +72,10 @@ class KafkaListenerTest {
     fun `personalhendelse på sivilstand fra FREG skal ikke behandles`() {
         val hendelse = hentHendelsefraFil("/leesah_sivilstandhendelseFREG.json")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
-        every { personDataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
+        every { personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
 
@@ -88,16 +88,16 @@ class KafkaListenerTest {
         val hendelse1 = hentHendelsefraFil("/leesah_sivilstandhendelse1.json")
         val hendelse2 = hentHendelsefraFil("/leesah_sivilstandhendelse1.json", "21883649874", "54496214261\", \"17912099997")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
-        every { personDataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
+        every { personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) } returns NorskIdent("54496214261")
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2)), mockAck)
 
-        verify(exactly = 2) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 2) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 2) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
-        verify(exactly = 1) { personDataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) }
+        verify(exactly = 1) { personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, any()) }
 
     }
 
@@ -109,13 +109,13 @@ class KafkaListenerTest {
         val hendelse4 = hentHendelsefraFil("/leesah_doedsfall_hendelse1.json")
 
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList() andThen emptyList() andThen emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList() andThen emptyList() andThen emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2, hendelse3, hendelse4)), mockAck)
 
-        verify(exactly = 4) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 4) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 4) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         verify(exactly = 1) { mockAck.acknowledge() }
     }
@@ -125,13 +125,13 @@ class KafkaListenerTest {
         val hendelse1 = hentHendelsefraFil("/leesah_folkeregisteridentifikator_hendelse1.json")
         val hendelse2 = hentHendelsefraFil("/leesah_folkeregisteridentifikator_hendelse2.json")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1, hendelse2)), mockAck)
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(withArg {
             assertEquals("a4f93df6-5555-4981-b7ff-9bcd8592be58", it.hendelseId)
             assertEquals("29822099635", it.newPerson.fnr)
@@ -144,13 +144,13 @@ class KafkaListenerTest {
     fun `personhendelse på dødsfall records skal gå ok`() {
         val hendelse1 = hentHendelsefraFil("/leesah_doedsfall_hendelse1.json")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList() andThen emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse1)), mockAck)
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         verify(exactly = 1) { mockAck.acknowledge() }
     }
@@ -159,10 +159,10 @@ class KafkaListenerTest {
     fun `personalhendelse på kontaktadresse skal gå ok`() {
         val hendelse = hentHendelsefraFil("/leesah_kontaktadresse_hendelse1.json")
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
         justRun { mockAck.acknowledge() }
-        every { personDataService.hentPersonAdresse(any(), any()) } returns Adresse(
+        every { personaliaService.hentPersonAdresse(any(), any()) } returns Adresse(
             adresselinje1 = "SOT6 Vika",
             adresselinje2 = "2094",
             adresselinje3 = null,
@@ -172,7 +172,7 @@ class KafkaListenerTest {
 
         listener.mottaLeesahMelding(mockConsumerRecord(listOf(hendelse)), mockAck)
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
 
         verify(exactly = 1) { personEndringService.opprettPersonEndringHendelse(
             any(),
