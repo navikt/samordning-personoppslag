@@ -493,6 +493,7 @@ class PersonServiceLegacy(
      *
      * @return [Ident] av valgt [IdentType]
      */
+    @Deprecated("Bruk hentIdent(IdentType, Ident) i stedet", replaceWith = ReplaceWith("PersonDataService.hentIdent(IdentType, Ident)"))
     fun <T : Ident, R : IdentGruppe> hentIdent(identTypeWanted: R, ident: T): Ident? {
         return hentIdentMetric.measure {
             val result = hentIdenter(ident)
@@ -515,6 +516,7 @@ class PersonServiceLegacy(
      *
      * @return Liste med [IdentInformasjon]
      */
+    @Deprecated("Bruk hentIdenter(Ident) i stedet", replaceWith = ReplaceWith("PersonDataService.hentIdenter(Ident)"))
     fun <T : Ident> hentIdenter(ident: T): List<IdentInformasjon> {
         return hentIdenterMetric.measure {
 
@@ -615,7 +617,7 @@ class PersonServiceLegacy(
     }
 }
 
-fun String?.scrable() = if (this == null || this.length < 6 ) this else this.dropLast(5) + "xxxxx"
+fun String?.scrable() = if (this == null || this.length < 11) "***" else "***********"
 
 class PersonoppslagException(message: String, val code: String) : RuntimeException("$code: $message") {
     @Deprecated("Bruk PersonoppslagException(message, code)")

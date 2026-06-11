@@ -1,25 +1,79 @@
 package no.nav.samordning.personhendelse
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.kodeverk.Landkode
+import no.nav.samordning.metrics.MetricsHelper
 import no.nav.samordning.person.pdl.PersonClient
 import no.nav.samordning.person.pdl.model.*
+import no.nav.samordning.person.pdl.model.IdentGruppe.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
 import java.time.LocalDateTime
 
 class PersonDataServiceTest {
-
-
     private val client = mockk<PersonClient>(relaxed = true)
-
     private val kodeverkService = mockk<KodeverkService>()
+    private val personaliaService = PersonaliaService(client, kodeverkService, MetricsHelper(SimpleMeterRegistry()))
 
-    private val personDataService = PersonDataService(client, kodeverkService)
 
+
+    @Test
+    fun hentIdent() {
+        val identer = listOf(
+            IdentInformasjon("1", AKTORID),
+            IdentInformasjon("2", FOLKEREGISTERIDENT),
+            IdentInformasjon("3", NPID)
+        )
+
+        every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
+
+        // Hente ut NorskIdent med AktørID
+        val tomNorskIdentFraAktorId = personaliaService.hentIdent(FOLKEREGISTERIDENT, AktoerId(""))
+        assertEquals("2", tomNorskIdentFraAktorId?.id)
+
+        // Hente ut NorskIdent med AktørID
+        val norskIdentFraAktorId = personaliaService.hentIdent(FOLKEREGISTERIDENT, AktoerId("1"))
+        assertEquals("2", norskIdentFraAktorId?.id)
+
+        // Hente ut NPID med AktørID
+        val npidFraAktorId = personaliaService.hentIdent(NPID, AktoerId("1"))
+        assertEquals("3", npidFraAktorId?.id)
+
+        // Hente ut AktørID med NorskIdent
+        val aktoeridFraNorskIdent = personaliaService.hentIdent(AKTORID, NorskIdent("2"))
+        assertEquals("1", aktoeridFraNorskIdent?.id)
+
+        // Hente ut NPID med NorskIdent
+        val npidFraNorskIdent = personaliaService.hentIdent(NPID, NorskIdent("2"))
+        assertEquals("3", npidFraNorskIdent?.id)
+
+        // Hente ut AktørID med Npid
+        val aktoeridFraNpid = personaliaService.hentIdent(AKTORID, Npid("2"))
+        assertEquals("1", aktoeridFraNpid?.id)
+
+        // Hente ut NorskIdent med Npid
+        val norskIdentFraNpid = personaliaService.hentIdent(FOLKEREGISTERIDENT, Npid("2"))
+        assertEquals("2", norskIdentFraNpid?.id)
+    }
+
+    @Test
+    fun hentIdenter() {
+        val identer = listOf(
+            IdentInformasjon("1", AKTORID),
+            IdentInformasjon("2", FOLKEREGISTERIDENT),
+            IdentInformasjon("3", NPID)
+        )
+
+        every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
+
+        val resultat = personaliaService.hentIdenter(NorskIdent("12345"))
+
+        assertEquals(3, resultat.size)
+    }
 
     @Test
     fun `test mapping av kontaktadresse til adresse`() {
@@ -28,7 +82,7 @@ class PersonDataServiceTest {
         every { kodeverkService.finnLandkode(any()) } returns Landkode("NO", "NOR", land = "NORGE")
         every { client.hentAdresse(any()) } returns HentAdresseResponse(HentAdresseResponseData(HentAdresse.mock(coAdressenavn = true)))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
 
         assertEquals("CO_TEST_KONTAKT", resultat?.adresselinje1)
         assertEquals("KONTAKTADRESSE_VEG 1020 A", resultat?.adresselinje2)
@@ -50,7 +104,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
 
         assertEquals("OPPHOLDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -67,7 +121,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("BOSTEDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -84,7 +138,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertNull(resultat)
     }
@@ -121,7 +175,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -152,7 +206,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -184,7 +238,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertNull(resultat)
     }
@@ -217,7 +271,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("STORBRITANNIA", resultat?.land)
         assertEquals("1021 PLK UK", resultat?.postnr)
@@ -243,7 +297,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
         assertNull(resultat)
 
     }
@@ -267,7 +321,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("BOSTEDSADRESSE_VEG 1020 A", resultat?.adresselinje1)
     }
@@ -296,7 +350,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertEquals("NYVEIEN 2", resultat?.adresselinje1)
     }
@@ -329,7 +383,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertNull(resultat)
     }
@@ -349,7 +403,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
 
         assertEquals("TEST_EIER", resultat?.adresselinje1)
         assertEquals("Postboks 1231", resultat?.adresselinje2)
@@ -370,7 +424,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
 
         assertEquals("adresselinje1 fritt", resultat?.adresselinje1)
         assertEquals("adresselinje2 fritt", resultat?.adresselinje2)
@@ -395,7 +449,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
         assertNull(resultat)
     }
 
@@ -416,7 +470,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
         assertNull(resultat)
     }
 
@@ -437,7 +491,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "OPPHOLDSADRESSE_V1")
         assertNull(resultat)
     }
 
@@ -459,7 +513,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
         assertNull(resultat)
     }
 
@@ -489,7 +543,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "BOSTEDSADRESSE_V1")
 
         assertNull(resultat)
     }
@@ -514,7 +568,7 @@ class PersonDataServiceTest {
             )
         ))
 
-        val resultat = personDataService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
+        val resultat = personaliaService.hentPersonAdresse("126630332000", "KONTAKTADRESSE_V1")
 
         assertEquals("CO_TEST_ADRESSE", resultat?.adresselinje1)
         assertEquals("TESTVEIEN 1020 A", resultat?.adresselinje2)

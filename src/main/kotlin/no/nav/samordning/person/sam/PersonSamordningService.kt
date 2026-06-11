@@ -14,17 +14,16 @@ import no.nav.samordning.person.sam.model.PersonSamordning
 import no.nav.samordning.person.sam.model.PersonSamordning.Companion.DISKRESJONSKODE_6_SPSF
 import no.nav.samordning.person.sam.model.PersonSamordning.Companion.DISKRESJONSKODE_7_SPFO
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.util.*
 
 @Service
+@Deprecated("Depricated no replacment will be removoed in futurue")
 class PersonSamordningService(
     private val kodeverkService: KodeverkService,
     private val personService: PersonServiceLegacy,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
+    private val metricsHelper: MetricsHelper
 ) {
 
     private var personSamordningMetric: Metric

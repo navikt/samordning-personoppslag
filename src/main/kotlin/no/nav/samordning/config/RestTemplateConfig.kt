@@ -26,8 +26,7 @@ import java.util.*
 class RestTemplateConfig {
 
     @Bean
-    fun kodeverkTokenInteceptor(@Value("\${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor =
-        AzureAdTokenRequestInterceptor(scope)
+    fun kodeverkTokenInteceptor(@Value($$"${KODEVERK_SCOPE}") scope: String): ClientHttpRequestInterceptor = AzureAdTokenRequestInterceptor(scope)
 
     @Bean
     fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String, kodeverkTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate =
@@ -41,8 +40,7 @@ class RestTemplateConfig {
             .build()
 
     @Bean
-    fun pdlTokenInteceptor(@Value("\${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor =
-        AzureAdTokenRequestInterceptor(scope)
+    fun pdlTokenInteceptor(@Value($$"${PDL_SCOPE}") scope: String): ClientHttpRequestInterceptor = AzureAdTokenRequestInterceptor(scope)
 
     @Bean
     fun pdlRestTemplate(pdlTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
@@ -57,8 +55,7 @@ class RestTemplateConfig {
     }
 
     @Bean
-    fun samTokenInteceptor(@Value("\${SAM_SCOPE}") scope: String): ClientHttpRequestInterceptor =
-        AzureAdTokenRequestInterceptor(scope)
+    fun samTokenInteceptor(@Value($$"${SAM_SCOPE}") scope: String): ClientHttpRequestInterceptor = AzureAdTokenRequestInterceptor(scope)
 
     @Bean
     fun samRestTemplate(@Value("\${SAM_URL}") samUrl: String, samTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
@@ -70,7 +67,7 @@ class RestTemplateConfig {
     }
 
     @Bean
-    fun tpTokenInteceptor(@Value("\${TP_SCOPE}") scope: String): ClientHttpRequestInterceptor =
+    fun tpTokenInteceptor(@Value($$"${TP_SCOPE}") scope: String): ClientHttpRequestInterceptor =
         AzureAdTokenRequestInterceptor(scope)
 
 

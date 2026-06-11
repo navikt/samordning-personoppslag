@@ -1,12 +1,10 @@
 package no.nav.samordning.kodeverk
 
-import tools.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.annotation.PostConstruct
 import no.nav.samordning.mdc.MdcRequestFilter.Companion.REQUEST_ID_MDC_KEY
 import no.nav.samordning.metrics.MetricsHelper
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpEntity
@@ -18,13 +16,14 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponents
 import org.springframework.web.util.UriComponentsBuilder
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.util.*
 
 @Component
 class KodeverkClient(
-    @Value("\${NAIS_APP_NAME}") val appName: String,
+    @param:Value($$"${NAIS_APP_NAME}") private val appName: String,
     private val kodeverkRestTemplate: RestTemplate,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()
+    private val metricsHelper: MetricsHelper
 ) {
     private lateinit var kodeverkLandKoderMetrics: MetricsHelper.Metric
     private lateinit var kodeverkPostMetrics: MetricsHelper.Metric
@@ -71,9 +70,9 @@ class KodeverkClient(
             val rootNode = jacksonObjectMapper().readTree(hentHierarki("LandkoderSammensattISO2"))
             val noder = rootNode.at("/noder").toList()
             return@measure noder.map { node ->
-                val landkode3 = node.at("/undernoder").findPath("kode").textValue()
+                val landkode3 = node.at("/undernoder").findPath("kode").stringValue()
                 Landkode(
-                    landkode2 = node.at("/kode").textValue(),
+                    landkode2 = node.at("/kode").stringValue(),
                     landkode3 = landkode3,
                     land = listLand.firstOrNull { it.landkode3 == landkode3 }?.land ?: "UKJENT"
                 )

@@ -2,7 +2,6 @@ package no.nav.samordning.personhendelse
 
 import no.nav.person.pdl.leesah.Endringstype
 import no.nav.person.pdl.leesah.Personhendelse
-import no.nav.samordning.person.pdl.PersonServiceLegacy
 import no.nav.samordning.person.pdl.model.AdressebeskyttelseGradering
 import no.nav.samordning.person.pdl.model.IdentGruppe
 import no.nav.samordning.person.pdl.model.NorskIdent
@@ -15,7 +14,7 @@ import java.time.LocalDate
 @Service
 class DoedsfallService(
     private val hendelseService: PersonEndringHendelseService,
-    private val personService: PersonServiceLegacy,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -30,7 +29,8 @@ class DoedsfallService(
         } else if (identer.size > 1) {
             try {
                 logger.info("identer fra pdl inneholder flere enn 1")
-                personService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+
             } catch (_: Exception) {
                 logger.warn("Feil ved henting av ident fra PDL for hendelse")
                 identer.first()
@@ -59,7 +59,7 @@ class DoedsfallService(
                 hendelseId = personhendelse.hendelseId,
                 fnr = gyldigident,
                 dodsdato = if (erAnnullering) null else personhendelse.doedsfall?.doedsdato,
-                adressebeskyttelse = personService.hentAdressebeskyttelse(fnr = gyldigident)
+                adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident)
             )
         )
 

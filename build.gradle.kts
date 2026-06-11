@@ -1,36 +1,36 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.3.20"
+val kotlinVersion = "2.3.21"
 val prometeusVersion = "1.16.5"
 val springbootVersion = "4.0.6"
 val springkafkaVersion="4.0.5"
 val springframeworkbomVersion = "7.0.7"
-val slf4jVersion = "2.0.17"
+val slf4jVersion = "2.0.18"
 val logstashlogbackVersion = "9.0"
-val tokensupportVersion = "6.0.6"
-val mockOAuth2ServerVersion = "3.0.3"
+val tokensupportVersion = "6.0.7"
+val mockOAuth2ServerVersion = "4.0.0"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.9"
 val springmockkVersion = "5.0.1"
 val junitplatformVersion = "6.0.3"
 val commonsLang3Version = "3.20.0"
+val byteBuddyVersion = "1.18.8"
 
 plugins {
     val pluginSpringBootVersion = "4.0.4"
-    val pluginKotlinVersion = "2.3.20"
+    val pluginKotlinVersion = "2.3.21"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.owasp.dependencycheck") version "12.1.9"
+    id("org.owasp.dependencycheck") version "12.2.2"
 }
 
 group = "no.nav.pensjon"
-java.sourceCompatibility = JavaVersion.VERSION_25
 
 repositories {
     mavenCentral()
@@ -67,11 +67,11 @@ dependencies {
     implementation("org.springframework.retry:spring-retry:2.0.12")
 
     //caffeine cache manager
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
 
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
-    implementation("io.confluent:kafka-avro-serializer:8.1.1") {
+    implementation("io.confluent:kafka-avro-serializer:8.2.1") {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
@@ -136,13 +136,16 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "9.4.0"
+        gradleVersion = "9.5.1"
     }
 
     configurations.all {
         resolutionStrategy.eachDependency {
             if (requested.group == "org.apache.commons" && requested.module.toString() == "commons-lang") {
                 useVersion(commonsLang3Version)
+            }
+            if (requested.group == "net.bytebuddy") {
+                useVersion(byteBuddyVersion)
             }
         }
     }
