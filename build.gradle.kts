@@ -20,7 +20,7 @@ val byteBuddyVersion = "1.18.8"
 
 plugins {
     val pluginSpringBootVersion = "4.1.0"
-    val pluginKotlinVersion = "2.3.21"
+    val pluginKotlinVersion = "2.4.0"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
