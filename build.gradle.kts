@@ -19,7 +19,7 @@ val commonsLang3Version = "3.20.0"
 val byteBuddyVersion = "1.18.8"
 
 plugins {
-    val pluginSpringBootVersion = "4.0.4"
+    val pluginSpringBootVersion = "4.1.0"
     val pluginKotlinVersion = "2.3.21"
 
     kotlin("jvm") version pluginKotlinVersion
