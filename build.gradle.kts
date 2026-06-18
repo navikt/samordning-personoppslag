@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 val kotlinVersion = "2.3.21"
 val prometeusVersion = "1.16.5"
 val springbootVersion = "4.0.6"
-val springkafkaVersion="4.0.5"
+val springkafkaVersion="4.1.0"
 val springframeworkbomVersion = "7.0.7"
 val slf4jVersion = "2.0.18"
 val logstashlogbackVersion = "9.0"
