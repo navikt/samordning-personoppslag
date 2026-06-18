@@ -14,7 +14,7 @@ val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.9"
 val springmockkVersion = "5.0.1"
-val junitplatformVersion = "6.0.3"
+val junitplatformVersion = "6.1.0"
 val commonsLang3Version = "3.20.0"
 val byteBuddyVersion = "1.18.8"
 
