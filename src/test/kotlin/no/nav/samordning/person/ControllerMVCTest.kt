@@ -725,10 +725,8 @@ internal class ControllerMVCTest {
         statsborgerskap = statsborgerskap,
         kjoenn = kjoenn,
         doedsfall = doedsfall,
-        forelderBarnRelasjon = emptyList<ForelderBarnRelasjon>(),
         sivilstand = sivilstand,
         kontaktadresse = kontaktadresse,
-        kontaktinformasjonForDoedsbo = emptyList()
     )
 
     private fun mockNavn() = listOf(

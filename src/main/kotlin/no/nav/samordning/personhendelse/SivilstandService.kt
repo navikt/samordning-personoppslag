@@ -77,13 +77,7 @@ class SivilstandService(
                         }
                     }
 
-                    samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(
-                        hendelseId = personhendelse.hendelseId,
-                        fnr = gyldigident,
-                        fomDato = fomDato,
-                        sivilstandsType = personhendelse.sivilstand?.type ?: "",
-                        adressebeskyttelse = adressebeskyttelse
-                    ))
+                    samPersonaliaClient(personhendelse, gyldigident, fomDato, adressebeskyttelse)
                 }
                 messure.addKjent(personhendelse)
             }
@@ -92,6 +86,18 @@ class SivilstandService(
                 throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${personhendelse.hendelseId}")
             }
         }
+    }
+
+    @Deprecated("Depricated no replacment will be removoed in futurue", ReplaceWith("none"))
+    private fun samPersonaliaClient(personhendelse: Personhendelse, gyldigident: String, fomDato: LocalDate, adressebeskyttelse: List<AdressebeskyttelseGradering>) {
+        samPersonaliaClient.oppdaterSamPersonalia(createSivilstandRequest(
+            hendelseId = personhendelse.hendelseId,
+            fnr = gyldigident,
+            fomDato = fomDato,
+            sivilstandsType = personhendelse.sivilstand?.type ?: "",
+            adressebeskyttelse = adressebeskyttelse
+        ))
+
     }
 
     private fun createSivilstandRequest(

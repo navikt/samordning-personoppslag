@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonValue
  * B137, Forvaltning av registere: Innsamling, registrering og lagring i Tjenestepensjonsregisteret
  */
 enum class Behandlingsnummer(@JsonValue val nummer: String) {
-      TP("B137"),
       SAMORDNING("B920");
 
     companion object {

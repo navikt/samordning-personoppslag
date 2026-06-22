@@ -1,6 +1,5 @@
 package no.nav.samordning.person.pdl
 
-import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.samordning.kodeverk.KodeverkService
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle
 import org.junit.jupiter.api.assertThrows
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -91,10 +91,8 @@ internal class PdlPersonServiceTest {
             statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
             kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-            forelderBarnRelasjon = listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
             kontaktadresse = emptyList(),
-            kontaktinformasjonForDoedsbo = emptyList()
         )
 
         val identer = listOf(
@@ -107,7 +105,6 @@ internal class PdlPersonServiceTest {
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(pdlPerson))
         every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
         every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(GeografiskTilknytningResponseData(gt))
-        //every { client.hentPersonUtenlandsIdent(any()) } returns HentPersonUidResponse(HentPersonUidResponseData(pdlUidPerson))
 
         val resultat = service.hentPerson(NorskIdent("12345"))
 
@@ -128,10 +125,6 @@ internal class PdlPersonServiceTest {
 
         assertEquals(LocalDate.of(2020, 10,10), resultat.doedsfall?.doedsdato)
         assertEquals(true, resultat.erDoed())
-
-        assertEquals("101010", resultat.forelderBarnRelasjon.lastOrNull()?.relatertPersonsIdent)
-        assertEquals(Familierelasjonsrolle.BARN, resultat.forelderBarnRelasjon.lastOrNull()?.relatertPersonsRolle)
-        assertEquals(Familierelasjonsrolle.MOR, resultat.forelderBarnRelasjon.lastOrNull()?.minRolleForPerson)
 
         assertEquals(Sivilstandstype.GIFT, resultat.sivilstand.lastOrNull()?.type)
         assertEquals("1020203010", resultat.sivilstand.lastOrNull()?.relatertVedSivilstand)
@@ -321,7 +314,6 @@ internal class PdlPersonServiceTest {
             statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
             kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
-            forelderBarnRelasjon = listOf(ForelderBarnRelasjon("101010", Familierelasjonsrolle.BARN, Familierelasjonsrolle.MOR, mockMeta())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
             kontaktadresse = listOf(
                 Kontaktadresse(
@@ -347,14 +339,12 @@ internal class PdlPersonServiceTest {
                 ),
                 metadata = Metadata(emptyList(), false, "DOLLY", "Doll")
             )
-            ),
-            kontaktinformasjonForDoedsbo = emptyList()
+            )
         )
 
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(pdlPerson))
         every { client.hentIdenter(any()) } returns IdenterResponse()
         every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse()
-        //every { client.hentPersonUtenlandsIdent(any()) } returns HentPersonUidResponse()
 
         val person = service.hentPerson(NorskIdent("12345678912"))
 
@@ -469,12 +459,10 @@ internal class PdlPersonServiceTest {
         statsborgerskap: List<Statsborgerskap> = emptyList(),
         kjoenn: List<Kjoenn> = emptyList(),
         doedsfall: List<Doedsfall> = emptyList(),
-        familierelasjoner: List<ForelderBarnRelasjon> = emptyList(),
         sivilstand: List<Sivilstand> = emptyList(),
         kontaktadresse: List<Kontaktadresse> = emptyList(),
-        kontaktinformasjonForDoedsbo: List<KontaktinformasjonForDoedsbo> = emptyList()
     ) = HentPerson(
-            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn, statsborgerskap, kjoenn, doedsfall, familierelasjoner, sivilstand, kontaktadresse, kontaktinformasjonForDoedsbo
+            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn, statsborgerskap, kjoenn, doedsfall,  sivilstand, kontaktadresse,
     )
 
     private fun createHentPersonnavn(navn: List<Navn>) = HentPersonnavn(navn)

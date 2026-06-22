@@ -54,6 +54,13 @@ class DoedsfallService(
             }
         }
 
+        samPersonaliaClient(personhendelse, gyldigident, erAnnullering)
+
+        messure.addKjent(personhendelse)
+    }
+
+    @Deprecated("Depricated no replacment will be removoed in futurue", ReplaceWith("none"))
+    private fun samPersonaliaClient(personhendelse: Personhendelse, gyldigident: String, erAnnullering: Boolean) {
         samPersonaliaClient.oppdaterSamPersonalia(
             createDoedsfallRequest(
                 hendelseId = personhendelse.hendelseId,
@@ -63,7 +70,6 @@ class DoedsfallService(
             )
         )
 
-        messure.addKjent(personhendelse)
     }
 
     private fun createDoedsfallRequest(
