@@ -19,22 +19,22 @@ class SivilstandServiceTest {
 
     private val personEndringService = mockk<PersonEndringHendelseService>(relaxed = true)
     private val personService = mockk<PersonServiceLegacy>()
-    private val personDataService = mockk<PersonDataService>(relaxed = true)
+    private val personaliaService = mockk<PersonaliaService>(relaxed = true)
     private val samPersonaliaClient = mockk<SamPersonaliaClient>()
 
-    private val sivilstandService = SivilstandService(personEndringService, personService, personDataService, samPersonaliaClient)
+    private val sivilstandService = SivilstandService(personEndringService, personService, personaliaService, samPersonaliaClient)
 
 
     @Test
     fun processHendelse() {
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
@@ -43,13 +43,13 @@ class SivilstandServiceTest {
     fun processHendelseUtenFomDato() {
 
         every { personService.hentPerson(any()) } returns mockPdlPerson()
-        every { personDataService.hentAdressebeskyttelse(any()) } returns emptyList()
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns emptyList()
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(gyldigFraOgMed = null), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
     }
@@ -57,14 +57,14 @@ class SivilstandServiceTest {
     @Test
     fun processHendelseMedAdressebeskyttelse() {
 
-        every { personDataService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
+        every { personaliaService.hentAdressebeskyttelse(any()) } returns listOf<AdressebeskyttelseGradering>(AdressebeskyttelseGradering.STRENGT_FORTROLIG)
         justRun { samPersonaliaClient.oppdaterSamPersonalia(any()) }
 
         val mockHendelse = mockPersonhendelse()
         sivilstandService.opprettSivilstandsMelding(mockPersonhendelse(), MessureOpplysningstypeHelper())
 
 
-        verify(exactly = 1) { personDataService.hentAdressebeskyttelse(any()) }
+        verify(exactly = 1) { personaliaService.hentAdressebeskyttelse(any()) }
         verify(exactly = 1) {
             samPersonaliaClient.oppdaterSamPersonalia(
                 match {
@@ -106,7 +106,6 @@ class SivilstandServiceTest {
             navn = Navn(fornavn = "Dummy", etternavn = "Dummy", metadata = mockMeta() ),
             adressebeskyttelse = emptyList(),
             statsborgerskap = emptyList(),
-            forelderBarnRelasjon = emptyList(),
             sivilstand = listOf(Sivilstand(type = Sivilstandstype.UGIFT, gyldigFraOgMed = LocalDate.of(2020, 4, 10), relatertVedSivilstand = null, mockMeta() ))
         )
     }

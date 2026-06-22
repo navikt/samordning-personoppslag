@@ -12,10 +12,8 @@ internal data class HentPerson(
         val statsborgerskap: List<Statsborgerskap>,
         val kjoenn: List<Kjoenn>,
         val doedsfall: List<Doedsfall>,
-        val forelderBarnRelasjon: List<ForelderBarnRelasjon>,
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: List<Kontaktadresse>?,
-        val kontaktinformasjonForDoedsbo: List<KontaktinformasjonForDoedsbo>,
 ) {
         companion object {}
 }
@@ -31,20 +29,6 @@ internal data class HentAdresseLegacy(
         val kontaktadresse: List<Kontaktadresse>?,
 )
 
-internal data class HentPersonUtenlandskIdent(
-        val navn: List<Navn>,
-        val kjoenn: List<Kjoenn>,
-        val utenlandskIdentifikasjonsnummer: List<UtenlandskIdentifikasjonsnummer>
-)
-
-data class UtenlandskIdentifikasjonsnummer(
-        val identifikasjonsnummer: String,
-        val utstederland: String,
-        val opphoert: Boolean,
-        val folkeregistermetadata: Folkeregistermetadata? = null,
-        val metadata: Metadata
-)
-
 data class PdlSamPerson(
         val navn: Navn? = null,
         val kjoenn: Kjoenn? = null,
@@ -55,7 +39,6 @@ data class PdlSamPerson(
         val oppholdsadresse: Oppholdsadresse? = null,
         val bostedsadresse: Bostedsadresse? = null,
         val kontaktadresse: Kontaktadresse? = null,
-        val kontaktinformasjonForDoedsbo: KontaktinformasjonForDoedsbo? = null,
 ) {
         private val logger = LoggerFactory.getLogger(PdlSamPerson::class.java)
 
@@ -135,10 +118,8 @@ data class PdlPerson(
         val geografiskTilknytning: GeografiskTilknytning? = null,
         val kjoenn: Kjoenn? = null,
         val doedsfall: Doedsfall? = null,
-        val forelderBarnRelasjon: List<ForelderBarnRelasjon>,  //Opplysningen Familierelasjon har byttet navn til ForelderBarnRelasjon
         val sivilstand: List<Sivilstand>,
-        val kontaktadresse: Kontaktadresse? = null,
-        val kontaktinformasjonForDoedsbo: KontaktinformasjonForDoedsbo? = null
+        val kontaktadresse: Kontaktadresse? = null
 ) {
         private val logger = LoggerFactory.getLogger(PdlPerson::class.java)
 
@@ -371,12 +352,12 @@ data class Kjoenn(
         val metadata: Metadata
 )
 
-data class ForelderBarnRelasjon (
-        val relatertPersonsIdent: String?,
-        val relatertPersonsRolle: Familierelasjonsrolle?,
-        val minRolleForPerson: Familierelasjonsrolle? = null,
-        val metadata: Metadata
-)
+//data class ForelderBarnRelasjon (
+//        val relatertPersonsIdent: String?,
+//        val relatertPersonsRolle: Familierelasjonsrolle?,
+//        val minRolleForPerson: Familierelasjonsrolle? = null,
+//        val metadata: Metadata
+//)
 
 data class Sivilstand(
         val type: Sivilstandstype,

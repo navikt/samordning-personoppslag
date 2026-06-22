@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 class AdresseService(
     private val hendelseService: PersonEndringHendelseService,
     private val personServiceLegacy: PersonServiceLegacy,
-    private val persondataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
     private val samPersonaliaClient: SamPersonaliaClient,
 ) {
 
@@ -28,7 +28,7 @@ class AdresseService(
             val gyldigident = if (identer.size > 1) {
                 try {
                     logger.info("identer fra pdl inneholder flere enn 1")
-                    persondataService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
+                    personaliaService.hentIdent(IdentGruppe.FOLKEREGISTERIDENT, NorskIdent(identer.first()))!!.id
                 } catch (_: Exception) {
                     logger.warn("Feil ved henting av ident fra PDL")
                     identer.first()
@@ -38,7 +38,7 @@ class AdresseService(
             }
 
             try {
-                val adresse = persondataService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
+                val adresse = personaliaService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
                 if (adresse != null) {
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.ADRESSE,
@@ -51,19 +51,25 @@ class AdresseService(
                 logger.warn("Opprettelse av personendringhendelse feiler for adresse, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
             }
 
-            samPersonaliaClient.oppdaterSamPersonalia(
-                createAdresseRequest(
-                    hendelseId = personhendelse.hendelseId,
-                    fnr = gyldigident,
-                    adressebeskyttelse = persondataService.hentAdressebeskyttelse(fnr = gyldigident),
-                    opplysningstype = personhendelse.opplysningstype,
-                )
-            )
+            samPersonaliaClient(personhendelse, gyldigident)
+
             messure.addKjent(personhendelse)
         } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
+    }
+
+    @Deprecated("Depricated no replacment will be removoed in futurue", ReplaceWith("none"))
+    private fun samPersonaliaClient(personhendelse: Personhendelse, gyldigident: String) {
+        samPersonaliaClient.oppdaterSamPersonalia(
+            createAdresseRequest(
+                hendelseId = personhendelse.hendelseId,
+                fnr = gyldigident,
+                adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident),
+                opplysningstype = personhendelse.opplysningstype,
+            )
+        )
     }
 
     private fun createAdresseRequest(

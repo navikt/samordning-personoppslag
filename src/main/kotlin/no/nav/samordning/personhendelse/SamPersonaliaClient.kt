@@ -7,6 +7,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
 @Service
+@Deprecated("Depricated no replacment will be removoed in futurue")
 class SamPersonaliaClient(private val samRestTemplate: RestTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)

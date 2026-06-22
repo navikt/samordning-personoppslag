@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 
 
 @Service
-class PersonDataService(
+class PersonaliaService(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
     private val metricsHelper: MetricsHelper

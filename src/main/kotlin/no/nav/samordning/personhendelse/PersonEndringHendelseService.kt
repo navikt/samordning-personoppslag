@@ -10,7 +10,7 @@ import java.time.LocalDate
 class PersonEndringHendelseService(
     private val personEndringHendelseProducer: PersonEndringHendelseProducer,
     private val sjekkTpYtelserService: SjekkTpYtelserService,
-    private val personDataService: PersonDataService,
+    private val personaliaService: PersonaliaService,
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -24,7 +24,7 @@ class PersonEndringHendelseService(
         adresse: Adresse? = null,
         hendelseId: String,
     ) {
-        if (personDataService.erAdressebeskyttelseGradert(fnr) ) { return }
+        if (personaliaService.erAdressebeskyttelseGradert(fnr) ) { return }
 
         logger.debug("Send hendelse over kafka til hendelse-api, meldingsKode: $meldingsKode, hendelseId: $hendelseId")
 

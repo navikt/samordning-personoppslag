@@ -55,28 +55,6 @@ query($ident: ID!) {
                 ...utenlandskAdresseIFrittFormat
             }
         }
-        kontaktinformasjonForDoedsbo {
-            personSomKontakt {
-                ...personSomKontakt
-            }
-            advokatSomKontakt {
-                ...advokatSomKontakt
-            }
-            organisasjonSomKontakt {
-                ...organisasjonSomKontakt
-            }
-            adresse {
-                ...doedsboAdresse
-            }
-            attestutstedelsesdato
-            folkeregistermetadata {
-                ...folkeregistermetadataDetails
-            }
-            metadata {
-                ...metadataDetails
-            }
-            skifteform
-        }
         navn {
             fornavn
             mellomnavn
@@ -109,14 +87,6 @@ query($ident: ID!) {
             folkeregistermetadata {
                 ...folkeregistermetadataDetails
             }
-            metadata {
-                ...metadataDetails
-            }
-        }
-        forelderBarnRelasjon {
-            relatertPersonsIdent
-            relatertPersonsRolle
-            minRolleForPerson
             metadata {
                 ...metadataDetails
             }
@@ -184,39 +154,4 @@ fragment utenlandskAdresseIFrittFormat on UtenlandskAdresseIFrittFormat {
     byEllerStedsnavn
     landkode
     postkode
-}
-
-fragment doedsboAdresse on KontaktinformasjonForDoedsboAdresse {
-    adresselinje1
-    adresselinje2
-    landkode
-    postnummer
-    poststedsnavn
-}
-
-fragment personSomKontakt on KontaktinformasjonForDoedsboPersonSomKontakt {
-    personnavn {
-        fornavn
-        mellomnavn
-        etternavn
-    }
-    identifikasjonsnummer
-}
-
-fragment advokatSomKontakt on KontaktinformasjonForDoedsboAdvokatSomKontakt {
-    personnavn {
-        fornavn
-        mellomnavn
-        etternavn
-    }
-    organisasjonsnavn
-}
-
-fragment organisasjonSomKontakt on KontaktinformasjonForDoedsboOrganisasjonSomKontakt {
-    kontaktperson  {
-        fornavn
-        mellomnavn
-        etternavn
-    }
-    organisasjonsnavn
 }
