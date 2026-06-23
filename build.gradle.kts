@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val kotlinVersion = "2.4.0"
 val prometeusVersion = "1.17.0"
-val springbootVersion = "4.0.6"
+val springbootVersion = "4.1.0"
 val springkafkaVersion="4.1.0"
 val springframeworkbomVersion = "7.0.8"
 val slf4jVersion = "2.0.18"
@@ -64,14 +64,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation(platform("org.springframework:spring-framework-bom:$springframeworkbomVersion"))
-    implementation("org.springframework.retry:spring-retry:2.0.12")
+    implementation("org.springframework.retry:spring-retry:2.0.13")
 
     //caffeine cache manager
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
 
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
-    implementation("io.confluent:kafka-avro-serializer:8.2.1") {
+    implementation("io.confluent:kafka-avro-serializer:8.3.0") {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
