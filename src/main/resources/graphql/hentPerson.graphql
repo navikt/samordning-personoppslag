@@ -68,25 +68,8 @@ query($ident: ID!) {
                 ...metadataDetails
             }
         }
-        statsborgerskap {
-            land
-            gyldigFraOgMed
-            gyldigTilOgMed
-            metadata {
-                ...metadataDetails
-            }
-        }
         doedsfall {
             doedsdato
-            metadata {
-                ...metadataDetails
-            }
-        }
-        kjoenn {
-            kjoenn
-            folkeregistermetadata {
-                ...folkeregistermetadataDetails
-            }
             metadata {
                 ...metadataDetails
             }

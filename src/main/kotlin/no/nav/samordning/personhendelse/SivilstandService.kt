@@ -65,6 +65,9 @@ class SivilstandService(
 
                     if (personhendelse.master != "FREG") {
                         try {
+                            //hvis adresse beskyttelse hopp ut
+                            if (personaliaService.erAdressebeskyttelseGradert(gyldigident) ) { return }
+
                             hendelseService.opprettPersonEndringHendelse(
                                 meldingsKode = Meldingskode.SIVILSTAND,
                                 fnr = gyldigident,

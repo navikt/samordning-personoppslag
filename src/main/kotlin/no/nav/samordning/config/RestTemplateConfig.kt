@@ -31,7 +31,7 @@ class RestTemplateConfig {
     @Bean
     fun kodeverkRestTemplate(@Value("\${KODEVERK_URL}") kodeverkUrl: String, kodeverkTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate =
         RestTemplateBuilder()
-            .rootUri(kodeverkUrl)
+            .baseUri(kodeverkUrl)
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(
                 IOExceptionRetryInterceptor(),
@@ -60,7 +60,7 @@ class RestTemplateConfig {
     @Bean
     fun samRestTemplate(@Value("\${SAM_URL}") samUrl: String, samTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
         return RestTemplateBuilder()
-            .rootUri(samUrl)
+            .baseUri(samUrl)
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(samTokenInteceptor)
             .build()
@@ -74,7 +74,7 @@ class RestTemplateConfig {
     @Bean
     fun tpRestTemplate(@Value("\${TP_URL}") tpUrl: String, tpTokenInteceptor: ClientHttpRequestInterceptor): RestTemplate {
         return RestTemplateBuilder()
-            .rootUri(tpUrl)
+            .baseUri(tpUrl)
             .errorHandler(DefaultResponseErrorHandler())
             .additionalInterceptors(tpTokenInteceptor)
             .build()

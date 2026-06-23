@@ -712,8 +712,6 @@ internal class ControllerMVCTest {
         bostedsadresse: List<Bostedsadresse> = mockBostedsadresse(harCoAdressenavn = coAdressenavn),
         oppholdsadresse: List<Oppholdsadresse> = emptyList(),
         navn: List<Navn> = mockNavn(),
-        statsborgerskap: List<Statsborgerskap> = mockStatsborgerskap(),
-        kjoenn: List<Kjoenn> = mockKjoenn(),
         doedsfall: List<Doedsfall> = emptyList(),
         sivilstand: List<Sivilstand> = mockSivilstand(),
         kontaktadresse: List<Kontaktadresse> = mockKontaktadresseInnland(harCoAdressenavn = coAdressenavn),
@@ -722,8 +720,6 @@ internal class ControllerMVCTest {
         bostedsadresse = bostedsadresse,
         oppholdsadresse = oppholdsadresse,
         navn = navn,
-        statsborgerskap = statsborgerskap,
-        kjoenn = kjoenn,
         doedsfall = doedsfall,
         sivilstand = sivilstand,
         kontaktadresse = kontaktadresse,
@@ -746,14 +742,6 @@ internal class ControllerMVCTest {
             land = "NOR",
             gyldigFraOgMed = LocalDate.of(2010, 7, 7),
             gyldigTilOgMed = LocalDate.of(2020, 10, 10),
-            metadata = mockMeta()
-        )
-    )
-
-    private fun mockKjoenn() = listOf(
-        Kjoenn(
-            kjoenn = KjoennType.KVINNE,
-            folkeregistermetadata = Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10, 5, 2)),
             metadata = mockMeta()
         )
     )

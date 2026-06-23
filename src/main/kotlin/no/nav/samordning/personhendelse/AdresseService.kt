@@ -38,6 +38,9 @@ class AdresseService(
             }
 
             try {
+                //hvis adresse beskyttelse hopp ut
+                if (personaliaService.erAdressebeskyttelseGradert(gyldigident) ) { return }
+
                 val adresse = personaliaService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
                 if (adresse != null) {
                     hendelseService.opprettPersonEndringHendelse(
@@ -79,8 +82,6 @@ class AdresseService(
         opplysningstype: String,
     ): OppdaterPersonaliaRequest {
         val pdlAdresse = personServiceLegacy.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
-
-
 
         return OppdaterPersonaliaRequest(
             hendelseId = hendelseId,

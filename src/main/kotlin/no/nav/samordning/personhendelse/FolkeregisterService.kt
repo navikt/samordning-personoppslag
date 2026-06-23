@@ -36,6 +36,9 @@ class FolkeregisterService(
 
             if (personhendelse.master != "FREG") {
                 try {
+                    //hvis adresse beskyttelse hopp ut
+                    if (personaliaService.erAdressebeskyttelseGradert(nyttFnr) ) { return }
+
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.FODSELSNUMMER,
                         fnr = nyttFnr,

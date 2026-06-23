@@ -57,7 +57,6 @@ internal class PdlPersonServiceTest {
 
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(pdlPerson))
         every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(GeografiskTilknytningResponseData(gt))
 
         val resultat = service.hentPerson(NorskIdent("12345"))
 
@@ -65,8 +64,6 @@ internal class PdlPersonServiceTest {
         assertEquals("Fornavn", navn.fornavn)
         assertEquals("Mellomnavn", navn.mellomnavn)
         assertEquals("Etternavn", navn.etternavn)
-
-        assertEquals(gt, resultat.geografiskTilknytning)
 
         assertEquals(1, resultat.adressebeskyttelse.size)
         assertEquals(2, resultat.identer.size)
@@ -88,8 +85,6 @@ internal class PdlPersonServiceTest {
             ),
             oppholdsadresse = emptyList(),
             navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
-            statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
-            kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
             kontaktadresse = emptyList(),
@@ -100,11 +95,8 @@ internal class PdlPersonServiceTest {
             IdentInformasjon("100000000000053", AKTORID)
         )
 
-        val gt = GeografiskTilknytning(GtType.KOMMUNE, "0301", null, null)
-
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(pdlPerson))
         every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(GeografiskTilknytningResponseData(gt))
 
         val resultat = service.hentPerson(NorskIdent("12345"))
 
@@ -119,10 +111,6 @@ internal class PdlPersonServiceTest {
         assertEquals("A", vegadresse?.husbokstav)
         assertEquals("0234", vegadresse?.postnummer)
 
-        assertEquals("NOR", resultat.statsborgerskap.lastOrNull()?.land)
-
-        assertEquals(KjoennType.KVINNE, resultat.kjoenn?.kjoenn)
-
         assertEquals(LocalDate.of(2020, 10,10), resultat.doedsfall?.doedsdato)
         assertEquals(true, resultat.erDoed())
 
@@ -130,30 +118,9 @@ internal class PdlPersonServiceTest {
         assertEquals("1020203010", resultat.sivilstand.lastOrNull()?.relatertVedSivilstand)
         assertEquals(LocalDate.of(2010, 10,10), resultat.sivilstand.lastOrNull()?.gyldigFraOgMed)
 
-        assertEquals(gt, resultat.geografiskTilknytning)
-
         assertEquals(1, resultat.adressebeskyttelse.size)
         assertEquals(2, resultat.identer.size)
 
-    }
-
-    @Test
-    fun kjoenn_sistGyldigeVerdiBlirValgt() {
-        val kjoennListe = listOf(
-                Kjoenn(KjoennType.MANN, Folkeregistermetadata(LocalDateTime.now().minusDays(10)), mockMeta(LocalDateTime.now().minusDays (10))),
-                Kjoenn(KjoennType.UKJENT, null, mockMeta()),
-                Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.now()), mockMeta(LocalDateTime.now()))
-        )
-
-        val person = createHentPerson(kjoenn = kjoennListe)
-
-        every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(person))
-        every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(emptyList())))
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(null, null)
-
-        val resultat = service.hentPerson(NorskIdent("12345"))
-
-        assertEquals(KjoennType.KVINNE, resultat!!.kjoenn!!.kjoenn)
     }
 
     @Test
@@ -172,7 +139,6 @@ internal class PdlPersonServiceTest {
 
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(person))
         every { client.hentIdenter(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(emptyList())))
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(null, null)
 
         val resultat = service.hentPerson(NorskIdent("12345"))!!
 
@@ -214,21 +180,6 @@ internal class PdlPersonServiceTest {
 
         assertEquals(3, resultat.size)
     }
-
-//    @Test
-//    fun hentAktorId() {
-//        val identer = listOf(
-//                IdentInformasjon("1", AKTORID),
-//                IdentInformasjon("2", FOLKEREGISTERIDENT),
-//                IdentInformasjon("3", NPID)
-//        )
-//
-//        every { client.hentAktorId(any()) } returns IdenterResponse(IdenterDataResponse(HentIdenter(identer)))
-//
-//        val aktorId = service.hentAktorId("12345")
-//
-//        assertEquals(AktoerId("1"), aktorId)
-//    }
 
     @Test
     fun hentIdent() {
@@ -311,8 +262,6 @@ internal class PdlPersonServiceTest {
             bostedsadresse = emptyList(),
             oppholdsadresse = emptyList(),
             navn = listOf(Navn("Fornavn", "Mellomnavn", "Etternavn", null, null, null, mockMeta())),
-            statsborgerskap = listOf(Statsborgerskap("NOR", LocalDate.of(2010, 7,7), LocalDate.of(2020, 10, 10), mockMeta())),
-            kjoenn = listOf(Kjoenn(KjoennType.KVINNE, Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             doedsfall = listOf(Doedsfall(LocalDate.of(2020, 10,10), Folkeregistermetadata(LocalDateTime.of(2020, 10, 5, 10,5,2)), mockMeta())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, LocalDate.of(2010, 10,10), "1020203010", mockMeta())),
             kontaktadresse = listOf(
@@ -344,7 +293,6 @@ internal class PdlPersonServiceTest {
 
         every { client.hentPerson(any()) } returns HentPersonResponse(HentPersonResponseData(pdlPerson))
         every { client.hentIdenter(any()) } returns IdenterResponse()
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse()
 
         val person = service.hentPerson(NorskIdent("12345678912"))
 
@@ -361,13 +309,11 @@ internal class PdlPersonServiceTest {
         val code = "test_code"
 
         val errors = listOf(ResponseError(msg, extensions = ErrorExtension(code, null, null)))
-
         every { client.hentAdressebeskyttelse(any()) } returns AdressebeskyttelseResponse(null, errors)
 
         val exception = assertThrows<PersonoppslagException> {
             service.hentAdressebeskyttelse("1234")
         }
-
         assertEquals("$code: $msg", exception.message)
     }
 
@@ -382,22 +328,6 @@ internal class PdlPersonServiceTest {
 
         val exception = assertThrows<PersonoppslagException> {
             service.hentIdenter(NorskIdent("12345"))
-        }
-
-        assertEquals("$code: $msg", exception.message)
-    }
-
-    @Test
-    fun hentGeografiskTilknytning_handleError() {
-        val msg = "test message"
-        val code = "test_code"
-
-        val errors = listOf(ResponseError(msg, extensions = ErrorExtension(code, null, null)))
-
-        every { client.hentGeografiskTilknytning(any()) } returns GeografiskTilknytningResponse(data = null, errors = errors)
-
-        val exception = assertThrows<PersonoppslagException> {
-            service.hentGeografiskTilknytning(NorskIdent("12345"))
         }
 
         assertEquals("$code: $msg", exception.message)
@@ -442,11 +372,9 @@ internal class PdlPersonServiceTest {
             }
         """.trimIndent()
         val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
-        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
         every { client.hentAdresseLegacy( any()) } returns response
         every { client.hentIdenter (any()) } returns identResponse
-        every { client.hentGeografiskTilknytning (any()) }  returns geoResponse
 
         return response
     }
@@ -456,13 +384,11 @@ internal class PdlPersonServiceTest {
         bostedsadresse: List<Bostedsadresse> = emptyList(),
         oppholdsadresse: List<Oppholdsadresse> = emptyList(),
         navn: List<Navn> = emptyList(),
-        statsborgerskap: List<Statsborgerskap> = emptyList(),
-        kjoenn: List<Kjoenn> = emptyList(),
         doedsfall: List<Doedsfall> = emptyList(),
         sivilstand: List<Sivilstand> = emptyList(),
         kontaktadresse: List<Kontaktadresse> = emptyList(),
     ) = HentPerson(
-            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn, statsborgerskap, kjoenn, doedsfall,  sivilstand, kontaktadresse,
+            adressebeskyttelse, bostedsadresse, oppholdsadresse, navn,  doedsfall,  sivilstand, kontaktadresse,
     )
 
     private fun createHentPersonnavn(navn: List<Navn>) = HentPersonnavn(navn)
