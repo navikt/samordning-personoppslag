@@ -501,27 +501,6 @@ class PersonServiceLegacy(
         }
     }
 
-    /**
-     * Funksjon for å hente ut en person sin geografiske tilknytning.
-     *
-     * @param ident: Identen til personen man vil hente ut identer for. Bruk [NorskIdent], [AktoerId], eller [Npid]
-     *
-     * @return [GeografiskTilknytning]
-     */
-    @Deprecated("Will be deleted")
-    fun <T : Ident> hentGeografiskTilknytning(ident: T): GeografiskTilknytning? {
-        return hentGeografiskTilknytningMetric.measure {
-            logger.debug("Henter hentGeografiskTilknytning for ident")
-
-            val response = client.hentGeografiskTilknytning(ident.id)
-
-            if (!response.errors.isNullOrEmpty())
-                handleError(response.errors)
-
-            return@measure response.data?.geografiskTilknytning
-        }
-    }
-
     private fun handleError(errors: List<ResponseError>) {
         val error = errors.first()
 
