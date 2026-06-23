@@ -38,6 +38,9 @@ class AdresseService(
             }
 
             try {
+                //hvis adresse beskyttelse hopp ut
+                if (personaliaService.erAdressebeskyttelseGradert(gyldigident) ) { return }
+
                 val adresse = personaliaService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
                 if (adresse != null) {
                     hendelseService.opprettPersonEndringHendelse(
@@ -51,19 +54,25 @@ class AdresseService(
                 logger.warn("Opprettelse av personendringhendelse feiler for adresse, hendelseId=${personhendelse.hendelseId}. Feilmelding=${e.message}")
             }
 
-            samPersonaliaClient.oppdaterSamPersonalia(
-                createAdresseRequest(
-                    hendelseId = personhendelse.hendelseId,
-                    fnr = gyldigident,
-                    adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident),
-                    opplysningstype = personhendelse.opplysningstype,
-                )
-            )
+            samPersonaliaClient(personhendelse, gyldigident)
+
             messure.addKjent(personhendelse)
         } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
+    }
+
+    @Deprecated("Depricated no replacment will be removoed in futurue", ReplaceWith("none"))
+    private fun samPersonaliaClient(personhendelse: Personhendelse, gyldigident: String) {
+        samPersonaliaClient.oppdaterSamPersonalia(
+            createAdresseRequest(
+                hendelseId = personhendelse.hendelseId,
+                fnr = gyldigident,
+                adressebeskyttelse = personaliaService.hentAdressebeskyttelse(fnr = gyldigident),
+                opplysningstype = personhendelse.opplysningstype,
+            )
+        )
     }
 
     private fun createAdresseRequest(
@@ -73,8 +82,6 @@ class AdresseService(
         opplysningstype: String,
     ): OppdaterPersonaliaRequest {
         val pdlAdresse = personServiceLegacy.hentPdlAdresse(NorskIdent(fnr), opplysningstype)
-
-
 
         return OppdaterPersonaliaRequest(
             hendelseId = hendelseId,

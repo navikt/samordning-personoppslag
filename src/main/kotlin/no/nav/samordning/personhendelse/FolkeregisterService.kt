@@ -36,6 +36,9 @@ class FolkeregisterService(
 
             if (personhendelse.master != "FREG") {
                 try {
+                    //hvis adresse beskyttelse hopp ut
+                    if (personaliaService.erAdressebeskyttelseGradert(nyttFnr) ) { return }
+
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.FODSELSNUMMER,
                         fnr = nyttFnr,
@@ -47,20 +50,28 @@ class FolkeregisterService(
                 }
             }
 
-            samPersonaliaClient.oppdaterSamPersonalia(
-                createFolkeregisterRequest(
-                    hendelseId = personhendelse.hendelseId,
-                    nyttFnr = nyttFnr,
-                    gammeltFnr = gammeltFnr,
-                    adressebeskyttelse = adressebeskyttelse
-                )
-            )
+            samPersonaliaClient(personhendelse, nyttFnr, gammeltFnr, adressebeskyttelse)
+
             messure.addKjent(personhendelse)
         } else {
             logger.info("Behandler ikke hendelsen fordi endringstypen er ${personhendelse.endringstype}")
             return
         }
     }
+
+
+    @Deprecated("Depricated no replacment will be removoed in futurue", ReplaceWith("none"))
+    private fun samPersonaliaClient(personhendelse: Personhendelse, nyttFnr: String, gammeltFnr: String, adressebeskyttelse: List<AdressebeskyttelseGradering>) {
+        samPersonaliaClient.oppdaterSamPersonalia(
+            createFolkeregisterRequest(
+                hendelseId = personhendelse.hendelseId,
+                nyttFnr = nyttFnr,
+                gammeltFnr = gammeltFnr,
+                adressebeskyttelse = adressebeskyttelse
+            )
+        )
+    }
+
 
     private fun createFolkeregisterRequest(
         hendelseId: String,

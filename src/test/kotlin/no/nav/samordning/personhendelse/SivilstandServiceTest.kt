@@ -106,7 +106,6 @@ class SivilstandServiceTest {
             navn = Navn(fornavn = "Dummy", etternavn = "Dummy", metadata = mockMeta() ),
             adressebeskyttelse = emptyList(),
             statsborgerskap = emptyList(),
-            forelderBarnRelasjon = emptyList(),
             sivilstand = listOf(Sivilstand(type = Sivilstandstype.UGIFT, gyldigFraOgMed = LocalDate.of(2020, 4, 10), relatertVedSivilstand = null, mockMeta() ))
         )
     }

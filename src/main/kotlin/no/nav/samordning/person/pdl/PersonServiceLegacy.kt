@@ -13,7 +13,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Service
-@Deprecated("Denne er ikke lenger gyldig, bruk PersonDataService i stedet", ReplaceWith("PersonDataService"))
+@Deprecated("Denne er ikke lenger gyldig, bruk PersonDataService i stedet", ReplaceWith("PersonaliaService"))
 class PersonServiceLegacy(
     private val client: PersonClient,
     private val kodeverkService: KodeverkService,
@@ -122,8 +122,8 @@ class PersonServiceLegacy(
         val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
             ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
+//        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
+//            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
         val kjoenn = pdlPerson.kjoenn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
@@ -142,7 +142,6 @@ class PersonServiceLegacy(
             oppholdsadresse,
             bostedsadresse,
             kontaktadresse,
-            kontaktinformasjonForDoedsbo,
         )
     }
 
@@ -183,9 +182,6 @@ class PersonServiceLegacy(
         val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
             ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-
         val kjoenn = pdlPerson.kjoenn
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -193,7 +189,6 @@ class PersonServiceLegacy(
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-        val forelderBarnRelasjon = pdlPerson.forelderBarnRelasjon
         val sivilstand = pdlPerson.sivilstand
 
         return PdlPerson(
@@ -206,10 +201,8 @@ class PersonServiceLegacy(
             geografiskTilknytning,
             kjoenn,
             doedsfall,
-            forelderBarnRelasjon,
             sivilstand,
             kontaktadresse,
-            kontaktinformasjonForDoedsbo
         )
     }
 
@@ -442,6 +435,7 @@ class PersonServiceLegacy(
      *
      * @return List gradering.
      */
+    @Deprecated("Bruk PersonaliaService.erAdressebeskyttelseGradert(fnr) i stedet", replaceWith = ReplaceWith("PersonaliaService.erAdressebeskyttelseGradert(fnr)"))
     fun hentAdressebeskyttelse(fnr: String): List<AdressebeskyttelseGradering> {
         return harAdressebeskyttelseMetric.measure {
             val response = client.hentAdressebeskyttelse(fnr)
@@ -519,8 +513,8 @@ class PersonServiceLegacy(
     @Deprecated("Bruk hentIdenter(Ident) i stedet", replaceWith = ReplaceWith("PersonDataService.hentIdenter(Ident)"))
     fun <T : Ident> hentIdenter(ident: T): List<IdentInformasjon> {
         return hentIdenterMetric.measure {
-
             logger.debug("Henter identer: ${ident.id.scrable()} fra pdl")
+
             val response = client.hentIdenter(ident.id)
 
             if (!response.errors.isNullOrEmpty())
@@ -539,7 +533,7 @@ class PersonServiceLegacy(
      */
     fun <T : Ident> hentGeografiskTilknytning(ident: T): GeografiskTilknytning? {
         return hentGeografiskTilknytningMetric.measure {
-            logger.debug("Henter hentGeografiskTilknytning for ident: ${ident.id.scrable()} fra pdl")
+            logger.debug("Henter hentGeografiskTilknytning for ident")
 
             val response = client.hentGeografiskTilknytning(ident.id)
 

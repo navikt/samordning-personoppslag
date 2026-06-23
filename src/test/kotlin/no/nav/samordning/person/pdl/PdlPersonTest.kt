@@ -1,6 +1,5 @@
 package no.nav.samordning.person.pdl
 
-import tools.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -9,6 +8,7 @@ import no.nav.samordning.person.pdl.model.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -74,17 +74,6 @@ internal class PdlPersonTest {
 
         return response
     }
-
-
-    @Test
-    fun `hentPerson med manglende relatertPersonsIdent skal fortsatt gi gyldig resultat`() {
-        val json = javaClass.getResource("/hentPersonFamilieRelasjonUtenIdent.json").readText()
-        var person = hentPersonFraFil(json)
-        assertEquals(Familierelasjonsrolle.BARN, person?.forelderBarnRelasjon?.get(0)?.relatertPersonsRolle)
-        assertNull(person?.forelderBarnRelasjon?.get(0)?.relatertPersonsIdent)
-    }
-
-
 
     @Test
     fun `hentPerson med data i json deserialisering`() {
@@ -206,43 +195,6 @@ internal class PdlPersonTest {
         assertEquals("18-500 KOLNO", utenlandsadresseFrittformat?.adresselinje2)
         assertEquals("CAPITAL WEST 3000", utenlandsadresseFrittformat?.adresselinje3)
         assertEquals("TUV", utenlandsadresseFrittformat?.landkode)
-    }
-
-    @Test
-    fun `hentPerson med KontaktinformasjonForDoedsboAdresse - advokat`() {
-        val json = javaClass.getResource("/hentPersonMedKontaktAdresseDoedsbo-Advokat.json")!!.readText()
-        val person = hentPersonFraFil(json)
-        val adresse = person?.kontaktinformasjonForDoedsbo?.adresse
-
-        assertEquals("adresselinje1", adresse!!.adresselinje1)
-        assertEquals("adresselinje2", adresse.adresselinje2)
-        assertEquals("SWE", adresse.landkode)
-        assertEquals("3123", adresse.postnummer)
-        assertEquals("POSTSTEDSETSNAVN", adresse.poststedsnavn)
-
-        val advokatSomKontakt = person.kontaktinformasjonForDoedsbo!!.advokatSomKontakt!!
-        assertEquals("Arve", advokatSomKontakt.personnavn.fornavn)
-        assertEquals("Bjørn", advokatSomKontakt.personnavn.mellomnavn)
-        assertEquals("Stein", advokatSomKontakt.personnavn.etternavn)
-        assertEquals("Stein Gale Advokater", advokatSomKontakt.organisasjonsnavn)
-    }
-
-    @Test
-    fun `hentPerson med KontaktinformasjonForDoedsboAdresse - person`() {
-        val json = javaClass.getResource("/hentPersonMedKontaktAdresseDoedsbo-Person.json")!!.readText()
-        val person = hentPersonFraFil(json)
-        val personSomKontakt = person!!.kontaktinformasjonForDoedsbo!!.personSomKontakt!!
-        assertEquals("12345678910", personSomKontakt.identifikasjonsnummer)
-    }
-
-    @Test
-    fun `hentPerson med KontaktinformasjonForDoedsboAdresse - organisasjon`() {
-        val json = javaClass.getResource("/hentPersonMedKontaktAdresseDoedsbo-Organisasjon.json")!!.readText()
-        val person = hentPersonFraFil(json)
-        val organisasjonSomKontakt = person!!.kontaktinformasjonForDoedsbo!!.organisasjonSomKontakt!!
-        assertEquals("Hvite", organisasjonSomKontakt.kontaktperson!!.fornavn)
-        assertEquals("Blomster", organisasjonSomKontakt.kontaktperson!!.etternavn)
-        assertEquals("ABC Vi Fikser Arven", organisasjonSomKontakt.organisasjonsnavn)
     }
 
 

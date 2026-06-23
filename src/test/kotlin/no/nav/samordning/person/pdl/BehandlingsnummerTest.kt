@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class BehandlingsnummerTest {
 
     @Test
-    fun testAll() {
-        assertEquals("B137,B920", Behandlingsnummer.getAll())
+    fun testAllBehandlingsnummer() {
+        assertEquals("B920", Behandlingsnummer.getAll())
     }
 }

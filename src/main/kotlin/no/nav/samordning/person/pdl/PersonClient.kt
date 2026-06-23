@@ -36,6 +36,7 @@ class PersonClient(
         exclude = [HttpClientErrorException.NotFound::class],
         backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
     )
+    @Deprecated("Bruk hentAdresse",  ReplaceWith("none"))
     internal fun hentAdresseLegacy(ident: String): HentAdresseLegacyResponse {
         val query = getGraphqlResource("/graphql/hentAdresseLegacy.graphql")
         val request = GraphqlRequest(query, Variables(ident))
@@ -60,6 +61,7 @@ class PersonClient(
         exclude = [HttpClientErrorException.NotFound::class],
         backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
     )
+    @Deprecated("Ikke i bruk, vil slettes", ReplaceWith("none"))
     internal fun hentPersonnavn(ident: String): HentPersonnavnResponse {
         val query = getGraphqlResource("/graphql/hentPersonnavn.graphql")
         val request = GraphqlRequest(query, Variables(ident))

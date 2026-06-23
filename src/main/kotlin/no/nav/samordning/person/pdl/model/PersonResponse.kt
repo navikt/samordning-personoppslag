@@ -26,17 +26,6 @@ internal data class HentPersonnavnResponseData(
     val hentPerson: HentPersonnavn? = null
 )
 
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-internal data class HentPersonUidResponse(
-    val data: HentPersonUidResponseData? = null,
-    val errors: List<ResponseError>? = null
-)
-
-internal data class HentPersonUidResponseData(
-    val hentPerson: HentPersonUtenlandskIdent? = null
-)
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal data class HentAdresseLegacyResponse(
     val data: HentAdresseLegacyResponseData? = null,
