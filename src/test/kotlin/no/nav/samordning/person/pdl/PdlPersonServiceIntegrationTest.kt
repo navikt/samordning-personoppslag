@@ -4,7 +4,6 @@ import io.mockk.mockk
 import no.nav.samordning.config.RestTemplateConfig
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.NorskIdent
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -42,14 +41,12 @@ internal class PdlPersonServiceIntegrationTest {
         assertNotNull(person?.navn)
     }
 
-    @Test
-    fun harAdressebeskyttelse_virkerSomForventet() {
-//        val gradering = listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG, AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND)
-
-        val adressebeskyttelse = service.hentAdressebeskyttelse("11067122781")
-
-        assertFalse(adressebeskyttelse.isEmpty())
-    }
+//    @Test
+//    fun harAdressebeskyttelse_virkerSomForventet() {
+////        val gradering = listOf(AdressebeskyttelseGradering.STRENGT_FORTROLIG, AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND)
+//        val adressebeskyttelse = service.hentAdressebeskyttelse("11067122781")
+//        assertFalse(adressebeskyttelse.isEmpty())
+//    }
 
 //    @Test
 //    fun hentPersonMedUid() {

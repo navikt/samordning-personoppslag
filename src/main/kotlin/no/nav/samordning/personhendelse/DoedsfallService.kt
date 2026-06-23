@@ -43,6 +43,9 @@ class DoedsfallService(
 
         if (personhendelse.master != "FREG") {
             try {
+                //hvis adresse beskyttelse hopp ut
+                if (personaliaService.erAdressebeskyttelseGradert(gyldigident) ) { return }
+
                 hendelseService.opprettPersonEndringHendelse(
                     meldingsKode = Meldingskode.DOEDSFALL,
                     fnr = gyldigident,

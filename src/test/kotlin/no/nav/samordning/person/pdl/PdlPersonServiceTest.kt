@@ -361,13 +361,11 @@ internal class PdlPersonServiceTest {
         val code = "test_code"
 
         val errors = listOf(ResponseError(msg, extensions = ErrorExtension(code, null, null)))
-
         every { client.hentAdressebeskyttelse(any()) } returns AdressebeskyttelseResponse(null, errors)
 
         val exception = assertThrows<PersonoppslagException> {
             service.hentAdressebeskyttelse("1234")
         }
-
         assertEquals("$code: $msg", exception.message)
     }
 

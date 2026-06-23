@@ -435,6 +435,7 @@ class PersonServiceLegacy(
      *
      * @return List gradering.
      */
+    @Deprecated("Bruk PersonaliaService.erAdressebeskyttelseGradert(fnr) i stedet", replaceWith = ReplaceWith("PersonaliaService.erAdressebeskyttelseGradert(fnr)"))
     fun hentAdressebeskyttelse(fnr: String): List<AdressebeskyttelseGradering> {
         return harAdressebeskyttelseMetric.measure {
             val response = client.hentAdressebeskyttelse(fnr)
@@ -512,8 +513,8 @@ class PersonServiceLegacy(
     @Deprecated("Bruk hentIdenter(Ident) i stedet", replaceWith = ReplaceWith("PersonDataService.hentIdenter(Ident)"))
     fun <T : Ident> hentIdenter(ident: T): List<IdentInformasjon> {
         return hentIdenterMetric.measure {
-
             logger.debug("Henter identer: ${ident.id.scrable()} fra pdl")
+
             val response = client.hentIdenter(ident.id)
 
             if (!response.errors.isNullOrEmpty())
@@ -532,7 +533,7 @@ class PersonServiceLegacy(
      */
     fun <T : Ident> hentGeografiskTilknytning(ident: T): GeografiskTilknytning? {
         return hentGeografiskTilknytningMetric.measure {
-            logger.debug("Henter hentGeografiskTilknytning for ident: ${ident.id.scrable()} fra pdl")
+            logger.debug("Henter hentGeografiskTilknytning for ident")
 
             val response = client.hentGeografiskTilknytning(ident.id)
 
