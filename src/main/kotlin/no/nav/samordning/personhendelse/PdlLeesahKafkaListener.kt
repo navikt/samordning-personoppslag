@@ -8,7 +8,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
@@ -22,7 +21,8 @@ class PdlLeesahKafkaListener(
     private val doedsfallService: DoedsfallService,
     private val folkeregisterService: FolkeregisterService,
     private val sivilstandService: SivilstandService,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()) {
+    private val metricsHelper: MetricsHelper,
+) {
 
     private var leesahKafkaListenerMetric: Metric
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
