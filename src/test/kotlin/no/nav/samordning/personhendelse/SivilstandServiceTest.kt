@@ -105,7 +105,6 @@ class SivilstandServiceTest {
             identer = listOf(IdentInformasjon(ident = "1232312312", gruppe = IdentGruppe.FOLKEREGISTERIDENT)),
             navn = Navn(fornavn = "Dummy", etternavn = "Dummy", metadata = mockMeta() ),
             adressebeskyttelse = emptyList(),
-            statsborgerskap = emptyList(),
             sivilstand = listOf(Sivilstand(type = Sivilstandstype.UGIFT, gyldigFraOgMed = LocalDate.of(2020, 4, 10), relatertVedSivilstand = null, mockMeta() ))
         )
     }
