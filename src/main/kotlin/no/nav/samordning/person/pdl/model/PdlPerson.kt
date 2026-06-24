@@ -9,8 +9,6 @@ internal data class HentPerson(
         val bostedsadresse: List<Bostedsadresse>,
         val oppholdsadresse: List<Oppholdsadresse>,
         val navn: List<Navn>,
-        val statsborgerskap: List<Statsborgerskap>,
-        val kjoenn: List<Kjoenn>,
         val doedsfall: List<Doedsfall>,
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: List<Kontaktadresse>?,
@@ -31,10 +29,8 @@ internal data class HentAdresseLegacy(
 
 data class PdlSamPerson(
         val navn: Navn? = null,
-        val kjoenn: Kjoenn? = null,
         val adressebeskyttelse: List<AdressebeskyttelseGradering>,
         val doedsfall: Doedsfall? = null,
-        val statsborgerskap: List<Statsborgerskap>,
         val sivilstand: Sivilstand?,
         val oppholdsadresse: Oppholdsadresse? = null,
         val bostedsadresse: Bostedsadresse? = null,
@@ -114,9 +110,6 @@ data class PdlPerson(
         val adressebeskyttelse: List<AdressebeskyttelseGradering>,
         val bostedsadresse: Bostedsadresse? = null,
         val oppholdsadresse: Oppholdsadresse? = null,
-        val statsborgerskap: List<Statsborgerskap>,
-        val geografiskTilknytning: GeografiskTilknytning? = null,
-        val kjoenn: Kjoenn? = null,
         val doedsfall: Doedsfall? = null,
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: Kontaktadresse? = null
@@ -142,7 +135,6 @@ data class PdlPerson(
                 val landkodeUtlandsAdresse = kontaktadresse?.utenlandskAdresse?.landkode
                 val landkodeOppholdsadresse = oppholdsadresse?.utenlandskAdresse?.landkode
                 val landkodeBostedsadresse = bostedsadresse?.utenlandskAdresse?.landkode
-                val geografiskLandkode = geografiskTilknytning?.gtLand
                 val landkodeBostedNorge = bostedsadresse?.vegadresse
                 val landkodeKontaktNorge = kontaktadresse?.postadresseIFrittFormat
 
@@ -162,10 +154,6 @@ data class PdlPerson(
                         landkodeBostedsadresse != null -> {
                                 logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse")
                                 landkodeBostedsadresse
-                        }
-                        geografiskLandkode != null -> {
-                                logger.info("Velger landkode fra geografiskTilknytning.gtLand")
-                                geografiskLandkode
                         }
                         landkodeBostedNorge != null -> {
                                 logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom")
@@ -187,7 +175,6 @@ data class PdlAdresse(
         val adressebeskyttelse: List<AdressebeskyttelseGradering>,
         val bostedsadresse: Bostedsadresse? = null,
         val oppholdsadresse: Oppholdsadresse? = null,
-        val geografiskTilknytning: GeografiskTilknytning? = null,
         val doedsfall: Doedsfall? = null,
         val sivilstand: List<Sivilstand>,
         val kontaktadresse: Kontaktadresse? = null,
@@ -213,7 +200,6 @@ data class PdlAdresse(
                 val landkodeUtlandsAdresse = kontaktadresse?.utenlandskAdresse?.landkode
                 val landkodeOppholdsadresse = oppholdsadresse?.utenlandskAdresse?.landkode
                 val landkodeBostedsadresse = bostedsadresse?.utenlandskAdresse?.landkode
-                val geografiskLandkode = geografiskTilknytning?.gtLand
                 val landkodeBostedNorge = bostedsadresse?.vegadresse
                 val landkodeKontaktNorge = kontaktadresse?.postadresseIFrittFormat
 
@@ -233,10 +219,6 @@ data class PdlAdresse(
                         landkodeBostedsadresse != null -> {
                                 logger.info("Velger landkode fra bostedsadresse.utenlandskAdresse")
                                 landkodeBostedsadresse
-                        }
-                        geografiskLandkode != null -> {
-                                logger.info("Velger landkode fra geografiskTilknytning.gtLand")
-                                geografiskLandkode
                         }
                         landkodeBostedNorge != null -> {
                                 logger.info("Velger landkode NOR fordi  bostedsadresse.vegadresse ikke er tom")
@@ -333,31 +315,6 @@ enum class Sivilstandstype {
         GJENLEVENDE_PARTNER;
 }
 
-enum class Familierelasjonsrolle {
-        FAR,
-        MOR,
-        MEDMOR,
-        BARN;
-}
-
-enum class KjoennType {
-        MANN,
-        KVINNE,
-        UKJENT;
-}
-
-data class Kjoenn(
-        val kjoenn: KjoennType,
-        val folkeregistermetadata: Folkeregistermetadata? = null,
-        val metadata: Metadata
-)
-
-//data class ForelderBarnRelasjon (
-//        val relatertPersonsIdent: String?,
-//        val relatertPersonsRolle: Familierelasjonsrolle?,
-//        val minRolleForPerson: Familierelasjonsrolle? = null,
-//        val metadata: Metadata
-//)
 
 data class Sivilstand(
         val type: Sivilstandstype,

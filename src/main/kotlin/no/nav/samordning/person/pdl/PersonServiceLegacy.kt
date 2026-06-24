@@ -57,7 +57,7 @@ class PersonServiceLegacy(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilPerson(it, hentIdenter(ident), hentGeografiskTilknytning(ident))
+                konverterTilPerson(it, hentIdenter(ident))
             }
         }
     }
@@ -72,7 +72,7 @@ class PersonServiceLegacy(
                 handleError(response.errors)
 
             return@measure response.data?.hentPerson?.let {
-                konverterTilAdresse(it, hentGeografiskTilknytning(ident), opplysningstype)
+                konverterTilAdresse(it,  opplysningstype)
             }
         }
     }
@@ -108,9 +108,6 @@ class PersonServiceLegacy(
             .map { it.gradering }
             .distinct()
 
-        val statsborgerskap = pdlPerson.statsborgerskap
-            .distinctBy { it.land }
-
         val sivilstand : Sivilstand? = filterSivilstand(pdlPerson)
 
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
@@ -122,22 +119,14 @@ class PersonServiceLegacy(
         val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
             ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
 
-//        val kontaktinformasjonForDoedsbo = pdlPerson.kontaktinformasjonForDoedsbo.filter { !it.metadata.historisk }
-//            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-
-        val kjoenn = pdlPerson.kjoenn
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
-
         val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
             .filterNot { it.doedsdato == null }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
         return PdlSamPerson(
             navn,
-            kjoenn,
             graderingListe,
             doedsfall,
-            statsborgerskap,
             sivilstand,
             oppholdsadresse,
             bostedsadresse,
@@ -160,7 +149,6 @@ class PersonServiceLegacy(
     internal fun konverterTilPerson(
         pdlPerson: HentPerson,
         identer: List<IdentInformasjon>,
-        geografiskTilknytning: GeografiskTilknytning?
     ): PdlPerson {
 
         val navn = pdlPerson.navn
@@ -170,9 +158,6 @@ class PersonServiceLegacy(
             .map { it.gradering }
             .distinct()
 
-        val statsborgerskap = pdlPerson.statsborgerskap
-            .distinctBy { it.land }
-
         val bostedsadresse = pdlPerson.bostedsadresse.filter { !it.metadata.historisk }
             .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
@@ -181,9 +166,6 @@ class PersonServiceLegacy(
 
         val kontaktadresse = pdlPerson.kontaktadresse?.filter { !it.metadata.historisk }
             ?.maxByOrNull { it.metadata.sisteRegistrertDato() }
-
-        val kjoenn = pdlPerson.kjoenn
-            .maxByOrNull { it.metadata.sisteRegistrertDato() }
 
         val doedsfall = pdlPerson.doedsfall.filter { !it.metadata.historisk }
             .filterNot { it.doedsdato == null }
@@ -197,9 +179,6 @@ class PersonServiceLegacy(
             graderingListe,
             bostedsadresse,
             oppholdsadresse,
-            statsborgerskap,
-            geografiskTilknytning,
-            kjoenn,
             doedsfall,
             sivilstand,
             kontaktadresse,
@@ -209,7 +188,6 @@ class PersonServiceLegacy(
 
     internal fun konverterTilAdresse(
         legacyAdresse: HentAdresseLegacy,
-        geografiskTilknytning: GeografiskTilknytning?,
         opplysningstype: String,
     ): BostedsAdresseDto {
 
@@ -236,7 +214,6 @@ class PersonServiceLegacy(
             graderingListe,
             bostedsadresse,
             oppholdsadresse,
-            geografiskTilknytning,
             doedsfall,
             sivilstand,
             kontaktadresse,
@@ -521,26 +498,6 @@ class PersonServiceLegacy(
                 handleError(response.errors)
 
             return@measure response.data?.hentIdenter?.identer ?: emptyList()
-        }
-    }
-
-    /**
-     * Funksjon for å hente ut en person sin geografiske tilknytning.
-     *
-     * @param ident: Identen til personen man vil hente ut identer for. Bruk [NorskIdent], [AktoerId], eller [Npid]
-     *
-     * @return [GeografiskTilknytning]
-     */
-    fun <T : Ident> hentGeografiskTilknytning(ident: T): GeografiskTilknytning? {
-        return hentGeografiskTilknytningMetric.measure {
-            logger.debug("Henter hentGeografiskTilknytning for ident")
-
-            val response = client.hentGeografiskTilknytning(ident.id)
-
-            if (!response.errors.isNullOrEmpty())
-                handleError(response.errors)
-
-            return@measure response.data?.geografiskTilknytning
         }
     }
 

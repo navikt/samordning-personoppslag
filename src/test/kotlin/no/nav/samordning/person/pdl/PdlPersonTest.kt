@@ -6,7 +6,8 @@ import io.mockk.mockk
 import no.nav.samordning.kodeverk.KodeverkService
 import no.nav.samordning.person.pdl.model.*
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.time.LocalDate
@@ -48,11 +49,9 @@ internal class PdlPersonTest {
             }
         """.trimIndent()
         val identResponse = mapper.readValue(emptyResponseJson, IdenterResponse::class.java)
-        val geoResponse = mapper.readValue(emptyResponseJson, GeografiskTilknytningResponse::class.java)
 
         every { mockPersonClient.hentPerson( any()) } returns response
         every { mockPersonClient.hentIdenter (any()) } returns identResponse
-        every { mockPersonClient.hentGeografiskTilknytning (any()) }  returns geoResponse
 
         return mockPersonService.hentPerson(NorskIdent("2"))
     }
@@ -70,23 +69,18 @@ internal class PdlPersonTest {
 
         every { mockPersonClient.hentAdresseLegacy( any()) } returns response
         every { mockPersonClient.hentIdenter (any()) } returns identResponse
-        every { mockPersonClient.hentGeografiskTilknytning (any()) }  returns geoResponse
 
         return response
     }
 
     @Test
     fun `hentPerson med data i json deserialisering`() {
-        val json = javaClass.getResource("/hentPerson.json").readText()
+        val json = javaClass.getResource("/hentPerson.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val navn = person?.navn
         assertEquals("BLÅ", navn?.fornavn)
         assertEquals("STAUDE", navn?.etternavn)
-
-        val kjoenn = person?.kjoenn
-        assertEquals(KjoennType.KVINNE, kjoenn?.kjoenn)
-        assertNotNull(kjoenn?.folkeregistermetadata)
 
         val sivilstand = person?.sivilstand?.maxByOrNull { it.gyldigFraOgMed!! }!!
         assertEquals(Sivilstandstype.GIFT, sivilstand.type)
@@ -102,7 +96,7 @@ internal class PdlPersonTest {
 
     @Test
     fun `hentAdresse med data i json deserialisering`() {
-        val json = javaClass.getResource("/hentAdresseLegacy.json").readText()
+        val json = javaClass.getResource("/hentAdresseLegacy.json")?.readText()!!
         val adresse = hentAdresseFraFil(json)
 
         val adressenavn = adresse.data?.hentPerson?.bostedsadresse?.first()?.vegadresse?.adressenavn
@@ -112,7 +106,7 @@ internal class PdlPersonTest {
 
     @Test
     fun `hentPerson med flere navn data i json deserialisering`() {
-        val json = javaClass.getResource("/hentPersonMedFlereNavn.json").readText()
+        val json = javaClass.getResource("/hentPersonMedFlereNavn.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val navn = person?.navn
@@ -141,7 +135,7 @@ internal class PdlPersonTest {
 
     @Test
     fun `hentPerson Utlandadresse fra opphold`() {
-        val json = javaClass.getResource("/hentUtlandPerson.json").readText()
+        val json = javaClass.getResource("/hentUtlandPerson.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val navn = person?.navn
@@ -168,7 +162,7 @@ internal class PdlPersonTest {
 
     @Test
     fun `hentPerson med kontaktadresse med utenlandsk adresse i fritt format`() {
-        val json = javaClass.getResource("/hentPersonUtlandMedKontaktAdresse.json").readText()
+        val json = javaClass.getResource("/hentPersonUtlandMedKontaktAdresse.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val navn = person?.navn
@@ -199,8 +193,8 @@ internal class PdlPersonTest {
 
 
     @Test
-    fun `hentPerson kjoenn and konvert`() {
-        val json = javaClass.getResource("/hentPerson2Kjoenn.json").readText()
+    fun `hentPerson sjekk for valid navn`() {
+        val json = javaClass.getResource("/hentPerson2Kjoenn.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val vegadresse = person?.bostedsadresse?.vegadresse
@@ -218,16 +212,13 @@ internal class PdlPersonTest {
 
         assertEquals("HEST", navn?.etternavn)
         assertEquals("ÅPENHJERTIG", navn?.fornavn)
-
-        val kjoenn = person?.kjoenn
-
-        assertEquals(KjoennType.MANN, kjoenn?.kjoenn)
+        assertEquals(Sivilstandstype.UGIFT, person?.sivilstand?.lastOrNull()?.type)
 
     }
 
     @Test
     fun `hentPerson and konvert`() {
-        val json = javaClass.getResource("/hentPerson2.json").readText()
+        val json = javaClass.getResource("/hentPerson2.json")?.readText()!!
         val person = hentPersonFraFil(json)
 
         val vegadresse = person?.bostedsadresse?.vegadresse
@@ -244,11 +235,6 @@ internal class PdlPersonTest {
 
         assertEquals("HEST", navn?.etternavn)
         assertEquals("ÅPENHJERTIG", navn?.fornavn)
-
-        val kjoenn = person?.kjoenn
-
-        assertEquals(KjoennType.UKJENT, kjoenn?.kjoenn)
-
     }
 
 

@@ -96,19 +96,6 @@ class PersonClient(
         }
     }
 
-    @Retryable(
-        exclude = [HttpClientErrorException.NotFound::class],
-        backoff = Backoff(delay = 10000L, maxDelay = 100000L, multiplier = 3.0)
-    )
-    internal fun hentGeografiskTilknytning(ident: String): GeografiskTilknytningResponse {
-        val query = getGraphqlResource("/graphql/hentGeografiskTilknytning.graphql")
-        val request = GraphqlRequest(query, Variables(ident))
-
-        return pdlRestTemplate.postForObject<GeografiskTilknytningResponse>(url, HttpEntity(request), GeografiskTilknytningResponse::class)!!.also {
-            loggPdlFeil(it.errors)
-        }
-    }
-
     private fun getGraphqlResource(file: String): String =
         javaClass.getResource(file).readText().replace(Regex("[\n\t]"), "")
 

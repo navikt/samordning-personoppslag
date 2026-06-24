@@ -68,7 +68,6 @@
           }
         }
       ],
-      "kontaktinformasjonForDoedsbo": [],
       "navn": [
         {
           "fornavn": "TVILSOM",
@@ -95,90 +94,7 @@
           }
         }
       ],
-      "statsborgerskap": [
-        {
-          "land": "ABW",
-          "gyldigFraOgMed": "1972-07-29",
-          "gyldigTilOgMed": null,
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-16T14:53:07",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "c1ac4333-3fee-43bb-8158-b94cd63fccd5",
-            "historisk": false
-          }
-        }
-      ],
       "doedsfall": [],
-      "kjoenn": [
-        {
-          "kjoenn": "MANN",
-          "folkeregistermetadata": {
-            "gyldighetstidspunkt": "2021-02-16T14:53:06"
-          },
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-16T14:53:06",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "5daad70a-0651-4ccd-9a96-c479a1201ba1",
-            "historisk": false
-          }
-        }
-      ],
-      "forelderBarnRelasjon": [
-        {
-          "relatertPersonsIdent": "68081299688",
-          "relatertPersonsRolle": "BARN",
-          "minRolleForPerson": "FAR",
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-16T14:53:07",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "8acd4d57-6197-4d0e-a9c7-9a5483f06a5d",
-            "historisk": false
-          }
-        },
-        {
-          "relatertPersonsIdent": "58100998910",
-          "relatertPersonsRolle": "BARN",
-          "minRolleForPerson": "FAR",
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-16T14:53:07",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "bc78cdab-0d75-4ea7-a5f2-4bbf35de2258",
-            "historisk": false
-          }
-        }
-      ],
       "sivilstand": [
         {
           "type": "GIFT",

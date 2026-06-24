@@ -86,7 +86,8 @@ class SivilstandService(
             }
 
             else -> {
-                throw IllegalArgumentException("Ugyldig endringstype, hendelseId=${personhendelse.hendelseId}")
+                logger.warn("Ukjent endringstype ${personhendelse.endringstype}, hendelseId=${personhendelse.hendelseId}. Ignorerer.")
+                return
             }
         }
     }

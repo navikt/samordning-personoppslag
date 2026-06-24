@@ -57,67 +57,7 @@
           }
         }
       ],
-      "statsborgerskap": [
-        {
-          "land": "NOR",
-          "gyldigFraOgMed": "1974-03-17",
-          "gyldigTilOgMed": null,
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-15T10:41:02",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "aef6d6fb-39a5-4236-ba00-893220462fec",
-            "historisk": false
-          }
-        }
-      ],
       "doedsfall": [],
-      "kjoenn": [
-        {
-          "kjoenn": "UKJENT",
-          "folkeregistermetadata": null,
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2020-02-15T10:41:02",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "OPPRETT"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "a3794345-4ea6-471f-a96b-07bbba666fd3",
-            "historisk": false
-          }
-        },
-        {
-          "kjoenn": "MANN",
-          "folkeregistermetadata": null,
-          "metadata": {
-            "endringer": [
-              {
-                "kilde": "Dolly",
-                "registrert": "2021-02-15T10:41:02",
-                "registrertAv": "Folkeregisteret",
-                "systemkilde": "FREG",
-                "type": "KORRIGER"
-              }
-            ],
-            "master": "FREG",
-            "opplysningsId": "a3794345-4ea6-471f-a96b-07bbba666fd3",
-            "historisk": false
-          }
-        }
-      ],
-      "forelderBarnRelasjon": [],
       "kontaktadresse": [],
       "kontaktinformasjonForDoedsbo": [],
       "sivilstand": [
