@@ -9,6 +9,12 @@ updates:
     open-pull-requests-limit: 10
     allow:
       - dependency-type: "direct"
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
