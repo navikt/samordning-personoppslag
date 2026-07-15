@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.4.0"
+val kotlinVersion = "2.4.10"
 val prometeusVersion = "1.17.0"
 val springbootVersion = "4.1.0"
 val springkafkaVersion="4.1.0"
@@ -20,7 +20,7 @@ val byteBuddyVersion = "1.18.8"
 
 plugins {
     val pluginSpringBootVersion = "4.1.0"
-    val pluginKotlinVersion = "2.4.0"
+    val pluginKotlinVersion = "2.4.10"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
