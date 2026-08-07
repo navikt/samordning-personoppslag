@@ -27,7 +27,7 @@ plugins {
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.owasp.dependencycheck") version "12.2.2"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 group = "no.nav.pensjon"
