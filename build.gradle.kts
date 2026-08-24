@@ -2,14 +2,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 val kotlinVersion = "2.4.10"
-val prometeusVersion = "1.17.0"
-val springbootVersion = "4.1.0"
-val springkafkaVersion="4.1.0"
-val springframeworkbomVersion = "7.0.8"
+val prometeusVersion = "1.17.1"
+val springbootVersion = "4.1.1"
+val springkafkaVersion="4.1.1"
+val springframeworkbomVersion = "7.0.9"
 val slf4jVersion = "2.0.18"
 val logstashlogbackVersion = "9.0"
 val tokensupportVersion = "6.0.12"
-val mockOAuth2ServerVersion = "6.0.1"
+val mockOAuth2ServerVersion = "6.0.2"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.11"
@@ -19,7 +19,7 @@ val commonsLang3Version = "3.20.0"
 val byteBuddyVersion = "1.18.8"
 
 plugins {
-    val pluginSpringBootVersion = "4.1.0"
+    val pluginSpringBootVersion = "4.1.1"
     val pluginKotlinVersion = "2.4.10"
 
     kotlin("jvm") version pluginKotlinVersion
@@ -75,7 +75,7 @@ dependencies {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
-    implementation("org.apache.avro:avro:1.12.1")
+    implementation("org.apache.avro:avro:1.12.2")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
