@@ -15,5 +15,8 @@ class KafkaConfig {
      * Ønsker ikke å droppe noen meldinger som feiler. Lyttere som ønsker annen oppførsel må konfigurere dette lokalt
      */
     @Bean
-    fun infiniteRetriesErrorHandler() = DefaultErrorHandler(ExponentialBackOff())
+    fun infiniteRetriesErrorHandler(retryMetricsListener: KafkaRetryMetricsListener) =
+        DefaultErrorHandler(ExponentialBackOff()).apply {
+            setRetryListeners(retryMetricsListener)
+        }
 }
