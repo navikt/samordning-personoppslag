@@ -62,7 +62,10 @@ class RestTemplateConfig {
         return RestTemplateBuilder()
             .baseUri(samUrl)
             .errorHandler(DefaultResponseErrorHandler())
-            .additionalInterceptors(samTokenInteceptor)
+            .additionalInterceptors(
+                IOExceptionRetryInterceptor(),
+                samTokenInteceptor
+            )
             .build()
     }
 
