@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.4.10"
+val kotlinVersion = "2.4.20"
 val prometeusVersion = "1.17.1"
 val springbootVersion = "4.1.1"
 val springkafkaVersion="4.1.1"
 val springframeworkbomVersion = "7.0.9"
-val slf4jVersion = "2.0.18"
+val slf4jVersion = "2.0.19"
 val logstashlogbackVersion = "9.0"
 val tokensupportVersion = "6.0.12"
 val mockOAuth2ServerVersion = "6.0.2"
@@ -20,7 +20,7 @@ val byteBuddyVersion = "1.18.8"
 
 plugins {
     val pluginSpringBootVersion = "4.1.1"
-    val pluginKotlinVersion = "2.4.10"
+    val pluginKotlinVersion = "2.4.20"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
@@ -67,7 +67,7 @@ dependencies {
     implementation("org.springframework.retry:spring-retry:2.0.13")
 
     //caffeine cache manager
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.0")
 
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
