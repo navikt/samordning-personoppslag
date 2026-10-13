@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy to Q2
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           "CLUSTER": dev-fss
           "RESOURCE": .nais/dev_q2.yaml
@@ -80,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Deploy to Q1
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           "CLUSTER": dev-fss
           "RESOURCE": .nais/dev_q1.yaml
