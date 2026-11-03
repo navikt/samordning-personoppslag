@@ -1,33 +1,33 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-val kotlinVersion = "2.4.0"
-val prometeusVersion = "1.17.0"
-val springbootVersion = "4.1.0"
-val springkafkaVersion="4.1.0"
-val springframeworkbomVersion = "7.0.8"
-val slf4jVersion = "2.0.18"
+val kotlinVersion = "2.4.21"
+val prometeusVersion = "1.17.2"
+val springbootVersion = "4.1.2"
+val springkafkaVersion="4.1.2"
+val springframeworkbomVersion = "7.0.10"
+val slf4jVersion = "2.0.20"
 val logstashlogbackVersion = "9.0"
-val tokensupportVersion = "6.0.10"
-val mockOAuth2ServerVersion = "4.0.1"
+val tokensupportVersion = "6.0.12"
+val mockOAuth2ServerVersion = "6.1.3"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jakartaInjectApiVersion = "2.0.1"
 val mockkVersion = "1.14.11"
 val springmockkVersion = "5.0.1"
-val junitplatformVersion = "6.1.0"
-val commonsLang3Version = "3.20.0"
+val junitplatformVersion = "6.1.3"
+val commonsLang3Version = "3.21.0"
 val byteBuddyVersion = "1.18.8"
 
 plugins {
-    val pluginSpringBootVersion = "4.1.0"
-    val pluginKotlinVersion = "2.4.0"
+    val pluginSpringBootVersion = "4.1.2"
+    val pluginKotlinVersion = "2.4.21"
 
     kotlin("jvm") version pluginKotlinVersion
     kotlin("plugin.spring") version pluginKotlinVersion
     kotlin("plugin.jpa") version pluginKotlinVersion
     id("org.springframework.boot") version pluginSpringBootVersion
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.owasp.dependencycheck") version "12.2.2"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 group = "no.nav.pensjon"
@@ -67,7 +67,7 @@ dependencies {
     implementation("org.springframework.retry:spring-retry:2.0.13")
 
     //caffeine cache manager
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.1")
 
     implementation("org.springframework.boot:spring-boot-starter-kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test:$springkafkaVersion")
@@ -75,7 +75,7 @@ dependencies {
         exclude(group = "org.apache.avro", module = "avro")
     }
     implementation("no.nav.pensjon:pensjon-pdl-avro-schema:2025.08.14-08.26-800400e1dc81")
-    implementation("org.apache.avro:avro:1.12.1")
+    implementation("org.apache.avro:avro:1.12.2")
 
     //spring boot 3.0 jakaera-api
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")

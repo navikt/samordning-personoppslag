@@ -21,8 +21,6 @@ spec:
         - application: sambatch
           namespace: pensjon-batch
           cluster: prod-fss
-
-
   image: {{ image }}
   port: 8080
   ingresses:
