@@ -43,6 +43,8 @@ class AdresseService(
 
                 val adresse = personaliaService.hentPersonAdresse(gyldigident, personhendelse.opplysningstype)
                 if (adresse != null) {
+                    logger.info("Oppretter hendelse for adresse, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}")
+
                     hendelseService.opprettPersonEndringHendelse(
                         meldingsKode = Meldingskode.ADRESSE,
                         fnr = gyldigident,

@@ -62,11 +62,13 @@ class PdlLeesahKafkaListener(
                         when (personhendelse.opplysningstype) {
                             "SIVILSTAND_V1" -> {
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
+                                MDC.put("opplysningstype", personhendelse.opplysningstype)
                                 sivilstandService.opprettSivilstandsMelding(personhendelse, messureOpplysningstype)
                             }
 
                             "FOLKEREGISTERIDENTIFIKATOR_V1" -> {
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
+                                MDC.put("opplysningstype", personhendelse.opplysningstype)
                                 folkeregisterService.opprettFolkeregistermelding(
                                     personhendelse,
                                     messureOpplysningstype
@@ -75,11 +77,13 @@ class PdlLeesahKafkaListener(
 
                             "DOEDSFALL_V1" -> {
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
+                                MDC.put("opplysningstype", personhendelse.opplysningstype)
                                 doedsfallService.opprettDoedsfallmelding(personhendelse, messureOpplysningstype)
                             }
 
                             "BOSTEDSADRESSE_V1", "KONTAKTADRESSE_V1", "OPPHOLDSADRESSE_V1" -> {
                                 MDC.put("personhendelseId", personhendelse.hendelseId)
+                                MDC.put("opplysningstype", personhendelse.opplysningstype)
                                 adresseService.opprettAdressemelding(personhendelse, messureOpplysningstype)
                             }
 
@@ -94,6 +98,8 @@ class PdlLeesahKafkaListener(
         } catch (e: Exception) {
             logger.error("Behandling av hendelse feilet", e)
             MDC.remove("personhendelseId")
+            MDC.remove("opplysningstype")
+
             messureOpplysningstype.clearAll()
             throw e
         }
@@ -103,6 +109,8 @@ class PdlLeesahKafkaListener(
         messureOpplysningstype.createMetrics()
         messureOpplysningstype.clearAll()
         MDC.remove("personhendelseId")
+        MDC.remove("opplysningstype")
+
     }
 
 }

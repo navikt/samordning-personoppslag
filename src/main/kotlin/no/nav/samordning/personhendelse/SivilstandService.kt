@@ -59,14 +59,13 @@ class SivilstandService(
                 }.also { logger.info("Hentet fomDato : $it") }
 
                 if (personhendelse.sivilstand?.type != null && fomDato != null) {
-                    logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
-
                     val adressebeskyttelse = personaliaService.hentAdressebeskyttelse(gyldigident)
-
                     if (personhendelse.master != "FREG") {
                         try {
                             //hvis adresse beskyttelse hopp ut
                             if (personaliaService.erAdressebeskyttelseGradert(gyldigident) ) { return }
+
+                            logger.info("Oppretter hendelse for sivilstand, hendelseId=${personhendelse.hendelseId}, endringstype=${personhendelse.endringstype}, fomDato=$fomDato")
 
                             hendelseService.opprettPersonEndringHendelse(
                                 meldingsKode = Meldingskode.SIVILSTAND,
@@ -100,7 +99,7 @@ class SivilstandService(
             fomDato = fomDato,
             sivilstandsType = personhendelse.sivilstand?.type ?: "",
             adressebeskyttelse = adressebeskyttelse
-        ))
+        )).also { logger.debug("SamPersonaliaClient called") }
 
     }
 
