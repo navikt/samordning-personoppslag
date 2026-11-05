@@ -31,7 +31,7 @@ spec:
   image: {{ image }}
   port: 8080
   ingresses:
-    - https://samordning-personoppslag-q2.dev.intern.nav.no
+    - https://samordning-personoppslag-q2.intern.dev.nav.no
   prometheus:
     enabled: true
     path: actuator/prometheus
